@@ -14,22 +14,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FONT = NotoColorEmoji
-PNGS_PREFIX1 = ./png/128/emoji_u
-PNGS_PREFIX2 = ./png/64/emoji_u
+EMOJI = NotoColorEmoji
+EMOJI_PNG128 = ./png/128/emoji_u
+EMOJI_PNG64 = ./png/64/emoji_u
 
 EMOJI_BUILDER = ../third_party/color_emoji/emoji_builder.py
 ADD_GLYPHS= ../third_party/color_emoji/add_glyphs.py
 
 %.ttx: %.ttx.tmpl $(ADD_GLYPHS) $(UNI)
-	python $(ADD_GLYPHS) "$<" "$@" "$(PNGS_PREFIX1)"
+	python $(ADD_GLYPHS) "$<" "$@" "$(EMOJI_PNG128)"
 
 %.ttf: %.ttx
 	@rm -f "$@"
 	ttx "$<"
 
-$(FONT).ttf: $(FONT).tmpl.ttf $(EMOJI_BUILDER) $(PNGS_PREFIX1)*.png $(PNGS_PREFIX2)*.png
-	python $(EMOJI_BUILDER) -V $< "$@" $(PNGS_PREFIX1) $(PNGS_PREFIX2)
+$(EMOJI).ttf: $(EMOJI).tmpl.ttf $(EMOJI_BUILDER) $(EMOJI_PNG128)*.png $(EMOJI_PNG64)*.png
+	python $(EMOJI_BUILDER) -V $< "$@" $(EMOJI_PNG128) $(EMOJI_PNG64)
 
 clean:
-	rm -f $(FONT).ttf $(FONT).tmpl.ttf $(FONT).tmpl.ttx
+	rm -f $(EMOJI).ttf $(EMOJI).tmpl.ttf $(EMOJI).tmpl.ttx
