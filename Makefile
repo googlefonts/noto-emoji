@@ -20,6 +20,7 @@ EMOJI_PNG64 = ./png/64/emoji_u
 
 EMOJI_BUILDER = ../third_party/color_emoji/emoji_builder.py
 ADD_GLYPHS= ../third_party/color_emoji/add_glyphs.py
+PUA_ADDER = ../nototools/map_pua_emoji.py
 
 %.ttx: %.ttx.tmpl $(ADD_GLYPHS) $(UNI)
 	python $(ADD_GLYPHS) "$<" "$@" "$(EMOJI_PNG128)"
@@ -28,8 +29,10 @@ ADD_GLYPHS= ../third_party/color_emoji/add_glyphs.py
 	@rm -f "$@"
 	ttx "$<"
 
-$(EMOJI).ttf: $(EMOJI).tmpl.ttf $(EMOJI_BUILDER) $(EMOJI_PNG128)*.png $(EMOJI_PNG64)*.png
+$(EMOJI).ttf: $(EMOJI).tmpl.ttf $(EMOJI_BUILDER) $(PUA_ADDER) $(EMOJI_PNG128)*.png $(EMOJI_PNG64)*.png
 	python $(EMOJI_BUILDER) -V $< "$@" $(EMOJI_PNG128) $(EMOJI_PNG64)
+	python $(PUA_ADDER) "$@" "$@-with-pua"
+	mv "$@-with-pua" "$@"
 
 clean:
 	rm -f $(EMOJI).ttf $(EMOJI).tmpl.ttf $(EMOJI).tmpl.ttx
