@@ -256,12 +256,11 @@ static cairo_surface_t *texture_map(cairo_surface_t *src,
   return dst;
 }
 
-static void wave_flag(const char *filename, const char *out_prefix) {
+static void wave_flag(const char *input_filename, const char *output_filename) {
   static cairo_path_t *wave_path;
   static cairo_surface_t *wave_surface;
   double border_luminosity;
   int border_transparent;
-  char out[1000];
 
   cairo_surface_t *scaled_flag, *waved_flag;
   cairo_t *cr;
@@ -271,9 +270,9 @@ static void wave_flag(const char *filename, const char *out_prefix) {
   if (!wave_surface)
     wave_surface = wave_surface_create();
 
-  printf("Processing %s\n", filename);
+  printf("Processing %s\n", input_filename);
 
-  scaled_flag = load_scaled_flag(filename);
+  scaled_flag = load_scaled_flag(input_filename);
   border_luminosity = calculate_border_luminosity_and_transparency(
       scaled_flag,
       &border_transparent);
@@ -357,19 +356,13 @@ static void wave_flag(const char *filename, const char *out_prefix) {
     }
   }
 
-  *out = '\0';
-  strcat(out, out_prefix);
-  strcat(out, filename);
-
-  cairo_surface_write_to_png(cairo_get_target(cr), out);
+  cairo_surface_write_to_png(cairo_get_target(cr), output_filename);
   cairo_destroy(cr);
 }
 
 int main(int argc, char **argv) {
-  const char *out_prefix;
-
-  if (argc < 3) {
-    fprintf(stderr, "Usage: [-debug] waveflag out-prefix [in.png]...\n");
+  if (argc != 3) {
+    fprintf(stderr, "Usage: waveflag [-debug] in.png out.png\n");
     return 1;
   }
 
@@ -378,11 +371,7 @@ int main(int argc, char **argv) {
     argc--, argv++;
   }
 
-  out_prefix = argv[1];
-  argc--, argv++;
-
-  for (argc--, argv++; argc; argc--, argv++)
-    wave_flag(*argv, out_prefix);
+  wave_flag(argv[1], argv[2]);
 
   return 0;
 }
