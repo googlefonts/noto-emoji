@@ -22,6 +22,7 @@ LDFLAGS = `pkg-config --libs cairo`
 waveflag: waveflag.c
 	$(CC) $< -o $@ $(CFLAGS) $(LDFLAGS)
 
+LIMITED_FLAGS = CN DE ES FR GB IT JP KR RU US
 FLAGS = AD AE AF AG AI AL AM AO AR AS AT AU AW AX AZ \
 	BA BB BD BE BF BG BH BI BJ BM BN BO BR BS BT BW BY BZ \
 	CA CC CD CF CG CH CI CK CL CM CN CO CR CU CV CW CX CY CZ \
