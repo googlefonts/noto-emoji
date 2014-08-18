@@ -52,11 +52,11 @@ FLAGS = AD AE AF AG AI AL AM AO AR AS AT AU AW AX AZ \
 FLAGS_SRC_DIR = ../third_party/region-flags/png
 FLAGS_DIR = ./flags
 
-glyph_name = $(shell ./flag_glyph_name.py $(flag))
+FLAG_GLYPH_NAMES := $(shell ./flag_glyph_name.py $(FLAGS))
 
 WAVED_FLAGS := $(foreach flag,$(FLAGS),$(FLAGS_DIR)/$(flag).png)
-PNG128_FLAGS := $(foreach flag,$(FLAGS),$(addprefix ./png/128/emoji_$(glyph_name),.png))
-PNG64_FLAGS := $(foreach flag,$(FLAGS),$(addprefix ./png/64/emoji_,$(glyph_name).png))
+PNG128_FLAGS := $(foreach flag,$(FLAG_GLYPH_NAMES),$(addprefix ./png/128/emoji_$(flag),.png))
+PNG64_FLAGS := $(foreach flag,$(FLAG_GLYPH_NAMES),$(addprefix ./png/64/emoji_,$(flag).png))
 
 $(FLAGS_DIR)/%.png: $(FLAGS_SRC_DIR)/%.png ./waveflag
 	mkdir -p $(FLAGS_DIR)
@@ -64,7 +64,7 @@ $(FLAGS_DIR)/%.png: $(FLAGS_SRC_DIR)/%.png ./waveflag
 	optipng -quiet -o7 "$@"
 
 flag-symlinks: $(WAVED_FLAGS)
-	$(foreach flag,$(FLAGS),ln -fs ../../flags/$(flag).png ./png/128/emoji_$(glyph_name).png;)
+	for flag in $(FLAGS); do ln -fs ../../flags/$$flag.png ./png/128/emoji_`echo $$flag | ./flag_glyph_name.py`.png; done
 
 $(PNG64_FLAGS): $(PNG128_FLAGS)
 
