@@ -18,6 +18,12 @@ font: $(EMOJI).ttf
 
 CFLAGS = -std=c99 -Wall -Wextra `pkg-config --cflags --libs cairo`
 LDFLAGS = `pkg-config --libs cairo`
+PNGQUANTDIR := $(abspath `pwd`/../../third_party/pngquant)
+PNGQUANT := $(PNGQUANTDIR)/pngquant
+PNGQUANTFLAGS = --speed 1 --skip-if-larger --ext '.png' --force
+
+$(PNGQUANT):
+	cd $(PNGQUANTDIR) && make
 
 waveflag: waveflag.c
 	$(CC) $< -o $@ $(CFLAGS) $(LDFLAGS)
@@ -56,30 +62,23 @@ glyph_name = $(shell ./flag_glyph_name.py $(flag))
 
 WAVED_FLAGS := $(foreach flag,$(FLAGS),$(FLAGS_DIR)/$(flag).png)
 PNG128_FLAGS := $(foreach flag,$(FLAGS),$(addprefix ./png/128/emoji_$(glyph_name),.png))
-PNG64_FLAGS := $(foreach flag,$(FLAGS),$(addprefix ./png/64/emoji_,$(glyph_name).png))
 
-$(FLAGS_DIR)/%.png: $(FLAGS_SRC_DIR)/%.png ./waveflag
+$(FLAGS_DIR)/%.png: $(FLAGS_SRC_DIR)/%.png ./waveflag $(PNGQUANT)
 	mkdir -p $(FLAGS_DIR)
 	./waveflag "$<" "$@"
 	optipng -quiet -o7 "$@"
+	$(PNGQUANT) $(PNGQUANTFLAGS) "$@"
 
 flag-symlinks: $(WAVED_FLAGS)
 	$(foreach flag,$(FLAGS),ln -fs ../../flags/$(flag).png ./png/128/emoji_$(glyph_name).png;)
 
-$(PNG64_FLAGS): $(PNG128_FLAGS)
-
 $(PNG128_FLAGS): flag-symlinks
 
 EMOJI_PNG128 = ./png/128/emoji_u
-EMOJI_PNG64 = ./png/64/emoji_u
 
 EMOJI_BUILDER = ../third_party/color_emoji/emoji_builder.py
 ADD_GLYPHS = ../third_party/color_emoji/add_glyphs.py
 PUA_ADDER = ../nototools/map_pua_emoji.py
-
-$(EMOJI_PNG64)%.png: $(EMOJI_PNG128)%.png
-	convert -geometry 50% "$<" "$@"
-	optipng -quiet -o7 "$@"
 
 %.ttx: %.ttx.tmpl $(ADD_GLYPHS) $(UNI) flag-symlinks
 	python $(ADD_GLYPHS) "$<" "$@" "$(EMOJI_PNG128)"
@@ -88,16 +87,13 @@ $(EMOJI_PNG64)%.png: $(EMOJI_PNG128)%.png
 	@rm -f "$@"
 	ttx "$<"
 
-PNG64_IMAGES := $(patsubst $(EMOJI_PNG128)%,$(EMOJI_PNG64)%,$(wildcard $(EMOJI_PNG128)*.png)) $(PNG64_FLAGS)
-
-$(EMOJI).ttf: $(EMOJI).tmpl.ttf $(EMOJI_BUILDER) $(PUA_ADDER) $(PNG64_IMAGES) $(EMOJI_PNG128)*.png flag-symlinks
-	python $(EMOJI_BUILDER) -V $< "$@" $(EMOJI_PNG128) $(EMOJI_PNG64)
+$(EMOJI).ttf: $(EMOJI).tmpl.ttf $(EMOJI_BUILDER) $(PUA_ADDER) $(EMOJI_PNG128)*.png flag-symlinks
+	python $(EMOJI_BUILDER) -V $< "$@" $(EMOJI_PNG128)
 	python $(PUA_ADDER) "$@" "$@-with-pua"
 	mv "$@-with-pua" "$@"
 
 clean:
 	rm -f $(EMOJI).ttf $(EMOJI).tmpl.ttf $(EMOJI).tmpl.ttx
-	rm -f $(EMOJI_PNG64)*.png
 	rm -f waveflag
 	rm -rf $(FLAGS_DIR)
 	rm -f `find -type l -name "*.png"`
