@@ -40,7 +40,7 @@ body { font-family: sans-serif; font-size: 24px }
 <script type="text/javascript">
 function hexify(text) {
   var surr_offset = 0x10000 - (0xd800 << 10) - 0xdc00
-  var str = new String(text.trim())
+  var str = text.trim()
   var len = str.length
   var result = ""
   for (var i = 0; i < len; ++i) {
@@ -68,7 +68,7 @@ function showText(event) {
 function setup() {
   var t = document.getElementById('emoji')
   var tdlist = t.getElementsByTagName('span')
-  for (var i = 0, lim = tdlist.length; i < lim; ++i) {
+  for (var i = 0; i < tdlist.length; ++i) {
     var e = tdlist[i]
     e.onmouseover = showText
   }
