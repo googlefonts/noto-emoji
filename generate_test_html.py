@@ -80,12 +80,11 @@ function setup() {
 <p>Test for SVG glyphs in %(font)s.  It uses the proposed
 <a href="http://lists.w3.org/Archives/Public/public-svgopentype/2013Jul/0003.html">SVG-in-OpenType format</a>.
 View using Firefox&nbsp;26 and later.
-<div style="float:left; text-align:center; margin:0 10px">
+<div style="float:left; text-align:center; margin:0 10px; width:40%%">
 <div id='panel' style="margin-left:auto; margin-right:auto">%(glyph)s</div>
 <div id='paneltitle' style="margin-left:auto; margin-right:auto">%(glyph_hex)s</div>
 </div>
 <div id='emoji'><p>"""
-
 
   body_tail = r"""</div>
 </body>
@@ -137,15 +136,18 @@ View using Firefox&nbsp;26 and later.
     print 'Wrote ' + html_name
 
 
-def do_generate_fonts(template_file, font_basename, pairs, reuse=False, verbosity=1):
+def do_generate_fonts(template_file, font_basename, pairs, reuse=0, verbosity=1):
   out_woff = font_basename + '.woff'
-  if reuse and os.path.isfile(out_woff) and os.access(out_woff, os.R_OK):
+  if reuse > 1 and os.path.isfile(out_woff) and os.access(out_woff, os.R_OK):
     if verbosity:
       print 'Reusing ' + out_woff
     return
 
   out_ttx = font_basename + '.ttx'
-  add_svg_glyphs.add_image_glyphs(template_file, out_ttx, pairs, verbosity=verbosity)
+  if reuse == 0:
+    add_svg_glyphs.add_image_glyphs(template_file, out_ttx, pairs, verbosity=verbosity)
+  elif verbosity:
+    print 'Reusing ' + out_ttx
 
   quiet=verbosity < 2
   font = ttx.TTFont(flavor='woff', quiet=quiet)
@@ -173,7 +175,10 @@ def main(argv):
                       'defaults to the template base name')
   parser.add_argument('-g', '--glyph', help='set the initial glyph text (html encoded string), '
                       'defaults to first glyph')
-  parser.add_argument('-r', '--reuse_font', help='use existing woff font', action='store_true')
+  parser.add_argument('-rt', '--reuse_ttx_font', dest='reuse_font', help='use existing ttx font',
+                      default=0, const=1, action='store_const')
+  parser.add_argument('-r', '--reuse_font', dest='reuse_font', help='use existing woff font',
+                      const=2, action='store_const')
   parser.add_argument('-q', '--quiet', dest='v', help='quiet operation', default=1,
                       action='store_const', const=0)
   parser.add_argument('-v', '--verbose', dest='v', help='verbose operation',

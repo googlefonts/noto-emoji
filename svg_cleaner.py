@@ -117,8 +117,9 @@ class SvgCleaner(object):
     def _clean_elem(self, node):
       nattrs = {}
       for k, v in node.attrs.items():
-        if node.name == 'svg' and k in ['x', 'y', 'id', 'version', 'viewBox',
-                                        'enable-background', 'xml:space']:
+        if node.name == 'svg' and k in [
+            'x', 'y', 'id', 'version', 'viewBox', 'width', 'height',
+            'enable-background', 'xml:space']:
           continue
         v = re.sub('\s+', ' ', v)
         nattrs[k] = v
