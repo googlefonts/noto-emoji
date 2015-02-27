@@ -114,37 +114,50 @@ class SvgBuilder(object):
 
     # We're going to assume default values for preserveAspectRatio for now,
     # this preserves aspect ratio and centers in the viewport.
-    # First scale to the viewport, which is 1000x1000. compute the scaled
-    # extent and translations that center it in the viewport. We won't try
-    # to optimize this, it's clearer what we're doing this way.
-    if w > h:
-        s2vp = 1000.0/w
-        sh = s2vp * h
-        sty = (1000 - sh) / 2
-        sw = 1000.0
-        stx = 0.0
-    else:
-        s2vp = 1000.0/h
-        sh = 1000.0
-        sty = 0.0
-        sw = s2vp * w
-        stx = (1000 - sw) / 2
+    #
+    # The viewport is 0,0 1000x1000. First compute the scaled extent and
+    # translations that center the image rect in the viewport, then scale and
+    # translate the result to fit our true 'viewport', which has an origin at
+    # 0,-ascent and an extent of advance (if defined) x font_height.  We won't
+    # try to optimize this, it's clearer what we're doing this way.
 
-    # now, compute the scale. we scale to the height, unless we have
-    # to fit an advance, in which case we scale to the width
-    scale = self.font_height / sh
+    # Since the viewport is square, we can just compare w and h to determine
+    # which to fit to the viewport extent.  Get our position and extent in
+    # the viewport.
+    if w > h:
+        scale_to_viewport = 1000.0 / w
+        h_in_viewport = scale_to_viewport * h
+        y_in_viewport = (1000 - h_in_viewport) / 2
+        w_in_viewport = 1000.0
+        x_in_viewport = 0.0
+    else:
+        scale_to_viewport = 1000.0 / h
+        h_in_viewport = 1000.0
+        y_in_viewport = 0.0
+        w_in_viewport = scale_to_viewport * w
+        x_in_viewport = (1000 - w_in_viewport) / 2
+
+    # Now, compute the scale and translations that fit this rectangle to our
+    # true 'viewport'.  The true viewport is not square so we need to choose the
+    # smaller of the scales that fit its height or width.  We start with height,
+    # if there's no advance then we're done, otherwise we might have to fit the
+    # advance.
+    scale = self.font_height / h_in_viewport
     fit_height = True
-    if advance and scale * sw > advance:
-      scale = advance / sw
+    if advance and scale * w_in_viewport > advance:
+      scale = advance / w_in_viewport
       fit_height = False
 
-    ty = -self.font_ascent - scale * sty
-    tx = scale * stx
+    # Compute transforms that put the top left of the image where we want it.
+    ty = -self.font_ascent - scale * y_in_viewport
+    tx = -scale * x_in_viewport
 
+    # Adjust them to center the image horizontally if we fit the full height,
+    # vertically otherwise.
     if fit_height and advance:
-      tx += (advance - scale * sw) / 2
+      tx += (advance - scale * w_in_viewport) / 2
     else:
-      ty += (self.font_height - scale * sh) / 2
+      ty += (self.font_height - scale * h_in_viewport) / 2
 
     cleaner.clean_tree(tree)
 
@@ -159,7 +172,7 @@ class SvgBuilder(object):
     # establishing a rectangular clip would be simpler...  Aaaaand... as it
     # turns out, in FF the clip on the outer svg element is only relative to the
     # initial viewport, and is not affected by the viewBox or transform on the
-    # svg element.  Unlike chrome. So either we apply an inverse transform, or
+    # svg element.  Unlike chrome.  So either we apply an inverse transform, or
     # insert a group with the clip between the svg and its children.  The latter
     # seems cleaner, ultimately.
     clip_id = 'clip_' + ''.join(random.choice(string.ascii_lowercase) for i in range(8))
@@ -167,14 +180,16 @@ class SvgBuilder(object):
       <path d="M%g %gh%gv%gh%gz"/></clipPath></g>""" % (clip_id, clip_id, x, y, w, h, -w)
     clip_tree = cleaner.tree_from_text(clip_text)
     clip_tree.contents.extend(tree.contents)
-    tree.contents = [clip_tree];
+    tree.contents = [clip_tree]
 
     svgdoc = cleaner.tree_to_text(tree)
 
     hmetrics = None
     if not exists:
-      # horiz advance and lsb
-      advance = scale * sw
+      # There was no advance to fit, so no horizontal centering. The image advance is
+      # all there is.
+      # hmetrics is horiz advance and lsb
+      advance = scale * w_in_viewport
       hmetrics = [int(round(advance)), 0]
 
     fbuilder.add_svg(svgdoc, hmetrics, name, index)
