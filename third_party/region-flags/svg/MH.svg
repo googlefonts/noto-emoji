@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="570" height="300">
+<title>Flag of the Marshall Islands</title>
+
+<rect height="300" width="570" fill="#003893"/>
+
+<path d="M0,295.2V288L570,35V122.4z" fill="#fff"/>
+<path d="M0,290.4V285.6L570,4.8V63.6z" fill="#dd7500"/>
+<g fill="#fff" transform="translate(109.536,109.536)">
+<g id="r6">
+<path d="M0,-93 5.59,0H-5.59z"/>
+<path id="r1" d="M0,-66.588 6.824,0H-6.824z" transform="rotate(15)"/>
+<use xlink:href="#r1" transform="rotate(15)"/>
+<use xlink:href="#r1" transform="rotate(30)"/>
+<use xlink:href="#r1" transform="rotate(45)"/>
+<use xlink:href="#r1" transform="rotate(60)"/>
+</g>
+<use xlink:href="#r6" transform="rotate(90)"/>
+<use xlink:href="#r6" transform="rotate(180)"/>
+<use xlink:href="#r6" transform="rotate(270)"/>
+</g>
+</svg>

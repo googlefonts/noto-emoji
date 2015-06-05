@@ -1,0 +1,13 @@
+This project consists of the following bits and pieces:
+
+  * A proposed specification to add support for embedded color image
+    glyphs in OpenType fonts,
+
+  * A tool called emoji_builder.py, to embed a set of PNG images into
+    an existing font,
+
+  * Two sets of sample PNG images for ASCII characters and sample
+    scripts to build them into test fonts: FruityGirl and Funkster.
+
+  * Scripts to build a real color emoji font out of the Open Source
+    PhantomOpenEmoji images.

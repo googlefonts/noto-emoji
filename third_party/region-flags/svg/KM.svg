@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg version="1.0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="500" height="300">
+	<rect width="500" height="300" fill="#ffc61e"/>
+	<rect y="75" width="500" height="225" fill="#fff"/>
+	<rect y="150" width="500" height="150" fill="#ce1126"/>
+	<rect y="225" width="500" height="75" fill="#3a75c4"/>
+	<path d="M 0,300 L 250,150 L 0,0 V 300 z" fill="#3d8e33"/>
+	<circle cx="85" cy="150" r="67.5" fill="#fff"/>
+	<circle cx="115" cy="150" r="67.5" fill="#3d8e33"/>
+	<path id="star" d="M 88.11244,97.825 L 97.19453,97.825 L 100,89.1875 L 102.80545,97.825 L 111.88755,97.825 L 104.54104,103.1625 L 107.34651,111.8 L 100,106.46249 L 92.65349,111.8 L 95.45895,103.1625 L 88.11244,97.825 z" fill="#fff"/>
+	<use xlink:href="#star" y="32.2083"/>
+	<use xlink:href="#star" y="64.4166"/>
+	<use xlink:href="#star" y="96.625"/>
+</svg>

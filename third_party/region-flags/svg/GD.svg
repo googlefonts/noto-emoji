@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg version="1.0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="600" height="360" viewBox="0 0 500 300">
+	<defs>
+		<g id="s">
+			<g id="c">
+				<path id="t" d="M 0,-1 v 1 h .5" transform="rotate(18 0,-1)" fill="#fcd116"/>
+				<use xlink:href="#t" transform="scale(-1,1)"/>
+			</g>
+			<use xlink:href="#c" transform="rotate(72)"/>
+			<use xlink:href="#c" transform="rotate(144)"/>
+			<use xlink:href="#c" transform="rotate(216)"/>
+			<use xlink:href="#c" transform="rotate(288)"/>
+		</g>
+	</defs>
+	<rect width="500" height="300" fill="#ce1126"/>
+	<rect x="42" y="42" width="416" height="216" fill="#007a5e"/>
+	<path d="M 42,42 h 416 l -416,216 h 416 z" fill="#fcd116"/>
+	<circle cx="250" cy="150" r="36" fill="#ce1126"/>
+	<use xlink:href="#s" transform="translate(250,150) scale(33)"/>
+	<use xlink:href="#s2" x="-100"/>
+	<use id="s2" xlink:href="#s" transform="translate(250,21) scale(19.5)"/>
+	<use xlink:href="#s2" x="100"/>
+	<use xlink:href="#s2" x="-100" y="258"/>
+	<use xlink:href="#s2" y="258"/>
+	<use xlink:href="#s2" x="100" y="258"/>
+	<path d="M 67.749,150.41 c 4.504,8.39 13.265,17.52 20.916,20.73 c .123,-8.52 -2.9,-19.44 -7.034,-28.14 l -13.882,7.41 z" fill="#ce1126"/>
+	<path d="M 60.112,121.63 c 6.529,13.61 -16.933,46.08 22.156,53.69 c -4.822,-6.58 -7.931,-17.44 -6.755,-26.16 c 8.201,3.12 16.83,12.25 20.317,19.23 c 10.23,-37.15 -26.24,-34.89 -35.718,-46.76 z" fill="#fcd116"/>
+</svg>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="900" height="600" viewBox="0 0 300 200">
+<defs>
+<g id="smallcross">
+<path id="varm" d="M-6.80951,-19.4174A104,104 0 0,1 -6.80951,19.4174A55,55 0 0,1 6.80951,19.4174A104,104 0 0,1 6.80951,-19.4174A55,55 0 0,1 -6.80951,-19.4174Z"/>
+<use xlink:href="#varm" transform="rotate(90)"/>
+</g>
+</defs>
+<rect width="300" height="200" fill="#fff"/>
+<g fill="#e8112d">
+<path d="M130,0V80H0V120H130V200H170V120H300V80H170V0Z"/>
+
+<use xlink:href="#smallcross" x="64.45" y="39.45"/>
+<use xlink:href="#smallcross" x="235.55" y="160.55"/>
+<use xlink:href="#smallcross" x="235.55" y="39.45"/>
+<use xlink:href="#smallcross" x="64.45" y="160.55"/>
+</g>
+</svg>

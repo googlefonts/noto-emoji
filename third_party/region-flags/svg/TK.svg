@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   version="1.1"
+   width="1800"
+   height="900"
+   id="svg2">
+  <metadata
+     id="metadata25">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs4">
+    <clipPath
+       id="Canton">
+      <path
+         d="m 0,0 600,0 0,300 -600,0 z"
+         id="path7" />
+    </clipPath>
+    <clipPath
+       id="Diagonals">
+      <path
+         d="M 0,0 300,150 0,150 z M 300,0 600,0 300,150 z m 0,150 300,0 0,150 z m 0,0 0,150 -300,0 z"
+         id="path10" />
+    </clipPath>
+    <g
+       id="Pentagram">
+      <g
+         transform="translate(0,-0.324925)"
+         id="Arm">
+        <path
+           d="M 0,0 0,0.5 1,0 z"
+           id="path14" />
+        <path
+           d="M 0,0 0,-0.5 1,0 z"
+           transform="matrix(0.80901699,-0.58778525,0.58778525,0.80901699,0.19098301,0.58778525)"
+           id="path16" />
+      </g>
+      <use
+         transform="scale(-1,1)"
+         id="use18"
+         x="0"
+         y="0"
+         width="1200"
+         height="600"
+         xlink:href="#Arm" />
+      <use
+         transform="matrix(0.30901699,0.95105652,-0.95105652,0.30901699,0,0)"
+         id="use20"
+         x="0"
+         y="0"
+         width="1200"
+         height="600"
+         xlink:href="#Arm" />
+      <use
+         transform="matrix(0.30901699,-0.95105652,0.95105652,0.30901699,0,0)"
+         id="use22"
+         x="0"
+         y="0"
+         width="1200"
+         height="600"
+         xlink:href="#Arm" />
+      <use
+         transform="matrix(-0.30901699,0.95105652,0.95105652,0.30901699,0,0)"
+         id="use24"
+         x="0"
+         y="0"
+         width="1200"
+         height="600"
+         xlink:href="#Arm" />
+    </g>
+  </defs>
+  <rect
+     width="1800"
+     height="900"
+     x="0"
+     y="0"
+     id="rect26"
+     style="fill:#00247d" />
+  <path
+     d="M 329.37609,777.2654 C 311.44173,777.11556 497.99952,677.83404 654.14523,550.66563 858.78891,383.99945 1299.541,117.15633 1429.1161,73.7954 c 13.5433,-4.53215 -27.7761,23.07308 -33.14,32.01541 -138.3415,163.74043 -27.925,472.72379 144.9726,628.04829 51.99,39.7632 49.3274,41.85082 145.7074,45.7463 0,0 0,9 0,9 l -1357.28001,-11.34 z"
+     id="path3067"
+     style="fill:#fed100;fill-opacity:1;stroke:none" />
+  <path
+     d="m 318.12503,795.3246 c 0,0 -13.16343,9.4029 -13.12495,16.4061 0.043,7.7725 14.76557,18.0468 14.76557,18.0468 l 1338.74505,14.7656 24.6093,-16.4062 -34.453,-21.328 -1330.54197,-11.4843 z"
+     id="path4108"
+     style="fill:#fed100;fill-opacity:1;stroke:none" />
+  <use
+     transform="matrix(45,0,0,45,342.9565,112.5812)"
+     id="use4022"
+     style="fill:#ffffff"
+     x="0"
+     y="0"
+     width="1200"
+     height="600"
+     xlink:href="#Pentagram" />
+  <use
+     transform="matrix(37.5,1.1682486e-6,-1.1682486e-6,37.5,521.20459,267.53)"
+     id="use4029"
+     style="fill:#ffffff"
+     x="0"
+     y="0"
+     width="1200"
+     height="600"
+     xlink:href="#Pentagram" />
+  <use
+     transform="matrix(45,1.4854021e-6,-1.4854021e-6,45,135.00004,321.8075)"
+     id="use4034"
+     style="fill:#ffffff"
+     x="0"
+     y="0"
+     width="1200"
+     height="600"
+     xlink:href="#Pentagram" />
+  <use
+     transform="matrix(52.5,0,0,52.5,342.9565,652.5812)"
+     id="use4039"
+     style="fill:#ffffff"
+     x="0"
+     y="0"
+     width="1200"
+     height="600"
+     xlink:href="#Pentagram" />
+</svg>

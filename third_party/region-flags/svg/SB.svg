@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="600" viewBox="-35 -30 200 100" xmlns:xlink="http://www.w3.org/1999/xlink">
+<clipPath id="rect">
+ <rect x="-35" y="-30" width="200" height="100"/>
+</clipPath>
+<rect x="-35" y="-30" width="200" height="100" fill="#215b33"/>
+<path d="M-35,70 v-100 h200" fill="#0051ba"/>
+<path d="M165,-30 -35,70" stroke-width="9" stroke="#fcd116" clip-path="url(#rect)"/>
+<g id="star" fill="white" transform="scale(10)">
+ <g id="cone">
+  <polygon id="triangle" points="0,0 0,1 .5,1" transform="translate(0,-1) rotate(18)"/>
+  <use xlink:href="#triangle" transform="scale(-1,1)"/>
+ </g>
+  <use xlink:href="#cone" transform="rotate(72)"/>
+  <use xlink:href="#cone" transform="rotate(-72)"/>
+  <use xlink:href="#cone" transform="rotate(144)"/>
+  <use xlink:href="#cone" transform="rotate(-144)"/>
+</g>
+<use xlink:href="#star" transform="rotate(-40.6) translate(26,0) rotate(40.6)"/>
+<use xlink:href="#star" transform="rotate(40.6) translate(26,0) rotate(-40.6)"/>
+<use xlink:href="#star" transform="rotate(-40.6) translate(-26,0) rotate(40.6)"/>
+<use xlink:href="#star" transform="rotate(40.6) translate(-26,0) rotate(-40.6)"/>
+</svg>

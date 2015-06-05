@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="690" height="460" viewBox="0 0 138 92">
+<rect width="138" height="92" fill="#fff"/>
+<rect width="138" height="36" fill="#000"/>
+<g transform="translate(69,36)">
+<g id="c3">
+<!-- y3 = -y2 = 30*sin(11.25deg)/sqrt(5-4*cos(11.25deg)-sin^2(11.25deg)) -->
+<path id="c" d="M-30,0 0,-5.7423716V5.7423716z" fill="#fcd116"/>
+<use xlink:href="#c" transform="rotate(22.5)"/>
+<use xlink:href="#c" transform="rotate(45)"/>
+</g>
+<use xlink:href="#c3" transform="rotate(67.5)"/>
+<use xlink:href="#c3" transform="rotate(135)"/>
+</g>
+<rect y="36" width="138" height="20" fill="#0072c6"/>
+<path d="M0,0V92H138V0L69,92z" fill="#ce1126"/>
+</svg>

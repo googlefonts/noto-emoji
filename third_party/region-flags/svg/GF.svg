@@ -1,0 +1,22 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+
+<svg
+	width="900"
+	height="600"
+	xmlns="http://www.w3.org/2000/svg"
+	id="Flag of French Guiana">
+	
+<!--
+	This file is in the public domain
+-->
+
+	<polygon fill="#078930" points="0,0 900,0 900,600" />
+	<polygon fill="#FCDD09" points="0,0  900,600  0,600" />
+	<polygon fill="#DA121A" id="pentagram" transform="translate(450,300) scale(100) rotate(0)" points="0,-1
+       0.587785252292473129168705954639072768597652,0.809016994374947424102293417182819058860155
+       -0.951056516295153572116439333379382143405699,-0.309016994374947424102293417182819058860155
+       0.951056516295153572116439333379382143405699,-0.309016994374947424102293417182819058860155
+       -0.587785252292473129168705954639072768597652,0.809016994374947424102293417182819058860155" />
+
+</svg>
