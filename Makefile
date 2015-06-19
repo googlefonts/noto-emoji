@@ -60,8 +60,9 @@ FLAGS_DIR = ./flags
 
 glyph_name = $(shell ./flag_glyph_name.py $(flag))
 
+GLYPH_NAMES := $(shell ./flag_glyph_name.py $(FLAGS))
 WAVED_FLAGS := $(foreach flag,$(FLAGS),$(FLAGS_DIR)/$(flag).png)
-PNG128_FLAGS := $(foreach flag,$(FLAGS),$(addprefix ./png/128/emoji_$(glyph_name),.png))
+PNG128_FLAGS := $(foreach glyph_name,$(GLYPH_NAMES),$(addprefix ./png/128/emoji_$(glyph_name),.png))
 
 $(FLAGS_DIR)/%.png: $(FLAGS_SRC_DIR)/%.png ./waveflag $(PNGQUANT)
 	mkdir -p $(FLAGS_DIR)
