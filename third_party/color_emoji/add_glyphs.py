@@ -5,8 +5,8 @@ from fontTools import ttx
 from fontTools.ttLib.tables import otTables
 from png import PNG
 
-sys.path.append('../../nototools')
-from nototools import add_emoji_gsub
+sys.path.append('../../')
+import add_emoji_gsub
 
 
 def glyph_name(string):

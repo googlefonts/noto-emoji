@@ -22,8 +22,9 @@ import sys
 
 from fontTools import ttLib
 
-from nototools import add_emoji_gsub
 from nototools import font_data
+
+import add_emoji_gsub
 
 
 def get_glyph_name_from_gsub(char_seq, font):

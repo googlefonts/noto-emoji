@@ -33,8 +33,8 @@ from fontTools.ttLib.tables import otTables
 from fontTools.ttLib.tables import _g_l_y_f
 from fontTools.ttLib.tables import S_V_G_ as SVG
 from fontTools import ttx
-from nototools import add_emoji_gsub
 
+import add_emoji_gsub
 import svg_builder
 import svg_cleaner
 
