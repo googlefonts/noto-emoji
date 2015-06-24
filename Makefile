@@ -22,8 +22,8 @@ PNGQUANTDIR := $(abspath `pwd`/../third_party/pngquant)
 PNGQUANT := $(PNGQUANTDIR)/pngquant
 PNGQUANTFLAGS = --speed 1 --skip-if-larger --ext '.png' --force
 
-$(PNGQUANT):
-	cd $(PNGQUANTDIR) && make
+"$(PNGQUANT)":
+	cd "$(PNGQUANTDIR)" && make
 
 waveflag: waveflag.c
 	$(CC) $< -o $@ $(CFLAGS) $(LDFLAGS)
@@ -64,11 +64,11 @@ GLYPH_NAMES := $(shell ./flag_glyph_name.py $(FLAGS))
 WAVED_FLAGS := $(foreach flag,$(FLAGS),$(FLAGS_DIR)/$(flag).png)
 PNG128_FLAGS := $(foreach glyph_name,$(GLYPH_NAMES),$(addprefix ./png/128/emoji_$(glyph_name),.png))
 
-$(FLAGS_DIR)/%.png: $(FLAGS_SRC_DIR)/%.png ./waveflag $(PNGQUANT)
+$(FLAGS_DIR)/%.png: $(FLAGS_SRC_DIR)/%.png ./waveflag "$(PNGQUANT)"
 	mkdir -p $(FLAGS_DIR)
 	./waveflag "$<" "$@"
 	optipng -quiet -o7 "$@"
-	$(PNGQUANT) $(PNGQUANTFLAGS) "$@"
+	"$(PNGQUANT)" $(PNGQUANTFLAGS) "$@"
 
 flag-symlinks: $(WAVED_FLAGS)
 	$(foreach flag,$(FLAGS),ln -fs ../../flags/$(flag).png ./png/128/emoji_$(glyph_name).png;)
