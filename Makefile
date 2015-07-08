@@ -58,8 +58,6 @@ FLAGS = AD AE AF AG AI AL AM AO AR AS AT AU AW AX AZ \
 FLAGS_SRC_DIR = third_party/region-flags/png
 FLAGS_DIR = ./flags
 
-glyph_name = $(shell ./flag_glyph_name.py $(flag))
-
 GLYPH_NAMES := $(shell ./flag_glyph_name.py $(FLAGS))
 WAVED_FLAGS := $(foreach flag,$(FLAGS),$(FLAGS_DIR)/$(flag).png)
 PNG128_FLAGS := $(foreach glyph_name,$(GLYPH_NAMES),$(addprefix ./png/128/emoji_$(glyph_name),.png))
@@ -71,7 +69,12 @@ $(FLAGS_DIR)/%.png: $(FLAGS_SRC_DIR)/%.png ./waveflag "$(PNGQUANT)"
 	"$(PNGQUANT)" $(PNGQUANTFLAGS) "$@"
 
 flag-symlinks: $(WAVED_FLAGS)
-	$(foreach flag,$(FLAGS),ln -fs ../../flags/$(flag).png ./png/128/emoji_$(glyph_name).png;)
+	$(subst ^, ,                                \
+	  $(join                                    \
+	    $(FLAGS:%=ln^-fs^../../flags/%.png^),   \
+	    $(GLYPH_NAMES:%=./png/128/emoji_%.png;) \
+	   )                                        \
+	 )
 
 $(PNG128_FLAGS): flag-symlinks
 
