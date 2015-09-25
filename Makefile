@@ -18,12 +18,12 @@ font: $(EMOJI).ttf
 
 CFLAGS = -std=c99 -Wall -Wextra `pkg-config --cflags --libs cairo`
 LDFLAGS = `pkg-config --libs cairo`
-PNGQUANTDIR := $(abspath `pwd`/../../third_party/pngquant)
+PNGQUANTDIR := $(abspath `pwd`/../third_party/pngquant)
 PNGQUANT := $(PNGQUANTDIR)/pngquant
 PNGQUANTFLAGS = --speed 1 --skip-if-larger --ext '.png' --force
 
-$(PNGQUANT):
-	cd $(PNGQUANTDIR) && make
+"$(PNGQUANT)":
+	cd "$(PNGQUANTDIR)" && make
 
 waveflag: waveflag.c
 	$(CC) $< -o $@ $(CFLAGS) $(LDFLAGS)
@@ -55,30 +55,34 @@ FLAGS = AD AE AF AG AI AL AM AO AR AS AT AU AW AX AZ \
 	YE \
 	ZA ZM ZW
 
-FLAGS_SRC_DIR = ../third_party/region-flags/png
+FLAGS_SRC_DIR = third_party/region-flags/png
 FLAGS_DIR = ./flags
 
-glyph_name = $(shell ./flag_glyph_name.py $(flag))
-
+GLYPH_NAMES := $(shell ./flag_glyph_name.py $(FLAGS))
 WAVED_FLAGS := $(foreach flag,$(FLAGS),$(FLAGS_DIR)/$(flag).png)
-PNG128_FLAGS := $(foreach flag,$(FLAGS),$(addprefix ./png/128/emoji_$(glyph_name),.png))
+PNG128_FLAGS := $(foreach glyph_name,$(GLYPH_NAMES),$(addprefix ./png/128/emoji_$(glyph_name),.png))
 
-$(FLAGS_DIR)/%.png: $(FLAGS_SRC_DIR)/%.png ./waveflag $(PNGQUANT)
+$(FLAGS_DIR)/%.png: $(FLAGS_SRC_DIR)/%.png ./waveflag "$(PNGQUANT)"
 	mkdir -p $(FLAGS_DIR)
 	./waveflag "$<" "$@"
 	optipng -quiet -o7 "$@"
-	$(PNGQUANT) $(PNGQUANTFLAGS) "$@"
+	"$(PNGQUANT)" $(PNGQUANTFLAGS) "$@"
 
 flag-symlinks: $(WAVED_FLAGS)
-	$(foreach flag,$(FLAGS),ln -fs ../../flags/$(flag).png ./png/128/emoji_$(glyph_name).png;)
+	$(subst ^, ,                                \
+	  $(join                                    \
+	    $(FLAGS:%=ln^-fs^../../flags/%.png^),   \
+	    $(GLYPH_NAMES:%=./png/128/emoji_%.png;) \
+	   )                                        \
+	 )
 
 $(PNG128_FLAGS): flag-symlinks
 
 EMOJI_PNG128 = ./png/128/emoji_u
 
-EMOJI_BUILDER = ../third_party/color_emoji/emoji_builder.py
-ADD_GLYPHS = ../third_party/color_emoji/add_glyphs.py
-PUA_ADDER = ../nototools/map_pua_emoji.py
+EMOJI_BUILDER = third_party/color_emoji/emoji_builder.py
+ADD_GLYPHS = third_party/color_emoji/add_glyphs.py
+PUA_ADDER = map_pua_emoji.py
 
 %.ttx: %.ttx.tmpl $(ADD_GLYPHS) $(UNI) flag-symlinks
 	python $(ADD_GLYPHS) "$<" "$@" "$(EMOJI_PNG128)"

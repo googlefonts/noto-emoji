@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 #
 # Copyright 2014 Google Inc. All rights reserved.
 #
@@ -20,7 +20,7 @@ __author__ = 'roozbeh@google.com (Roozbeh Pournader)'
 
 import sys
 
-from nototools import add_emoji_gsub
+import add_emoji_gsub
 
 def two_letter_code_to_glyph_name(iso_code):
     return 'u%04x_%04x' % (
