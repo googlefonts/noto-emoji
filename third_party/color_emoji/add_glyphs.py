@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 
-import glob, sys
+import glob, os, sys
 from fontTools import ttx
 from fontTools.ttLib.tables import otTables
 from png import PNG
 
-sys.path.append('../../')
+sys.path.append(
+    os.path.join(os.path.dirname(__file__), os.pardir, os.pardir))
 import add_emoji_gsub
 
 
