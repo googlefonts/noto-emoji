@@ -83,6 +83,7 @@ EMOJI_PNG128 = ./png/128/emoji_u
 EMOJI_BUILDER = third_party/color_emoji/emoji_builder.py
 ADD_GLYPHS = third_party/color_emoji/add_glyphs.py
 PUA_ADDER = map_pua_emoji.py
+VS_ADDER = add_vs_cmap.py
 
 %.ttx: %.ttx.tmpl $(ADD_GLYPHS) $(UNI) flag-symlinks
 	python $(ADD_GLYPHS) "$<" "$@" "$(EMOJI_PNG128)"
@@ -91,10 +92,13 @@ PUA_ADDER = map_pua_emoji.py
 	@rm -f "$@"
 	ttx "$<"
 
-$(EMOJI).ttf: $(EMOJI).tmpl.ttf $(EMOJI_BUILDER) $(PUA_ADDER) $(EMOJI_PNG128)*.png flag-symlinks
+$(EMOJI).ttf: $(EMOJI).tmpl.ttf $(EMOJI_BUILDER) $(PUA_ADDER) $(VS_ADDER) \
+  $(EMOJI_PNG128)*.png flag-symlinks
 	python $(EMOJI_BUILDER) -V $< "$@" $(EMOJI_PNG128)
 	python $(PUA_ADDER) "$@" "$@-with-pua"
-	mv "$@-with-pua" "$@"
+	$(VS_ADDER) --dstdir '.' -o "$@-with-pua-varsel" "$@-with-pua"
+	mv "$@-with-pua-varsel" "$@"
+	rm "$@-with-pua"
 
 clean:
 	rm -f $(EMOJI).ttf $(EMOJI).tmpl.ttf $(EMOJI).tmpl.ttx
