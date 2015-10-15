@@ -84,6 +84,9 @@ EMOJI_BUILDER = third_party/color_emoji/emoji_builder.py
 ADD_GLYPHS = third_party/color_emoji/add_glyphs.py
 PUA_ADDER = map_pua_emoji.py
 VS_ADDER = add_vs_cmap.py
+ifeq (, $(shell which $(VS_ADDER)))
+  $(error "$(VS_ADDER) not in path, run setup.py in nototools")
+endif
 
 %.ttx: %.ttx.tmpl $(ADD_GLYPHS) $(UNI) $(PNG128_FLAGS)
 	python $(ADD_GLYPHS) "$<" "$@" "$(EMOJI_PNG128)"
