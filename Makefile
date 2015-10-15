@@ -92,7 +92,7 @@ VS_ADDER = add_vs_cmap.py
 	@rm -f "$@"
 	ttx "$<"
 
-$(EMOJI).ttf: $(EMOJI).tmpl.ttf $(EMOJI_BUILDER) $(PUA_ADDER) $(VS_ADDER) \
+$(EMOJI).ttf: $(EMOJI).tmpl.ttf $(EMOJI_BUILDER) $(PUA_ADDER) \
   $(EMOJI_PNG128)*.png $(PNG128_FLAGS)
 	python $(EMOJI_BUILDER) -V $< "$@" $(EMOJI_PNG128)
 	python $(PUA_ADDER) "$@" "$@-with-pua"
