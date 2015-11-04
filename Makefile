@@ -78,7 +78,8 @@ flag-symlinks: $(WAVED_FLAGS)
 
 $(PNG128_FLAGS): flag-symlinks
 
-EMOJI_PNG128 = ./png/128/emoji_u
+#EMOJI_PNG128 = ./png/128/emoji_u
+EMOJI_PNG128 = /tmp/placeholder_emoji_plus/emoji_u
 
 EMOJI_BUILDER = third_party/color_emoji/emoji_builder.py
 ADD_GLYPHS = third_party/color_emoji/add_glyphs.py

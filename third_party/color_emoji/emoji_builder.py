@@ -20,7 +20,8 @@
 
 import sys, struct, StringIO
 from png import PNG
-
+import os
+from os import path
 
 def get_glyph_name_from_gsub (string, font, cmap_dict):
 	ligatures = font['GSUB'].table.LookupList.Lookup[0].SubTable[0].ligatures
@@ -83,6 +84,7 @@ class CBDT:
 		write_func = self.image_write_func (image_format)
 		for glyph in glyphs:
 			img_file = glyph_filenames[glyph]
+                        print 'writing data for glyph %s' % path.basename(img_file)
 			offset = self.tell ()
 			write_func (PNG (img_file))
 			self.glyph_maps.append (GlyphMap (glyph, offset, image_format))
@@ -108,6 +110,7 @@ class CBDT:
 		line_ascent = ascent * y_ppem / float (upem)
 		y_bearing = int (round (line_ascent - .5 * (line_height - height)))
 		advance = width
+                print "small glyph metrics h: %d w: %d a: %d" % (height, width, advance)
 		# smallGlyphMetrics
 		# Type	Name
 		# BYTE	height
@@ -115,10 +118,14 @@ class CBDT:
 		# CHAR	BearingX
 		# CHAR	BearingY
 		# BYTE	Advance
-		self.write (struct.pack ("BBbbB",
+                try:
+                        self.write (struct.pack ("BBbbB",
 					 height, width,
 					 x_bearing, y_bearing,
 					 advance))
+                except:
+                  raise ValueError("h: %d w: %d a: %d x: %d y: 5d" % (
+                      height, width, advance, x_braring, y_bearing))
 
 	def write_format1 (self, png):
 
@@ -437,8 +444,10 @@ By default they are dropped.
 	eblc.write_header ()
 	eblc.start_strikes (len (img_prefixes))
 
-	for img_prefix in img_prefixes:
+        def is_vs(cp):
+                return cp >= 0xfe00 and cp <= 0xfe0f
 
+	for img_prefix in img_prefixes:
 		print
 
 		img_files = {}
@@ -448,9 +457,14 @@ By default they are dropped.
 			codes = img_file[len (img_prefix):-4]
 			if "_" in codes:
 				pieces = codes.split ("_")
-				uchars = "".join ([unichr (int (code, 16)) for code in pieces])
+                                cps = [int(code, 16) for code in pieces]
+				uchars = "".join ([unichr(cp) for cp in cps if not is_vs(cp)])
 			else:
-				uchars = unichr (int (codes, 16))
+                                cp = int(codes, 16)
+                                if is_vs(cp):
+                                        print "ignoring unexpected vs input %04x" % cp
+                                        continue
+				uchars = unichr(cp)
 			img_files[uchars] = img_file
 		if not img_files:
 			raise Exception ("No image files found in '%s'." % glb)
@@ -460,7 +474,11 @@ By default they are dropped.
 		advance = width = height = 0
 		for uchars, img_file in img_files.items ():
 			if len (uchars) == 1:
-				glyph_name = unicode_cmap.cmap[ord (uchars)]
+                                try:
+                                        glyph_name = unicode_cmap.cmap[ord (uchars)]
+                                except:
+                                        print "no cmap entry for %x" % ord(uchars)
+                                        raise ValueError("%x" % ord(uchars))
 			else:
 				glyph_name = get_glyph_name_from_gsub (uchars, font, unicode_cmap.cmap)
 			glyph_id = font.getGlyphID (glyph_name)
@@ -476,7 +494,7 @@ By default they are dropped.
 
 		glyphs = sorted (glyph_imgs.keys ())
 		if not glyphs:
-			raise Exception ("No common characteres found between font and '%s'." % glb)
+			raise Exception ("No common characters found between font and '%s'." % glb)
 		print "Embedding images for %d glyphs for this strike." % len (glyphs)
 
 		advance, width, height = (div (x, len (glyphs)) for x in (advance, width, height))
