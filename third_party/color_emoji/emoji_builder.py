@@ -109,8 +109,11 @@ class CBDT:
 		line_height = (ascent + descent) * y_ppem / float (upem)
 		line_ascent = ascent * y_ppem / float (upem)
 		y_bearing = int (round (line_ascent - .5 * (line_height - height)))
+                # fudge y_bearing if calculations are a bit off
+                if y_bearing == 128:
+                  y_bearing = 127
 		advance = width
-                print "small glyph metrics h: %d w: %d a: %d" % (height, width, advance)
+                print "small glyph metrics h: %d w: %d" % (height, width)
 		# smallGlyphMetrics
 		# Type	Name
 		# BYTE	height
@@ -123,9 +126,9 @@ class CBDT:
 					 height, width,
 					 x_bearing, y_bearing,
 					 advance))
-                except:
-                  raise ValueError("h: %d w: %d a: %d x: %d y: 5d" % (
-                      height, width, advance, x_braring, y_bearing))
+                except Exception as e:
+                  raise ValueError("%s, h: %d w: %d x: %d y: %d %d a:" % (
+                      e, height, width, x_bearing, y_bearing, advance))
 
 	def write_format1 (self, png):
 
