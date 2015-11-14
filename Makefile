@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 EMOJI = NotoColorEmoji
 font: $(EMOJI).ttf
 
@@ -20,16 +19,33 @@ CFLAGS = -std=c99 -Wall -Wextra `pkg-config --cflags --libs cairo`
 LDFLAGS = `pkg-config --libs cairo`
 PNGQUANTDIR := third_party/pngquant
 PNGQUANT := $(PNGQUANTDIR)/pngquant
-PNGQUANTFLAGS = --speed 1 --skip-if-larger --ext '.png' --force
+PNGQUANTFLAGS = --speed 1 --skip-if-larger --force
 
-$(PNGQUANT):
-	$(MAKE) -C $(PNGQUANTDIR)
+# zopflipng is better (about 10%) but much slower.  it will be used if
+# present.  pass ZOPFLIPNG= as an arg to make to use optipng instead.
 
-waveflag: waveflag.c
-	$(CC) $< -o $@ $(CFLAGS) $(LDFLAGS)
+ZOPFLIPNG = zopflipng
+OPTIPNG = optipng
+
+EMOJI_BUILDER = third_party/color_emoji/emoji_builder.py
+ADD_GLYPHS = third_party/color_emoji/add_glyphs.py
+PUA_ADDER = map_pua_emoji.py
+VS_ADDER = add_vs_cmap.py # from nototools
+
+#EMOJI_SRC_DIR := png/128
+EMOJI_SRC_DIR := /usr/local/google/users/dougfelt/emoji_google/noto-emoji-source/png
+FLAGS_SRC_DIR := third_party/region-flags/png
+
+BUILD_DIR := build
+EMOJI_DIR := $(BUILD_DIR)/emoji
+FLAGS_DIR := $(BUILD_DIR)/flags
+RESIZED_FLAGS_DIR := $(BUILD_DIR)/resized_flags
+RENAMED_FLAGS_DIR := $(BUILD_DIR)/renamed_flags
+QUANTIZED_DIR := $(BUILD_DIR)/quantized_pngs
+COMPRESSED_DIR := $(BUILD_DIR)/compressed_pngs
 
 LIMITED_FLAGS = CN DE ES FR GB IT JP KR RU US
-FLAGS = AD AE AF AG AI AL AM AO AR AS AT AU AW AX AZ \
+SELECTED_FLAGS = AD AE AF AG AI AL AM AO AR AS AT AU AW AX AZ \
 	BA BB BD BE BF BG BH BI BJ BM BN BO BR BS BT BW BY BZ \
 	CA CC CD CF CG CH CI CK CL CM CN CO CR CU CV CW CX CY CZ \
 	DE DJ DK DM DO DZ \
@@ -54,54 +70,127 @@ FLAGS = AD AE AF AG AI AL AM AO AR AS AT AU AW AX AZ \
 	WS \
 	YE \
 	ZA ZM ZW
+ALL_FLAGS = ($basename ($notdir $(wildcard $(FLAGS_SRC_DIR)/*.png)))
 
-FLAGS_SRC_DIR = third_party/region-flags/png
-FLAGS_DIR = ./flags
+FLAGS = $(SELECTED_FLAGS)
 
-GLYPH_NAMES := $(shell ./flag_glyph_name.py $(FLAGS))
-WAVED_FLAGS := $(foreach flag,$(FLAGS),$(FLAGS_DIR)/$(flag).png)
-PNG128_FLAGS := $(foreach glyph_name,$(GLYPH_NAMES),$(addprefix ./png/128/emoji_$(glyph_name),.png))
+FLAG_NAMES = $(FLAGS:%=%.png)
+FLAG_FILES = $(addprefix $(FLAGS_DIR)/, $(FLAG_NAMES))
+RESIZED_FLAG_FILES = $(addprefix $(RESIZED_FLAGS_DIR)/, $(FLAG_NAMES))
 
-$(FLAGS_DIR)/%.png: $(FLAGS_SRC_DIR)/%.png ./waveflag $(PNGQUANT)
-	mkdir -p $(FLAGS_DIR)
-	./waveflag "$<" "$@"
-	optipng -quiet -o7 "$@"
-	$(PNGQUANT) $(PNGQUANTFLAGS) "$@"
+FLAG_GLYPH_NAMES = $(shell ./flag_glyph_name.py $(FLAGS))
+RENAMED_FLAG_NAMES = $(FLAG_GLYPH_NAMES:%=emoji_%.png)
+RENAMED_FLAG_FILES = $(addprefix $(RENAMED_FLAGS_DIR)/, $(RENAMED_FLAG_NAMES))
 
-flag-symlinks: $(WAVED_FLAGS)
-	$(subst ^, ,                                \
-	  $(join                                    \
-	    $(FLAGS:%=ln^-fs^../../flags/%.png^),   \
-	    $(GLYPH_NAMES:%=./png/128/emoji_%.png;) \
-	   )                                        \
-	 )
+EMOJI_NAMES = $(notdir $(wildcard $(EMOJI_SRC_DIR)/emoji_u*.png))
+EMOJI_FILES= $(addprefix $(EMOJI_DIR)/,$(EMOJI_NAMES)))
 
-$(PNG128_FLAGS): flag-symlinks
+ALL_NAMES = $(EMOJI_NAMES) $(RENAMED_FLAG_NAMES)
 
-#EMOJI_PNG128 = ./png/128/emoji_u
-EMOJI_PNG128 = /tmp/placeholder_emoji_plus/emoji_u
+ALL_QUANTIZED_FILES = $(addprefix $(QUANTIZED_DIR)/, $(ALL_NAMES))
+ALL_COMPRESSED_FILES = $(addprefix $(COMPRESSED_DIR)/, $(ALL_NAMES))
 
-EMOJI_BUILDER = third_party/color_emoji/emoji_builder.py
-ADD_GLYPHS = third_party/color_emoji/add_glyphs.py
-PUA_ADDER = map_pua_emoji.py
-VS_ADDER = add_vs_cmap.py
-ifeq (, $(shell which $(VS_ADDER)))
-  $(error "$(VS_ADDER) not in path, run setup.py in nototools")
+# tool checks
+ifeq (,$(shell which $(ZOPFLIPNG)))
+  ifeq (,$(wildcard $(ZOPFLIPNG)))
+    MISSING_ZOPFLI = fail
+  endif
 endif
 
-%.ttx: %.ttx.tmpl $(ADD_GLYPHS) $(UNI) $(PNG128_FLAGS)
-	python $(ADD_GLYPHS) "$<" "$@" "$(EMOJI_PNG128)"
+ifeq (,$(shell which $(OPTIPNG)))
+  ifeq (,$(wildcard $(OPTIPNG)))
+    MISSING_OPTIPNG = fail
+  endif
+endif
+
+ifeq (, $(shell which $(VS_ADDER)))
+  MISSING_ADDER = fail
+endif
 
 
+emoji: $(EMOJI_FILES)
+
+flags: $(FLAG_FILES)
+
+resized_flags: $(RESIZED_FLAG_FILES)
+
+renamed_flags: $(RENAMED_FLAG_FILES)
+
+quantized: $(ALL_QUANTIZED_FILES)
+
+compressed: $(ALL_COMPRESSED_FILES)
+
+check_compress_tool:
+ifdef MISSING_ZOPFLI
+  ifdef MISSING_OPTIPNG
+	$(error "neither $(ZOPFLIPNG) nor $(OPTIPNG) is available")
+  else
+	@echo "using $(OPTIPNG)"
+  endif
+else
+	@echo "using $(ZOPFLIPNG)"
+endif
+
+check_vs_adder:
+ifdef MISSING_ADDER
+	$(error "$(VS_ADDER) not in path, run setup.py in nototools")
+endif
+
+
+$(EMOJI_DIR) $(FLAGS_DIR) $(RESIZED_FLAGS_DIR) $(RENAMED_FLAGS_DIR) $(QUANTIZED_DIR) $(COMPRESSED_DIR):
+	mkdir -p "$@"
+
+$(PNGQUANT):
+	$(MAKE) -C $(PNGQUANTDIR)
+
+waveflag: waveflag.c
+	$(CC) $< -o $@ $(CFLAGS) $(LDFLAGS)
+
+$(EMOJI_DIR)/%.png: $(EMOJI_SRC_DIR)/%.png | $(EMOJI_DIR)
+	echo "emoji $< $@"
+	@convert -extent 136x128 -gravity center -background none "$<" "$@"
+
+$(FLAGS_DIR)/%.png: $(FLAGS_SRC_DIR)/%.png ./waveflag $(PNGQUANT) | $(FLAGS_DIR)
+	@./waveflag "$<" "$@"
+
+$(RESIZED_FLAGS_DIR)/%.png: $(FLAGS_DIR)/%.png | $(RESIZED_FLAGS_DIR)
+	@convert -extent 136x128 -gravity center -background none "$<" "$@"
+
+flag-symlinks: $(RESIZED_FLAG_FILES) | $(RENAMED_FLAGS_DIR)
+	@$(subst ^, ,                                  \
+	  $(join                                       \
+	    $(FLAGS:%=ln^-fs^../resized_flags/%.png^), \
+	    $(RENAMED_FLAG_FILES:%=%; )                \
+	   )                                           \
+	 )
+
+$(RENAMED_FLAG_FILES): flag-symlinks
+
+$(QUANTIZED_DIR)/%.png: $(RENAMED_FLAGS_DIR)/%.png $(PNGQUANT) | $(QUANTIZED_DIR)
+	$(PNGQUANT) $(PNGQUANTFLAGS) -o "$@" "$<"
+
+$(QUANTIZED_DIR)/%.png: $(EMOJI_DIR)/%.png $(PNGQUANT) | $(QUANTIZED_DIR)
+	$(PNGQUANT) $(PNGQUANTFLAGS) -o "$@" "$<"
+
+$(COMPRESSED_DIR)/%.png: $(QUANTIZED_DIR)/%.png | check_compress_tool $(COMPRESSED_DIR)
+ifdef MISSING_ZOPFLI
+	$(OPTIPNG) -quiet -o7 -force -out "$@" "$<"
+else
+	$(ZOPFLIPNG) -y "$<" "$@" 2> /dev/null
+endif
+
+
+%.ttx: %.ttx.tmpl $(ADD_GLYPHS) $(ALL_COMPRESSED_FILES)
+	@python $(ADD_GLYPHS) "$<" "$@" "$(COMPRESSED_DIR)/emoji_u"
 
 %.ttf: %.ttx
 	@rm -f "$@"
 	ttx "$<"
 
 $(EMOJI).ttf: $(EMOJI).tmpl.ttf $(EMOJI_BUILDER) $(PUA_ADDER) \
-  $(EMOJI_PNG128)*.png $(PNG128_FLAGS)
-	python $(EMOJI_BUILDER) -V $< "$@" $(EMOJI_PNG128)
-	python $(PUA_ADDER) "$@" "$@-with-pua"
+	$(ALL_COMPRESSED_FILES) | check_vs_adder
+	@python $(EMOJI_BUILDER) -V $< "$@" "$(COMPRESSED_DIR)/emoji_u"
+	@python $(PUA_ADDER) "$@" "$@-with-pua"
 	$(VS_ADDER) --dstdir '.' -o "$@-with-pua-varsel" "$@-with-pua"
 	mv "$@-with-pua-varsel" "$@"
 	rm "$@-with-pua"
@@ -109,5 +198,10 @@ $(EMOJI).ttf: $(EMOJI).tmpl.ttf $(EMOJI_BUILDER) $(PUA_ADDER) \
 clean:
 	rm -f $(EMOJI).ttf $(EMOJI).tmpl.ttf $(EMOJI).tmpl.ttx
 	rm -f waveflag
-	rm -rf $(FLAGS_DIR)
-	rm -f `find -type l -name "*.png"`
+	rm -rf $(BUILD_DIR)
+
+.SECONDARY: $(EMOJI_FILES) $(FLAG_FILES) $(RESIZED_FLAG_FILES) $(RENAMED_FLAG_FILES) \
+  $(ALL_QUANTIZED_FILES) $(ALL_COMPRESSED_FILES)
+
+.PHONY:	clean flags emoji renamed_flags quantized compressed check_compress_tool
+
