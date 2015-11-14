@@ -147,9 +147,9 @@ def add_lig_sequence(ligatures, seq, n):
                 rev_seq = seq[:]
                 rev_seq.reverse()
                 trseq = tuple(rev_seq)
-                if trseq in ligatures:
-                        # print 'rev lig sequence %s, replace %s with %s' % (
-                        #    trseq, ligatures[trseq], n)
+                # if trseq in ligatures:
+                #        print 'rev lig sequence %s, replace %s with %s' % (
+                #        trseq, ligatures[trseq], n)
                 ligatures[trseq] = n
 
 

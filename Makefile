@@ -69,7 +69,7 @@ SELECTED_FLAGS = AD AE AF AG AI AL AM AO AR AS AT AU AW AX AZ \
 	WS \
 	YE \
 	ZA ZM ZW
-ALL_FLAGS = ($basename ($notdir $(wildcard $(FLAGS_SRC_DIR)/*.png)))
+ALL_FLAGS = $(basename $(notdir $(wildcard $(FLAGS_SRC_DIR)/*.png)))
 
 FLAGS = $(SELECTED_FLAGS)
 
@@ -173,7 +173,7 @@ $(QUANTIZED_DIR)/%.png: $(EMOJI_DIR)/%.png $(PNGQUANT) | $(QUANTIZED_DIR)
 
 $(COMPRESSED_DIR)/%.png: $(QUANTIZED_DIR)/%.png | check_compress_tool $(COMPRESSED_DIR)
 ifdef MISSING_ZOPFLI
-	$(OPTIPNG) -quiet -o7 -force -out "$@" "$<"
+	$(OPTIPNG) -quiet -o7 -clobber -force -out "$@" "$<"
 else
 	$(ZOPFLIPNG) -y "$<" "$@" 2> /dev/null
 endif
