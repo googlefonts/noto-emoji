@@ -84,7 +84,7 @@ class CBDT:
 		write_func = self.image_write_func (image_format)
 		for glyph in glyphs:
 			img_file = glyph_filenames[glyph]
-                        print 'writing data for glyph %s' % path.basename(img_file)
+                        # print 'writing data for glyph %s' % path.basename(img_file)
 			offset = self.tell ()
 			write_func (PNG (img_file))
 			self.glyph_maps.append (GlyphMap (glyph, offset, image_format))
@@ -113,7 +113,7 @@ class CBDT:
                 if y_bearing == 128:
                   y_bearing = 127
 		advance = width
-                print "small glyph metrics h: %d w: %d" % (height, width)
+                # print "small glyph metrics h: %d w: %d" % (height, width)
 		# smallGlyphMetrics
 		# Type	Name
 		# BYTE	height
@@ -488,7 +488,8 @@ By default they are dropped.
 			glyph_imgs[glyph_id] = img_file
 			if "verbose" in options:
 				uchars_name = ",".join (["%04X" % ord (char) for char in uchars])
-				print "Matched U+%s: id=%d name=%s image=%s" % (uchars_name, glyph_id, glyph_name, img_file)
+				# print "Matched U+%s: id=%d name=%s image=%s" % (
+                                #    uchars_name, glyph_id, glyph_name, img_file)
 
 			advance += glyph_metrics[glyph_name][0]
 			w, h = PNG (img_file).get_size ()

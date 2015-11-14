@@ -18,7 +18,10 @@ def codes_to_string(codes):
 		pieces = codes.split ("_")
 		string = "".join ([unichr (int (code, 16)) for code in pieces])
 	else:
+          try:
 		string = unichr (int (codes, 16))
+          except:
+            raise ValueError("uh-oh, no unichr for '%s'" % codes)
         return string
 
 
@@ -145,13 +148,13 @@ def add_lig_sequence(ligatures, seq, n):
                 rev_seq.reverse()
                 trseq = tuple(rev_seq)
                 if trseq in ligatures:
-                        print 'rev lig sequence %s, replace %s with %s' % (
-                            trseq, ligatures[trseq], n)
+                        # print 'rev lig sequence %s, replace %s with %s' % (
+                        #    trseq, ligatures[trseq], n)
                 ligatures[trseq] = n
 
 
 for (u, filename) in img_pairs:
-	print "Adding glyph for U+%s" % ",".join (["%04X" % ord (char) for char in u])
+	# print "Adding glyph for U+%s" % ",".join (["%04X" % ord (char) for char in u])
 	n = glyph_name (u)
         glyph_names.add(n)
 
@@ -185,13 +188,14 @@ for k, v in ligatures.iteritems():
 
 for base in sorted(keyed_ligatures):
         pairs = keyed_ligatures[base]
-        print 'base %s has %d sequences' % (base, len(pairs))
+        # print 'base %s has %d sequences' % (base, len(pairs))
+
         # Sort longest first, this ensures longer sequences with common prefixes
         # are handled before shorter ones.  It would be better to have multiple
         # lookups, most likely.
         pairs.sort(key = lambda pair: (len(pair[0]), pair[0]), reverse=True)
         for seq, name in pairs:
-                print seq, name
+                # print seq, name
                 add_ligature(font, seq, name)
 
 font.saveXML (out_file)
