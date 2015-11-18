@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import glob, os, sys
+import collections, glob, os, sys
 from fontTools import ttx
 from fontTools.ttLib.tables import otTables
 from png import PNG
@@ -10,11 +10,34 @@ sys.path.append(
 import add_emoji_gsub
 
 
+def is_vs(cp):
+        return cp >= 0xfe00 and cp <= 0xfe0f
+
+def codes_to_string(codes):
+	if "_" in codes:
+		pieces = codes.split ("_")
+		string = "".join ([unichr (int (code, 16)) for code in pieces])
+	else:
+          try:
+		string = unichr (int (codes, 16))
+          except:
+            raise ValueError("uh-oh, no unichr for '%s'" % codes)
+        return string
+
+
+def glyph_sequence(string):
+        # sequence of names of glyphs that form a ligature
+        # variation selectors are stripped
+        return ["u%04X" % ord(char) for char in string if not is_vs(ord(char))]
+
+
 def glyph_name(string):
+        # name of a ligature
+        # includes variation selectors when present
 	return "_".join (["u%04X" % ord (char) for char in string])
 
 
-def add_ligature (font, string):
+def add_ligature (font, seq, name):
 	if 'GSUB' not in font:
 		ligature_subst = otTables.LigatureSubst()
 		ligature_subst.ligatures = {}
@@ -34,16 +57,26 @@ def add_ligature (font, string):
 	ligatures = lookup.SubTable[0].ligatures
 
 	lig = otTables.Ligature()
-	lig.CompCount = len(string)
-	lig.Component = [glyph_name(ch) for ch in string[1:]]
-	lig.LigGlyph = glyph_name(string)
+	lig.CompCount = len(seq)
+	lig.Component = seq[1:]
+	lig.LigGlyph = name
 
-	first = glyph_name(string[0])
+	first = seq[0]
 	try:
 		ligatures[first].append(lig)
 	except KeyError:
 		ligatures[first] = [lig]
 
+
+# Ligating sequences for emoji that already have a defined codepoint,
+# to match the sequences for the related emoji with no codepoint.
+# The key is the name of the glyph with the codepoint, the value is the
+# name of the sequence in filename form.
+EXTRA_SEQUENCES = {
+    'u1F46A': '1F468_200D_1F469_200D_1F466', # MWB
+    'u1F491': '1F469_200D_2764_FE0F_200D_1F468', # WHM
+    'u1F48F': '1F469_200D_2764_FE0F_200D_1F48B_200D_1F468', # WHKM
+}
 
 if len (sys.argv) < 4:
 	print >>sys.stderr, """
@@ -65,23 +98,22 @@ table and the first GSUB lookup (if existing) are modified.
 
 in_file = sys.argv[1]
 out_file = sys.argv[2]
-img_prefix = sys.argv[3]
+img_prefixen = sys.argv[3:]
 del sys.argv
 
 font = ttx.TTFont()
 font.importXML (in_file)
 
 img_files = {}
-glb = "%s*.png" % img_prefix
-print "Looking for images matching '%s'." % glb
-for img_file in glob.glob (glb):
-	codes = img_file[len (img_prefix):-4]
-	if "_" in codes:
-		pieces = codes.split ("_")
-		u = "".join ([unichr (int (code, 16)) for code in pieces])
-	else:
-		u = unichr (int (codes, 16))
-	img_files[u] = img_file
+for img_prefix in img_prefixen:
+        glb = "%s*.png" % img_prefix
+        print "Looking for images matching '%s'." % glb
+        for img_file in glob.glob (glb):
+        	codes = img_file[len (img_prefix):-4]
+                u = codes_to_string(codes)
+                if u in img_files:
+                        print 'overwriting %s with %s' % (img_files[u], imag_file)
+        	img_files[u] = img_file
 if not img_files:
 	raise Exception ("No image files found in '%s'." % glb)
 
@@ -98,20 +130,72 @@ h = font['hmtx'].metrics
 img_pairs = img_files.items ()
 img_pairs.sort (key=lambda pair: (len (pair[0]), pair[0]))
 
+glyph_names = set()
+ligatures = {}
+
+def add_lig_sequence(ligatures, seq, n):
+        # Assume sequences with ZWJ are emoji 'ligatures' and rtl order
+        # is also valid.  Internal permutations, though, no.
+        # We associate a sequence with a filename.  We can overwrite the
+        # sequence with a different filename later.
+        tseq = tuple(seq)
+        if tseq in ligatures:
+                print 'lig sequence %s, replace %s with %s' % (
+                    tseq, ligatures[tseq], n)
+        ligatures[tseq] = n
+        if 'u200D' in seq:
+                rev_seq = seq[:]
+                rev_seq.reverse()
+                trseq = tuple(rev_seq)
+                # if trseq in ligatures:
+                #        print 'rev lig sequence %s, replace %s with %s' % (
+                #        trseq, ligatures[trseq], n)
+                ligatures[trseq] = n
+
+
 for (u, filename) in img_pairs:
-	print "Adding glyph for U+%s" % ",".join (["%04X" % ord (char) for char in u])
+	# print "Adding glyph for U+%s" % ",".join (["%04X" % ord (char) for char in u])
 	n = glyph_name (u)
+        glyph_names.add(n)
+
 	g.append (n)
 	for char in u:
-		if char not in c:
+                cp = ord(char)
+		if cp not in c and not is_vs(cp):
 			name = glyph_name (char)
-			c[ord (char)] = name
+			c[cp] = name
 			if len (u) > 1:
 				h[name] = [0, 0]
 	(img_width, img_height) = PNG (filename).get_size ()
 	advance = int (round ((float (ascent+descent) * img_width / img_height)))
 	h[n] = [advance, 0]
 	if len (u) > 1:
-		add_ligature (font, u)
+                seq = glyph_sequence(u)
+                add_lig_sequence(ligatures, seq, n)
+
+for n in EXTRA_SEQUENCES:
+        if n in glyph_names:
+                seq = glyph_sequence(codes_to_string(EXTRA_SEQUENCES[n]))
+                add_lig_sequence(ligatures, seq, n)
+        else:
+                print 'extras: no glyph for %s' % n
+
+
+keyed_ligatures = collections.defaultdict(list)
+for k, v in ligatures.iteritems():
+        first = k[0]
+        keyed_ligatures[first].append((k, v))
+
+for base in sorted(keyed_ligatures):
+        pairs = keyed_ligatures[base]
+        # print 'base %s has %d sequences' % (base, len(pairs))
+
+        # Sort longest first, this ensures longer sequences with common prefixes
+        # are handled before shorter ones.  It would be better to have multiple
+        # lookups, most likely.
+        pairs.sort(key = lambda pair: (len(pair[0]), pair[0]), reverse=True)
+        for seq, name in pairs:
+                # print seq, name
+                add_ligature(font, seq, name)
 
 font.saveXML (out_file)

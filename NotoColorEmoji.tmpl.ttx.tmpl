@@ -4,12 +4,16 @@
   <GlyphOrder>
     <!-- The 'id' attribute is only for humans; it is ignored when parsed. -->
     <GlyphID id="0" name=".notdef"/>
+    <GlyphID id="1" name="null"/>
+    <GlyphID id="2" name="nonmarkingreturn"/>
+    <GlyphID id="3" name="space"/>
+    <GlyphID id="4" name="u200D"/>
   </GlyphOrder>
 
   <head>
     <!-- Most of this table will be recalculated by the compiler -->
     <tableVersion value="1.0"/>
-    <fontRevision value="1.22"/>
+    <fontRevision value="1.23"/>
     <checkSumAdjustment value="0x4d5a161a"/>
     <magicNumber value="0x5f0f3cf5"/>
     <flags value="00000000 00001011"/>
@@ -119,12 +123,19 @@
 
   <hmtx>
     <mtx name=".notdef" width="2550" lsb="0"/>
+    <mtx name="null" width="0" lsb="0"/>
+    <mtx name="nonmarkingreturn" width="2550" lsb="0"/>
+    <mtx name="space" width="2550" lsb="0"/>
+    <mtx name="u200D" width="0" lsb="0"/>
   </hmtx>
 
   <cmap>
     <tableVersion version="0"/>
     <cmap_format_12 platformID="3" platEncID="10" language="0" format="12" reserved="0" length="1" nGroups="1">
       <map code="0x0" name=".notdef"/><!-- &lt;control> -->
+      <map code="0xd" name="nonmarkingreturn"/>
+      <map code="0x20" name="space"/>
+      <map code="0x200d" name="u200D"/>
     </cmap_format_12>
   </cmap>
 
@@ -145,7 +156,7 @@
       Noto Color Emoji
     </namerecord>
     <namerecord nameID="5" platformID="3" platEncID="1" langID="0x409">
-      Version 1.22
+      Version 1.23
     </namerecord>
     <namerecord nameID="6" platformID="3" platEncID="1" langID="0x409">
       NotoColorEmoji
