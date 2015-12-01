@@ -21,7 +21,7 @@ PNGQUANTDIR := third_party/pngquant
 PNGQUANT := $(PNGQUANTDIR)/pngquant
 PNGQUANTFLAGS = --speed 1 --skip-if-larger --force
 
-# zopflipng is better (about 10%) but much slower.  it will be used if
+# zopflipng is better (about 5-10%) but much slower.  it will be used if
 # present.  pass ZOPFLIPNG= as an arg to make to use optipng instead.
 
 ZOPFLIPNG = zopflipng
@@ -163,7 +163,7 @@ flag-symlinks: $(RESIZED_FLAG_FILES) | $(RENAMED_FLAGS_DIR)
 	   )                                           \
 	 )
 
-$(RENAMED_FLAG_FILES): flag-symlinks
+$(RENAMED_FLAG_FILES): | flag-symlinks
 
 $(QUANTIZED_DIR)/%.png: $(RENAMED_FLAGS_DIR)/%.png $(PNGQUANT) | $(QUANTIZED_DIR)
 	$(PNGQUANT) $(PNGQUANTFLAGS) -o "$@" "$<"
@@ -175,9 +175,18 @@ $(COMPRESSED_DIR)/%.png: $(QUANTIZED_DIR)/%.png | check_compress_tool $(COMPRESS
 ifdef MISSING_ZOPFLI
 	$(OPTIPNG) -quiet -o7 -clobber -force -out "$@" "$<"
 else
-	$(ZOPFLIPNG) -y "$<" "$@" 2> /dev/null
+	$(ZOPFLIPNG) -y "$<" "$@" 1> /dev/null 2>&1
 endif
 
+
+# Make 3.81 can endless loop here if the target is missing but no
+# prerequisite is updated and make has been invoked with -j, e.g.:
+# File `font' does not exist.
+#      File `NotoColorEmoji.tmpl.ttx' does not exist.
+# File `font' does not exist.
+#      File `NotoColorEmoji.tmpl.ttx' does not exist.
+# ...
+# Run make without -j if this happens.
 
 %.ttx: %.ttx.tmpl $(ADD_GLYPHS) $(ALL_COMPRESSED_FILES)
 	@python $(ADD_GLYPHS) "$<" "$@" "$(COMPRESSED_DIR)/emoji_u"
