@@ -112,7 +112,7 @@ for img_prefix in img_prefixen:
         	codes = img_file[len (img_prefix):-4]
                 u = codes_to_string(codes)
                 if u in img_files:
-                        print 'overwriting %s with %s' % (img_files[u], imag_file)
+                        print 'overwriting %s with %s' % (img_files[u], img_file)
         	img_files[u] = img_file
 if not img_files:
 	raise Exception ("No image files found in '%s'." % glb)
