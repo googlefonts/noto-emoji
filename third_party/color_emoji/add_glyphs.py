@@ -1,9 +1,12 @@
 #!/usr/bin/env python
 
-import collections, glob, os, sys
+import collections, glob, os, re, sys
 from fontTools import ttx
 from fontTools.ttLib.tables import otTables
 from png import PNG
+
+# TODO: replace with actual name once we have a glyph.
+MISSING_FLAG_GLYPH_NAME = "u2764"
 
 sys.path.append(
     os.path.join(os.path.dirname(__file__), os.pardir, os.pardir))
@@ -76,6 +79,15 @@ EXTRA_SEQUENCES = {
     'u1F46A': '1F468_200D_1F469_200D_1F466', # MWB
     'u1F491': '1F469_200D_2764_FE0F_200D_1F468', # WHM
     'u1F48F': '1F469_200D_2764_FE0F_200D_1F48B_200D_1F468', # WHKM
+}
+
+# Flag aliases - from: to
+FLAG_ALIASES = {
+    'BV': 'NO',
+    'SJ': 'NO',
+    'UM': 'FR',
+    'HM': 'AU',
+    'UM': 'US',
 }
 
 if len (sys.argv) < 4:
@@ -179,6 +191,49 @@ for n in EXTRA_SEQUENCES:
                 add_lig_sequence(ligatures, seq, n)
         else:
                 print 'extras: no glyph for %s' % n
+
+# Add missing regional indicator sequences and flag aliases
+# if we support any.
+regional_names = frozenset('u%X' % cp for cp in range(0x1F1E6, 0x1F200))
+
+def _is_flag_sequence(t):
+  return len(t) == 2 and t[0] in regional_names and t[1] in regional_names
+
+have_flags = False
+for k in ligatures:
+  if _is_flag_sequence(k):
+    have_flags = True
+    break
+
+# sigh, too many separate files with the same code.
+# copied from add_emoji_gsub.
+def _reg_indicator(letter):
+  assert 'A' <= letter <= 'Z'
+  return 0x1F1E6 + ord(letter) - ord('A')
+
+def _reg_lig_sequence(flag_name):
+  """Returns a tuple of strings naming the codepoints that form the ligature."""
+  assert len(flag_name) == 2
+  return tuple('u%X' % _reg_indicator(cp) for cp in flag_name)
+
+def _reg_lig_name(flag_name):
+  """Returns a glyph name for the flag name."""
+  return '_'.join(_reg_lig_sequence(flag_name))
+
+if have_flags:
+  print 'Adding flag aliases.'
+  for flag_from, flag_to in FLAG_ALIASES.iteritems():
+    seq = _reg_lig_sequence(flag_from)
+    name = _reg_lig_name(flag_to)
+    add_lig_sequence(ligatures, seq, name)
+
+  print 'Adding unused flag sequences'
+  # every flag sequence we don't have gets the missing flag glyph
+  for first in regional_names:
+    for second in regional_names:
+      seq = (first, second)
+      if seq not in ligatures:
+        add_lig_sequence(ligatures, seq, MISSING_FLAG_GLYPH_NAME)
 
 
 keyed_ligatures = collections.defaultdict(list)
