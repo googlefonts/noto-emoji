@@ -5,8 +5,9 @@ from fontTools import ttx
 from fontTools.ttLib.tables import otTables
 from png import PNG
 
-# TODO: replace with actual name once we have a glyph.
-MISSING_FLAG_GLYPH_NAME = "u2764"
+# PUA character for unknown flag.  This avoids the legacy emoji pua values, but
+# is in the same area.
+UNKNOWN_FLAG_GLYPH_NAME = "uFE82B"
 
 sys.path.append(
     os.path.join(os.path.dirname(__file__), os.pardir, os.pardir))
@@ -166,9 +167,9 @@ def add_lig_sequence(ligatures, seq, n):
 
 
 for (u, filename) in img_pairs:
-	# print "Adding glyph for U+%s" % ",".join (["%04X" % ord (char) for char in u])
 	n = glyph_name (u)
         glyph_names.add(n)
+	# print "Adding glyph for %s" % n
 
 	g.append (n)
 	for char in u:
@@ -205,6 +206,10 @@ for k in ligatures:
     have_flags = True
     break
 
+if have_flags and UNKNOWN_FLAG_GLYPH_NAME not in glyph_names:
+  raise ValueError(
+      'Have flags but no unknown flag glyph "%s"' % UNKNOWN_FLAG_GLYPH_NAME)
+
 # sigh, too many separate files with the same code.
 # copied from add_emoji_gsub.
 def _reg_indicator(letter):
@@ -233,7 +238,7 @@ if have_flags:
     for second in regional_names:
       seq = (first, second)
       if seq not in ligatures:
-        add_lig_sequence(ligatures, seq, MISSING_FLAG_GLYPH_NAME)
+        add_lig_sequence(ligatures, seq, UNKNOWN_FLAG_GLYPH_NAME)
 
 
 keyed_ligatures = collections.defaultdict(list)
