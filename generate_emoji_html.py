@@ -164,24 +164,26 @@ def _get_image_data(image_dir, ext, prefix):
     filename = path.basename(f)
     m = expect_re.match(filename)
     if not m:
-      fails.add('did not match: ' + filename)
+      if filename.startswith('unknown_flag.'):
+        continue
+      fails.append('"%s" did not match: "%s"' % (expect_re, filename))
       continue
     seq = m.group(1)
     try:
       cps = tuple(int(s, 16) for s in seq.split('_'))
     except:
-      fails.add('bad cp sequence: ' + filename)
+      fails.append('bad cp sequence: ' + filename)
       continue
     this_failed = False
     for cp in cps:
       if (cp > 0x10ffff):
-        fails.add('cp out of range: ' + filename)
+        fails.append('cp out of range: ' + filename)
         this_failed = True
         break
     if this_failed:
       continue
     if cps in result:
-      fails.add('duplicate sequence: %s and %s' (result[cps], filename))
+      fails.append('duplicate sequence: %s and %s' (result[cps], filename))
       continue
     result[cps] = filename
   if fails:
