@@ -94,7 +94,7 @@ def _get_name(key_tuple):
     if cp in unicode_data.proposed_emoji_cps():
       name = '(proposed) ' + unicode_data.proposed_emoji_name(cp)
     else:
-      name =unicode_data.name(cp, '(error)')
+      name = unicode_data.name(cp, '(error)')
   return CELL_PREFIX + name
 
 
@@ -116,39 +116,6 @@ def _generate_content(dir_infos):
   return '\n  <tr>'.join(lines) + '\n</table>'
 
 
-"""
-def _generate_content(files, prefix=_default_prefix):
-  key_to_filename = {}
-  for fname in files:
-    filename = path.basename(fname)
-    if not filename.startswith(prefix):
-      print >> sys.stderr, 'bad prefix for filename %s' % fname
-      continue
-    key_string = path.splitext(filename)[0]
-    key_string = key_string[len(prefix):]
-    try:
-      key_tuple = tuple(int(k, 16) for k in key_string.split('_'))
-    except:
-      print 'bad filename: "%s"' % key_string
-    key_to_filename[key_tuple] = fname
-
-  lines = ["<table>"]
-  for key_tuple in sorted(key_to_filename):
-    if len(key_tuple) == 1:
-      key_string = 'U+%04X' % key_tuple
-    else:
-      key_string = ' + '.join(
-          '<img src="%s">' % key_to_filename[tuple([key])]
-          for key in key_tuple
-          if tuple([key]) in key_to_filename)
-    name = _get_name(key_tuple)
-    lines.append('<tr><td><img src="%s"><td class="desc">'
-                 '%s<td class="name">'
-                 '%s' % (
-        key_to_filename[key_tuple], key_string, name))
-  return '\n  '.join(lines) + '\n<table>'
-"""
-
 def _get_image_data(image_dir, ext, prefix):
   """Return a map from a tuple of cp sequences to a filename.
 
@@ -164,24 +131,26 @@ def _get_image_data(image_dir, ext, prefix):
     filename = path.basename(f)
     m = expect_re.match(filename)
     if not m:
-      fails.add('did not match: ' + filename)
+      if filename.startswith('unknown_flag.'):
+        continue
+      fails.append('"%s" did not match: "%s"' % (expect_re.pattern, filename))
       continue
     seq = m.group(1)
     try:
       cps = tuple(int(s, 16) for s in seq.split('_'))
     except:
-      fails.add('bad cp sequence: ' + filename)
+      fails.append('bad cp sequence: ' + filename)
       continue
     this_failed = False
     for cp in cps:
       if (cp > 0x10ffff):
-        fails.add('cp out of range: ' + filename)
+        fails.append('cp out of range: ' + filename)
         this_failed = True
         break
     if this_failed:
       continue
     if cps in result:
-      fails.add('duplicate sequence: %s and %s' (result[cps], filename))
+      fails.append('duplicate sequence: %s and %s' (result[cps], filename))
       continue
     result[cps] = filename
   if fails:
