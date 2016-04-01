@@ -353,6 +353,21 @@ class CBLC:
 		self.pop_stream ()
 
 
+# copied from nototools/font_data
+_UNICODE_CMAPS = {(4, 0, 3), (4, 3, 1), (12, 3, 10)}
+
+def delete_from_cmap(font, chars):
+    """Delete all characters in a list from the cmap tables of a font."""
+    cmap_table = font['cmap']
+    for table in cmap_table.tables:
+        table_tup = (table.format, table.platformID, table.platEncID)
+        if table_tup in _UNICODE_CMAPS:
+            for char in chars:
+                if char in table.cmap:
+                    print 'removing %04x from %s' % (char, table_tup)
+                    del table.cmap[char]
+
+
 def main (argv):
 	import glob
 	from fontTools import ttx, ttLib
@@ -526,6 +541,11 @@ By default they are dropped.
 	if 'keep_outlines' not in options:
 		drop_outline_tables (font)
 		print "Dropped outline ('glyf', 'CFF ') and related tables."
+
+        # hack removal of cmap pua entry for unknown flag glyph.  If we try to
+        # remove it earlier, getGlyphID dies.  Need to restructure all of this
+        # code.
+        delete_from_cmap(font, [0xfe82b])
 
 	font.save (out_file)
 	print "Output font '%s' generated." % out_file

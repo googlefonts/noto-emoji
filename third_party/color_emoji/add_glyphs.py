@@ -85,9 +85,9 @@ EXTRA_SEQUENCES = {
 # Flag aliases - from: to
 FLAG_ALIASES = {
     'BV': 'NO',
-    'SJ': 'NO',
-    'UM': 'FR',
+    'CP': 'FR',
     'HM': 'AU',
+    'SJ': 'NO',
     'UM': 'US',
 }
 
