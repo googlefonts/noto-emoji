@@ -23,6 +23,8 @@ from png import PNG
 import os
 from os import path
 
+from nototools import font_data
+
 def get_glyph_name_from_gsub (string, font, cmap_dict):
 	ligatures = font['GSUB'].table.LookupList.Lookup[0].SubTable[0].ligatures
 	first_glyph = cmap_dict[ord (string[0])]
@@ -353,21 +355,6 @@ class CBLC:
 		self.pop_stream ()
 
 
-# copied from nototools/font_data
-_UNICODE_CMAPS = {(4, 0, 3), (4, 3, 1), (12, 3, 10)}
-
-def delete_from_cmap(font, chars):
-    """Delete all characters in a list from the cmap tables of a font."""
-    cmap_table = font['cmap']
-    for table in cmap_table.tables:
-        table_tup = (table.format, table.platformID, table.platEncID)
-        if table_tup in _UNICODE_CMAPS:
-            for char in chars:
-                if char in table.cmap:
-                    print 'removing %04x from %s' % (char, table_tup)
-                    del table.cmap[char]
-
-
 def main (argv):
 	import glob
 	from fontTools import ttx, ttLib
@@ -545,7 +532,7 @@ By default they are dropped.
         # hack removal of cmap pua entry for unknown flag glyph.  If we try to
         # remove it earlier, getGlyphID dies.  Need to restructure all of this
         # code.
-        delete_from_cmap(font, [0xfe82b])
+        font_data.delete_from_cmap(font, [0xfe82b])
 
 	font.save (out_file)
 	print "Output font '%s' generated." % out_file
