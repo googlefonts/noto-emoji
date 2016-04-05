@@ -23,6 +23,8 @@ from png import PNG
 import os
 from os import path
 
+from nototools import font_data
+
 def get_glyph_name_from_gsub (string, font, cmap_dict):
 	ligatures = font['GSUB'].table.LookupList.Lookup[0].SubTable[0].ligatures
 	first_glyph = cmap_dict[ord (string[0])]
@@ -526,6 +528,11 @@ By default they are dropped.
 	if 'keep_outlines' not in options:
 		drop_outline_tables (font)
 		print "Dropped outline ('glyf', 'CFF ') and related tables."
+
+        # hack removal of cmap pua entry for unknown flag glyph.  If we try to
+        # remove it earlier, getGlyphID dies.  Need to restructure all of this
+        # code.
+        font_data.delete_from_cmap(font, [0xfe82b])
 
 	font.save (out_file)
 	print "Output font '%s' generated." % out_file
