@@ -131,7 +131,7 @@ def _get_image_data(image_dir, ext, prefix):
     filename = path.basename(f)
     m = expect_re.match(filename)
     if not m:
-      if filename.startswith('unknown_flag.'):
+      if filename.startswith('unknown_flag.') or filename.startswith('p4p_'):
         continue
       fails.append('"%s" did not match: "%s"' % (expect_re.pattern, filename))
       continue
