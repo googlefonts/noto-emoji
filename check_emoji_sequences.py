@@ -130,12 +130,15 @@ def _check_skintone(sorted_seqs):
           cp, len(modifiers),
           ', '.join('%04x' % cp for cp in sorted(modifiers)))
 
+
 def check_sequences(seqs):
   sorted_seqs = sorted(seqs)
+  print 'checking %d sequences' % len(seqs)
   _check_valid_emoji(sorted_seqs)
   _check_zwj(sorted_seqs)
   _check_flags(sorted_seqs)
   _check_skintone(sorted_seqs)
+  print 'done.'
 
 
 def _collect_sequences(dirs, prefix='emoji_u'):
