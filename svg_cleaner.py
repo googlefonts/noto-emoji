@@ -17,9 +17,14 @@
 
 import argparse
 import codecs
-import os.path
+import logging
+import os
+from os import path
 import re
 import sys
+
+from nototools import tool_utils
+
 from xml.parsers import expat
 from xml.sax import saxutils
 
@@ -115,15 +120,31 @@ class SvgCleaner(object):
 
   class _Cleaner(object):
     def _clean_elem(self, node):
+      viewBox, width, height = None, None, None
       nattrs = {}
       for k, v in node.attrs.items():
         if node.name == 'svg' and k in [
             'x', 'y', 'id', 'version', 'viewBox', 'width', 'height',
             'enable-background', 'xml:space']:
+          if k == 'viewBox':
+            viewBox = v
+          elif k == 'width':
+            width = v
+          elif k == 'height':
+            height = v
           continue
         v = re.sub('\s+', ' ', v)
         nattrs[k] = v
+
+      if node.name == 'svg':
+        if not width or not height:
+          if not viewBox:
+            raise ValueError('no viewBox, width, or height')
+          width, height = viewBox.split()[2:]
+        nattrs['width'] = width
+        nattrs['height'] = height
       node.attrs = nattrs
+
 
       # scan contents. remove any empty text nodes, or empty 'g' element nodes.
       # if a 'g' element has no attrs and only one subnode, replace it with the
@@ -214,13 +235,16 @@ class SvgCleaner(object):
     return self.tree_to_text(tree)
 
 
-def clean_svg_files(in_dir, out_dir, match_pat=None, quiet=False):
+def clean_svg_files(in_dir, out_dir, match_pat=None, clean=False):
   regex = re.compile(match_pat) if match_pat else None
   count = 0
-  if not os.path.isdir(out_dir):
-    os.makedirs(out_dir)
-    if not quiet:
-      print 'created output directory: %s' % out_dir
+
+  if clean and path.samefile(in_dir, out_dir):
+    logging.error('Cannot clean %s (same as in_dir)', out_dir)
+    return
+
+  out_dir = tool_utils.ensure_dir_exists(out_dir, clean=clean)
+
   cleaner = SvgCleaner()
   for file_name in os.listdir(in_dir):
     if regex and not regex.match(file_name):
@@ -230,25 +254,42 @@ def clean_svg_files(in_dir, out_dir, match_pat=None, quiet=False):
       result = cleaner.clean_svg(in_fp.read())
     out_path = os.path.join(out_dir, file_name)
     with codecs.open(out_path, 'w', 'utf-8') as out_fp:
-      if not quiet:
-        print 'wrote: %s' % out_path
+      logging.debug('write: %s', out_path)
       out_fp.write(result)
       count += 1
   if not count:
-    print 'failed to match any files'
+    logging.warning('Failed to match any files')
   else:
-    print 'processed %s files to %s' % (count, out_dir)
+    logging.info('Wrote %s files to %s', count, out_dir)
 
 
 def main():
   parser = argparse.ArgumentParser(
       description="Generate 'cleaned' svg files.")
-  parser.add_argument('in_dir', help='Input directory.')
-  parser.add_argument('out_dir', help='Output directory.')
-  parser.add_argument('regex', help='Regex to select files, default matches all files.', default=None)
-  parser.add_argument('--quiet', '-q', help='Quiet operation.', action='store_true')
+  parser.add_argument(
+      'in_dir', help='Input directory.', metavar='dir')
+  parser.add_argument(
+      '-o', '--out_dir', help='Output directory, defaults to sibling of in_dir',
+      metavar='dir')
+  parser.add_argument(
+      '-c', '--clean', help='Clean output directory', action='store_true')
+  parser.add_argument(
+      '-r', '--regex', help='Regex to select files, default matches all files.',
+      metavar='regex', default=None)
+  parser.add_argument(
+      '-l', '--loglevel', help='log level name/value', default='warning')
   args = parser.parse_args()
-  clean_svg_files(args.in_dir, args.out_dir, match_pat=args.regex, quiet=args.quiet)
+
+  tool_utils.setup_logging(args.loglevel)
+
+  if not args.out_dir:
+    if args.in_dir.endswith('/'):
+      args.in_dir = args.in_dir[:-1]
+    args.out_dir = args.in_dir + '_clean'
+    logging.info('Writing output to %s', args.out_dir)
+
+  clean_svg_files(
+      args.in_dir, args.out_dir, match_pat=args.regex, clean=args.clean)
 
 
 if __name__ == '__main__':

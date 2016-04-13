@@ -109,7 +109,8 @@ class SvgBuilder(object):
       wid = tree.attrs.get('width')
       ht = tree.attrs.get('height')
       if not (wid and ht):
-        raise "missing viewBox and width or height attrs"
+        raise ValueError(
+            'missing viewBox and width or height attrs (%s)' % filename)
       x, y, w, h = 0, 0, self._strip_px(wid), self._strip_px(ht)
 
     # We're going to assume default values for preserveAspectRatio for now,
@@ -175,9 +176,11 @@ class SvgBuilder(object):
     # svg element.  Unlike chrome.  So either we apply an inverse transform, or
     # insert a group with the clip between the svg and its children.  The latter
     # seems cleaner, ultimately.
-    clip_id = 'clip_' + ''.join(random.choice(string.ascii_lowercase) for i in range(8))
-    clip_text = """<g clip-path="url(#%s)"><clipPath id="%s">
-      <path d="M%g %gh%gv%gh%gz"/></clipPath></g>""" % (clip_id, clip_id, x, y, w, h, -w)
+    clip_id = 'clip_' + ''.join(
+        random.choice(string.ascii_lowercase) for i in range(8))
+    clip_text = ('<g clip-path="url(#%s)"><clipPath id="%s">'
+      '<path d="M%g %gh%gv%gh%gz"/></clipPath></g>' % (
+          clip_id, clip_id, x, y, w, h, -w))
     clip_tree = cleaner.tree_from_text(clip_text)
     clip_tree.contents.extend(tree.contents)
     tree.contents = [clip_tree]

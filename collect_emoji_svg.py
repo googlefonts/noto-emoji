@@ -33,11 +33,14 @@ the files without messing with the originals."""
 
 import argparse
 import glob
+import logging
 import os
 import os.path
 import re
 import shutil
 import sys
+
+from nototools import tool_utils
 
 def _is_svg(f):
   return f.endswith('.svg')
@@ -48,23 +51,27 @@ def _is_svg_and_startswith_emoji(f):
 
 
 def _flag_rename(f):
-  """Converts file names from region-flags files (upper-case ASCII) to our expected
-  'encoded-codepoint-ligature' form, mapping each character to the corresponding
+  """Converts a file name from two-letter upper-case ASCII to our expected
+  'emoji_uXXXXX_XXXXX form, mapping each character to the corresponding
   regional indicator symbol."""
 
   cp_strs = []
   name, ext = os.path.splitext(f)
+  if len(name) != 2:
+    raise ValueError('illegal flag name "%s"' % f)
   for cp in name:
+    if not ('A' <= cp <= 'Z'):
+      raise ValueError('illegal flag name "%s"' % f)
     ncp = 0x1f1e6 - 0x41 + ord(cp)
     cp_strs.append("%04x" % ncp)
   return 'emoji_u%s%s' % ('_'.join(cp_strs), ext)
 
 
-def copy_with_rename(src_dir, dst_dir, accept_pred=None, rename=None, verbosity=1):
-  """Copy files from src_dir to dst_dir that match accept_pred (all if None) and rename
-  using rename (if not None), replacing existing files.  accept_pred takes the filename
-  and returns True if the file should be copied, rename takes the filename and returns a
-  new file name."""
+def copy_with_rename(src_dir, dst_dir, accept_pred=None, rename=None):
+  """Copy files from src_dir to dst_dir that match accept_pred (all if None) and
+  rename using rename (if not None), replacing existing files.  accept_pred
+  takes the filename and returns True if the file should be copied, rename takes
+  the filename and returns a new file name."""
 
   count = 0
   replace_count = 0
@@ -75,66 +82,69 @@ def copy_with_rename(src_dir, dst_dir, accept_pred=None, rename=None, verbosity=
     src = os.path.join(src_dir, src_filename)
     dst = os.path.join(dst_dir, dst_filename)
     if os.path.exists(dst):
-      if verbosity > 1:
-        print "Replacing existing file " + dst
+      logging.debug('Replacing existing file %s', dst)
       os.unlink(dst)
       replace_count += 1
     shutil.copy2(src, dst)
-    if verbosity > 1:
-      print "cp -p %s %s" % (src, dst)
+    logging.debug('cp -p %s %s', src, dst)
     count += 1
-  if verbosity:
-    print "Copied/renamed %d files from %s to %s" % (count, src_dir, dst_dir)
-  return count, replace_count
+  if logging.getLogger().getEffectiveLevel() <= logging.INFO:
+    src_short = tool_utils.short_path(src_dir)
+    dst_short = tool_utils.short_path(dst_dir)
+    logging.info('Copied %d files (replacing %d) from %s to %s',
+        count, replace_count, src_short, dst_short)
 
 
-def build_svg_dir(dst_dir, clean=False, flags_only=False, verbosity=1):
-  """Copies/renames files from noto/color_emoji/svg and then noto/third_party/region-flags/svg,
-  giving them the standard format and prefix ('emoji_u' followed by codepoints expressed
-  in hex separated by underscore).  If clean, removes the target dir before proceding.
-  If flags_only, only does the region-flags."""
+def build_svg_dir(dst_dir, clean=False, emoji_dir='', flags_dir=''):
+  """Copies/renames files from emoji_dir and then flag_dir, giving them the
+  standard format and prefix ('emoji_u' followed by codepoints expressed in hex
+  separated by underscore).  If clean, removes the target dir before proceding.
+  If either emoji_dir or flag_dir are empty, skips them."""
 
-  if not os.path.isdir(dst_dir):
-    os.makedirs(dst_dir)
-  elif clean:
-    shutil.rmtree(dst_dir)
-    os.makedirs(dst_dir)
+  dst_dir = tool_utils.ensure_dir_exists(dst_dir, clean=clean)
 
-  # get files from path relative to noto
-  notopath = re.match("^.*/noto/", os.path.realpath(__file__)).group()
+  if not emoji_dir and not flag_dir:
+    logging.warning('Nothing to do.')
+    return
 
-  # copy region flags, generating new names based on the tlds.
-  flag_dir = os.path.join(notopath, "third_party/region-flags/svg")
-  count, replace_count = copy_with_rename(
-    flag_dir, dst_dir, accept_pred=_is_svg, rename=_flag_rename, verbosity=verbosity)
+  if emoji_dir:
+    copy_with_rename(
+        emoji_dir, dst_dir, accept_pred=_is_svg_and_startswith_emoji)
 
-  # copy the 'good' svg
-  if not flags_only:
-    svg_dir = os.path.join(notopath, "color_emoji/svg")
-    temp_count, temp_replace_count = copy_with_rename(
-      svg_dir, dst_dir, accept_pred=_is_svg_and_startswith_emoji, verbosity=verbosity)
-    count += temp_count
-    replace_count += temp_replace_count
-
-  if verbosity:
-    if replace_count:
-      print "Replaced %d existing files" % replace_count
-    print "Created %d total files" % (count - replace_count)
+  if flags_dir:
+     copy_with_rename(
+        flags_dir, dst_dir, accept_pred=_is_svg, rename=_flag_rename)
 
 
 def main(argv):
+  DEFAULT_EMOJI_DIR = '[emoji]/svg'
+  DEFAULT_FLAGS_DIR = '[emoji]/third_party/region-flags/svg'
+
   parser = argparse.ArgumentParser(
-      description="Collect svg files into target directory with prefix.")
-  parser.add_argument('dst_dir', help="Directory to hold symlinks to files.")
-  parser.add_argument('--clean', '-c', help="Replace target directory", action='store_true')
-  parser.add_argument('--flags_only', '-fo', help="Only copy region-flags", action='store_true')
-  parser.add_argument('--quiet', '-q', dest='v', help="quiet operation.", default=1,
-                      action='store_const', const=0)
-  parser.add_argument('--verbose', '-v', dest='v', help="verbose operation.",
-                      action='store_const', const=2)
+      description='Collect svg files into target directory with prefix.')
+  parser.add_argument(
+      'dst_dir', help='Directory to hold copied files.', metavar='dir')
+  parser.add_argument(
+      '--clean', '-c', help='Replace target directory', action='store_true')
+  parser.add_argument(
+      '--flags_dir', '-f', metavar='dir', help='directory containing flag svg, '
+      'default %s' % DEFAULT_FLAGS_DIR, default=DEFAULT_FLAGS_DIR)
+  parser.add_argument(
+      '--emoji_dir', '-e', metavar='dir',
+      help='directory containing emoji svg, default %s' % DEFAULT_EMOJI_DIR,
+      default=DEFAULT_EMOJI_DIR)
+  parser.add_argument(
+      '-l', '--loglevel', help='log level name/value', default='warning')
   args = parser.parse_args(argv)
 
-  build_svg_dir(args.dst_dir, clean=args.clean, flags_only=args.flags_only, verbosity=args.v)
+  tool_utils.setup_logging(args.loglevel)
+
+  args.flags_dir = tool_utils.resolve_path(args.flags_dir)
+  args.emoji_dir = tool_utils.resolve_path(args.emoji_dir)
+  build_svg_dir(
+      args.dst_dir, clean=args.clean, emoji_dir=args.emoji_dir,
+      flags_dir=args.flags_dir)
+
 
 if __name__ == '__main__':
   main(sys.argv[1:])
