@@ -277,9 +277,6 @@ def main():
       '-r', '--regex', help='Regex to select files, default matches all files.',
       metavar='regex', default=None)
   parser.add_argument(
-      '-q', '--quiet', dest='v', help='Quiet operation.', default=1,
-      action='store_const', const=0)
-  parser.add_argument(
       '-l', '--loglevel', help='log level name/value', default='warning')
   args = parser.parse_args()
 
