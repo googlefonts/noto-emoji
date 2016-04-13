@@ -88,7 +88,7 @@ def copy_with_rename(src_dir, dst_dir, accept_pred=None, rename=None):
     shutil.copy2(src, dst)
     logging.debug('cp -p %s %s', src, dst)
     count += 1
-  if logging.getLogger().getEffectiveLevel() >= 20:
+  if logging.getLogger().getEffectiveLevel() <= logging.INFO:
     src_short = tool_utils.short_path(src_dir)
     dst_short = tool_utils.short_path(dst_dir)
     logging.info('Copied %d files (replacing %d) from %s to %s',
