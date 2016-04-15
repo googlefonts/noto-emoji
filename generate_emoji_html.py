@@ -102,10 +102,12 @@ def _get_name(key_tuple):
   return CELL_PREFIX + name
 
 
-def _generate_content(basedir, dir_infos):
+def _generate_content(basedir, dir_infos, limit):
   """Generate an html table for the infos.  basedir is the parent directory
   of the content, filenames will be made relative to this if underneath it,
-  else absolute."""
+  else absolute. If limit is true and there are multiple dirs, limit the set of
+  sequences to those in the first dir."""
+
   lines = ['<table>']
   header_row = ['']
   header_row.extend([info.title for info in dir_infos])
@@ -122,7 +124,10 @@ def _generate_content(basedir, dir_infos):
       dirspec = abs_filedir
     basepaths.append(dirspec)
 
-  all_keys = _merge_keys([info.filemap for info in dir_infos])
+  if len(dir_infos) == 1 or limit:
+    all_keys = frozenset(dir_infos[0].filemap.keys())
+  else:
+    all_keys = _merge_keys([info.filemap for info in dir_infos])
   for key in sorted(all_keys):
     row = []
     row.extend(_generate_row_cells(key, dir_infos, basepaths))
@@ -254,8 +259,8 @@ STYLE = """
       td.name { background-color: white }
 """
 
-def write_html_page(filename, page_title, dir_infos):
-  content = _generate_content(path.dirname(filename), dir_infos)
+def write_html_page(filename, page_title, dir_infos, limit):
+  content = _generate_content(path.dirname(filename), dir_infos, limit)
   text = _instantiate_template(
       TEMPLATE, {'title': page_title, 'style': STYLE, 'content': content})
   with codecs.open(filename, 'w', 'utf-8') as f:
@@ -281,6 +286,9 @@ def main():
       '-t', '--titles', help='title, one per image dir', metavar='title',
       nargs='*'),
   parser.add_argument(
+      '-l', '--limit', help='limit to only sequences supported by first set',
+      action='store_true')
+  parser.add_argument(
       '-de', '--default_ext', help='default extension', metavar='ext',
       default=_default_ext)
   parser.add_argument(
@@ -294,10 +302,10 @@ def main():
     print 'added .html extension to filename:\n%s' % args.filename
 
   dir_infos = _get_dir_infos(
-      args.image_dirs, args.exts, args.prefixes, args.titles, args.default_ext,
-      args.default_prefix)
+      args.image_dirs, args.exts, args.prefixes, args.titles,
+      args.default_ext, args.default_prefix)
 
-  write_html_page(args.filename, args.page_title, dir_infos)
+  write_html_page(args.filename, args.page_title, dir_infos, args.limit)
 
 
 if __name__ == "__main__":
