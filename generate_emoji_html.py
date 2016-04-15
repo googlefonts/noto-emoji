@@ -49,23 +49,27 @@ def _merge_keys(dicts):
     keys.extend(d.keys())
   return frozenset(keys)
 
-def _generate_row_cells(key, dir_infos):
+def _generate_row_cells(key, dir_infos, basepaths):
   CELL_PREFIX = '<td>'
-  def _cell(key, info):
+  indices = range(len(basepaths))
+  def _cell(key, info, basepath):
     if key in info.filemap:
       return '<img src="%s">' % path.join(
-          info.directory, info.filemap[key])
+          basepath, info.filemap[key])
     return '-missing-'
-  return [CELL_PREFIX + _cell(key, info) for info in dir_infos]
+  return [CELL_PREFIX + _cell(key, dir_infos[i], basepaths[i])
+          for i in indices]
 
 
-def _get_desc(key_tuple, dir_infos):
+def _get_desc(key_tuple, dir_infos, basepaths):
   CELL_PREFIX = '<td class="desc">'
   def _get_filepath(cp):
     cp_key = tuple([cp])
-    for info in dir_infos:
+    for i in range(len(dir_infos)):
+      info = dir_infos[i]
       if cp_key in info.filemap:
-        return path.join(info.directory, info.filemap[cp_key])
+        basepath = basepaths[i]
+        return path.join(basepath, info.filemap[cp_key])
     return None
 
   def _get_part(cp):
@@ -98,19 +102,31 @@ def _get_name(key_tuple):
   return CELL_PREFIX + name
 
 
-def _generate_content(dir_infos):
-  """Generate an html table for the infos."""
+def _generate_content(basedir, dir_infos):
+  """Generate an html table for the infos.  basedir is the parent directory
+  of the content, filenames will be made relative to this if underneath it,
+  else absolute."""
   lines = ['<table>']
   header_row = ['']
   header_row.extend([info.title for info in dir_infos])
   header_row.extend(['Description', 'Name'])
   lines.append('<th>'.join(header_row))
 
+  basepaths = []
+  abs_basedir = path.abspath(path.expanduser(basedir))
+  for filedir, _, _ in dir_infos:
+    abs_filedir = path.abspath(path.expanduser(filedir))
+    if abs_filedir.startswith(abs_basedir):
+      dirspec = abs_filedir[len(abs_basedir) + 1:]
+    else:
+      dirspec = abs_filedir
+    basepaths.append(dirspec)
+
   all_keys = _merge_keys([info.filemap for info in dir_infos])
   for key in sorted(all_keys):
     row = []
-    row.extend(_generate_row_cells(key, dir_infos))
-    row.append(_get_desc(key, dir_infos))
+    row.extend(_generate_row_cells(key, dir_infos, basepaths))
+    row.append(_get_desc(key, dir_infos, basepaths))
     row.append(_get_name(key))
     lines.append(''.join(row))
   return '\n  <tr>'.join(lines) + '\n</table>'
@@ -188,7 +204,7 @@ def _get_dir_infos(
   infos = []
   for i in range(count):
     image_dir = image_dirs[i]
-    title = titles[i] or path.basename(path.normpath(image_dir))
+    title = titles[i] or path.basename(path.abspath(image_dir))
     ext = exts[i] or default_ext
     prefix = prefixes[i] or default_prefix
     filemap = _get_image_data(image_dir, ext, prefix)
@@ -239,7 +255,7 @@ STYLE = """
 """
 
 def write_html_page(filename, page_title, dir_infos):
-  content = _generate_content(dir_infos)
+  content = _generate_content(path.dirname(filename), dir_infos)
   text = _instantiate_template(
       TEMPLATE, {'title': page_title, 'style': STYLE, 'content': content})
   with codecs.open(filename, 'w', 'utf-8') as f:
