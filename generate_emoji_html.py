@@ -230,11 +230,12 @@ TEMPLATE = """<!DOCTYPE html>
 """
 
 STYLE = """
-      tbody { background-color: rgb(210, 210, 210) }
-      tbody img { width: 64px; height: 64px }
-      tbody .desc { font-size: 20pt; font-weight: bold }
-      tbody .desc img { vertical-align: middle; width: 32px; height: 32px }
-      tbody .name { background-color: white }
+      tbody { background-color: rgb(110, 110, 110) }
+      th { background-color: rgb(210, 210, 210) }
+      td img { width: 64px; height: 64px }
+      td.desc { font-size: 20pt; font-weight: bold; background-color: rgb(210, 210, 210) }
+      td.desc img { vertical-align: middle; width: 32px; height: 32px }
+      td.name { background-color: white }
 """
 
 def write_html_page(filename, page_title, dir_infos):
@@ -272,7 +273,7 @@ def main():
 
   args = parser.parse_args()
   file_parts = path.splitext(args.filename)
-  if file_parts[1] != 'html':
+  if file_parts[1] != '.html':
     args.filename = file_parts[0] + '.html'
     print 'added .html extension to filename:\n%s' % args.filename
 
