@@ -49,23 +49,27 @@ def _merge_keys(dicts):
     keys.extend(d.keys())
   return frozenset(keys)
 
-def _generate_row_cells(key, dir_infos):
+def _generate_row_cells(key, dir_infos, basepaths):
   CELL_PREFIX = '<td>'
-  def _cell(key, info):
+  indices = range(len(basepaths))
+  def _cell(key, info, basepath):
     if key in info.filemap:
       return '<img src="%s">' % path.join(
-          info.directory, info.filemap[key])
+          basepath, info.filemap[key])
     return '-missing-'
-  return [CELL_PREFIX + _cell(key, info) for info in dir_infos]
+  return [CELL_PREFIX + _cell(key, dir_infos[i], basepaths[i])
+          for i in indices]
 
 
-def _get_desc(key_tuple, dir_infos):
+def _get_desc(key_tuple, dir_infos, basepaths):
   CELL_PREFIX = '<td class="desc">'
   def _get_filepath(cp):
     cp_key = tuple([cp])
-    for info in dir_infos:
+    for i in range(len(dir_infos)):
+      info = dir_infos[i]
       if cp_key in info.filemap:
-        return path.join(info.directory, info.filemap[cp_key])
+        basepath = basepaths[i]
+        return path.join(basepath, info.filemap[cp_key])
     return None
 
   def _get_part(cp):
@@ -98,19 +102,36 @@ def _get_name(key_tuple):
   return CELL_PREFIX + name
 
 
-def _generate_content(dir_infos):
-  """Generate an html table for the infos."""
+def _generate_content(basedir, dir_infos, limit):
+  """Generate an html table for the infos.  basedir is the parent directory
+  of the content, filenames will be made relative to this if underneath it,
+  else absolute. If limit is true and there are multiple dirs, limit the set of
+  sequences to those in the first dir."""
+
   lines = ['<table>']
   header_row = ['']
   header_row.extend([info.title for info in dir_infos])
   header_row.extend(['Description', 'Name'])
   lines.append('<th>'.join(header_row))
 
-  all_keys = _merge_keys([info.filemap for info in dir_infos])
+  basepaths = []
+  abs_basedir = path.abspath(path.expanduser(basedir))
+  for filedir, _, _ in dir_infos:
+    abs_filedir = path.abspath(path.expanduser(filedir))
+    if abs_filedir.startswith(abs_basedir):
+      dirspec = abs_filedir[len(abs_basedir) + 1:]
+    else:
+      dirspec = abs_filedir
+    basepaths.append(dirspec)
+
+  if len(dir_infos) == 1 or limit:
+    all_keys = frozenset(dir_infos[0].filemap.keys())
+  else:
+    all_keys = _merge_keys([info.filemap for info in dir_infos])
   for key in sorted(all_keys):
     row = []
-    row.extend(_generate_row_cells(key, dir_infos))
-    row.append(_get_desc(key, dir_infos))
+    row.extend(_generate_row_cells(key, dir_infos, basepaths))
+    row.append(_get_desc(key, dir_infos, basepaths))
     row.append(_get_name(key))
     lines.append(''.join(row))
   return '\n  <tr>'.join(lines) + '\n</table>'
@@ -188,7 +209,7 @@ def _get_dir_infos(
   infos = []
   for i in range(count):
     image_dir = image_dirs[i]
-    title = titles[i] or path.basename(path.normpath(image_dir))
+    title = titles[i] or path.basename(path.abspath(image_dir))
     ext = exts[i] or default_ext
     prefix = prefixes[i] or default_prefix
     filemap = _get_image_data(image_dir, ext, prefix)
@@ -230,15 +251,16 @@ TEMPLATE = """<!DOCTYPE html>
 """
 
 STYLE = """
-      tbody { background-color: rgb(210, 210, 210) }
-      tbody img { width: 64px; height: 64px }
-      tbody .desc { font-size: 20pt; font-weight: bold }
-      tbody .desc img { vertical-align: middle; width: 32px; height: 32px }
-      tbody .name { background-color: white }
+      tbody { background-color: rgb(110, 110, 110) }
+      th { background-color: rgb(210, 210, 210) }
+      td img { width: 64px; height: 64px }
+      td.desc { font-size: 20pt; font-weight: bold; background-color: rgb(210, 210, 210) }
+      td.desc img { vertical-align: middle; width: 32px; height: 32px }
+      td.name { background-color: white }
 """
 
-def write_html_page(filename, page_title, dir_infos):
-  content = _generate_content(dir_infos)
+def write_html_page(filename, page_title, dir_infos, limit):
+  content = _generate_content(path.dirname(filename), dir_infos, limit)
   text = _instantiate_template(
       TEMPLATE, {'title': page_title, 'style': STYLE, 'content': content})
   with codecs.open(filename, 'w', 'utf-8') as f:
@@ -264,6 +286,9 @@ def main():
       '-t', '--titles', help='title, one per image dir', metavar='title',
       nargs='*'),
   parser.add_argument(
+      '-l', '--limit', help='limit to only sequences supported by first set',
+      action='store_true')
+  parser.add_argument(
       '-de', '--default_ext', help='default extension', metavar='ext',
       default=_default_ext)
   parser.add_argument(
@@ -272,15 +297,15 @@ def main():
 
   args = parser.parse_args()
   file_parts = path.splitext(args.filename)
-  if file_parts[1] != 'html':
+  if file_parts[1] != '.html':
     args.filename = file_parts[0] + '.html'
     print 'added .html extension to filename:\n%s' % args.filename
 
   dir_infos = _get_dir_infos(
-      args.image_dirs, args.exts, args.prefixes, args.titles, args.default_ext,
-      args.default_prefix)
+      args.image_dirs, args.exts, args.prefixes, args.titles,
+      args.default_ext, args.default_prefix)
 
-  write_html_page(args.filename, args.page_title, dir_infos)
+  write_html_page(args.filename, args.page_title, dir_infos, args.limit)
 
 
 if __name__ == "__main__":
