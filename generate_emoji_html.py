@@ -49,7 +49,7 @@ def _merge_keys(dicts):
     keys.extend(d.keys())
   return frozenset(keys)
 
-def _generate_row_cells(key, dir_infos, basepaths):
+def _generate_row_cells(key, font, dir_infos, basepaths):
   CELL_PREFIX = '<td>'
   indices = range(len(basepaths))
   def _cell(key, info, basepath):
@@ -57,8 +57,25 @@ def _generate_row_cells(key, dir_infos, basepaths):
       return '<img src="%s">' % path.join(
           basepath, info.filemap[key])
     return '-missing-'
-  return [CELL_PREFIX + _cell(key, dir_infos[i], basepaths[i])
-          for i in indices]
+  def _text_cell(key, text_dir):
+    def _cp_seq(cp):
+      if cp in [ord('*'), 0x2640, 0x2642, 0x2695]:
+        return unichr(cp) + unichr(0xfe0f)
+      else:
+        return unichr(cp)
+    text = ''.join(_cp_seq(cp) for cp in key)
+    return '<span class="efont" dir="%s">%s</span>' % (text_dir, text)
+
+  if font:
+    row_cells = [
+        CELL_PREFIX + _text_cell(key, text_dir)
+        for text_dir in ('ltr', 'rtl')]
+  else:
+    row_cells = []
+  row_cells.extend(
+      [CELL_PREFIX + _cell(key, dir_infos[i], basepaths[i])
+       for i in indices])
+  return row_cells
 
 
 def _get_desc(key_tuple, dir_infos, basepaths):
@@ -102,14 +119,17 @@ def _get_name(key_tuple):
   return CELL_PREFIX + name
 
 
-def _generate_content(basedir, dir_infos, limit):
+def _generate_content(basedir, font, dir_infos, limit):
   """Generate an html table for the infos.  basedir is the parent directory
   of the content, filenames will be made relative to this if underneath it,
   else absolute. If limit is true and there are multiple dirs, limit the set of
-  sequences to those in the first dir."""
+  sequences to those in the first dir.  If font is not none, generate columns
+  for the text rendered in the font before other columns."""
 
   lines = ['<table>']
   header_row = ['']
+  if font:
+    header_row.extend(['Emoji ltr', 'Emoji rtl'])
   header_row.extend([info.title for info in dir_infos])
   header_row.extend(['Description', 'Name'])
   lines.append('<th>'.join(header_row))
@@ -130,7 +150,7 @@ def _generate_content(basedir, dir_infos, limit):
     all_keys = _merge_keys([info.filemap for info in dir_infos])
   for key in sorted(all_keys):
     row = []
-    row.extend(_generate_row_cells(key, dir_infos, basepaths))
+    row.extend(_generate_row_cells(key, font, dir_infos, basepaths))
     row.append(_get_desc(key, dir_infos, basepaths))
     row.append(_get_name(key))
     lines.append(''.join(row))
@@ -241,7 +261,7 @@ TEMPLATE = """<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>{{title}}</title>
+    <title>{{title}}</title>{{font-face-style}}
     <style>{{style}}</style>
   </head>
   <body>
@@ -259,10 +279,21 @@ STYLE = """
       td.name { background-color: white }
 """
 
-def write_html_page(filename, page_title, dir_infos, limit):
-  content = _generate_content(path.dirname(filename), dir_infos, limit)
+def write_html_page(filename, page_title, font, dir_infos, limit):
+  content = _generate_content(path.dirname(filename), font, dir_infos, limit)
+  N_STYLE = STYLE
+  if font:
+    FONT_FACE_STYLE = """
+    <style>@font-face {
+      font-family: "Emoji"; src: url("%s");
+    }</style>""" % font
+    N_STYLE += '      span.efont { font-family: "Emoji"; font-size:32pt }\n'
+  else:
+    FONT_FACE_STYLE = ''
   text = _instantiate_template(
-      TEMPLATE, {'title': page_title, 'style': STYLE, 'content': content})
+      TEMPLATE, {
+          'title': page_title, 'font-face-style': FONT_FACE_STYLE,
+          'style': N_STYLE, 'content': content})
   with codecs.open(filename, 'w', 'utf-8') as f:
     f.write(text)
 
@@ -294,6 +325,8 @@ def main():
   parser.add_argument(
       '-dp', '--default_prefix', help='default prefix', metavar='prefix',
       default=_default_prefix)
+  parser.add_argument(
+      '-f', '--font', help='emoji font', metavar='font')
 
   args = parser.parse_args()
   file_parts = path.splitext(args.filename)
@@ -305,7 +338,8 @@ def main():
       args.image_dirs, args.exts, args.prefixes, args.titles,
       args.default_ext, args.default_prefix)
 
-  write_html_page(args.filename, args.page_title, dir_infos, args.limit)
+  write_html_page(
+      args.filename, args.page_title, args.font, dir_infos, args.limit)
 
 
 if __name__ == "__main__":
