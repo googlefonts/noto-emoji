@@ -17,6 +17,10 @@ import add_emoji_gsub
 def is_vs(cp):
         return cp >= 0xfe00 and cp <= 0xfe0f
 
+def is_fitzpatrick(gname):
+        cp = int(gname[1:], 16)
+        return 0x1f3fb <= cp <= 0x1f3ff
+
 def codes_to_string(codes):
 	if "_" in codes:
 		pieces = codes.split ("_")
@@ -147,10 +151,19 @@ glyph_names = set()
 ligatures = {}
 
 def add_lig_sequence(ligatures, seq, n):
-        # Assume sequences with ZWJ are emoji 'ligatures' and rtl order
-        # is also valid.  Internal permutations, though, no.
-        # We associate a sequence with a filename.  We can overwrite the
-        # sequence with a different filename later.
+        # We have emoji sequences using regional indicator symbols,
+        # ZWJ, fitzpatrick modifiers, and combinations of ZWJ and fitzpatrick
+        # modifiers.  Currently, Harfbuzz special-cases the fitzpatrick
+        # modifiers to treat them as combining marks instead of as Other
+        # Neutral, which unicode says they are, and processes them
+        # in visual order (at least in some circumstances).  So to handle
+        # emoji sequences in an RTL context we need GSUB sequences that match
+        # this order.
+        # Regional indicator symbols are LTR, and emoji+fitzpatrick are
+        # effectively LTR, so we only reorder sequences with ZWJ.  If however
+        # the ZWJ sequence has fitzpatrick modifiers, those need to still follow
+        # the emoji they logically follow, so simply reversing the sequence
+        # doesn't work.  This code assumes the lig sequence is valid.
         tseq = tuple(seq)
         if tseq in ligatures:
                 print 'lig sequence %s, replace %s with %s' % (
@@ -159,6 +172,12 @@ def add_lig_sequence(ligatures, seq, n):
         if 'u200D' in seq:
                 rev_seq = seq[:]
                 rev_seq.reverse()
+                for i in xrange(1, len(rev_seq)):
+                  if is_fitzpatrick(rev_seq[i - 1]):
+                    tmp = rev_seq[i]
+                    rev_seq[i] = rev_seq[i-1]
+                    rev_seq[i-1] = tmp
+
                 trseq = tuple(rev_seq)
                 # if trseq in ligatures:
                 #        print 'rev lig sequence %s, replace %s with %s' % (
