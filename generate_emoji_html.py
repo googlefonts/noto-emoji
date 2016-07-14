@@ -59,7 +59,8 @@ def _generate_row_cells(key, font, dir_infos, basepaths):
     return '-missing-'
   def _text_cell(key, text_dir):
     def _cp_seq(cp):
-      if cp in [ord('*'), 0x2640, 0x2642, 0x2695]:
+      # comment this out for now
+      if False and cp in [ord('*'), 0x2640, 0x2642, 0x2695]:
         return unichr(cp) + unichr(0xfe0f)
       else:
         return unichr(cp)
@@ -109,7 +110,7 @@ def _get_desc(key_tuple, dir_infos, basepaths):
 def _get_name(key_tuple):
   CELL_PREFIX = '<td class="name">'
   if len(key_tuple) != 1:
-    name = ''
+    name = '(' + ' '.join('U+%04X' % cp for cp in key_tuple) + ')'
   else:
     cp = key_tuple[0]
     if cp in unicode_data.proposed_emoji_cps():
@@ -261,7 +262,7 @@ TEMPLATE = """<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>{{title}}</title>{{font-face-style}}
+    <title>{{title}}</title>{{fontFaceStyle}}
     <style>{{style}}</style>
   </head>
   <body>
@@ -292,7 +293,7 @@ def write_html_page(filename, page_title, font, dir_infos, limit):
     FONT_FACE_STYLE = ''
   text = _instantiate_template(
       TEMPLATE, {
-          'title': page_title, 'font-face-style': FONT_FACE_STYLE,
+          'title': page_title, 'fontFaceStyle': FONT_FACE_STYLE,
           'style': N_STYLE, 'content': content})
   with codecs.open(filename, 'w', 'utf-8') as f:
     f.write(text)
@@ -301,7 +302,8 @@ def write_html_page(filename, page_title, font, dir_infos, limit):
 def main():
   parser = argparse.ArgumentParser()
   parser.add_argument(
-      'filename', help='path to output file', metavar='filename')
+      '-o', '--outfile', help='path to output file', metavar='file',
+      required=True)
   parser.add_argument(
       '--page_title', help='page title', metavar='title', default='Emoji Table')
   parser.add_argument(
@@ -329,17 +331,17 @@ def main():
       '-f', '--font', help='emoji font', metavar='font')
 
   args = parser.parse_args()
-  file_parts = path.splitext(args.filename)
+  file_parts = path.splitext(args.outfile)
   if file_parts[1] != '.html':
-    args.filename = file_parts[0] + '.html'
-    print 'added .html extension to filename:\n%s' % args.filename
+    args.outfile = file_parts[0] + '.html'
+    print 'added .html extension to filename:\n%s' % args.outfile
 
   dir_infos = _get_dir_infos(
       args.image_dirs, args.exts, args.prefixes, args.titles,
       args.default_ext, args.default_prefix)
 
   write_html_page(
-      args.filename, args.page_title, args.font, dir_infos, args.limit)
+      args.outfile, args.page_title, args.font, dir_infos, args.limit)
 
 
 if __name__ == "__main__":
