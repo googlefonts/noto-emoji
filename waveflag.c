@@ -36,7 +36,7 @@ static cairo_path_t *wave_path_create(void) {
   cairo_t *cr = cairo_create(surface);
   cairo_path_t *path;
 
-  cairo_scale(cr, SCALE, SCALE);
+  cairo_scale(cr, SIZE/128.*SCALE, SIZE/128.*SCALE);
 
   cairo_move_to(cr, 127.15, 81.52);
   cairo_rel_line_to(cr, -20.51, -66.94);
@@ -82,7 +82,7 @@ static struct { double x, y; } mesh_points[] = {
 
 static cairo_pattern_t *wave_mesh_create(void) {
   cairo_pattern_t *pattern = cairo_pattern_create_mesh();
-  cairo_matrix_t scale_matrix = {1./SCALE, 0, 0, 1./SCALE, 0, 0};
+  cairo_matrix_t scale_matrix = {128./SIZE/SCALE, 0, 0, 128./SIZE/SCALE, 0, 0};
   cairo_pattern_set_matrix(pattern, &scale_matrix);
   cairo_mesh_pattern_begin_patch(pattern);
 
@@ -311,7 +311,7 @@ static void wave_flag(const char *input_filename, const char *output_filename) {
   if (debug) {
     /* Draw mesh points. */
     cairo_save(cr);
-    cairo_scale(cr, SCALE, SCALE);
+    cairo_scale(cr, SIZE/128.*SCALE, SIZE/128.*SCALE);
     cairo_set_source_rgba(cr, .5, .0, .0, .9);
     cairo_set_line_cap(cr, CAIRO_LINE_CAP_ROUND);
     for (unsigned int i = 0;
