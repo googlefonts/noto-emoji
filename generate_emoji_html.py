@@ -107,8 +107,11 @@ def _get_desc(key_tuple, dir_infos, basepaths):
   return CELL_PREFIX + desc
 
 
-def _get_name(key_tuple):
-  CELL_PREFIX = '<td class="name">'
+def _get_name(key_tuple, annotated_tuples):
+  CELL_PREFIX = '<td class="%s">' % (
+      'name' if annotated_tuples is None or key_tuple not in annotated_tuples
+      else 'aname')
+
   if len(key_tuple) != 1:
     name = '(' + ' '.join('U+%04X' % cp for cp in key_tuple) + ')'
   else:
@@ -120,12 +123,13 @@ def _get_name(key_tuple):
   return CELL_PREFIX + name
 
 
-def _generate_content(basedir, font, dir_infos, limit):
+def _generate_content(basedir, font, dir_infos, limit, annotate):
   """Generate an html table for the infos.  basedir is the parent directory
   of the content, filenames will be made relative to this if underneath it,
   else absolute. If limit is true and there are multiple dirs, limit the set of
   sequences to those in the first dir.  If font is not none, generate columns
-  for the text rendered in the font before other columns."""
+  for the text rendered in the font before other columns.  if annotate is
+  not none, highlight sequences that appear in this set."""
 
   lines = ['<table>']
   header_row = ['']
@@ -153,7 +157,7 @@ def _generate_content(basedir, font, dir_infos, limit):
     row = []
     row.extend(_generate_row_cells(key, font, dir_infos, basepaths))
     row.append(_get_desc(key, dir_infos, basepaths))
-    row.append(_get_name(key))
+    row.append(_get_name(key, annotate))
     lines.append(''.join(row))
   return '\n  <tr>'.join(lines) + '\n</table>'
 
@@ -238,6 +242,20 @@ def _get_dir_infos(
   return infos
 
 
+def _parse_annotation_file(afile):
+  annotations = set()
+  line_re = re.compile(r'([0-9a-f ]+)')
+  with open(afile, 'r') as f:
+    for line in f:
+      line = line.strip()
+      if not line or line[0] == '#':
+        continue
+      m = line_re.match(line)
+      if m:
+        annotations.add(tuple([int(s, 16) for s in m.group(1).split()]))
+  return frozenset(annotations)
+
+
 def _instantiate_template(template, arg_dict):
   id_regex = re.compile('{{([a-zA-Z0-9_]+)}}')
   ids = set(m.group(1) for m in id_regex.finditer(template))
@@ -278,10 +296,12 @@ STYLE = """
       td.desc { font-size: 20pt; font-weight: bold; background-color: rgb(210, 210, 210) }
       td.desc img { vertical-align: middle; width: 32px; height: 32px }
       td.name { background-color: white }
+      td.aname { background-color: rgb(250, 65, 75) }
 """
 
-def write_html_page(filename, page_title, font, dir_infos, limit):
-  content = _generate_content(path.dirname(filename), font, dir_infos, limit)
+def write_html_page(filename, page_title, font, dir_infos, limit, annotate):
+  content = _generate_content(
+      path.dirname(filename), font, dir_infos, limit, annotate)
   N_STYLE = STYLE
   if font:
     FONT_FACE_STYLE = """
@@ -329,6 +349,9 @@ def main():
       default=_default_prefix)
   parser.add_argument(
       '-f', '--font', help='emoji font', metavar='font')
+  parser.add_argument(
+      '-a', '--annotate', help='file listing sequences to annotate',
+      metavar='file')
 
   args = parser.parse_args()
   file_parts = path.splitext(args.outfile)
@@ -336,12 +359,18 @@ def main():
     args.outfile = file_parts[0] + '.html'
     print 'added .html extension to filename:\n%s' % args.outfile
 
+  if args.annotate:
+    annotations = _parse_annotation_file(args.annotate)
+  else:
+    annotations = None
+
   dir_infos = _get_dir_infos(
       args.image_dirs, args.exts, args.prefixes, args.titles,
       args.default_ext, args.default_prefix)
 
   write_html_page(
-      args.outfile, args.page_title, args.font, dir_infos, args.limit)
+      args.outfile, args.page_title, args.font, dir_infos, args.limit,
+      annotations)
 
 
 if __name__ == "__main__":
