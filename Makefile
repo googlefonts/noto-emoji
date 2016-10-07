@@ -16,7 +16,7 @@ EMOJI = NotoColorEmoji
 font: $(EMOJI).ttf
 
 CFLAGS = -std=c99 -Wall -Wextra `pkg-config --cflags --libs cairo`
-LDFLAGS = `pkg-config --libs cairo`
+LDFLAGS = -lm `pkg-config --libs cairo`
 PNGQUANTDIR := third_party/pngquant
 PNGQUANT := $(PNGQUANTDIR)/pngquant
 PNGQUANTFLAGS = --speed 1 --skip-if-larger --force
