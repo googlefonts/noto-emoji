@@ -17,6 +17,7 @@
  */
 
 #include <cairo.h>
+#include <libgen.h> // basename
 #include <math.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -269,7 +270,7 @@ wave_flag (const char *filename, const char *out_prefix)
 	cairo_surface_t *scaled_flag, *waved_flag;
 	cairo_t *cr;
 
-	printf ("Processing %s\n", filename);
+	if (debug) printf ("Processing %s\n", filename);
 
 	scaled_flag = load_scaled_flag (filename, &aspect);
 
@@ -277,7 +278,7 @@ wave_flag (const char *filename, const char *out_prefix)
 	aspect = sqrt (aspect); // Discount the effect
 	if (.9 <= aspect && aspect <= 1.1)
 	{
-		printf ("Standard aspect ratio\n");
+                if (debug) printf ("Standard aspect ratio\n");
 		aspect = 1.;
 	}
 
@@ -335,7 +336,7 @@ wave_flag (const char *filename, const char *out_prefix)
 	}
 	else
 	{
-		printf ("Transparent border\n");
+                if (debug) printf ("Transparent border\n");
 		cairo_new_path (cr);
 	}
 
@@ -410,7 +411,7 @@ wave_flag (const char *filename, const char *out_prefix)
 
 	*out = '\0';
 	strcat (out, out_prefix);
-	strcat (out, filename);
+	strcat (out, basename(filename));
 
 	cairo_surface_write_to_png (cairo_get_target (cr), out);
 	cairo_destroy (cr);

@@ -152,7 +152,7 @@ $(EMOJI_DIR)/%.png: $(EMOJI_SRC_DIR)/%.png | $(EMOJI_DIR)
 	@convert -extent 136x128 -gravity center -background none "$<" "$@"
 
 $(FLAGS_DIR)/%.png: $(FLAGS_SRC_DIR)/%.png ./waveflag $(PNGQUANT) | $(FLAGS_DIR)
-	@./waveflag "$<" "$@"
+	@./waveflag $(FLAGS_DIR)/ "$<"
 
 $(RESIZED_FLAGS_DIR)/%.png: $(FLAGS_DIR)/%.png | $(RESIZED_FLAGS_DIR)
 	@convert -extent 136x128 -gravity center -background none "$<" "$@"
