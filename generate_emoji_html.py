@@ -24,8 +24,10 @@ import argparse
 import codecs
 import collections
 import glob
+import os
 from os import path
 import re
+import shutil
 import sys
 from nototools import unicode_data
 
@@ -80,7 +82,7 @@ def _generate_row_cells(key, font, dir_infos, basepaths):
 
 
 def _get_desc(key_tuple, dir_infos, basepaths):
-  CELL_PREFIX = '<td class="desc">'
+  CELL_PREFIX = '<td>'
   def _get_filepath(cp):
     cp_key = tuple([cp])
     for i in range(len(dir_infos)):
@@ -108,9 +110,9 @@ def _get_desc(key_tuple, dir_infos, basepaths):
 
 
 def _get_name(key_tuple, annotated_tuples):
-  CELL_PREFIX = '<td class="%s">' % (
-      'name' if annotated_tuples is None or key_tuple not in annotated_tuples
-      else 'aname')
+  CELL_PREFIX = '<td%s>' % (
+      '' if annotated_tuples is None or key_tuple not in annotated_tuples
+      else ' class="aname"')
 
   if len(key_tuple) != 1:
     name = '(' + ' '.join('U+%04X' % cp for cp in key_tuple) + ')'
@@ -123,13 +125,89 @@ def _get_name(key_tuple, annotated_tuples):
   return CELL_PREFIX + name
 
 
-def _generate_content(basedir, font, dir_infos, limit, annotate):
+def _collect_aux_info(dir_infos, all_keys):
+  """Returns a map from dir_info_index to a set of keys of additional images
+  that we will take from the directory at that index."""
+
+  target_key_to_info_index = {}
+  for key in all_keys:
+    if len(key) == 1:
+      continue
+    for cp in key:
+      target_key = tuple([cp])
+      if target_key in all_keys or target_key in target_key_to_info_index:
+        continue
+      for i, info in enumerate(dir_infos):
+        if target_key in info.filemap:
+          target_key_to_info_index[target_key] = i
+          break
+      if target_key not in target_key_to_info_index:
+        # we shouldn't try to use it in the description.  maybe report this?
+        pass
+
+  # now we need to invert the map
+  aux_info = collections.defaultdict(set)
+  for key, index in target_key_to_info_index.iteritems():
+    aux_info[index].add(key)
+
+  return aux_info
+
+
+def _generate_content(basedir, font, dir_infos, limit, annotate, standalone):
   """Generate an html table for the infos.  basedir is the parent directory
   of the content, filenames will be made relative to this if underneath it,
   else absolute. If limit is true and there are multiple dirs, limit the set of
   sequences to those in the first dir.  If font is not none, generate columns
   for the text rendered in the font before other columns.  if annotate is
   not none, highlight sequences that appear in this set."""
+
+  if len(dir_infos) == 1 or limit:
+    all_keys = frozenset(dir_infos[0].filemap.keys())
+  else:
+    all_keys = _merge_keys([info.filemap for info in dir_infos])
+
+  basedir = path.abspath(path.expanduser(basedir))
+  if not path.isdir(basedir):
+    os.makedirs(basedir)
+
+  basepaths = []
+
+  if standalone:
+    # auxiliary images are used in the decomposition of multi-part emoji but
+    # aren't part of main set.  e.g. if we have female basketball player
+    # color-3 we want female, basketball player, and color-3 images available
+    # even if they aren't part of the target set.
+    aux_info = _collect_aux_info(dir_infos, all_keys)
+
+    # create image subdirectories in target dir, copy image files to them,
+    # and adjust paths
+    for i, info in enumerate(dir_infos):
+      subdir = '%02d' % i
+      dstdir = path.join(basedir, subdir)
+      if not path.isdir(dstdir):
+        os.mkdir(dstdir)
+
+      aux_keys = aux_info[i]
+      copy_keys = all_keys if not aux_keys else (all_keys | aux_keys)
+      srcdir = info.directory
+      filemap = info.filemap
+      for key in copy_keys:
+        if key in filemap:
+          filename = filemap[key]
+          srcfile = path.join(srcdir, filename)
+          dstfile = path.join(dstdir, filename)
+          shutil.copy2(srcfile, dstfile)
+      basepaths.append(subdir)
+  else:
+    for srcdir, _, _ in dir_infos:
+      abs_srcdir = path.abspath(path.expanduser(srcdir))
+      if abs_srcdir == basedir:
+        dirspec = ''
+      elif abs_srcdir.startswith(basedir):
+        dirspec = abs_filedir[len(abs_basedir) + 1:]
+      else:
+        dirspec = abs_filedir
+      basepaths.append(dirspec)
 
   lines = ['<table>']
   header_row = ['']
@@ -139,20 +217,6 @@ def _generate_content(basedir, font, dir_infos, limit, annotate):
   header_row.extend(['Description', 'Name'])
   lines.append('<th>'.join(header_row))
 
-  basepaths = []
-  abs_basedir = path.abspath(path.expanduser(basedir))
-  for filedir, _, _ in dir_infos:
-    abs_filedir = path.abspath(path.expanduser(filedir))
-    if abs_filedir.startswith(abs_basedir):
-      dirspec = abs_filedir[len(abs_basedir) + 1:]
-    else:
-      dirspec = abs_filedir
-    basepaths.append(dirspec)
-
-  if len(dir_infos) == 1 or limit:
-    all_keys = frozenset(dir_infos[0].filemap.keys())
-  else:
-    all_keys = _merge_keys([info.filemap for info in dir_infos])
   for key in sorted(all_keys):
     row = []
     row.extend(_generate_row_cells(key, font, dir_infos, basepaths))
@@ -293,15 +357,20 @@ STYLE = """
       tbody { background-color: rgb(110, 110, 110) }
       th { background-color: rgb(210, 210, 210) }
       td img { width: 64px; height: 64px }
-      td.desc { font-size: 20pt; font-weight: bold; background-color: rgb(210, 210, 210) }
-      td.desc img { vertical-align: middle; width: 32px; height: 32px }
-      td.name { background-color: white }
+      td:nth-last-of-type(2) {
+         font-size: 20pt; font-weight: bold; background-color: rgb(210, 210, 210)
+      }
+      td:nth-last-of-type(2) img {
+         vertical-align: middle; width: 32px; height: 32px
+      }
+      td:last-of-type { background-color: white }
       td.aname { background-color: rgb(250, 65, 75) }
 """
 
-def write_html_page(filename, page_title, font, dir_infos, limit, annotate):
+def write_html_page(
+    filename, page_title, font, dir_infos, limit, annotate, standalone):
   content = _generate_content(
-      path.dirname(filename), font, dir_infos, limit, annotate)
+      path.dirname(filename), font, dir_infos, limit, annotate, standalone)
   N_STYLE = STYLE
   if font:
     FONT_FACE_STYLE = """
@@ -352,6 +421,9 @@ def main():
   parser.add_argument(
       '-a', '--annotate', help='file listing sequences to annotate',
       metavar='file')
+  parser.add_argument(
+      '-s', '--standalone', help='copy resources used by html under target dir',
+      action='store_true')
 
   args = parser.parse_args()
   file_parts = path.splitext(args.outfile)
@@ -370,7 +442,7 @@ def main():
 
   write_html_page(
       args.outfile, args.page_title, args.font, dir_infos, args.limit,
-      annotations)
+      annotations, args.standalone)
 
 
 if __name__ == "__main__":
