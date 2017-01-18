@@ -204,9 +204,9 @@ def _generate_content(basedir, font, dir_infos, limit, annotate, standalone):
       if abs_srcdir == basedir:
         dirspec = ''
       elif abs_srcdir.startswith(basedir):
-        dirspec = abs_filedir[len(abs_basedir) + 1:]
+        dirspec = abs_srcdir[len(basedir) + 1:]
       else:
-        dirspec = abs_filedir
+        dirspec = abs_srcdir
       basepaths.append(dirspec)
 
   lines = ['<table>']
