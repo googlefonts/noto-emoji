@@ -26,6 +26,9 @@ import sys
 
 from nototools import unicode_data
 
+ZWJ = 0x200d
+EMOJI_VS = 0xfe0f
+
 def _is_regional_indicator(cp):
   return 0x1f1e6 <= cp <= 0x1f1ff
 
@@ -128,9 +131,45 @@ def _check_skintone(sorted_seq_to_filepath):
           base_to_modifiers[cp] = set()
   for cp, modifiers in sorted(base_to_modifiers.iteritems()):
     if len(modifiers) != 5:
-      print 'emoji base %04x has %d modifiers defined (%s) in %s' % (
+      print >> sys.stderr, 'emoji base %04x has %d modifiers defined (%s) in %s' % (
           cp, len(modifiers),
           ', '.join('%04x' % cp for cp in sorted(modifiers)), fp)
+
+
+def _check_zwj_sequences(seq_to_filepath):
+  """Verify that zwj sequences are valid."""
+  zwj_sequence_to_type = unicode_data.get_emoji_zwj_sequences()
+  # strip emoji variant selectors and add these back in
+  zwj_sequence_without_vs_to_type_canonical = {}
+  for seq, seq_type in zwj_sequence_to_type.iteritems():
+    if EMOJI_VS in seq:
+      stripped_seq = tuple(s for s in seq if s != EMOJI_VS)
+      zwj_sequence_without_vs_to_type_canonical[stripped_seq] = (seq_type, seq)
+
+  zwj_seq_to_filepath = {
+      seq: fp for seq, fp in seq_to_filepath.iteritems()
+      if ZWJ in seq}
+
+  for seq, fp in zwj_seq_to_filepath.iteritems():
+    if seq not in zwj_sequence_to_type:
+      if seq not in zwj_sequence_without_vs_to_type_canonical:
+        print >> sys.stderr, 'zwj sequence not defined: %s' % fp
+      else:
+        _, can = zwj_sequence_without_vs_to_type_canonical[seq]
+        print >> sys.stderr, 'canonical sequence %s contains vs: %s' % (
+            _seq_string(can), fp)
+
+  # check that all zwj sequences are covered
+  for seq in zwj_seq_to_filepath:
+    if seq in zwj_sequence_to_type:
+      del zwj_sequence_to_type[seq]
+    elif seq in zwj_sequence_without_vs_to_type_canonical:
+      canon_seq = zwj_sequence_without_vs_to_type_canonical[seq][1]
+      del zwj_sequence_to_type[canon_seq]
+  if zwj_sequence_to_type:
+    print >> sys.stderr, 'missing %d zwj sequences' % len(zwj_sequence_to_type)
+    for seq, seq_type in sorted(zwj_sequence_to_type.items()):
+      print >> sys.stderr, '  %s: %s' % (_seq_string(seq), seq_type)
 
 
 def check_sequence_to_filepath(seq_to_filepath):
@@ -140,6 +179,7 @@ def check_sequence_to_filepath(seq_to_filepath):
   _check_zwj(sorted_seq_to_filepath)
   _check_flags(sorted_seq_to_filepath)
   _check_skintone(sorted_seq_to_filepath)
+  _check_zwj_sequences(sorted_seq_to_filepath)
 
 
 def create_sequence_to_filepath(name_to_dirpath, prefix, suffix):
