@@ -51,7 +51,7 @@ def _merge_keys(dicts):
     keys.extend(d.keys())
   return frozenset(keys)
 
-def _generate_row_cells(key, font, dir_infos, basepaths):
+def _generate_row_cells(key, font, dir_infos, basepaths, colors):
   CELL_PREFIX = '<td>'
   indices = range(len(basepaths))
   def _cell(key, info, basepath):
@@ -78,6 +78,10 @@ def _generate_row_cells(key, font, dir_infos, basepaths):
   row_cells.extend(
       [CELL_PREFIX + _cell(key, dir_infos[i], basepaths[i])
        for i in indices])
+  if len(colors) > 1:
+    ix = indices[-1]
+    extension = CELL_PREFIX + _cell(key, dir_infos[ix], basepaths[ix])
+    row_cells.extend([extension] * (len(colors) - 1))
   return row_cells
 
 
@@ -153,7 +157,8 @@ def _collect_aux_info(dir_infos, all_keys):
   return aux_info
 
 
-def _generate_content(basedir, font, dir_infos, limit, annotate, standalone):
+def _generate_content(
+    basedir, font, dir_infos, limit, annotate, standalone, colors):
   """Generate an html table for the infos.  basedir is the parent directory
   of the content, filenames will be made relative to this if underneath it,
   else absolute. If limit is true and there are multiple dirs, limit the set of
@@ -214,12 +219,14 @@ def _generate_content(basedir, font, dir_infos, limit, annotate, standalone):
   if font:
     header_row.extend(['Emoji ltr', 'Emoji rtl'])
   header_row.extend([info.title for info in dir_infos])
+  if len(colors) > 1:
+    header_row.extend([dir_infos[-1].title] * (len(colors) - 1))
   header_row.extend(['Description', 'Name'])
   lines.append('<th>'.join(header_row))
 
   for key in sorted(all_keys):
     row = []
-    row.extend(_generate_row_cells(key, font, dir_infos, basepaths))
+    row.extend(_generate_row_cells(key, font, dir_infos, basepaths, colors))
     row.append(_get_desc(key, dir_infos, basepaths))
     row.append(_get_name(key, annotate))
     lines.append(''.join(row))
@@ -368,9 +375,11 @@ STYLE = """
 """
 
 def write_html_page(
-    filename, page_title, font, dir_infos, limit, annotate, standalone):
+    filename, page_title, font, dir_infos, limit, annotate, standalone,
+    colors):
   content = _generate_content(
-      path.dirname(filename), font, dir_infos, limit, annotate, standalone)
+      path.dirname(filename), font, dir_infos, limit, annotate, standalone,
+      colors)
   N_STYLE = STYLE
   if font:
     FONT_FACE_STYLE = """
@@ -380,6 +389,13 @@ def write_html_page(
     N_STYLE += '      span.efont { font-family: "Emoji"; font-size:32pt }\n'
   else:
     FONT_FACE_STYLE = ''
+  num_final_cols = len(colors)
+  col_colors = ['']
+  for i, color in enumerate(colors):
+    col_colors.append(
+        """td:nth-last-of-type(%d) { background-color: #%s }\n""" % (
+            2 + num_final_cols - i, color))
+  N_STYLE += '       '.join(col_colors)
   text = _instantiate_template(
       TEMPLATE, {
           'title': page_title, 'fontFaceStyle': FONT_FACE_STYLE,
@@ -424,6 +440,9 @@ def main():
   parser.add_argument(
       '-s', '--standalone', help='copy resources used by html under target dir',
       action='store_true')
+  parser.add_argument(
+      '-c', '--colors', help='list of colors for background', nargs='*',
+      metavar='hex')
 
   args = parser.parse_args()
   file_parts = path.splitext(args.outfile)
@@ -436,13 +455,20 @@ def main():
   else:
     annotations = None
 
+  if args.colors == None:
+    args.colors = ['6e6e6e']
+  elif not args.colors:
+    args.colors = """eceff1 f5f5f5 e4e7e9 d9dbdd 080808 263238 21272b 3c474c
+    4db6ac 80cbc4 5e35b1""".split()
+
+
   dir_infos = _get_dir_infos(
       args.image_dirs, args.exts, args.prefixes, args.titles,
       args.default_ext, args.default_prefix)
 
   write_html_page(
       args.outfile, args.page_title, args.font, dir_infos, args.limit,
-      annotations, args.standalone)
+      annotations, args.standalone, args.colors)
 
 
 if __name__ == "__main__":
