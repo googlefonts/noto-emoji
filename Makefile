@@ -168,10 +168,10 @@ flag-symlinks: $(RESIZED_FLAG_FILES) | $(RENAMED_FLAGS_DIR)
 $(RENAMED_FLAG_FILES): | flag-symlinks
 
 $(QUANTIZED_DIR)/%.png: $(RENAMED_FLAGS_DIR)/%.png $(PNGQUANT) | $(QUANTIZED_DIR)
-	$(PNGQUANT) $(PNGQUANTFLAGS) -o "$@" "$<"
+	@($(PNGQUANT) $(PNGQUANTFLAGS) -o "$@" "$<"; case "$$?" in "98") cp $< $@;; *) exit "$$?";; esac)
 
 $(QUANTIZED_DIR)/%.png: $(EMOJI_DIR)/%.png $(PNGQUANT) | $(QUANTIZED_DIR)
-	$(PNGQUANT) $(PNGQUANTFLAGS) -o "$@" "$<"
+	@($(PNGQUANT) $(PNGQUANTFLAGS) -o "$@" "$<"; case "$$?" in "98") cp $< $@;; *) exit "$$?";; esac)
 
 $(COMPRESSED_DIR)/%.png: $(QUANTIZED_DIR)/%.png | check_compress_tool $(COMPRESSED_DIR)
 ifdef MISSING_ZOPFLI
