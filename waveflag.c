@@ -17,7 +17,6 @@
  */
 
 #include <cairo.h>
-#include <libgen.h> // basename
 #include <math.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -34,17 +33,18 @@ static unsigned int debug;
 #define std_aspect (5./3.)
 #define top 21
 #define bot 128-top
-#define B 27
+#define B 21
+#define C 4
 static struct { double x, y; } mesh_points[] =
 {
-  {  1, top},
-  { 43, top-B},
-  { 85, top+B},
-  {127, top},
-  {127, bot},
-  { 85, bot+B},
-  { 43, bot-B},
-  {  1, bot},
+  {  1, top+C},
+  { 43, top-B+C},
+  { 85, top+B-C},
+  {127, top-C},
+  {127, bot-C},
+  { 85, bot+B-C},
+  { 43, bot-B+C},
+  {  1, bot+C},
 };
 #define M(i) \
 	x_aspect (mesh_points[i].x, aspect), \
@@ -138,9 +138,9 @@ static cairo_surface_t *
 load_scaled_flag (const char *filename, double *aspect)
 {
 	cairo_surface_t *flag = cairo_image_surface_create_from_png (filename);
+	cairo_surface_t *scaled = scale_flag (flag);
 	*aspect = (double) cairo_image_surface_get_width (flag) /
 		  (double) cairo_image_surface_get_height (flag);
-	cairo_surface_t *scaled = scale_flag (flag);
 	cairo_surface_destroy (flag);
 	return scaled;
 }
@@ -278,7 +278,7 @@ wave_flag (const char *filename, const char *out_prefix)
 	aspect = sqrt (aspect); // Discount the effect
 	if (.9 <= aspect && aspect <= 1.1)
 	{
-                if (debug) printf ("Standard aspect ratio\n");
+		if (debug) printf ("Standard aspect ratio\n");
 		aspect = 1.;
 	}
 
@@ -336,28 +336,24 @@ wave_flag (const char *filename, const char *out_prefix)
 	}
 	else
 	{
-                if (debug) printf ("Transparent border\n");
+		if (debug) printf ("Transparent border\n");
 		cairo_new_path (cr);
 	}
 
 	// Paint shade gradient
 	{
-		cairo_save (cr);
 		cairo_pattern_t *gradient = wave_mesh_create (aspect, 1);
+		cairo_pattern_t *w = cairo_pattern_create_for_surface (waved_flag);
+
+		cairo_save (cr);
 		cairo_set_source (cr, gradient);
 
-		if (border_transparent)
-		{
-			cairo_set_operator (cr, CAIRO_OPERATOR_ATOP);
-			cairo_paint_with_alpha (cr, .3);
-		}
-		else
-		{
-			cairo_set_operator (cr, CAIRO_OPERATOR_SOFT_LIGHT);
-			cairo_paint (cr);
-		}
+		cairo_set_operator (cr, CAIRO_OPERATOR_SOFT_LIGHT);
+		cairo_mask (cr, w);
 
 		cairo_restore (cr);
+
+		cairo_pattern_destroy (w);
 	}
 
 	if (debug)
@@ -411,6 +407,7 @@ wave_flag (const char *filename, const char *out_prefix)
 
 	*out = '\0';
 	strcat (out, out_prefix);
+        // diff from upstream. we call this a bit differently, filename might not be in cwd.
 	strcat (out, basename(filename));
 
 	cairo_surface_write_to_png (cairo_get_target (cr), out);
