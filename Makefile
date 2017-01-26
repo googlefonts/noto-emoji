@@ -70,7 +70,9 @@ SELECTED_FLAGS = AC AD AE AF AG AI AL AM AO AQ AR AS AT AU AW AX AZ \
 	VA VC VE VG VI VN VU \
 	WS \
 	YE \
-	ZA ZM ZW
+	ZA ZM ZW \
+        GB-ENG GB-SCT GB-WLS
+
 ALL_FLAGS = $(basename $(notdir $(wildcard $(FLAGS_SRC_DIR)/*.png)))
 
 FLAGS = $(SELECTED_FLAGS)
