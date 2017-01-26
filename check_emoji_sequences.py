@@ -26,6 +26,11 @@ import sys
 
 from nototools import unicode_data
 
+DATA_ROOT = path.dirname(path.abspath(__file__))
+
+ZWJ = 0x200d
+EMOJI_VS = 0xfe0f
+
 def _is_regional_indicator(cp):
   return 0x1f1e6 <= cp <= 0x1f1ff
 
@@ -36,6 +41,40 @@ def _is_skintone_modifier(cp):
 
 def _seq_string(seq):
   return '_'.join('%04x' % cp for cp in seq)
+
+def strip_vs(seq):
+  return tuple(cp for cp in seq if cp != EMOJI_VS)
+
+_namedata = None
+
+def seq_name(seq):
+  global _namedata
+
+  if not _namedata:
+    def strip_vs_map(seq_map):
+      return {
+          strip_vs(k): v
+          for k, v in seq_map.iteritems()}
+    _namedata = [
+        strip_vs_map(unicode_data.get_emoji_combining_sequences()),
+        strip_vs_map(unicode_data.get_emoji_flag_sequences()),
+        strip_vs_map(unicode_data.get_emoji_modifier_sequences()),
+        strip_vs_map(unicode_data.get_emoji_zwj_sequences()),
+        ]
+
+  if len(seq) == 1:
+    return unicode_data.name(seq[0], None)
+
+  for data in _namedata:
+    if seq in data:
+      return data[seq]
+  if EMOJI_VS in seq:
+    non_vs_seq = strip_vs(seq)
+    for data in _namedata:
+      if non_vs_seq in data:
+        return data[non_vs_seq]
+
+  return None
 
 
 def _check_valid_emoji(sorted_seq_to_filepath):
@@ -128,9 +167,141 @@ def _check_skintone(sorted_seq_to_filepath):
           base_to_modifiers[cp] = set()
   for cp, modifiers in sorted(base_to_modifiers.iteritems()):
     if len(modifiers) != 5:
-      print 'emoji base %04x has %d modifiers defined (%s) in %s' % (
+      print >> sys.stderr, 'emoji base %04x has %d modifiers defined (%s) in %s' % (
           cp, len(modifiers),
           ', '.join('%04x' % cp for cp in sorted(modifiers)), fp)
+
+
+def _check_zwj_sequences(seq_to_filepath):
+  """Verify that zwj sequences are valid."""
+  zwj_sequence_to_name = unicode_data.get_emoji_zwj_sequences()
+  # strip emoji variant selectors and add extra mappings
+  zwj_sequence_without_vs_to_name_canonical = {}
+  for seq, seq_name in zwj_sequence_to_name.iteritems():
+    if EMOJI_VS in seq:
+      stripped_seq = strip_vs(seq)
+      zwj_sequence_without_vs_to_name_canonical[stripped_seq] = (seq_name, seq)
+
+  zwj_seq_to_filepath = {
+      seq: fp for seq, fp in seq_to_filepath.iteritems()
+      if ZWJ in seq}
+
+  for seq, fp in zwj_seq_to_filepath.iteritems():
+    if seq not in zwj_sequence_to_name:
+      if seq not in zwj_sequence_without_vs_to_name_canonical:
+        print >> sys.stderr, 'zwj sequence not defined: %s' % fp
+      else:
+        _, can = zwj_sequence_without_vs_to_name_canonical[seq]
+        # print >> sys.stderr, 'canonical sequence %s contains vs: %s' % (
+        #     _seq_string(can), fp)
+
+def read_emoji_aliases():
+  result = {}
+
+  with open(path.join(DATA_ROOT, 'emoji_aliases.txt'), 'r') as f:
+    for line in f:
+      ix = line.find('#')
+      if (ix > -1):
+        line = line[:ix]
+      line = line.strip()
+      if not line:
+        continue
+      als, trg = (s.strip() for s in line.split(';'))
+      als_seq = tuple([int(x, 16) for x in als.split('_')])
+      try:
+        trg_seq = tuple([int(x, 16) for x in trg.split('_')])
+      except:
+        print 'cannot process alias %s -> %s' % (als, trg)
+        continue
+      result[als_seq] = trg_seq
+  return result
+
+
+def _check_coverage(seq_to_filepath):
+  age = 9.0
+
+  non_vs_to_canonical = {}
+  for k in seq_to_filepath:
+    if EMOJI_VS in k:
+      non_vs = strip_vs(k)
+      non_vs_to_canonical[non_vs] = k
+
+  aliases = read_emoji_aliases()
+  for k, v in sorted(aliases.items()):
+    if v not in seq_to_filepath and v not in non_vs_to_canonical:
+      print 'alias %s missing target %s' % (_seq_string(k), _seq_string(v))
+      continue
+    if k in seq_to_filepath or k in non_vs_to_canonical:
+      print 'alias %s already exists as %s (%s)' % (
+          _seq_string(k), _seq_string(v), seq_name(v))
+      continue
+    filename = seq_to_filepath.get(v) or seq_to_filepath[non_vs_to_canonical[v]]
+    seq_to_filepath[k] = 'alias:' + filename
+
+  # check single emoji, this includes most of the special chars
+  emoji = sorted(unicode_data.get_emoji(age=age))
+  for cp in emoji:
+    if tuple([cp]) not in seq_to_filepath:
+      print 'missing single %04x (%s)' % (cp, unicode_data.name(cp, '<no name>'))
+
+  # special characters
+  # all but combining enclosing keycap are currently marked as emoji
+  for cp in [ord('*'), ord('#'), ord(u'\u20e3')] + range(0x30, 0x3a):
+    if cp not in emoji and tuple([cp]) not in seq_to_filepath:
+      print 'missing special %04x (%s)' % (cp, unicode_data.name(cp))
+
+  # combining sequences
+  comb_seq_to_name = sorted(
+      unicode_data.get_emoji_combining_sequences(age=age).iteritems())
+  for seq, name in comb_seq_to_name:
+    if seq not in seq_to_filepath:
+      # strip vs and try again
+      non_vs_seq = strip_vs(seq)
+      if non_vs_seq not in seq_to_filepath:
+        print 'missing combining sequence %s (%s)' % (_seq_string(seq), name)
+
+  # flag sequences
+  flag_seq_to_name = sorted(
+      unicode_data.get_emoji_flag_sequences(age=age).iteritems())
+  for seq, name in flag_seq_to_name:
+    if seq not in seq_to_filepath:
+      print 'missing flag sequence %s (%s)' % (_seq_string(seq), name)
+
+  # skin tone modifier sequences
+  mod_seq_to_name = sorted(
+      unicode_data.get_emoji_modifier_sequences(age=age).iteritems())
+  for seq, name in mod_seq_to_name:
+    if seq not in seq_to_filepath:
+      print 'missing modifier sequence %s (%s)' % (
+          _seq_string(seq), name)
+
+  # zwj sequences
+  # some of ours include the emoji presentation variation selector and some
+  # don't, and the same is true for the canonical sequences.  normalize all
+  # of them to omit it to test coverage, but report the canonical sequence.
+  zwj_seq_without_vs = set()
+  for seq in seq_to_filepath:
+    if ZWJ not in seq:
+      continue
+    if EMOJI_VS in seq:
+      seq = tuple(cp for cp in seq if cp != EMOJI_VS)
+    zwj_seq_without_vs.add(seq)
+
+  for seq, name in sorted(
+      unicode_data.get_emoji_zwj_sequences(age=age).iteritems()):
+    if EMOJI_VS in seq:
+      test_seq = tuple(s for s in seq if s != EMOJI_VS)
+    else:
+      test_seq = seq
+    if test_seq not in zwj_seq_without_vs:
+      print 'missing (canonical) zwj sequence %s (%s)' % (
+          _seq_string(seq), name)
+
+  # check for 'unknown flag'
+  # this is either emoji_ufe82b or 'unknown_flag', we filter out things that
+  # don't start with our prefix so 'unknown_flag' would be excluded by default.
+  if tuple([0xfe82b]) not in seq_to_filepath:
+    print 'missing unknown flag PUA fe82b'
 
 
 def check_sequence_to_filepath(seq_to_filepath):
@@ -140,7 +311,8 @@ def check_sequence_to_filepath(seq_to_filepath):
   _check_zwj(sorted_seq_to_filepath)
   _check_flags(sorted_seq_to_filepath)
   _check_skintone(sorted_seq_to_filepath)
-
+  _check_zwj_sequences(sorted_seq_to_filepath)
+  _check_coverage(sorted_seq_to_filepath)
 
 def create_sequence_to_filepath(name_to_dirpath, prefix, suffix):
   """Check names, and convert name to sequences for names that are ok,
