@@ -18,18 +18,38 @@
 
 __author__ = 'roozbeh@google.com (Roozbeh Pournader)'
 
+import re
 import sys
 
 import add_emoji_gsub
 
-def two_letter_code_to_glyph_name(iso_code):
+def two_letter_code_to_glyph_name(region_code):
     return 'u%04x_%04x' % (
-        add_emoji_gsub.reg_indicator(iso_code[0]),
-        add_emoji_gsub.reg_indicator(iso_code[1]))
+        add_emoji_gsub.reg_indicator(region_code[0]),
+        add_emoji_gsub.reg_indicator(region_code[1]))
+
+
+subcode_re = re.compile(r'[0-9a-z]{2}-[0-9a-z]+$')
+def hyphenated_code_to_glyph_name(sub_code):
+  # Hyphenated codes use tag sequences, not regional indicator symbol pairs.
+  sub_code = sub_code.lower()
+  if not subcode_re.match(sub_code):
+    raise Exception('%s is not a valid flag subcode' % sub_code)
+  cps = ['u1f3f3']
+  cps.extend('e00%02x' % ord(cp) for cp in sub_code if cp != '-')
+  cps.append('e007f')
+  return '_'.join(cps)
+
+
+def flag_code_to_glyph_name(flag_code):
+  if '-' in flag_code:
+    return hyphenated_code_to_glyph_name(flag_code)
+  return two_letter_code_to_glyph_name(flag_code)
+
 
 def main():
     print ' '.join([
-        two_letter_code_to_glyph_name(iso_code) for iso_code in sys.argv[1:]])
+        flag_code_to_glyph_name(flag_code) for flag_code in sys.argv[1:]])
 
 if __name__ == '__main__':
     main()
