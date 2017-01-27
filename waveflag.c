@@ -17,6 +17,7 @@
  */
 
 #include <cairo.h>
+#include <libgen.h> // basename
 #include <math.h>
 #include <stdint.h>
 #include <stdio.h>
