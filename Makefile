@@ -213,7 +213,7 @@ clean:
 	rm -rf $(BUILD_DIR)
 
 .SECONDARY: $(EMOJI_FILES) $(FLAG_FILES) $(RESIZED_FLAG_FILES) $(RENAMED_FLAG_FILES) \
-  $(ALL_QUANTIZED_FILES) $(ALL_COMPRESSED_FILES)
+  $(ALL_QUANTIZED_FILES) $(ALL_COMPRESSED_FILES) NotoColorEmoji.tmpl.ttx
 
 .PHONY:	clean flags emoji renamed_flags quantized compressed check_compress_tool
 

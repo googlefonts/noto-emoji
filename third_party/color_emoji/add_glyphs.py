@@ -59,8 +59,17 @@ def add_ligature (font, seq, name):
 		font['GSUB'] = add_emoji_gsub.create_simple_gsub([lookup])
 	else:
 		lookup = font['GSUB'].table.LookupList.Lookup[0]
-		assert lookup.LookupType == 4
+		# assert lookup.LookupType == 4
 		assert lookup.LookupFlag == 0
+
+                # importXML doesn't fully init GSUB structures, so help it out
+                if not hasattr(lookup, 'LookupType'):
+                    st = lookup.SubTable[0]
+                    assert st.LookupType == 4
+                    setattr(lookup, 'LookupType', 4)
+
+                    if not hasattr(st, 'ligatures'):
+                        setattr(st, 'ligatures', {})
 
 	ligatures = lookup.SubTable[0].ligatures
 
