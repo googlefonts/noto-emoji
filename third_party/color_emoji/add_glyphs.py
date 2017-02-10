@@ -178,7 +178,7 @@ def add_lig_sequence(ligatures, seq, n):
                 print 'lig sequence %s, replace %s with %s' % (
                     tseq, ligatures[tseq], n)
         ligatures[tseq] = n
-        if 'u200D' in seq:
+        if 'u200D' in seq or 'uE007F' in seq:
                 rev_seq = seq[:]
                 rev_seq.reverse()
                 for i in xrange(1, len(rev_seq)):
