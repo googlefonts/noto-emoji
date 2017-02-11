@@ -160,7 +160,7 @@ $(RESIZED_FLAGS_DIR)/%.png: $(FLAGS_DIR)/%.png | $(RESIZED_FLAGS_DIR)
 	@convert -extent 136x128 -gravity center -background none "$<" "$@"
 
 flag-symlinks: $(RESIZED_FLAG_FILES) | $(RENAMED_FLAGS_DIR)
-	$(subst ^, ,                                  \
+	@$(subst ^, ,                                  \
 	  $(join                                       \
 	    $(FLAGS:%=ln^-fs^../resized_flags/%.png^), \
 	    $(RENAMED_FLAG_FILES:%=%; )                \
@@ -213,7 +213,7 @@ clean:
 	rm -rf $(BUILD_DIR)
 
 .SECONDARY: $(EMOJI_FILES) $(FLAG_FILES) $(RESIZED_FLAG_FILES) $(RENAMED_FLAG_FILES) \
-  $(ALL_QUANTIZED_FILES) $(ALL_COMPRESSED_FILES) NotoColorEmoji.tmpl.ttx
+  $(ALL_QUANTIZED_FILES) $(ALL_COMPRESSED_FILES)
 
 .PHONY:	clean flags emoji renamed_flags quantized compressed check_compress_tool
 
