@@ -35,7 +35,7 @@ def hyphenated_code_to_glyph_name(sub_code):
   sub_code = sub_code.lower()
   if not subcode_re.match(sub_code):
     raise Exception('%s is not a valid flag subcode' % sub_code)
-  cps = ['u1f3f3']
+  cps = ['u1f3f4']
   cps.extend('e00%02x' % ord(cp) for cp in sub_code if cp != '-')
   cps.append('e007f')
   return '_'.join(cps)

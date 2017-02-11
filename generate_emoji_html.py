@@ -29,6 +29,8 @@ from os import path
 import re
 import shutil
 import sys
+
+from nototools import tool_utils
 from nototools import unicode_data
 
 _default_dir = 'png/128'
@@ -51,7 +53,7 @@ def _merge_keys(dicts):
     keys.extend(d.keys())
   return frozenset(keys)
 
-def _generate_row_cells(key, font, dir_infos, basepaths, colors):
+def _generate_row_cells(key, canonical_key, font, dir_infos, basepaths, colors):
   CELL_PREFIX = '<td>'
   indices = range(len(basepaths))
   def _cell(key, info, basepath):
@@ -60,13 +62,7 @@ def _generate_row_cells(key, font, dir_infos, basepaths, colors):
           basepath, info.filemap[key])
     return '-missing-'
   def _text_cell(key, text_dir):
-    def _cp_seq(cp):
-      # comment this out for now
-      if False and cp in [ord('*'), 0x2640, 0x2642, 0x2695]:
-        return unichr(cp) + unichr(0xfe0f)
-      else:
-        return unichr(cp)
-    text = ''.join(_cp_seq(cp) for cp in key)
+    text = ''.join(unichr(cp) for cp in canonical_key)
     return '<span class="efont" dir="%s">%s</span>' % (text_dir, text)
 
   if font:
@@ -99,17 +95,25 @@ def _get_desc(key_tuple, dir_infos, basepaths):
   def _get_part(cp):
     if cp == 0x200d:  # zwj, common so replace with '+'
       return '+'
-    if cp == 0xfe0f:  # emoji variation selector, we ignore it
-      return None
+    if unicode_data.is_regional_indicator(cp):
+      return unicode_data.regional_indicator_to_ascii(cp)
+    if unicode_data.is_tag(cp):
+      return unicode_data.tag_character_to_ascii(cp)
     fname = _get_filepath(cp)
     if fname:
       return '<img src="%s">' % fname
-    return '%04X' % cp
+    raise Exception()
 
   if len(key_tuple) == 1:
-    desc = 'U+%04X' % key_tuple
+    desc = '%04x' % key_tuple
   else:
-    desc = ' '.join(filter(None, [_get_part(cp) for cp in key_tuple]))
+    desc = ' '.join('%04x' % cp for cp in key_tuple)
+    if len(unicode_data.strip_emoji_vs(key_tuple)) > 1:
+      try:
+        desc += ' (%s)' % ''.join(
+            _get_part(cp) for cp in key_tuple if cp != 0xfe0f)
+      except:
+        pass
   return CELL_PREFIX + desc
 
 
@@ -118,15 +122,16 @@ def _get_name(key_tuple, annotated_tuples):
       '' if annotated_tuples is None or key_tuple not in annotated_tuples
       else ' class="aname"')
 
-  if len(key_tuple) != 1:
-    name = '(' + ' '.join('U+%04X' % cp for cp in key_tuple) + ')'
-  else:
-    cp = key_tuple[0]
-    if cp in unicode_data.proposed_emoji_cps():
-      name = '(proposed) ' + unicode_data.proposed_emoji_name(cp)
+  seq_name = unicode_data.get_emoji_sequence_name(key_tuple)
+  if seq_name == None:
+    if key_tuple == (0x20e3,):
+      seq_name = '(combining enlosing keycap)'
+    elif key_tuple == (0xfe82b,):
+      seq_name = '(unknown flag PUA codepoint)'
     else:
-      name = unicode_data.name(cp, '(error)')
-  return CELL_PREFIX + name
+      print 'no name for %s' % unicode_data.seq_to_string(key_tuple)
+      seq_name = '(oops)'
+  return CELL_PREFIX + seq_name
 
 
 def _collect_aux_info(dir_infos, all_keys):
@@ -221,15 +226,24 @@ def _generate_content(
   header_row.extend([info.title for info in dir_infos])
   if len(colors) > 1:
     header_row.extend([dir_infos[-1].title] * (len(colors) - 1))
-  header_row.extend(['Description', 'Name'])
+  header_row.extend(['Sequence', 'Name'])
   lines.append('<th>'.join(header_row))
 
   for key in sorted(all_keys):
     row = []
-    row.extend(_generate_row_cells(key, font, dir_infos, basepaths, colors))
-    row.append(_get_desc(key, dir_infos, basepaths))
-    row.append(_get_name(key, annotate))
-    lines.append(''.join(row))
+    canonical_key = unicode_data.get_canonical_emoji_sequence(key)
+    if not canonical_key:
+      canonical_key = key
+
+    row.extend(
+        _generate_row_cells(
+            key, canonical_key, font, dir_infos, basepaths, colors))
+    row.append(_get_desc(canonical_key, dir_infos, basepaths))
+    row.append(_get_name(canonical_key, annotate))
+    try:
+      lines.append(''.join(row))
+    except:
+      raise Exception('couldn\'t decode %s' % row)
   return '\n  <tr>'.join(lines) + '\n</table>'
 
 
@@ -365,10 +379,10 @@ STYLE = """
       th { background-color: rgb(210, 210, 210) }
       td img { width: 64px; height: 64px }
       td:nth-last-of-type(2) {
-         font-size: 20pt; font-weight: bold; background-color: rgb(210, 210, 210)
+         font-size: 18pt; font-weight: regular; background-color: rgb(210, 210, 210)
       }
       td:nth-last-of-type(2) img {
-         vertical-align: middle; width: 32px; height: 32px
+         vertical-align: bottom; width: 32px; height: 32px
       }
       td:last-of-type { background-color: white }
       td.aname { background-color: rgb(250, 65, 75) }
@@ -377,6 +391,29 @@ STYLE = """
 def write_html_page(
     filename, page_title, font, dir_infos, limit, annotate, standalone,
     colors):
+
+  out_dir = path.dirname(filename)
+  if font:
+    if standalone:
+      # the assumption with standalone is that the source data and
+      # output directory don't overlap, this should probably be checked...
+
+      rel_fontpath = path.join('font', path.basename(font))
+      new_font = path.join(out_dir, rel_fontpath)
+      tool_utils.ensure_dir_exists(path.dirname(new_font))
+      shutil.copy2(font, new_font)
+      font = rel_fontpath
+    else:
+      common_prefix, (rel_dir, rel_font) = tool_utils.commonpathprefix(
+          [out_dir, font])
+      if rel_dir == '':
+        # font is in a subdirectory of the target, so just use the relative
+        # path
+        font = rel_font
+      else:
+        # use the absolute path
+        font = path.normpath(path.join(common_prefix, rel_font))
+
   content = _generate_content(
       path.dirname(filename), font, dir_infos, limit, annotate, standalone,
       colors)
@@ -460,7 +497,6 @@ def main():
   elif not args.colors:
     args.colors = """eceff1 f5f5f5 e4e7e9 d9dbdd 080808 263238 21272b 3c474c
     4db6ac 80cbc4 5e35b1""".split()
-
 
   dir_infos = _get_dir_infos(
       args.image_dirs, args.exts, args.prefixes, args.titles,
