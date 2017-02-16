@@ -204,7 +204,8 @@ for (u, filename) in img_pairs:
                 cp = ord(char)
 		if cp not in c and not is_vs(cp):
 			name = glyph_name (char)
-                        g.append(name)
+                        if name not in glyph_names:
+                                g.append(name)
 			c[cp] = name
 			if len (u) > 1:
 				h[name] = [0, 0]
