@@ -36,9 +36,14 @@ def seq_to_str(seq):
 
 
 def read_emoji_aliases():
+  alias_path = path.join(DATA_ROOT, 'emoji_aliases.txt')
+  return read_emoji_aliases(alias_path)
+
+
+def read_emoji_aliases(filename):
   result = {}
 
-  with open(path.join(DATA_ROOT, 'emoji_aliases.txt'), 'r') as f:
+  with open(filename, 'r') as f:
     for line in f:
       ix = line.find('#')
       if (ix > -1):
@@ -47,8 +52,8 @@ def read_emoji_aliases():
       if not line:
         continue
       als, trg = (s.strip() for s in line.split(';'))
-      als_seq = tuple([int(x, 16) for x in als.split('_')])
       try:
+        als_seq = tuple([int(x, 16) for x in als.split('_')])
         trg_seq = tuple([int(x, 16) for x in trg.split('_')])
       except:
         print 'cannot process alias %s -> %s' % (als, trg)
