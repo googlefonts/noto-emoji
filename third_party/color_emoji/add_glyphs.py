@@ -59,8 +59,17 @@ def add_ligature (font, seq, name):
 		font['GSUB'] = add_emoji_gsub.create_simple_gsub([lookup])
 	else:
 		lookup = font['GSUB'].table.LookupList.Lookup[0]
-		assert lookup.LookupType == 4
+		# assert lookup.LookupType == 4
 		assert lookup.LookupFlag == 0
+
+                # importXML doesn't fully init GSUB structures, so help it out
+                if not hasattr(lookup, 'LookupType'):
+                    st = lookup.SubTable[0]
+                    assert st.LookupType == 4
+                    setattr(lookup, 'LookupType', 4)
+
+                    if not hasattr(st, 'ligatures'):
+                        setattr(st, 'ligatures', {})
 
 	ligatures = lookup.SubTable[0].ligatures
 
@@ -151,7 +160,7 @@ glyph_names = set()
 ligatures = {}
 
 def add_lig_sequence(ligatures, seq, n):
-        # We have emoji sequences using regional indicator symbols,
+        # We have emoji sequences using regional indicator symbols, tags,
         # ZWJ, fitzpatrick modifiers, and combinations of ZWJ and fitzpatrick
         # modifiers.  Currently, Harfbuzz special-cases the fitzpatrick
         # modifiers to treat them as combining marks instead of as Other
@@ -160,16 +169,16 @@ def add_lig_sequence(ligatures, seq, n):
         # emoji sequences in an RTL context we need GSUB sequences that match
         # this order.
         # Regional indicator symbols are LTR, and emoji+fitzpatrick are
-        # effectively LTR, so we only reorder sequences with ZWJ.  If however
-        # the ZWJ sequence has fitzpatrick modifiers, those need to still follow
-        # the emoji they logically follow, so simply reversing the sequence
-        # doesn't work.  This code assumes the lig sequence is valid.
+        # effectively LTR, so we only reorder sequences with ZWJ or tags.  If
+        # however the ZWJ sequence has fitzpatrick modifiers, those need to
+        # still follow the emoji they logically follow, so simply reversing the
+        # sequence doesn't work.  This code assumes the lig sequence is valid.
         tseq = tuple(seq)
         if tseq in ligatures:
                 print 'lig sequence %s, replace %s with %s' % (
                     tseq, ligatures[tseq], n)
         ligatures[tseq] = n
-        if 'u200D' in seq:
+        if 'u200D' in seq or 'uE007F' in seq:
                 rev_seq = seq[:]
                 rev_seq.reverse()
                 for i in xrange(1, len(rev_seq)):
@@ -195,7 +204,8 @@ for (u, filename) in img_pairs:
                 cp = ord(char)
 		if cp not in c and not is_vs(cp):
 			name = glyph_name (char)
-                        g.append(name)
+                        if name not in glyph_names:
+                                g.append(name)
 			c[cp] = name
 			if len (u) > 1:
 				h[name] = [0, 0]
@@ -251,15 +261,6 @@ if have_flags:
     seq = _reg_lig_sequence(flag_from)
     name = _reg_lig_name(flag_to)
     add_lig_sequence(ligatures, seq, name)
-
-  print 'Adding unused flag sequences'
-  # every flag sequence we don't have gets the missing flag glyph
-  for first in regional_names:
-    for second in regional_names:
-      seq = (first, second)
-      if seq not in ligatures:
-        add_lig_sequence(ligatures, seq, UNKNOWN_FLAG_GLYPH_NAME)
-
 
 keyed_ligatures = collections.defaultdict(list)
 for k, v in ligatures.iteritems():
