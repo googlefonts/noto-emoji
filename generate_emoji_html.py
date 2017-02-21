@@ -53,30 +53,31 @@ def _merge_keys(dicts):
     keys.extend(d.keys())
   return frozenset(keys)
 
-def _generate_row_cells(key, canonical_key, font, dir_infos, basepaths, colors):
+
+def _generate_row_cells(key, font, dir_infos, basepaths, colors):
   CELL_PREFIX = '<td>'
   indices = range(len(basepaths))
-  def _cell(key, info, basepath):
+  def _cell(info, basepath):
     if key in info.filemap:
-      return '<img src="%s">' % path.join(
-          basepath, info.filemap[key])
+      return '<img src="%s">' % path.join(basepath, info.filemap[key])
     return '-missing-'
-  def _text_cell(key, text_dir):
-    text = ''.join(unichr(cp) for cp in canonical_key)
+
+  def _text_cell(text_dir):
+    text = ''.join(unichr(cp) for cp in key)
     return '<span class="efont" dir="%s">%s</span>' % (text_dir, text)
 
   if font:
     row_cells = [
-        CELL_PREFIX + _text_cell(key, text_dir)
+        CELL_PREFIX + _text_cell(text_dir)
         for text_dir in ('ltr', 'rtl')]
   else:
     row_cells = []
   row_cells.extend(
-      [CELL_PREFIX + _cell(key, dir_infos[i], basepaths[i])
+      [CELL_PREFIX + _cell(dir_infos[i], basepaths[i])
        for i in indices])
   if len(colors) > 1:
     ix = indices[-1]
-    extension = CELL_PREFIX + _cell(key, dir_infos[ix], basepaths[ix])
+    extension = CELL_PREFIX + _cell(dir_infos[ix], basepaths[ix])
     row_cells.extend([extension] * (len(colors) - 1))
   return row_cells
 
@@ -230,25 +231,16 @@ def _generate_content(
   lines.append('<th>'.join(header_row))
 
   for key in sorted(all_keys):
-    row = []
-    canonical_key = unicode_data.get_canonical_emoji_sequence(key)
-    if not canonical_key:
-      canonical_key = key
+    row = _generate_row_cells(key, font, dir_infos, basepaths, colors)
+    row.append(_get_desc(key, dir_infos, basepaths))
+    row.append(_get_name(key, annotate))
+    lines.append(''.join(row))
 
-    row.extend(
-        _generate_row_cells(
-            key, canonical_key, font, dir_infos, basepaths, colors))
-    row.append(_get_desc(canonical_key, dir_infos, basepaths))
-    row.append(_get_name(canonical_key, annotate))
-    try:
-      lines.append(''.join(row))
-    except:
-      raise Exception('couldn\'t decode %s' % row)
   return '\n  <tr>'.join(lines) + '\n</table>'
 
 
 def _get_image_data(image_dir, ext, prefix):
-  """Return a map from a tuple of cp sequences to a filename.
+  """Return a map from a canonical tuple of cp sequences to a filename.
 
   This filters by file extension, and expects the rest of the files
   to match the prefix followed by a sequence of hex codepoints separated
@@ -267,18 +259,23 @@ def _get_image_data(image_dir, ext, prefix):
       fails.append('"%s" did not match: "%s"' % (expect_re.pattern, filename))
       continue
     seq = m.group(1)
+    this_failed = False
     try:
       cps = tuple(int(s, 16) for s in seq.split('_'))
+      for cp in cps:
+        if (cp > 0x10ffff):
+          fails.append('cp out of range: ' + filename)
+          this_failed = True
+          break
+      if this_failed:
+        continue
+      canonical_cps = unicode_data.get_canonical_emoji_sequence(cps)
+      if canonical_cps:
+        # if it is unrecognized, just leave it alone, else replace with
+        # canonical sequence.
+        cps = canonical_cps
     except:
       fails.append('bad cp sequence: ' + filename)
-      continue
-    this_failed = False
-    for cp in cps:
-      if (cp > 0x10ffff):
-        fails.append('cp out of range: ' + filename)
-        this_failed = True
-        break
-    if this_failed:
       continue
     if cps in result:
       fails.append('duplicate sequence: %s and %s' (result[cps], filename))
