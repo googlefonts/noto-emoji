@@ -135,17 +135,17 @@ def _get_name(key_tuple, annotated_tuples):
   return CELL_PREFIX + seq_name
 
 
-def _collect_aux_info(dir_infos, all_keys):
+def _collect_aux_info(dir_infos, keys):
   """Returns a map from dir_info_index to a set of keys of additional images
   that we will take from the directory at that index."""
 
   target_key_to_info_index = {}
-  for key in all_keys:
+  for key in keys:
     if len(key) == 1:
       continue
     for cp in key:
       target_key = tuple([cp])
-      if target_key in all_keys or target_key in target_key_to_info_index:
+      if target_key in keys or target_key in target_key_to_info_index:
         continue
       for i, info in enumerate(dir_infos):
         if target_key in info.filemap:
@@ -164,18 +164,18 @@ def _collect_aux_info(dir_infos, all_keys):
 
 
 def _generate_content(
-    basedir, font, dir_infos, limit, annotate, standalone, colors):
-  """Generate an html table for the infos.  basedir is the parent directory
-  of the content, filenames will be made relative to this if underneath it,
-  else absolute. If limit is true and there are multiple dirs, limit the set of
-  sequences to those in the first dir.  If font is not none, generate columns
-  for the text rendered in the font before other columns.  if annotate is
-  not none, highlight sequences that appear in this set."""
-
-  if len(dir_infos) == 1 or limit:
-    all_keys = frozenset(dir_infos[0].filemap.keys())
-  else:
-    all_keys = _merge_keys([info.filemap for info in dir_infos])
+    basedir, font, dir_infos, keys, annotate, standalone, colors):
+  """Generate an html table for the infos.  Basedir is the parent directory of
+  the content, filenames will be made relative to this if underneath it, else
+  absolute. If font is not none, generate columns for the text rendered in the
+  font before other columns.  Dir_infos is the list of DirInfos in column
+  order.  Keys is the list of canonical emoji sequences in row order.  If
+  annotate is not none, highlight sequences that appear in this set.  If
+  standalone is true, the image data and font (if used) will be copied under
+  the basedir to make a completely stand-alone page.  Colors is the list of
+  background colors, the last DirInfo column will be repeated against each of
+  these backgrounds.
+  """
 
   basedir = path.abspath(path.expanduser(basedir))
   if not path.isdir(basedir):
@@ -188,7 +188,7 @@ def _generate_content(
     # aren't part of main set.  e.g. if we have female basketball player
     # color-3 we want female, basketball player, and color-3 images available
     # even if they aren't part of the target set.
-    aux_info = _collect_aux_info(dir_infos, all_keys)
+    aux_info = _collect_aux_info(dir_infos, keys)
 
     # create image subdirectories in target dir, copy image files to them,
     # and adjust paths
@@ -198,8 +198,7 @@ def _generate_content(
       if not path.isdir(dstdir):
         os.mkdir(dstdir)
 
-      aux_keys = aux_info[i]
-      copy_keys = all_keys if not aux_keys else (all_keys | aux_keys)
+      copy_keys = set(keys) | aux_info[i]
       srcdir = info.directory
       filemap = info.filemap
       for key in copy_keys:
@@ -230,7 +229,7 @@ def _generate_content(
   header_row.extend(['Sequence', 'Name'])
   lines.append('<th>'.join(header_row))
 
-  for key in sorted(all_keys):
+  for key in keys:
     row = _generate_row_cells(key, font, dir_infos, basepaths, colors)
     row.append(_get_desc(key, dir_infos, basepaths))
     row.append(_get_name(key, annotate))
@@ -324,6 +323,25 @@ def _get_dir_infos(
   return infos
 
 
+def _get_keys(dir_infos, limit, all_emoji, emoji_sort):
+  """Return a list of the key tuples to display.  If all_emoji is
+  True, returns all emoji sequences, else the sequences available
+  in dir_infos (limited to the first dir_info if limit is True).
+  The result is in emoji order if emoji_sort is true, else in
+  unicode codepoint order."""
+  if all_emoji:
+    keys = unicode_data.get_emoji_sequences()
+  elif len(dir_infos) == 1 or limit:
+    keys = frozenset(dir_infos[0].filemap.keys())
+  else:
+    keys = _merge_keys([info.filemap for info in dir_infos])
+  if emoji_sort:
+    sorted_keys = unicode_data.get_sorted_emoji_sequences(keys)
+  else:
+    sorted_keys = sorted(keys)
+  return sorted_keys
+
+
 def _parse_annotation_file(afile):
   annotations = set()
   line_re = re.compile(r'([0-9a-f ]+)')
@@ -386,7 +404,7 @@ STYLE = """
 """
 
 def write_html_page(
-    filename, page_title, font, dir_infos, limit, annotate, standalone,
+    filename, page_title, font, dir_infos, keys, annotate, standalone,
     colors):
 
   out_dir = path.dirname(filename)
@@ -412,7 +430,7 @@ def write_html_page(
         font = path.normpath(path.join(common_prefix, rel_font))
 
   content = _generate_content(
-      path.dirname(filename), font, dir_infos, limit, annotate, standalone,
+      path.dirname(filename), font, dir_infos, keys, annotate, standalone,
       colors)
   N_STYLE = STYLE
   if font:
@@ -477,6 +495,10 @@ def main():
   parser.add_argument(
       '-c', '--colors', help='list of colors for background', nargs='*',
       metavar='hex')
+  parser.add_argument(
+      '--all_emoji', help='use all emoji sequences', action='store_true')
+  parser.add_argument(
+      '--emoji_sort', help='use emoji sort order', action='store_true')
 
   args = parser.parse_args()
   file_parts = path.splitext(args.outfile)
@@ -499,8 +521,11 @@ def main():
       args.image_dirs, args.exts, args.prefixes, args.titles,
       args.default_ext, args.default_prefix)
 
+  keys = _get_keys(
+      dir_infos, args.limit, args.all_emoji, args.emoji_sort)
+
   write_html_page(
-      args.outfile, args.page_title, args.font, dir_infos, args.limit,
+      args.outfile, args.page_title, args.font, dir_infos, keys,
       annotations, args.standalone, args.colors)
 
 
