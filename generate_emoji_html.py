@@ -118,10 +118,10 @@ def _get_desc(key_tuple, dir_infos, basepaths):
   return CELL_PREFIX + desc
 
 
-def _get_name(key_tuple, annotated_tuples):
+def _get_name(key_tuple, annotations):
+  annotation = None if annotations is None else annotations.get(key_tuple)
   CELL_PREFIX = '<td%s>' % (
-      '' if annotated_tuples is None or key_tuple not in annotated_tuples
-      else ' class="aname"')
+      '' if annotation is None else ' class="%s"' % annotation)
 
   seq_name = unicode_data.get_emoji_sequence_name(key_tuple)
   if seq_name == None:
@@ -164,17 +164,17 @@ def _collect_aux_info(dir_infos, keys):
 
 
 def _generate_content(
-    basedir, font, dir_infos, keys, annotate, standalone, colors):
+    basedir, font, dir_infos, keys, annotations, standalone, colors):
   """Generate an html table for the infos.  Basedir is the parent directory of
   the content, filenames will be made relative to this if underneath it, else
   absolute. If font is not none, generate columns for the text rendered in the
   font before other columns.  Dir_infos is the list of DirInfos in column
   order.  Keys is the list of canonical emoji sequences in row order.  If
-  annotate is not none, highlight sequences that appear in this set.  If
-  standalone is true, the image data and font (if used) will be copied under
-  the basedir to make a completely stand-alone page.  Colors is the list of
-  background colors, the last DirInfo column will be repeated against each of
-  these backgrounds.
+  annotations is not none, highlight sequences that appear in this map based on
+  their map values ('ok', 'error', 'warning').  If standalone is true, the
+  image data and font (if used) will be copied under the basedir to make a
+  completely stand-alone page.  Colors is the list of background colors, the
+  last DirInfo column will be repeated against each of these backgrounds.
   """
 
   basedir = path.abspath(path.expanduser(basedir))
@@ -232,7 +232,7 @@ def _generate_content(
   for key in keys:
     row = _generate_row_cells(key, font, dir_infos, basepaths, colors)
     row.append(_get_desc(key, dir_infos, basepaths))
-    row.append(_get_name(key, annotate))
+    row.append(_get_name(key, annotations))
     lines.append(''.join(row))
 
   return '\n  <tr>'.join(lines) + '\n</table>'
@@ -343,17 +343,42 @@ def _get_keys(dir_infos, limit, all_emoji, emoji_sort):
 
 
 def _parse_annotation_file(afile):
-  annotations = set()
-  line_re = re.compile(r'([0-9a-f ]+)')
+  """Parse file and return a map from sequences to one of 'ok', 'warning',
+  or 'error'.
+
+  The file format consists of two kinds of lines.  One defines the annotation
+  to apply, it consists of the text 'annotation:' followed by one of 'ok',
+  'warning', or 'error'.  The other defines a sequence that should get the most
+  recently defined annotation, this is a series of codepoints expressed in hex
+  separated by spaces.  The initial default annotation is 'error'.  '#' starts
+  a comment to end of line, blank lines are ignored.
+  """
+
+  annotations = {}
+  line_re = re.compile(r'annotation:\s*(ok|warning|error)|([0-9a-f ]+)')
+  annotation = 'error'
   with open(afile, 'r') as f:
     for line in f:
       line = line.strip()
       if not line or line[0] == '#':
         continue
       m = line_re.match(line)
-      if m:
-        annotations.add(tuple([int(s, 16) for s in m.group(1).split()]))
-  return frozenset(annotations)
+      if not m:
+        raise Exception('could not parse annotation "%s"' % line)
+      new_annotation = m.group(1)
+      if new_annotation:
+        annotation = new_annotation
+      else:
+        seq = tuple([int(s, 16) for s in m.group(2).split()])
+        canonical_seq = unicode_data.get_canonical_emoji_sequence(seq)
+        if canonical_seq:
+          seq = canonical_seq
+        if seq in annotations:
+          raise Exception(
+              'duplicate sequence %s in annotations' %
+              unicode_data.seq_to_string(seq))
+        annotations[seq] = annotation
+  return annotations
 
 
 def _instantiate_template(template, arg_dict):
@@ -400,11 +425,13 @@ STYLE = """
          vertical-align: bottom; width: 32px; height: 32px
       }
       td:last-of-type { background-color: white }
-      td.aname { background-color: rgb(250, 65, 75) }
+      td.error { background-color: rgb(250, 65, 75) }
+      td.warning { background-color: rgb(240, 245, 50) }
+      td.ok { background-color: rgb(10, 200, 60) }
 """
 
 def write_html_page(
-    filename, page_title, font, dir_infos, keys, annotate, standalone,
+    filename, page_title, font, dir_infos, keys, annotations, standalone,
     colors):
 
   out_dir = path.dirname(filename)
@@ -430,7 +457,7 @@ def write_html_page(
         font = path.normpath(path.join(common_prefix, rel_font))
 
   content = _generate_content(
-      path.dirname(filename), font, dir_infos, keys, annotate, standalone,
+      path.dirname(filename), font, dir_infos, keys, annotations, standalone,
       colors)
   N_STYLE = STYLE
   if font:
