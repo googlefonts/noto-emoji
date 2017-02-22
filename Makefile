@@ -28,7 +28,8 @@ ZOPFLIPNG = zopflipng
 OPTIPNG = optipng
 
 EMOJI_BUILDER = third_party/color_emoji/emoji_builder.py
-ADD_GLYPHS = third_party/color_emoji/add_glyphs.py
+ADD_GLYPHS = add_glyphs.py
+ADD_GLYPHS_FLAGS = -a emoji_aliases.txt
 PUA_ADDER = map_pua_emoji.py
 VS_ADDER = add_vs_cmap.py # from nototools
 
@@ -193,7 +194,7 @@ endif
 # Run make without -j if this happens.
 
 %.ttx: %.ttx.tmpl $(ADD_GLYPHS) $(ALL_COMPRESSED_FILES)
-	@python $(ADD_GLYPHS) "$<" "$@" "$(COMPRESSED_DIR)/emoji_u"
+	@python $(ADD_GLYPHS) -f "$<" -o "$@" -d "$(COMPRESSED_DIR)" $(ADD_GLYPHS_FLAGS)
 
 %.ttf: %.ttx
 	@rm -f "$@"
