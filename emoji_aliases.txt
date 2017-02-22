@@ -1,4 +1,6 @@
 # alias table
+# from;to
+# the 'from' sequence should be represented by the image for the 'to' sequence
 # 'fe0f' is not in these sequences
 1f3c3;1f3c3_200d_2642 # RUNNER -> man running
 1f3c3_1f3fb;1f3c3_1f3fb_200d_2642 # light skin tone
@@ -192,3 +194,10 @@
 26f9_1f3fe;26f9_1f3fe_200d_2642 # medium-dark skin tone
 26f9_1f3ff;26f9_1f3ff_200d_2642 # dark skin tone
 fe82b;unknown_flag # no name -> no name
+
+# flag aliases
+1f1e7_1f1fb;1f1f3_1f1f4 # BV -> NO
+1f1e8_1f1f5;1f1eb_1f1f7 # CP -> FR
+1f1ed_1f1f2;1f1e6_1f1fa # HM -> AU
+1f1f8_1f1ef;1f1f3_1f1f4 # SJ -> NO
+1f1fa_1f1f2;1f1fa_1f1f8 # UM -> US
