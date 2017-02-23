@@ -53,30 +53,31 @@ def _merge_keys(dicts):
     keys.extend(d.keys())
   return frozenset(keys)
 
-def _generate_row_cells(key, canonical_key, font, dir_infos, basepaths, colors):
+
+def _generate_row_cells(key, font, dir_infos, basepaths, colors):
   CELL_PREFIX = '<td>'
   indices = range(len(basepaths))
-  def _cell(key, info, basepath):
+  def _cell(info, basepath):
     if key in info.filemap:
-      return '<img src="%s">' % path.join(
-          basepath, info.filemap[key])
+      return '<img src="%s">' % path.join(basepath, info.filemap[key])
     return '-missing-'
-  def _text_cell(key, text_dir):
-    text = ''.join(unichr(cp) for cp in canonical_key)
+
+  def _text_cell(text_dir):
+    text = ''.join(unichr(cp) for cp in key)
     return '<span class="efont" dir="%s">%s</span>' % (text_dir, text)
 
   if font:
     row_cells = [
-        CELL_PREFIX + _text_cell(key, text_dir)
+        CELL_PREFIX + _text_cell(text_dir)
         for text_dir in ('ltr', 'rtl')]
   else:
     row_cells = []
   row_cells.extend(
-      [CELL_PREFIX + _cell(key, dir_infos[i], basepaths[i])
+      [CELL_PREFIX + _cell(dir_infos[i], basepaths[i])
        for i in indices])
   if len(colors) > 1:
     ix = indices[-1]
-    extension = CELL_PREFIX + _cell(key, dir_infos[ix], basepaths[ix])
+    extension = CELL_PREFIX + _cell(dir_infos[ix], basepaths[ix])
     row_cells.extend([extension] * (len(colors) - 1))
   return row_cells
 
@@ -117,10 +118,10 @@ def _get_desc(key_tuple, dir_infos, basepaths):
   return CELL_PREFIX + desc
 
 
-def _get_name(key_tuple, annotated_tuples):
+def _get_name(key_tuple, annotations):
+  annotation = None if annotations is None else annotations.get(key_tuple)
   CELL_PREFIX = '<td%s>' % (
-      '' if annotated_tuples is None or key_tuple not in annotated_tuples
-      else ' class="aname"')
+      '' if annotation is None else ' class="%s"' % annotation)
 
   seq_name = unicode_data.get_emoji_sequence_name(key_tuple)
   if seq_name == None:
@@ -134,17 +135,17 @@ def _get_name(key_tuple, annotated_tuples):
   return CELL_PREFIX + seq_name
 
 
-def _collect_aux_info(dir_infos, all_keys):
+def _collect_aux_info(dir_infos, keys):
   """Returns a map from dir_info_index to a set of keys of additional images
   that we will take from the directory at that index."""
 
   target_key_to_info_index = {}
-  for key in all_keys:
+  for key in keys:
     if len(key) == 1:
       continue
     for cp in key:
       target_key = tuple([cp])
-      if target_key in all_keys or target_key in target_key_to_info_index:
+      if target_key in keys or target_key in target_key_to_info_index:
         continue
       for i, info in enumerate(dir_infos):
         if target_key in info.filemap:
@@ -163,18 +164,18 @@ def _collect_aux_info(dir_infos, all_keys):
 
 
 def _generate_content(
-    basedir, font, dir_infos, limit, annotate, standalone, colors):
-  """Generate an html table for the infos.  basedir is the parent directory
-  of the content, filenames will be made relative to this if underneath it,
-  else absolute. If limit is true and there are multiple dirs, limit the set of
-  sequences to those in the first dir.  If font is not none, generate columns
-  for the text rendered in the font before other columns.  if annotate is
-  not none, highlight sequences that appear in this set."""
-
-  if len(dir_infos) == 1 or limit:
-    all_keys = frozenset(dir_infos[0].filemap.keys())
-  else:
-    all_keys = _merge_keys([info.filemap for info in dir_infos])
+    basedir, font, dir_infos, keys, annotations, standalone, colors):
+  """Generate an html table for the infos.  Basedir is the parent directory of
+  the content, filenames will be made relative to this if underneath it, else
+  absolute. If font is not none, generate columns for the text rendered in the
+  font before other columns.  Dir_infos is the list of DirInfos in column
+  order.  Keys is the list of canonical emoji sequences in row order.  If
+  annotations is not none, highlight sequences that appear in this map based on
+  their map values ('ok', 'error', 'warning').  If standalone is true, the
+  image data and font (if used) will be copied under the basedir to make a
+  completely stand-alone page.  Colors is the list of background colors, the
+  last DirInfo column will be repeated against each of these backgrounds.
+  """
 
   basedir = path.abspath(path.expanduser(basedir))
   if not path.isdir(basedir):
@@ -187,7 +188,7 @@ def _generate_content(
     # aren't part of main set.  e.g. if we have female basketball player
     # color-3 we want female, basketball player, and color-3 images available
     # even if they aren't part of the target set.
-    aux_info = _collect_aux_info(dir_infos, all_keys)
+    aux_info = _collect_aux_info(dir_infos, keys)
 
     # create image subdirectories in target dir, copy image files to them,
     # and adjust paths
@@ -197,8 +198,7 @@ def _generate_content(
       if not path.isdir(dstdir):
         os.mkdir(dstdir)
 
-      aux_keys = aux_info[i]
-      copy_keys = all_keys if not aux_keys else (all_keys | aux_keys)
+      copy_keys = set(keys) | aux_info[i]
       srcdir = info.directory
       filemap = info.filemap
       for key in copy_keys:
@@ -229,26 +229,17 @@ def _generate_content(
   header_row.extend(['Sequence', 'Name'])
   lines.append('<th>'.join(header_row))
 
-  for key in sorted(all_keys):
-    row = []
-    canonical_key = unicode_data.get_canonical_emoji_sequence(key)
-    if not canonical_key:
-      canonical_key = key
+  for key in keys:
+    row = _generate_row_cells(key, font, dir_infos, basepaths, colors)
+    row.append(_get_desc(key, dir_infos, basepaths))
+    row.append(_get_name(key, annotations))
+    lines.append(''.join(row))
 
-    row.extend(
-        _generate_row_cells(
-            key, canonical_key, font, dir_infos, basepaths, colors))
-    row.append(_get_desc(canonical_key, dir_infos, basepaths))
-    row.append(_get_name(canonical_key, annotate))
-    try:
-      lines.append(''.join(row))
-    except:
-      raise Exception('couldn\'t decode %s' % row)
   return '\n  <tr>'.join(lines) + '\n</table>'
 
 
 def _get_image_data(image_dir, ext, prefix):
-  """Return a map from a tuple of cp sequences to a filename.
+  """Return a map from a canonical tuple of cp sequences to a filename.
 
   This filters by file extension, and expects the rest of the files
   to match the prefix followed by a sequence of hex codepoints separated
@@ -267,18 +258,23 @@ def _get_image_data(image_dir, ext, prefix):
       fails.append('"%s" did not match: "%s"' % (expect_re.pattern, filename))
       continue
     seq = m.group(1)
+    this_failed = False
     try:
       cps = tuple(int(s, 16) for s in seq.split('_'))
+      for cp in cps:
+        if (cp > 0x10ffff):
+          fails.append('cp out of range: ' + filename)
+          this_failed = True
+          break
+      if this_failed:
+        continue
+      canonical_cps = unicode_data.get_canonical_emoji_sequence(cps)
+      if canonical_cps:
+        # if it is unrecognized, just leave it alone, else replace with
+        # canonical sequence.
+        cps = canonical_cps
     except:
       fails.append('bad cp sequence: ' + filename)
-      continue
-    this_failed = False
-    for cp in cps:
-      if (cp > 0x10ffff):
-        fails.append('cp out of range: ' + filename)
-        this_failed = True
-        break
-    if this_failed:
       continue
     if cps in result:
       fails.append('duplicate sequence: %s and %s' (result[cps], filename))
@@ -327,18 +323,62 @@ def _get_dir_infos(
   return infos
 
 
+def _get_keys(dir_infos, limit, all_emoji, emoji_sort):
+  """Return a list of the key tuples to display.  If all_emoji is
+  True, returns all emoji sequences, else the sequences available
+  in dir_infos (limited to the first dir_info if limit is True).
+  The result is in emoji order if emoji_sort is true, else in
+  unicode codepoint order."""
+  if all_emoji:
+    keys = unicode_data.get_emoji_sequences()
+  elif len(dir_infos) == 1 or limit:
+    keys = frozenset(dir_infos[0].filemap.keys())
+  else:
+    keys = _merge_keys([info.filemap for info in dir_infos])
+  if emoji_sort:
+    sorted_keys = unicode_data.get_sorted_emoji_sequences(keys)
+  else:
+    sorted_keys = sorted(keys)
+  return sorted_keys
+
+
 def _parse_annotation_file(afile):
-  annotations = set()
-  line_re = re.compile(r'([0-9a-f ]+)')
+  """Parse file and return a map from sequences to one of 'ok', 'warning',
+  or 'error'.
+
+  The file format consists of two kinds of lines.  One defines the annotation
+  to apply, it consists of the text 'annotation:' followed by one of 'ok',
+  'warning', or 'error'.  The other defines a sequence that should get the most
+  recently defined annotation, this is a series of codepoints expressed in hex
+  separated by spaces.  The initial default annotation is 'error'.  '#' starts
+  a comment to end of line, blank lines are ignored.
+  """
+
+  annotations = {}
+  line_re = re.compile(r'annotation:\s*(ok|warning|error)|([0-9a-f ]+)')
+  annotation = 'error'
   with open(afile, 'r') as f:
     for line in f:
       line = line.strip()
       if not line or line[0] == '#':
         continue
       m = line_re.match(line)
-      if m:
-        annotations.add(tuple([int(s, 16) for s in m.group(1).split()]))
-  return frozenset(annotations)
+      if not m:
+        raise Exception('could not parse annotation "%s"' % line)
+      new_annotation = m.group(1)
+      if new_annotation:
+        annotation = new_annotation
+      else:
+        seq = tuple([int(s, 16) for s in m.group(2).split()])
+        canonical_seq = unicode_data.get_canonical_emoji_sequence(seq)
+        if canonical_seq:
+          seq = canonical_seq
+        if seq in annotations:
+          raise Exception(
+              'duplicate sequence %s in annotations' %
+              unicode_data.seq_to_string(seq))
+        annotations[seq] = annotation
+  return annotations
 
 
 def _instantiate_template(template, arg_dict):
@@ -385,11 +425,13 @@ STYLE = """
          vertical-align: bottom; width: 32px; height: 32px
       }
       td:last-of-type { background-color: white }
-      td.aname { background-color: rgb(250, 65, 75) }
+      td.error { background-color: rgb(250, 65, 75) }
+      td.warning { background-color: rgb(240, 245, 50) }
+      td.ok { background-color: rgb(10, 200, 60) }
 """
 
 def write_html_page(
-    filename, page_title, font, dir_infos, limit, annotate, standalone,
+    filename, page_title, font, dir_infos, keys, annotations, standalone,
     colors):
 
   out_dir = path.dirname(filename)
@@ -415,7 +457,7 @@ def write_html_page(
         font = path.normpath(path.join(common_prefix, rel_font))
 
   content = _generate_content(
-      path.dirname(filename), font, dir_infos, limit, annotate, standalone,
+      path.dirname(filename), font, dir_infos, keys, annotations, standalone,
       colors)
   N_STYLE = STYLE
   if font:
@@ -480,6 +522,10 @@ def main():
   parser.add_argument(
       '-c', '--colors', help='list of colors for background', nargs='*',
       metavar='hex')
+  parser.add_argument(
+      '--all_emoji', help='use all emoji sequences', action='store_true')
+  parser.add_argument(
+      '--emoji_sort', help='use emoji sort order', action='store_true')
 
   args = parser.parse_args()
   file_parts = path.splitext(args.outfile)
@@ -502,8 +548,11 @@ def main():
       args.image_dirs, args.exts, args.prefixes, args.titles,
       args.default_ext, args.default_prefix)
 
+  keys = _get_keys(
+      dir_infos, args.limit, args.all_emoji, args.emoji_sort)
+
   write_html_page(
-      args.outfile, args.page_title, args.font, dir_infos, args.limit,
+      args.outfile, args.page_title, args.font, dir_infos, keys,
       annotations, args.standalone, args.colors)
 
 
