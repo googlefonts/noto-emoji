@@ -139,7 +139,7 @@ def get_font_cmap(font):
   return font['cmap'].tables[0].cmap
 
 
-def add_glyph_data(font, seqs, seq_to_advance):
+def add_glyph_data(font, seqs, seq_to_advance, vadvance):
   """Add hmtx and GlyphOrder data for all sequences in seqs, and ensures there's
   a cmap entry for each single-codepoint sequence.  Seqs not in seq_to_advance
   will get a zero advance."""
@@ -161,6 +161,7 @@ def add_glyph_data(font, seqs, seq_to_advance):
 
   cmap = get_font_cmap(font)
   hmtx = font['hmtx'].metrics
+  vmtx = font['vmtx'].metrics
 
   # We don't expect sequences to be in the glyphOrder, since we removed all the
   # single-cp sequences from it and don't expect it to already contain names
@@ -181,6 +182,7 @@ def add_glyph_data(font, seqs, seq_to_advance):
       cmap[seq[0]] = name
     advance = seq_to_advance.get(seq, 0)
     hmtx[name] = [advance, 0]
+    vmtx[name] = [vadvance, 0]
     if name not in reverseGlyphMap:
       font.glyphOrder.append(name)
       updatedGlyphOrder=True
@@ -325,10 +327,10 @@ def add_ligature_sequences(font, seqs, aliases):
       add_ligature(lookup, cmap, seq, name)
 
 
-def update_font_data(font, seq_to_advance, aliases):
+def update_font_data(font, seq_to_advance, vadvance, aliases):
   """Update the font's cmap, hmtx, GSUB, and GlyphOrder tables."""
   seqs = get_all_seqs(font, seq_to_advance)
-  add_glyph_data(font, seqs, seq_to_advance)
+  add_glyph_data(font, seqs, seq_to_advance, vadvance)
   add_aliases_to_cmap(font, aliases)
   add_ligature_sequences(font, seqs, aliases)
 
@@ -369,7 +371,9 @@ def update_ttx(in_file, out_file, image_dirs, prefix, ext, aliases_file):
   map_fn = get_png_file_to_advance_mapper(lineheight)
   seq_to_advance = remap_values(seq_to_file, map_fn)
 
-  update_font_data(font, seq_to_advance, aliases)
+  vadvance = font['vhea'].advanceHeightMax if 'vhea' in font else lineheight
+
+  update_font_data(font, seq_to_advance, vadvance, aliases)
 
   font.saveXML(out_file)
 
