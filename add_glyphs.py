@@ -259,13 +259,13 @@ def get_gsub_ligature_lookup(font):
     assert lookup.LookupFlag == 0
 
     # importXML doesn't fully init GSUB structures, so help it out
+    st = lookup.SubTable[0]
     if not hasattr(lookup, 'LookupType'):
-      st = lookup.SubTable[0]
       assert st.LookupType == 4
       setattr(lookup, 'LookupType', 4)
 
-      if not hasattr(st, 'ligatures'):
-        setattr(st, 'ligatures', {})
+    if not hasattr(st, 'ligatures'):
+      setattr(st, 'ligatures', {})
 
   return lookup
 
