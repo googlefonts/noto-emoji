@@ -33,7 +33,6 @@ def get_glyph_name_from_gsub (string, font, cmap_dict):
 		if ligature.Component == rest_of_glyphs:
 			return ligature.LigGlyph
 
-
 def div (a, b):
 	return int (round (a / float (b)))
 
@@ -111,11 +110,11 @@ class CBDT:
 		line_height = (ascent + descent) * y_ppem / float (upem)
 		line_ascent = ascent * y_ppem / float (upem)
 		y_bearing = int (round (line_ascent - .5 * (line_height - height)))
-                # fudge y_bearing if calculations are a bit off
-                if y_bearing == 128:
-                  y_bearing = 127
+		# fudge y_bearing if calculations are a bit off
+		if y_bearing == 128:
+			y_bearing = 127
 		advance = width
-                # print "small glyph metrics h: %d w: %d" % (height, width)
+		# print "small glyph metrics h: %d w: %d" % (height, width)
 		# smallGlyphMetrics
 		# Type	Name
 		# BYTE	height
@@ -123,14 +122,14 @@ class CBDT:
 		# CHAR	BearingX
 		# CHAR	BearingY
 		# BYTE	Advance
-                try:
-                        self.write (struct.pack ("BBbbB",
-					 height, width,
-					 x_bearing, y_bearing,
-					 advance))
-                except Exception as e:
-                  raise ValueError("%s, h: %d w: %d x: %d y: %d %d a:" % (
-                      e, height, width, x_bearing, y_bearing, advance))
+		try:
+			self.write (struct.pack ("BBbbB",
+				height, width,
+				x_bearing, y_bearing,
+				advance))
+		except Exception as e:
+			raise ValueError("%s, h: %d w: %d x: %d y: %d %d a:" % (
+				e, height, width, x_bearing, y_bearing, advance))
 
 	def write_format1 (self, png):
 
@@ -253,11 +252,11 @@ class CBLC:
 		ascent = div (ascent * y_ppem, upem)
 		descent = - (line_height - ascent)
 		self.write (struct.pack ("bbBbbbbbbbbb",
-					 ascent, descent,
-					 self.strike_metrics.width,
-					 0, 0, 0,
-					 0, 0, 0, 0, # TODO
-					 0, 0))
+					ascent, descent,
+					self.strike_metrics.width,
+					0, 0, 0,
+					0, 0, 0, 0, # TODO
+					0, 0))
 
 	def write_sbitLineMetrics_vert (self):
 		self.write_sbitLineMetrics_hori () # XXX
@@ -430,10 +429,10 @@ By default they are dropped.
 	print "Loaded font '%s'." % font_file
 
 	font_metrics = FontMetrics (font['head'].unitsPerEm,
-				    font['hhea'].ascent,
-				    -font['hhea'].descent)
+		font['hhea'].ascent,
+		-font['hhea'].descent)
 	print "Font metrics: upem=%d ascent=%d descent=%d." % \
-	      (font_metrics.upem, font_metrics.ascent, font_metrics.descent)
+		(font_metrics.upem, font_metrics.ascent, font_metrics.descent)
 	glyph_metrics = font['hmtx'].metrics
 	unicode_cmap = font['cmap'].getcmap (3, 10)
 	if not unicode_cmap:
@@ -449,8 +448,8 @@ By default they are dropped.
 	eblc.write_header ()
 	eblc.start_strikes (len (img_prefixes))
 
-        def is_vs(cp):
-                return cp >= 0xfe00 and cp <= 0xfe0f
+	def is_vs(cp):
+		return cp >= 0xfe00 and cp <= 0xfe0f
 
 	for img_prefix in img_prefixes:
 		print
@@ -462,13 +461,13 @@ By default they are dropped.
 			codes = img_file[len (img_prefix):-4]
 			if "_" in codes:
 				pieces = codes.split ("_")
-                                cps = [int(code, 16) for code in pieces]
+				cps = [int(code, 16) for code in pieces]
 				uchars = "".join ([unichr(cp) for cp in cps if not is_vs(cp)])
 			else:
-                                cp = int(codes, 16)
-                                if is_vs(cp):
-                                        print "ignoring unexpected vs input %04x" % cp
-                                        continue
+				cp = int(codes, 16)
+				if is_vs(cp):
+					print "ignoring unexpected vs input %04x" % cp
+					continue
 				uchars = unichr(cp)
 			img_files[uchars] = img_file
 		if not img_files:
@@ -479,19 +478,18 @@ By default they are dropped.
 		advance = width = height = 0
 		for uchars, img_file in img_files.items ():
 			if len (uchars) == 1:
-                                try:
-                                        glyph_name = unicode_cmap.cmap[ord (uchars)]
-                                except:
-                                        print "no cmap entry for %x" % ord(uchars)
-                                        raise ValueError("%x" % ord(uchars))
+				try:
+					glyph_name = unicode_cmap.cmap[ord (uchars)]
+				except:
+					print "no cmap entry for %x" % ord(uchars)
+					raise ValueError("%x" % ord(uchars))
 			else:
 				glyph_name = get_glyph_name_from_gsub (uchars, font, unicode_cmap.cmap)
 			glyph_id = font.getGlyphID (glyph_name)
 			glyph_imgs[glyph_id] = img_file
 			if "verbose" in options:
 				uchars_name = ",".join (["%04X" % ord (char) for char in uchars])
-				# print "Matched U+%s: id=%d name=%s image=%s" % (
-                                #    uchars_name, glyph_id, glyph_name, img_file)
+				# print "Matched U+%s: id=%d name=%s image=%s" % (uchars_name, glyph_id, glyph_name, img_file)
 
 			advance += glyph_metrics[glyph_name][0]
 			w, h = PNG (img_file).get_size ()
@@ -529,10 +527,10 @@ By default they are dropped.
 		drop_outline_tables (font)
 		print "Dropped outline ('glyf', 'CFF ') and related tables."
 
-        # hack removal of cmap pua entry for unknown flag glyph.  If we try to
-        # remove it earlier, getGlyphID dies.  Need to restructure all of this
-        # code.
-        font_data.delete_from_cmap(font, [0xfe82b])
+		# hack removal of cmap pua entry for unknown flag glyph.  If we try to
+		# remove it earlier, getGlyphID dies.  Need to restructure all of this
+		# code.
+		font_data.delete_from_cmap(font, [0xfe82b])
 
 	font.save (out_file)
 	print "Output font '%s' generated." % out_file
