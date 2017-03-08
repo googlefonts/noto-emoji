@@ -329,6 +329,14 @@ def _get_dir_infos(
 
 
 def _add_aliases(keys, aliases):
+  for k, v in sorted(aliases.iteritems()):
+    k_str = unicode_data.seq_to_string(k)
+    v_str = unicode_data.seq_to_string(v)
+    if k in keys:
+      msg = '' if v in keys else ' but it\'s not present'
+      print 'have alias image %s, should use %s%s' % (k_str, v_str, msg)
+    elif v not in keys:
+      print 'can\'t use alias %s, no image matching %s' % (k_str, v_str)
   to_add = {k for k, v in aliases.iteritems() if k not in keys and v in keys}
   return keys | to_add
 
@@ -519,6 +527,13 @@ def write_html_page(
     f.write(text)
 
 
+def _get_canonical_aliases():
+  def canon(seq):
+    return unicode_data.get_canonical_emoji_sequence(seq) or seq
+  aliases = add_aliases.read_default_emoji_aliases()
+  return {canon(k): canon(v) for k, v in aliases.iteritems()}
+
+
 def main():
   parser = argparse.ArgumentParser()
   parser.add_argument(
@@ -587,7 +602,7 @@ def main():
       args.image_dirs, args.exts, args.prefixes, args.titles,
       args.default_ext, args.default_prefix)
 
-  aliases = add_aliases.read_default_emoji_aliases()
+  aliases = _get_canonical_aliases()
   keys = _get_keys(
       dir_infos, aliases, args.limit, args.all_emoji, args.emoji_sort,
       args.ignore_missing)
