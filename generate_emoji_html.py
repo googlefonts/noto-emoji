@@ -87,16 +87,30 @@ def _generate_row_cells(key, font, aliases, dir_infos, basepaths, colors):
   return row_cells
 
 
-def _get_desc(key_tuple, dir_infos, basepaths):
+def _get_desc(key_tuple, aliases, dir_infos, basepaths):
   CELL_PREFIX = '<td>'
   def _get_filepath(cp):
+    def get_key_filepath(key):
+      for i in range(len(dir_infos)):
+        info = dir_infos[i]
+        if key in info.filemap:
+          basepath = basepaths[i]
+          return path.join(basepath, info.filemap[key])
+      return None
+
     cp_key = tuple([cp])
-    for i in range(len(dir_infos)):
-      info = dir_infos[i]
-      if cp_key in info.filemap:
-        basepath = basepaths[i]
-        return path.join(basepath, info.filemap[cp_key])
-    return None
+    cp_key = unicode_data.get_canonical_emoji_sequence(cp_key) or cp_key
+    fp = get_key_filepath(cp_key)
+    if not fp:
+      if cp_key in aliases:
+        fp = get_key_filepath(aliases[cp_key])
+      else:
+        print 'no alias for %s' % unicode_data.seq_to_string(cp_key)
+    if not fp:
+      print 'no part for %s in %s' % (
+          unicode_data.seq_to_string(cp_key),
+          unicode_data.seq_to_string(key_tuple))
+    return fp
 
   def _get_part(cp):
     if cp == 0x200d:  # zwj, common so replace with '+'
@@ -236,7 +250,7 @@ def _generate_content(
 
   for key in keys:
     row = _generate_row_cells(key, font, aliases, dir_infos, basepaths, colors)
-    row.append(_get_desc(key, dir_infos, basepaths))
+    row.append(_get_desc(key, aliases, dir_infos, basepaths))
     row.append(_get_name(key, annotations))
     lines.append(''.join(row))
 
