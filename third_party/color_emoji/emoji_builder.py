@@ -25,10 +25,36 @@ from os import path
 
 from nototools import font_data
 
+def myunichr(cp):
+	if sys.maxunicode < 0x10FFFF and cp > 0xFFFF:
+		return ("\\U" + hex(cp)[2:].zfill(8)).decode("unicode-escape")
+	return unichr(cp)
+
+def myord(high, low):
+	return (ord(high) - 0xD800) * 0x400 + (ord(low) - 0xDC00) + 0x10000
+
+def begins_with_surrogate(string):
+	return sys.maxunicode < 0x10FFFF and len(string) > 1 and (0xD800 <= ord(string[0]) <= 0xDBFF) and (0xDC00 <= ord(string[1]) <= 0xDFFF)
+
 def get_glyph_name_from_gsub (string, font, cmap_dict):
 	ligatures = font['GSUB'].table.LookupList.Lookup[0].SubTable[0].ligatures
-	first_glyph = cmap_dict[ord (string[0])]
-	rest_of_glyphs = [cmap_dict[ord (ch)] for ch in string[1:]]
+
+	if begins_with_surrogate(string):
+			first_glyph = cmap_dict[myord(string[0], string[1])]
+			string = string[2:]
+	else:
+			first_glyph = cmap_dict[ord (string[0])]
+			string = string[1:]
+
+	rest_of_glyphs = []
+	while (len(string) > 0):
+			if begins_with_surrogate(string):
+					rest_of_glyphs.append(cmap_dict[myord(string[0], string[1])])
+					string = string[2:]
+			else:
+					rest_of_glyphs.append(cmap_dict[ord (string[0])])
+					string = string[1:]
+
 	for ligature in ligatures[first_glyph]:
 		if ligature.Component == rest_of_glyphs:
 			return ligature.LigGlyph
@@ -462,13 +488,13 @@ By default they are dropped.
 			if "_" in codes:
 				pieces = codes.split ("_")
 				cps = [int(code, 16) for code in pieces]
-				uchars = "".join ([unichr(cp) for cp in cps if not is_vs(cp)])
+				uchars = "".join ([myunichr(cp) for cp in cps if not is_vs(cp)])
 			else:
 				cp = int(codes, 16)
 				if is_vs(cp):
 					print "ignoring unexpected vs input %04x" % cp
 					continue
-				uchars = unichr(cp)
+				uchars = myunichr(cp)
 			img_files[uchars] = img_file
 		if not img_files:
 			raise Exception ("No image files found in '%s'." % glb)
@@ -482,6 +508,13 @@ By default they are dropped.
 					glyph_name = unicode_cmap.cmap[ord (uchars)]
 				except:
 					print "no cmap entry for %x" % ord(uchars)
+					raise ValueError("%x" % ord(uchars))
+			elif len (uchars) == 2 and begins_with_surrogate(uchars):
+				cp = myord(uchars[0], uchars[1])
+				try:
+					glyph_name = unicode_cmap.cmap[cp]
+				except:
+					print "no cmap entry for %x" % cp
 					raise ValueError("%x" % ord(uchars))
 			else:
 				glyph_name = get_glyph_name_from_gsub (uchars, font, unicode_cmap.cmap)
