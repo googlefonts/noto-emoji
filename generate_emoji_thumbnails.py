@@ -32,75 +32,86 @@ import subprocess
 import add_aliases
 
 from nototools import tool_utils
+from nototools import unicode_data
 
 logger = logging.getLogger('emoji_thumbnails')
 
 def create_thumbnail(src_path, dst_path):
   # uses imagemagik
-  subprocess.check_call(['convert', '-resize', '72x72', src_path, dst_path])
-  logger.info('wrote thumbnail: %s' % dst_path)
+  # we need imagex exactly 72x72 in size, with transparent background
+  subprocess.check_call([
+      'convert', '-thumbnail', '72x72', '-gravity', 'center', '-background',
+      'none', '-extent', '72x72', src_path, dst_path])
 
 
-_INV_ALIASES = None
 def get_inv_aliases():
-  global _INV_ALIASES
-  if _INV_ALIASES is None:
-    aliases = add_aliases.read_default_emoji_aliases()
-    inv_aliases = collections.defaultdict(list)
-    for k, v in aliases.iteritems():
-      inv_aliases[v].append(k)
-    _INV_ALIASES = inv_aliases
-  return _INV_ALIASES
+  """Return a mapping from target to list of sources for all alias
+  targets in either the default alias table or the unknown_flag alias
+  table."""
+
+  inv_aliases = collections.defaultdict(list)
+
+  standard_aliases = add_aliases.read_default_emoji_aliases()
+  for k, v in standard_aliases.iteritems():
+    inv_aliases[v].append(k)
+
+  unknown_flag_aliases = add_aliases.read_emoji_aliases(
+      'unknown_flag_aliases.txt')
+  for k, v in unknown_flag_aliases.iteritems():
+    inv_aliases[v].append(k)
+
+  return inv_aliases
 
 
-def is_emoji_filename(filename):
-  return filename.startswith('emoji_u') and filename.endswith('.png')
+def filename_to_sequence(filename, prefix, suffix):
+  if not filename.startswith(prefix) and filename.endswith(suffix):
+    raise ValueError('bad prefix or suffix: "%s"' % filename)
+  seq_str = filename[len(prefix): -len(suffix)]
+  seq = unicode_data.string_to_seq(seq_str)
+  if not unicode_data.is_cp_seq(seq):
+    raise ValueError('sequence includes non-codepoint: "%s"' % filename)
+  return seq
 
 
-def check_emoji_filename(filename):
-  if not is_emoji_filename(filename):
-    raise ValueError('not an emoji image file: %s' % filename)
+def sequence_to_filename(seq, prefix, suffix):
+  return ''.join((prefix, unicode_data.seq_to_string(seq), suffix))
 
 
-def emoji_filename_to_sequence(filename):
-  check_emoji_filename(filename)
+def create_thumbnails_and_aliases(src_dir, dst_dir, dst_prefix):
+  """Creates thumbnails in dst_dir based on sources in src.dir, using
+  dst_prefix. Assumes the source prefix is 'emoji_u' and the common suffix
+  is '.png'."""
 
-  return tuple([
-      int(s, 16) for s in filename[7:-4].split('_')
-      if s.lower() != 'fe0f'])
-
-
-def sequence_to_emoji_filename(seq):
-  return 'emoji_u%s.png' % '_'.join('%04x' % n for n in seq)
-
-
-def create_emoji_alias(src_path, dst_dir):
-  """If src_path is a target of any emoji aliases, create a copy in dst_dir
-  named for each alias."""
-  src_file = path.basename(src_path)
-  seq = emoji_filename_to_sequence(src_file)
-
-  inv_aliases = get_inv_aliases()
-  if seq in inv_aliases:
-    for alias_seq in inv_aliases[seq]:
-      alias_file = sequence_to_emoji_filename(alias_seq)
-      shutil.copy2(src_path, path.join(dst_dir, alias_file))
-      logger.info('wrote alias %s (copy of %s)' % (alias_file, src_file))
-
-
-def create_thumbnails_and_aliases(src_dir, dst_dir):
   if not path.isdir(src_dir):
     raise ValueError('"%s" is not a directory')
   dst_dir = tool_utils.ensure_dir_exists(dst_dir)
 
-  for f in os.listdir(src_dir):
-    if not (f.startswith('emoji_u') and f.endswith('.png')):
-      logger.warning('skipping "%s"' % f)
+  src_prefix = 'emoji_u'
+  suffix = '.png'
+
+  inv_aliases = get_inv_aliases()
+
+  for src_file in os.listdir(src_dir):
+    try:
+      seq = unicode_data.strip_emoji_vs(
+          filename_to_sequence(src_file, src_prefix, suffix))
+    except ValueError as ve:
+      logger.warning('Error (%s), skipping' % ve)
       continue
-    src = path.join(src_dir, f)
-    dst = path.join(dst_dir, f)
-    create_thumbnail(src, dst)
-    create_emoji_alias(dst, dst_dir)
+
+    src_path = path.join(src_dir, src_file)
+
+    dst_file = sequence_to_filename(seq, dst_prefix, suffix)
+    dst_path = path.join(dst_dir, dst_file)
+
+    create_thumbnail(src_path, dst_path)
+    logger.info('wrote thumbnail: %s' % dst_file)
+
+    for alias_seq in inv_aliases.get(seq, ()):
+      alias_file = sequence_to_filename(alias_seq, dst_prefix, suffix)
+      alias_path = path.join(dst_dir, alias_file)
+      shutil.copy2(dst_path, alias_path)
+      logger.info('wrote alias: %s' % alias_file)
 
 
 def main():
@@ -111,6 +122,9 @@ def main():
       '-d', '--dst_dir', help='destination directory', metavar='dir',
       required=True)
   parser.add_argument(
+      '-p', '--prefix', help='prefix for thumbnail', metavar='str',
+      default='android_')
+  parser.add_argument(
       '-v', '--verbose', help='write log output', metavar='level',
       choices='warning info debug'.split(), const='info',
       nargs='?')
@@ -119,7 +133,8 @@ def main():
   if args.verbose is not None:
     logging.basicConfig(level=getattr(logging, args.verbose.upper()))
 
-  create_thumbnails_and_aliases(args.src_dir, args.dst_dir)
+  create_thumbnails_and_aliases(
+      args.src_dir, args.dst_dir, args.prefix)
 
 
 if __name__ == '__main__':

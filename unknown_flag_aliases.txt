@@ -1,0 +1,25 @@
+# alias table
+# from;to
+# the 'from' sequence should be represented by the image for the 'to' sequence
+# these are flags we explicitly omit
+
+# flag aliases
+1f1e7_1f1f1;fe82b # BL
+1f1e7_1f1f6;fe82b # BQ
+1f1e9_1f1ec;fe82b # DG
+1f1ea_1f1e6;fe82b # EA
+1f1ea_1f1ed;fe82b # EH
+1f1eb_1f1f0;fe82b # FK
+1f1ec_1f1eb;fe82b # GF
+1f1ec_1f1f5;fe82b # GP
+1f1ec_1f1f8;fe82b # GS
+1f1f2_1f1eb;fe82b # MF
+1f1f2_1f1f6;fe82b # MQ
+1f1f3_1f1e8;fe82b # NC
+1f1f5_1f1f2;fe82b # PM
+1f1f7_1f1ea;fe82b # RE
+1f1f9_1f1eb;fe82b # TF
+1f1fc_1f1eb;fe82b # WF
+1f1fd_1f1f0;fe82b # XK
+1f1fe_1f1f9;fe82b # YT
+
