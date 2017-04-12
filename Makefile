@@ -19,7 +19,8 @@ CFLAGS = -std=c99 -Wall -Wextra `pkg-config --cflags --libs cairo`
 LDFLAGS = -lm `pkg-config --libs cairo`
 PNGQUANTDIR := third_party/pngquant
 PNGQUANT := $(PNGQUANTDIR)/pngquant
-PNGQUANTFLAGS = --speed 1 --skip-if-larger --force
+PNGQUANTFLAGS = --speed 1 --skip-if-larger --quality 85-95 --force
+IMOPS = -size 136x128 canvas:none -compose copy -gravity center
 
 # zopflipng is better (about 5-10%) but much slower.  it will be used if
 # present.  pass ZOPFLIPNG= as an arg to make to use optipng instead.
@@ -150,15 +151,24 @@ $(PNGQUANT):
 waveflag: waveflag.c
 	$(CC) $< -o $@ $(CFLAGS) $(LDFLAGS)
 
+
+# imagemagick's -extent operator munges the grayscale images in such a fashion
+# that while it can display them correctly using libpng12, chrome and gimp using
+# both libpng12 and libpng16 display the wrong gray levels.
+#
+# @convert "$<" -gravity center -background none -extent 136x128 "$@"
+#
+# We can get around the conversion to a gray colorspace in the version of
+# imagemagick packaged with ubuntu trusty (6.7.7-10) by using -composite.
+
 $(EMOJI_DIR)/%.png: $(EMOJI_SRC_DIR)/%.png | $(EMOJI_DIR)
-	@echo "emoji $< $@"
-	@convert -extent 136x128 -gravity center -background none "$<" "$@"
+	@convert $(IMOPS) "$<" -composite "PNG32:$@"
 
 $(FLAGS_DIR)/%.png: $(FLAGS_SRC_DIR)/%.png ./waveflag $(PNGQUANT) | $(FLAGS_DIR)
 	@./waveflag $(FLAGS_DIR)/ "$<"
 
 $(RESIZED_FLAGS_DIR)/%.png: $(FLAGS_DIR)/%.png | $(RESIZED_FLAGS_DIR)
-	@convert -extent 136x128 -gravity center -background none "$<" "$@"
+	@convert $(IMOPS) "$<" -composite "PNG32:$@"
 
 flag-symlinks: $(RESIZED_FLAG_FILES) | $(RENAMED_FLAGS_DIR)
 	@$(subst ^, ,                                  \
@@ -171,16 +181,16 @@ flag-symlinks: $(RESIZED_FLAG_FILES) | $(RENAMED_FLAGS_DIR)
 $(RENAMED_FLAG_FILES): | flag-symlinks
 
 $(QUANTIZED_DIR)/%.png: $(RENAMED_FLAGS_DIR)/%.png $(PNGQUANT) | $(QUANTIZED_DIR)
-	@($(PNGQUANT) $(PNGQUANTFLAGS) -o "$@" "$<"; case "$$?" in "98") cp $< $@;; *) exit "$$?";; esac)
+	@($(PNGQUANT) $(PNGQUANTFLAGS) -o "$@" "$<"; case "$$?" in "98"|"99") echo "reuse $<"; cp $< $@;; *) exit "$$?";; esac)
 
 $(QUANTIZED_DIR)/%.png: $(EMOJI_DIR)/%.png $(PNGQUANT) | $(QUANTIZED_DIR)
-	@($(PNGQUANT) $(PNGQUANTFLAGS) -o "$@" "$<"; case "$$?" in "98") cp $< $@;; *) exit "$$?";; esac)
+	@($(PNGQUANT) $(PNGQUANTFLAGS) -o "$@" "$<"; case "$$?" in "98"|"99") echo "reuse $<";cp $< $@;; *) exit "$$?";; esac)
 
 $(COMPRESSED_DIR)/%.png: $(QUANTIZED_DIR)/%.png | check_compress_tool $(COMPRESSED_DIR)
 ifdef MISSING_ZOPFLI
-	$(OPTIPNG) -quiet -o7 -clobber -force -out "$@" "$<"
+	@$(OPTIPNG) -quiet -o7 -clobber -force -out "$@" "$<"
 else
-	$(ZOPFLIPNG) -y "$<" "$@" 1> /dev/null 2>&1
+	@$(ZOPFLIPNG) -y "$<" "$@" 1> /dev/null 2>&1
 endif
 
 
@@ -204,9 +214,9 @@ $(EMOJI).ttf: $(EMOJI).tmpl.ttf $(EMOJI_BUILDER) $(PUA_ADDER) \
 	$(ALL_COMPRESSED_FILES) | check_vs_adder
 	@python $(EMOJI_BUILDER) -V $< "$@" "$(COMPRESSED_DIR)/emoji_u"
 	@python $(PUA_ADDER) "$@" "$@-with-pua"
-	$(VS_ADDER) -vs 2640 2642 2695 --dstdir '.' -o "$@-with-pua-varsel" "$@-with-pua"
-	mv "$@-with-pua-varsel" "$@"
-	rm "$@-with-pua"
+	@$(VS_ADDER) -vs 2640 2642 2695 --dstdir '.' -o "$@-with-pua-varsel" "$@-with-pua"
+	@mv "$@-with-pua-varsel" "$@"
+	@rm "$@-with-pua"
 
 clean:
 	rm -f $(EMOJI).ttf $(EMOJI).tmpl.ttf $(EMOJI).tmpl.ttx
