@@ -19,7 +19,7 @@ CFLAGS = -std=c99 -Wall -Wextra `pkg-config --cflags --libs cairo`
 LDFLAGS = -lm `pkg-config --libs cairo`
 PNGQUANTDIR := third_party/pngquant
 PNGQUANT := $(PNGQUANTDIR)/pngquant
-PNGQUANTFLAGS = --speed 1 --skip-if-larger --force
+PNGQUANTFLAGS = --speed 1 --skip-if-larger --quality 85-95 --force
 IMOPS = -size 136x128 canvas:none -compose copy -gravity center
 
 # zopflipng is better (about 5-10%) but much slower.  it will be used if
@@ -181,10 +181,10 @@ flag-symlinks: $(RESIZED_FLAG_FILES) | $(RENAMED_FLAGS_DIR)
 $(RENAMED_FLAG_FILES): | flag-symlinks
 
 $(QUANTIZED_DIR)/%.png: $(RENAMED_FLAGS_DIR)/%.png $(PNGQUANT) | $(QUANTIZED_DIR)
-	@($(PNGQUANT) $(PNGQUANTFLAGS) -o "$@" "$<"; case "$$?" in "98") cp $< $@;; *) exit "$$?";; esac)
+	@($(PNGQUANT) $(PNGQUANTFLAGS) -o "$@" "$<"; case "$$?" in "98"|"99") echo "reuse $<"; cp $< $@;; *) exit "$$?";; esac)
 
 $(QUANTIZED_DIR)/%.png: $(EMOJI_DIR)/%.png $(PNGQUANT) | $(QUANTIZED_DIR)
-	@($(PNGQUANT) $(PNGQUANTFLAGS) -o "$@" "$<"; case "$$?" in "98") cp $< $@;; *) exit "$$?";; esac)
+	@($(PNGQUANT) $(PNGQUANTFLAGS) -o "$@" "$<"; case "$$?" in "98"|"99") echo "reuse $<";cp $< $@;; *) exit "$$?";; esac)
 
 $(COMPRESSED_DIR)/%.png: $(QUANTIZED_DIR)/%.png | check_compress_tool $(COMPRESSED_DIR)
 ifdef MISSING_ZOPFLI
