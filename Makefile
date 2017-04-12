@@ -188,9 +188,9 @@ $(QUANTIZED_DIR)/%.png: $(EMOJI_DIR)/%.png $(PNGQUANT) | $(QUANTIZED_DIR)
 
 $(COMPRESSED_DIR)/%.png: $(QUANTIZED_DIR)/%.png | check_compress_tool $(COMPRESSED_DIR)
 ifdef MISSING_ZOPFLI
-	$(OPTIPNG) -quiet -o7 -clobber -force -out "$@" "$<"
+	@$(OPTIPNG) -quiet -o7 -clobber -force -out "$@" "$<"
 else
-	$(ZOPFLIPNG) -y "$<" "$@" 1> /dev/null 2>&1
+	@$(ZOPFLIPNG) -y "$<" "$@" 1> /dev/null 2>&1
 endif
 
 
@@ -214,9 +214,9 @@ $(EMOJI).ttf: $(EMOJI).tmpl.ttf $(EMOJI_BUILDER) $(PUA_ADDER) \
 	$(ALL_COMPRESSED_FILES) | check_vs_adder
 	@python $(EMOJI_BUILDER) -V $< "$@" "$(COMPRESSED_DIR)/emoji_u"
 	@python $(PUA_ADDER) "$@" "$@-with-pua"
-	$(VS_ADDER) -vs 2640 2642 2695 --dstdir '.' -o "$@-with-pua-varsel" "$@-with-pua"
-	mv "$@-with-pua-varsel" "$@"
-	rm "$@-with-pua"
+	@$(VS_ADDER) -vs 2640 2642 2695 --dstdir '.' -o "$@-with-pua-varsel" "$@-with-pua"
+	@mv "$@-with-pua-varsel" "$@"
+	@rm "$@-with-pua"
 
 clean:
 	rm -f $(EMOJI).ttf $(EMOJI).tmpl.ttf $(EMOJI).tmpl.ttx
