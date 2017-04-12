@@ -20,6 +20,7 @@ LDFLAGS = -lm `pkg-config --libs cairo`
 PNGQUANTDIR := third_party/pngquant
 PNGQUANT := $(PNGQUANTDIR)/pngquant
 PNGQUANTFLAGS = --speed 1 --skip-if-larger --force
+IMOPS = -size 136x128 canvas:none -compose copy -gravity center
 
 # zopflipng is better (about 5-10%) but much slower.  it will be used if
 # present.  pass ZOPFLIPNG= as an arg to make to use optipng instead.
@@ -150,15 +151,24 @@ $(PNGQUANT):
 waveflag: waveflag.c
 	$(CC) $< -o $@ $(CFLAGS) $(LDFLAGS)
 
+
+# imagemagick's -extent operator munges the grayscale images in such a fashion
+# that while it can display them correctly using libpng12, chrome and gimp using
+# both libpng12 and libpng16 display the wrong gray levels.
+#
+# @convert "$<" -gravity center -background none -extent 136x128 "$@"
+#
+# We can get around the conversion to a gray colorspace in the version of
+# imagemagick packaged with ubuntu trusty (6.7.7-10) by using -composite.
+
 $(EMOJI_DIR)/%.png: $(EMOJI_SRC_DIR)/%.png | $(EMOJI_DIR)
-	@echo "emoji $< $@"
-	@convert -extent 136x128 -gravity center -background none "$<" "$@"
+	@convert $(IMOPS) "$<" -composite "PNG32:$@"
 
 $(FLAGS_DIR)/%.png: $(FLAGS_SRC_DIR)/%.png ./waveflag $(PNGQUANT) | $(FLAGS_DIR)
 	@./waveflag $(FLAGS_DIR)/ "$<"
 
 $(RESIZED_FLAGS_DIR)/%.png: $(FLAGS_DIR)/%.png | $(RESIZED_FLAGS_DIR)
-	@convert -extent 136x128 -gravity center -background none "$<" "$@"
+	@convert $(IMOPS) "$<" -composite "PNG32:$@"
 
 flag-symlinks: $(RESIZED_FLAG_FILES) | $(RENAMED_FLAGS_DIR)
 	@$(subst ^, ,                                  \
