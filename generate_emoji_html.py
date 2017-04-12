@@ -29,6 +29,7 @@ import os
 from os import path
 import re
 import shutil
+import string
 import sys
 
 from nototools import tool_utils
@@ -436,38 +437,30 @@ def _parse_annotation_file(afile):
 
 
 def _instantiate_template(template, arg_dict):
-  id_regex = re.compile('{{([a-zA-Z0-9_]+)}}')
+  id_regex = re.compile(r'\$([a-zA-Z0-9_]+)')
   ids = set(m.group(1) for m in id_regex.finditer(template))
   keyset = set(arg_dict.keys())
-  missing_ids = ids - keyset
   extra_args = keyset - ids
   if extra_args:
     print >> sys.stderr, (
         'the following %d args are unused:\n%s' %
         (len(extra_args), ', '.join(sorted(extra_args))))
-  text = template
-  if missing_ids:
-    raise ValueError(
-        'the following %d ids in the template have no args:\n%s' %
-        (len(missing_ids), ', '.join(sorted(missing_ids))))
-  for arg in ids:
-    text = re.sub('{{%s}}' % arg, arg_dict[arg], text)
-  return text
+  return string.Template(template).substitute(arg_dict)
 
 
 TEMPLATE = """<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>{{title}}</title>{{fontFaceStyle}}
-    <style>{{style}}</style>
+    <title>$title</title>$fontFaceStyle
+    <style>$style</style>
   </head>
   <body>
   <!--
-  {{info}}
+  $info
   -->
-  <h3>{{title}}</h3>
-  {{content}}
+  <h3>$title</h3>
+  $content
   </body>
 </html>
 """
@@ -629,4 +622,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+  main()
