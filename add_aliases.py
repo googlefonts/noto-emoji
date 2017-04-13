@@ -35,6 +35,11 @@ def seq_to_str(seq):
   return '_'.join('%04x' % cp for cp in seq)
 
 
+def read_default_unknown_flag_aliases():
+  unknown_flag_path = path.join(DATA_ROOT, 'unknown_flag_aliases.txt')
+  return read_emoji_aliases(unknown_flag_path)
+
+
 def read_default_emoji_aliases():
   alias_path = path.join(DATA_ROOT, 'emoji_aliases.txt')
   return read_emoji_aliases(alias_path)
