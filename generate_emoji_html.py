@@ -58,15 +58,18 @@ def _merge_keys(dicts):
   return frozenset(keys)
 
 
-def _generate_row_cells(key, font, aliases, dir_infos, basepaths, colors):
+def _generate_row_cells(
+    key, font, aliases, excluded, dir_infos, basepaths, colors):
   CELL_PREFIX = '<td>'
   indices = range(len(basepaths))
   def _cell(info, basepath):
     if key in info.filemap:
       return '<img src="%s">' % path.join(basepath, info.filemap[key])
     if key in aliases:
-      return '-alias-'
-    return '-missing-'
+      return 'alias'
+    if key in excluded:
+      return 'exclude'
+    return 'missing'
 
   def _text_cell(text_dir):
     text = ''.join(unichr(cp) for cp in key)
@@ -184,17 +187,20 @@ def _collect_aux_info(dir_infos, keys):
 
 
 def _generate_content(
-    basedir, font, dir_infos, keys, aliases, annotations, standalone, colors):
+    basedir, font, dir_infos, keys, aliases, excluded, annotations, standalone,
+    colors):
   """Generate an html table for the infos.  Basedir is the parent directory of
   the content, filenames will be made relative to this if underneath it, else
   absolute. If font is not none, generate columns for the text rendered in the
   font before other columns.  Dir_infos is the list of DirInfos in column
-  order.  Keys is the list of canonical emoji sequences in row order.  If
-  annotations is not none, highlight sequences that appear in this map based on
-  their map values ('ok', 'error', 'warning').  If standalone is true, the
-  image data and font (if used) will be copied under the basedir to make a
-  completely stand-alone page.  Colors is the list of background colors, the
-  last DirInfo column will be repeated against each of these backgrounds.
+  order.  Keys is the list of canonical emoji sequences in row order.  Aliases
+  and excluded indicate images we expect to not be present either because
+  they are aliased or specifically excluded.  If annotations is not none,
+  highlight sequences that appear in this map based on their map values ('ok',
+  'error', 'warning').  If standalone is true, the image data and font (if used)
+  will be copied under the basedir to make a completely stand-alone page.
+  Colors is the list of background colors, the last DirInfo column will be
+  repeated against each of these backgrounds.
   """
 
   basedir = path.abspath(path.expanduser(basedir))
@@ -250,7 +256,8 @@ def _generate_content(
   lines.append('<th>'.join(header_row))
 
   for key in keys:
-    row = _generate_row_cells(key, font, aliases, dir_infos, basepaths, colors)
+    row = _generate_row_cells(
+        key, font, aliases, excluded, dir_infos, basepaths, colors)
     row.append(_get_desc(key, aliases, dir_infos, basepaths))
     row.append(_get_name(key, annotations))
     lines.append(''.join(row))
@@ -482,7 +489,7 @@ STYLE = """
 """
 
 def write_html_page(
-    filename, page_title, font, dir_infos, keys, aliases, annotations,
+    filename, page_title, font, dir_infos, keys, aliases, excluded, annotations,
     standalone, colors, info):
 
   out_dir = path.dirname(filename)
@@ -508,8 +515,8 @@ def write_html_page(
         font = path.normpath(path.join(common_prefix, rel_font))
 
   content = _generate_content(
-      path.dirname(filename), font, dir_infos, keys, aliases, annotations,
-      standalone, colors)
+      path.dirname(filename), font, dir_infos, keys, aliases, excluded,
+      annotations, standalone, colors)
   N_STYLE = STYLE
   if font:
     FONT_FACE_STYLE = """
@@ -539,6 +546,12 @@ def _get_canonical_aliases():
     return unicode_data.get_canonical_emoji_sequence(seq) or seq
   aliases = add_aliases.read_default_emoji_aliases()
   return {canon(k): canon(v) for k, v in aliases.iteritems()}
+
+def _get_canonical_excluded():
+  def canon(seq):
+    return unicode_data.get_canonical_emoji_sequence(seq) or seq
+  aliases = add_aliases.read_default_unknown_flag_aliases()
+  return frozenset([canon(k) for k in aliases.keys()])
 
 
 def main():
@@ -614,11 +627,13 @@ def main():
       dir_infos, aliases, args.limit, args.all_emoji, args.emoji_sort,
       args.ignore_missing)
 
+  excluded = _get_canonical_excluded()
+
   info = _generate_info_text(args)
 
   write_html_page(
       args.outfile, args.page_title, args.font, dir_infos, keys, aliases,
-      annotations, args.standalone, args.colors, info)
+      excluded, annotations, args.standalone, args.colors, info)
 
 
 if __name__ == "__main__":
