@@ -1,0 +1,15 @@
+{
+  "name": "noto-emoji",
+  "version": "1",
+  "apiVersion": "v1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/googlei18n/noto-emoji"
+  },
+  "license": "Apache 2.0",
+  "description": "noto emoji fonts source files",
+  "files": [
+    "png/",
+    "svg/"
+  ]
+}
