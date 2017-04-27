@@ -1,5 +1,5 @@
 {
-  "name": "noto-emoji",
+  "name": "asturur-noto-emoji",
   "version": "1.0.0",
   "apiVersion": "v1",
   "repository": {
@@ -7,7 +7,7 @@
     "url": "https://github.com/googlei18n/noto-emoji"
   },
   "license": "Apache 2.0",
-  "description": "noto emoji fonts source files",
+  "description": "pngs and svgs from google noto-emoji repository packaged for including in project with npm",
   "files": [
     "png/",
     "svg/"
