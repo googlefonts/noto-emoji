@@ -98,10 +98,10 @@ wave_mesh_create (double aspect, int alpha)
 
 	if (alpha)
 	{
-		cairo_mesh_pattern_set_corner_color_rgba(pattern, 0, 0, 0, 0, 0);
-		cairo_mesh_pattern_set_corner_color_rgba(pattern, 1, 0, 0, 0, .5);
-		cairo_mesh_pattern_set_corner_color_rgba(pattern, 2, 0, 0, 0, 1);
-		cairo_mesh_pattern_set_corner_color_rgba(pattern, 3, 0, 0, 0, .5);
+		cairo_mesh_pattern_set_corner_color_rgba(pattern, 0, 1, 1, 1, .5);
+		cairo_mesh_pattern_set_corner_color_rgba(pattern, 1,.5,.5,.5, .5);
+		cairo_mesh_pattern_set_corner_color_rgba(pattern, 2, 0, 0, 0, .5);
+		cairo_mesh_pattern_set_corner_color_rgba(pattern, 3,.5,.5,.5, .5);
 	}
 	else
 	{
