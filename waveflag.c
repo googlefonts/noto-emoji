@@ -98,10 +98,10 @@ wave_mesh_create (double aspect, int alpha)
 
 	if (alpha)
 	{
-		cairo_mesh_pattern_set_corner_color_rgba(pattern, 0, 0, 0, 0, 0);
-		cairo_mesh_pattern_set_corner_color_rgba(pattern, 1, 0, 0, 0, .5);
-		cairo_mesh_pattern_set_corner_color_rgba(pattern, 2, 0, 0, 0, 1);
-		cairo_mesh_pattern_set_corner_color_rgba(pattern, 3, 0, 0, 0, .5);
+		cairo_mesh_pattern_set_corner_color_rgba(pattern, 0, 1, 1, 1, .5);
+		cairo_mesh_pattern_set_corner_color_rgba(pattern, 1,.5,.5,.5, .5);
+		cairo_mesh_pattern_set_corner_color_rgba(pattern, 2, 0, 0, 0, .5);
+		cairo_mesh_pattern_set_corner_color_rgba(pattern, 3,.5,.5,.5, .5);
 	}
 	else
 	{
@@ -409,7 +409,12 @@ wave_flag (const char *filename, const char *out_prefix)
 	*out = '\0';
 	strcat (out, out_prefix);
         // diff from upstream. we call this a bit differently, filename might not be in cwd.
-	strcat (out, basename(filename));
+
+        // basename wants a non-const argument.  The problem here is paths that end in a
+        // slash, POSIX basename removes them while GNU just returns a pointer to that
+        // slash.  Since this is supposed to be a filename such input is illegal for us.
+        // We're already not checking for overflow of the output buffer anyway...
+	strcat (out, basename((char *) filename));
 
 	cairo_surface_write_to_png (cairo_get_target (cr), out);
 	cairo_destroy (cr);
