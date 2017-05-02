@@ -1,14 +1,1 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 19.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="レイヤー_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
-	 y="0px" viewBox="0 0 128 128" style="enable-background:new 0 0 128 128;" xml:space="preserve">
-<g>
-	<circle style="fill:none;stroke:#F79229;stroke-width:11;stroke-miterlimit:10;" cx="64" cy="64" r="58"/>
-	
-		<line style="fill:none;stroke:#F79229;stroke-width:11;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" x1="64" y1="6" x2="64" y2="122"/>
-	
-		<line style="fill:none;stroke:#F79229;stroke-width:11;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" x1="64" y1="64" x2="105.01" y2="105.01"/>
-	
-		<line style="fill:none;stroke:#F79229;stroke-width:11;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" x1="22.99" y1="105.01" x2="64" y2="64"/>
-</g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128"><g fill="none" stroke="#f79229" stroke-width="11" stroke-miterlimit="10"><circle cx="64" cy="64" r="58"/><path stroke-linecap="round" stroke-linejoin="round" d="M64 6v116M64 64l41.01 41.01M22.99 105.01L64 64"/></g></svg>
