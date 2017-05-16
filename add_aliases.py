@@ -18,6 +18,7 @@ import argparse
 import glob
 import os
 from os import path
+import shutil
 import sys
 
 """Create aliases in target directory.
@@ -28,7 +29,11 @@ codepoint in their names."""
 DATA_ROOT = path.dirname(path.abspath(__file__))
 
 def str_to_seq(seq_str):
-  return tuple([int(s, 16) for s in seq_str.split('_')])
+  res = [int(s, 16) for s in seq_str.split('_')]
+  if 0xfe0f in res:
+    print '0xfe0f in file name: %s' % seq_str
+    res = [x for x in res if x != 0xfe0f]
+  return tuple(res)
 
 
 def seq_to_str(seq):
@@ -67,42 +72,61 @@ def read_emoji_aliases(filename):
   return result
 
 
-def add_aliases(filedir, prefix, ext, replace=False, dry_run=False):
-  if not path.isdir(filedir):
-    print >> sys.stderr, '%s is not a directory' % filedir
+def add_aliases(
+    srcdir, dstdir, aliasfile, prefix, ext, replace=False, copy=False,
+    dry_run=False):
+  """Use aliasfile to create aliases of files in srcdir matching prefix/ext in
+  dstdir.  If dstdir is null, use srcdir as dstdir.  If replace is false
+  and a file already exists in dstdir, report and do nothing.  If copy is false
+  create a symlink, else create a copy.  If dry_run is true, report what would
+  be done.  Dstdir will be created if necessary, even if dry_run is true."""
+
+  if not path.isdir(srcdir):
+    print >> sys.stderr, '%s is not a directory' % srcdir
     return
+
+  if not dstdir:
+    dstdir = srcdir
+  elif not path.isdir(dstdir):
+    os.makedirs(dstdir)
 
   prefix_len = len(prefix)
   suffix_len = len(ext) + 1
   filenames = [path.basename(f)
-               for f in glob.glob(path.join(filedir, '%s*.%s' % (prefix, ext)))]
+               for f in glob.glob(path.join(srcdir, '%s*.%s' % (prefix, ext)))]
   seq_to_file = {
       str_to_seq(name[prefix_len:-suffix_len]) : name
       for name in filenames}
 
-  aliases = read_emoji_aliases()
+  aliases = read_emoji_aliases(aliasfile)
   aliases_to_create = {}
   aliases_to_replace = []
-  for als,trg in sorted(aliases.items()):
+  alias_exists = False
+  for als, trg in sorted(aliases.items()):
     if trg not in seq_to_file:
       print >> sys.stderr, 'target %s for %s does not exist' % (
           seq_to_str(trg), seq_to_str(als))
       continue
-    if als in seq_to_file:
+    alias_name = '%s%s.%s' % (prefix, seq_to_str(als), ext)
+    alias_path = path.join(dstdir, alias_name)
+    if path.exists(alias_path):
       if replace:
-        aliases_to_replace.append(seq_to_file[als])
+        aliases_to_replace.append(alias_name)
       else:
         print >> sys.stderr, 'alias %s exists' % seq_to_str(als)
+        alias_exists = True
         continue
     target_file = seq_to_file[trg]
-    alias_name = '%s%s.%s' % (prefix, seq_to_str(als), ext)
     aliases_to_create[alias_name] = target_file
 
   if replace:
     if not dry_run:
       for k in sorted(aliases_to_replace):
-        os.remove(path.join(filedir, k))
+        os.remove(path.join(dstdir, k))
     print 'replacing %d files' % len(aliases_to_replace)
+  elif alias_exists:
+    print >> sys.stderr, 'aborting, aliases exist.'
+    return
 
   for k, v in sorted(aliases_to_create.items()):
     if dry_run:
@@ -110,18 +134,32 @@ def add_aliases(filedir, prefix, ext, replace=False, dry_run=False):
       print '%s%s -> %s' % (msg, k, v)
     else:
       try:
-        os.symlink(v, path.join(filedir, k))
-      except:
+        if copy:
+          shutil.copy2(path.join(srcdir, v), path.join(dstdir, k))
+        else:
+          # fix this to create relative symlinks
+          if srcdir == dstdir:
+            os.symlink(v, path.join(dstdir, k))
+          else:
+            raise Exception('can\'t create cross-directory symlinks yet')
+      except Exception as e:
         print >> sys.stderr, 'failed to create %s -> %s' % (k, v)
-        raise Exception('oops')
-  print 'created %d symlinks' % len(aliases_to_create)
+        raise Exception('oops, ' + str(e))
+  print 'created %d %s' % (
+      len(aliases_to_create), 'copies' if copy else 'symlinks')
 
 
 def main():
   parser = argparse.ArgumentParser()
   parser.add_argument(
-      '-d', '--filedir', help='directory containing files to alias',
+      '-s', '--srcdir', help='directory containing files to alias',
       required=True, metavar='dir')
+  parser.add_argument(
+      '-d', '--dstdir', help='directory to write aliases, default srcdir',
+      metavar='dir')
+  parser.add_argument(
+      '-a', '--aliasfile', help='alias file (default emoji_aliases.txt)',
+      metavar='file', default='emoji_aliases.txt')
   parser.add_argument(
       '-p', '--prefix', help='file name prefix (default emoji_u)',
       metavar='pfx', default='emoji_u')
@@ -132,11 +170,16 @@ def main():
       '-r', '--replace', help='replace existing files/aliases',
       action='store_true')
   parser.add_argument(
+      '-c', '--copy', help='create a copy of the file, not a symlink',
+      action='store_true')
+  parser.add_argument(
       '-n', '--dry_run', help='print out aliases to create only',
       action='store_true')
   args = parser.parse_args()
 
-  add_aliases(args.filedir, args.prefix, args.ext, args.replace, args.dry_run)
+  add_aliases(
+      args.srcdir, args.dstdir, args.aliasfile, args.prefix, args.ext,
+      args.replace, args.copy, args.dry_run)
 
 
 if __name__ == '__main__':
