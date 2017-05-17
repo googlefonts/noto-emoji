@@ -273,7 +273,7 @@ def _name_data(seq, seq_file):
 
 
 def generate_names(
-    src_dir, dst_dir, pretty_print=False, verbose=False):
+    src_dir, dst_dir, skip_limit=20, pretty_print=False, verbose=False):
   srcdir = tool_utils.resolve_path(src_dir)
   if not path.isdir(srcdir):
     print >> sys.stderr, '%s is not a directory' % src_dir
@@ -322,7 +322,6 @@ def generate_names(
   data = []
   last_skipped_group = None
   skipcount = 0
-  skip_limit = 20
   for group in unicode_data.get_emoji_groups():
     name_data = []
     for seq in unicode_data.get_emoji_in_group(group):
@@ -338,7 +337,7 @@ def generate_names(
           print '  %s (%s)' % (
               unicode_data.seq_to_string(seq),
               ', '.join(unicode_data.name(cp, 'x') for cp in seq))
-        if skipcount > skip_limit:
+        if skip_limit >= 0 and skipcount > skip_limit:
           raise Exception('skipped too many items')
       else:
         name_data.append(_name_data(seq, seq_file))
@@ -367,12 +366,15 @@ def main():
       '-p', '--pretty_print', help='pretty-print json file',
       action='store_true')
   parser.add_argument(
+      '-m', '--missing_limit', help='number of missing images before failure '
+      '(default 20), use -1 for no limit', metavar='n', default=20)
+  parser.add_argument(
       '-v', '--verbose', help='print progress information to stdout',
       action='store_true')
   args = parser.parse_args()
   generate_names(
-      args.srcdir, args.dstdir, pretty_print=args.pretty_print,
-      verbose=args.verbose)
+      args.srcdir, args.dstdir, args.missing_limit,
+      pretty_print=args.pretty_print, verbose=args.verbose)
 
 
 if __name__ == "__main__":
