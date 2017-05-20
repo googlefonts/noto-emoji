@@ -37,7 +37,7 @@ int rwpng_read_image24_cocoa(FILE *fp, png24_image *out)
                                                      width, height,
                                                      8, width*4,
                                                      colorspace,
-                                                     kCGImageAlphaPremultipliedLast);
+                                                     (CGBitmapInfo)kCGImageAlphaPremultipliedLast);
 
         CGColorSpaceRelease(colorspace);
 
@@ -60,6 +60,8 @@ int rwpng_read_image24_cocoa(FILE *fp, png24_image *out)
     }
 
     out->gamma = 0.45455;
+    out->input_color = RWPNG_COCOA;
+    out->output_color = RWPNG_SRGB;
     out->width = width;
     out->height = height;
     out->rgba_data = (unsigned char *)pixel_data;

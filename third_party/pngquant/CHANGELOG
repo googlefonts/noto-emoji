@@ -1,7 +1,37 @@
+version 2.8
+-----------
+ - libimagequant is a separate project
+
+version 2.7
+-----------
+ - improved dithering of saturated and semitransparent colors
+ - fixed order of log output when using openmp
+ - improved quality sanity check in --skip-if-larger option
+ - disabled palette post-processing on colors from --map option to preserve them exactly
+
+version 2.6
+-----------
+ - when source image has no color profile information, the output won't have either
+
+version 2.5
+-----------
+ - replaced color search algorithm with vantage point tree, which is much faster and more reliable
+ - deprecated IE6 workaround
+ - warn when compiled without color profile support
+ - Rust API for libimagequant
+
+version 2.4
+-----------
+ - fixed remapping of bright colors when dithering
+
 version 2.3
 -----------
  - added ./configure script for better support of Intel C compiler and dependencies [thanks to pdknsk]
  - tweaked quality metric to better estimate quality of images with large solid backgrounds [thanks to Rolf Timmermans]
+ - atomic file saves and fixed --skip-if-larger
+ - avoid applying quality setting to images that use palette already
+ - preserving standard PNG chunks (requires libpng 1.6)
+ - deprecated libpng 1.2 support
 
 version 2.2
 -----------

@@ -2,11 +2,14 @@
 
 CONFIG="config.mk"
 PREFIX="/usr/local"
-VERSION=$(grep "define PNGQUANT_VERSION" pngquant.c | grep -Eo "[12]\.[0-9.]+")
+
+test -f lib/libimagequant.h || { git submodule init && git submodule update; }
+VERSION=$(grep LIQ_VERSION_STRING lib/libimagequant.h | grep -Eo "2\.[0-9.]+")
 
 DEBUG=
 SSE=auto
 OPENMP=
+LIBPNG_DIR=.
 if [[ "$OSTYPE" =~ "darwin" ]]; then
     COCOA_READER=auto
     LCMS2=0
@@ -28,18 +31,19 @@ for i in "$@"; do
     case $i in
     --help)
         echo
-        help "--prefix=                     installation directory [$PREFIX]"
-        help "--extra-cflags=               append to CFLAGS"
-        help "--extra-ldflags=              append to LDFLAGS"
+        help "--prefix=<dir>                installation directory [$PREFIX]"
+        help "--extra-cflags=<flags>        append to CFLAGS"
+        help "--extra-ldflags=<flags>       append to LDFLAGS"
         echo
         help "--enable-debug"
         help "--enable-sse/--disable-sse    enable/disable SSE instructions"
         echo
-        help "--with-openmp                 compile with multicore support"
+        help "--with-openmp=static          compile with multicore support"
         help "--with-lcms2/--without-lcms2  compile with color profile support"
 if [[ "$OSTYPE" =~ "darwin" ]]; then
         help "--with-cocoa/--without-cocoa  use Cocoa framework to read images"
 fi
+        help "--with-libpng=<dir>           search for libpng in directory"
         echo
         help "CC=<compiler>                 use given compiler command"
         help "CFLAGS=<flags>                pass options to the compiler"
@@ -69,6 +73,9 @@ fi
     --with-openmp)
         OPENMP=1
         ;;
+    --with-openmp=static)
+        OPENMP=static
+        ;;
     --with-lcms2)
         LCMS2=1
         COCOA_READER=0
@@ -83,6 +90,9 @@ fi
     --without-cocoa)
         COCOA_READER=0
         ;;
+    --with-libpng=*)
+        LIBPNG_DIR=${i#*=}
+        ;;
     --prefix=*)
         PREFIX=${i#*=}
         ;;
@@ -94,8 +104,7 @@ fi
         EXTRA_LDFLAGS="$EXTRA_LDFLAGS ${i#*=}"
         ;;
     *)
-        echo "error: unknown switch ${i%%=*} (see $0 --help for the list)"
-        exit 1
+        echo "warning: unknown switch ${i%%=*} (see $0 --help for the list)"
         ;;
     esac
 done
@@ -122,23 +131,23 @@ status() {
 # Append to CFLAGS if compiler supports flag, with optional prerequisite.
 # Fails on errors and warnings.
 conditional_cflags() {
-    if [ -z "$("$CC" -xc -S -o /dev/null $2 $1 <(echo) 2>&1)" ]; then
+    if [ -z "$(echo | "$CC" -xc -S -o /dev/null $2 $1 - 2>&1)" ]; then
         cflags "$1"
     fi
 }
 
 # returns first matching file in directory
 find_f() {
-    echo $(find "$1" -not -type d -name "$2" -print -quit 2> /dev/null)
+    echo $(find "$1" -not -path '*/.git/*' -not -type d -name "$2" -print -quit 2> /dev/null)
 }
 
 # returns first matching file in directory (no symlinks)
 find_h() {
-    echo $(find "$1" -type f -name "$2" -print -quit 2> /dev/null)
+    echo $(find "$1" -not -path '*/.*/*' -type f -name "$2" -print -quit 2> /dev/null)
 }
 
 find_pkgconfig() {
-    LIBNAME=$1
+    local LIBNAME=$1
     if pkg-config --exists "$LIBNAME" &> /dev/null; then
         cflags "$(pkg-config --cflags "$LIBNAME")"
         lflags "$(pkg-config --libs "$LIBNAME")"
@@ -149,13 +158,13 @@ find_pkgconfig() {
 }
 
 find_static() {
-    LIBNAME=$1
-    HEADERPATTERN=$2
-    STATICPATTERN=$3
+    local LIBNAME=$1
+    local HEADERPATTERN=$2
+    local STATICPATTERN=$3
 
-    HPATH=$(find_h . "$HEADERPATTERN")
+    local HPATH=$(find_h . "$HEADERPATTERN")
     if [ -n "$HPATH" ]; then
-        APATH=$(find_f . "$STATICPATTERN")
+        local APATH=$(find_f . "$STATICPATTERN")
         if [ -n "$APATH" ]; then
             cflags "-I${HPATH%/*}"
             lflags "${APATH}"
@@ -166,12 +175,32 @@ find_static() {
     return 1
 }
 
+find_dynamic() {
+    local LIBNAME=$1
+    local HEADERPATTERN=$2
+    local DYNAMICPATTERN=$3
+    local HEADERDIR=$4
+    local LIBDIR=$5
+
+    local HPATH=$(find_h "$HEADERDIR" "$HEADERPATTERN")
+    if [ -n "$HPATH" ]; then
+        local SOPATH=$(find_f "$LIBDIR" "$DYNAMICPATTERN")
+        if [ -n "$SOPATH" ]; then
+            cflags "-I${HPATH%/*}"
+            lflags "-L${SOPATH%/*} -l$DYNAMICLIBNAME"
+            status "$LIBNAME" "shared ... $SOPATH"
+            return 0
+        fi
+    fi
+    return 1
+}
+
 find_library() {
-    LIBNAME=$1
-    DYNAMICLIBNAME=$2
-    HEADERPATTERN=$3
-    STATICPATTERN=$4
-    DYNAMICPATTERN=$5
+    local LIBNAME=$1
+    local DYNAMICLIBNAME=$2
+    local HEADERPATTERN=$3
+    local STATICPATTERN=$4
+    local DYNAMICPATTERN=$5
 
     # try static in current directory first
     if find_static "$LIBNAME" "$HEADERPATTERN" "$STATICPATTERN"; then
@@ -185,15 +214,8 @@ find_library() {
 
     for i in "${DIRS[@]}"; do
         DIR=($i)
-        HPATH=$(find_h "${DIR[0]}" "$HEADERPATTERN")
-        if [ -n "$HPATH" ]; then
-            SOPATH=$(find_f "${DIR[1]}" "$DYNAMICPATTERN")
-            if [ -n "$SOPATH" ]; then
-                cflags "-I${HPATH%/*}"
-                lflags "-L${SOPATH%/*} -l$DYNAMICLIBNAME"
-                status "$LIBNAME" "shared ... $SOPATH"
-                return 0
-            fi
+        if find_dynamic "$LIBNAME" "$HEADERPATTERN" "$DYNAMICPATTERN" "${DIR[0]}" "${DIR[1]}"; then
+            return 0
         fi
     done
     return 1
@@ -221,23 +243,22 @@ error() {
 echo
 
 # basic check
-if ! "$CC" -xc -std=c99 <(echo "int main(){}") -o /dev/null &> /dev/null; then
-    error "Compiler" "$CC is no C compiler"
+if ! echo "int main(){}" | "$CC" -xc -std=c99 -o /dev/null - > /dev/null; then
+    error "Compiler" "$CC failed to compile anything (make sure it's installed and supports C99)"
 fi
 
 status "Compiler" "$CC"
 
 # init flags
-CFLAGS=${CFLAGS:--O3 -fno-math-errno -funroll-loops -fomit-frame-pointer -Wall}
+CFLAGS=${CFLAGS:--fno-math-errno -funroll-loops -fomit-frame-pointer -Wall}
 cflags "-std=c99 -I."
-lflags "-lm lib/libimagequant.a"
 
 # DEBUG
 if [ -z "$DEBUG" ]; then
-    cflags "-DNDEBUG"
+    cflags "-O3 -DNDEBUG"
     status "Debug" "no"
 else
-    cflags "-g"
+    cflags "-O1 -g"
     status "Debug" "yes"
 fi
 
@@ -264,12 +285,16 @@ fi
 
 # OpenMP
 if [ -n "$OPENMP" ]; then
-    if [[ "$("$CC" -xc -E -fopenmp <(echo -e \
-          "#ifdef _OPENMP
+    if [ "static" = "$OPENMP" ]; then
+        OPENMPFLAGS="-static-libgcc -Bstatic -fopenmp -Bdynamic"
+    else
+        OPENMPFLAGS="-fopenmp"
+    fi
+    if [[ "$("$CC" -xc -E $OPENMPFLAGS <(echo "#ifdef _OPENMP
            #include <omp.h>
            #endif") 2>&1)" =~ "omp_get_thread_num" ]]; then
-        cflags "-fopenmp"
-        lflags "-fopenmp"
+        cflags "$OPENMPFLAGS"
+        lflags "$OPENMPFLAGS"
         status "OpenMP" "yes"
     else
         error "OpenMP" "not supported by compiler (please install a compiler that supports OpenMP (e.g. gcc) and specify it with the CC= argument)"
@@ -286,7 +311,7 @@ if [[ "$OSTYPE" =~ "darwin" ]]; then
     cflags "-mmacosx-version-min=10.6"
     lflags "-mmacosx-version-min=10.6"
 
-    if [ "$COCOA_READER" != 0 ]; then
+    if [ "$COCOA_READER" != 0 ] && "$CC" 2>/dev/null 1>/dev/null -xc -E <(echo "#import <Cocoa/Cocoa.h>"); then
         COCOA_READER=1
         cflags "-DUSE_COCOA=1"
         lflags "-framework Cocoa"
@@ -296,37 +321,63 @@ if [[ "$OSTYPE" =~ "darwin" ]]; then
     fi
 fi
 
+# pairs of possible *.h and lib*.so locations
+DIRS=()
+
+if command -v >/dev/null libpng-config; then
+    DIRS+=("$(libpng-config --prefix) $(libpng-config --libdir)")
+fi
+
+DIRS+=("/usr/local/include /usr/local/lib"
+      "/usr/include /usr/lib"
+      "/opt/local/include /opt/local/lib" # macports
+      )
+
 if [[ "$OSTYPE" =~ "darwin" ]]; then
     SOLIBSUFFIX=dylib
+
+    # Search Developer SDK paths, since Apple seems to have dropped the standard Unixy ones
+    XCODE_CMD="xcode-select"
+    XCODE_PATH=$($XCODE_CMD -p)
+    DIRS+=("$XCODE_PATH/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk/usr/include $XCODE_PATH/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk/usr/lib")
+    DIRS+=("$XCODE_PATH/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/usr/include $XCODE_PATH/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/usr/lib")
 else
     SOLIBSUFFIX=so
 fi
 
-# pairs of possible *.h and lib*.so locations
-DIRS=("/usr/local/include /usr/local/lib"
-      "/usr/include /usr/lib")
 
 # libpng
-SUCCESS=0
-# try static in current directory first
-PNGH=$(find_h . "png.h")
-if [ -n "$PNGH" ]; then
-    PNGH_STRING=$(pngh_string "$PNGH")
-    PNGH_MAJMIN=$(pngh_majmin "$PNGH")
-    if [[ -n "$PNGH_STRING" && -n "$PNGH_MAJMIN" ]]; then
-        LIBPNGA=$(find_f . "libpng${PNGH_MAJMIN}.a")
-        if [ -n "$LIBPNGA" ]; then
-            cflags "-I${PNGH%/*}"
-            lflags "${LIBPNGA}"
-            status "libpng" "static (${PNGH_STRING})"
-            SUCCESS=1
+# try if given flags are enough
+HAS_LIBPNG=0
+if echo "#include \"png.h\"
+    int main(){
+    return !png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+}" | "$CC" -xc -std=c99 -o /dev/null $CFLAGS $LDFLAGS - &> /dev/null; then
+    status "libpng" "custom flags"
+    HAS_LIBPNG=1
+fi
+
+if [ "$HAS_LIBPNG" -eq 0 ]; then
+    # try static in the given directory
+    PNGH=$(find_h "$LIBPNG_DIR" "png.h")
+    if [ -n "$PNGH" ]; then
+        PNGH_STRING=$(pngh_string "$PNGH")
+        PNGH_MAJMIN=$(pngh_majmin "$PNGH")
+        if [[ -n "$PNGH_STRING" && -n "$PNGH_MAJMIN" ]]; then
+            LIBPNGA=$(find_f "$LIBPNG_DIR" "libpng${PNGH_MAJMIN}.a")
+            if [ -n "$LIBPNGA" ]; then
+                cflags "-I${PNGH%/*}"
+                lflags "${LIBPNGA}"
+                status "libpng" "static (${PNGH_STRING})"
+                HAS_LIBPNG=1
+            fi
         fi
     fi
 fi
 # try shared
-if [ "$SUCCESS" -eq 0 ]; then
+if [ "$HAS_LIBPNG" -eq 0 ]; then
     if find_pkgconfig libpng; then
-        SUCCESS=1
+        HAS_LIBPNG=1
     else
         for i in "${DIRS[@]}"; do
             DIR=($i)
@@ -340,7 +391,7 @@ if [ "$SUCCESS" -eq 0 ]; then
                         cflags "-I${PNGH%/*}"
                         lflags "-L${LIBPNGSO%/*} -lpng${PNGH_MAJMIN}"
                         status "libpng" "shared (${PNGH_STRING})"
-                        SUCCESS=1
+                        HAS_LIBPNG=1
                         break
                     fi
                 fi
@@ -348,13 +399,13 @@ if [ "$SUCCESS" -eq 0 ]; then
         done
     fi
 fi
-if [ "$SUCCESS" -eq 0 ]; then
+if [ "$HAS_LIBPNG" -eq 0 ]; then
     if [[ "$OSTYPE" =~ "darwin" ]]; then
-        LIBPNGCOMMAND='`brew install libpng`'
+        LIBPNG_CMD='`brew install libpng`'
     else
-        LIBPNGCOMMAND='`apt-get install libpng-dev` or `yum install libpng-devel`'
+        LIBPNG_CMD='`apt-get install libpng16-dev` or `apt-get install libpng-dev` or `yum install libpng-devel`'
     fi
-    error "libpng" "not found (try: $LIBPNGCOMMAND)"
+    error "libpng" "not found (try: $LIBPNG_CMD)"
 fi
 
 # zlib
@@ -414,6 +465,7 @@ CC = $CC
 CFLAGS = $CFLAGS
 LDFLAGS = $LDFLAGS
 COCOA_READER = $COCOA_READER
+SOLIBSUFFIX = $SOLIBSUFFIX
 " > "$CONFIG"
 
 # Configure static library the same way

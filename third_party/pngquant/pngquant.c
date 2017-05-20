@@ -12,7 +12,7 @@
 ** - - - -
 **
 ** © 1997-2002 by Greg Roelofs; based on an idea by Stefan Schneider.
-** © 2009-2014 by Kornel Lesiński.
+** © 2009-2015 by Kornel Lesiński.
 **
 ** All rights reserved.
 **
@@ -39,26 +39,28 @@
 **
 */
 
-#define PNGQUANT_VERSION "2.3.0 (July 2014)"
+#define PNGQUANT_VERSION LIQ_VERSION_STRING " (November 2016)"
 
 #define PNGQUANT_USAGE "\
-usage:  pngquant [options] [ncolors] [pngfile [pngfile ...]]\n\n\
+usage:  pngquant [options] [ncolors] -- pngfile [pngfile ...]\n\
+        pngquant [options] [ncolors] - >stdout <stdin\n\n\
 options:\n\
   --force           overwrite existing output files (synonym: -f)\n\
-  --nofs            disable Floyd-Steinberg dithering\n\
-  --ext new.png     set custom suffix/extension for output filename\n\
-  --output file     output path, only if one input file is specified (synonym: -o)\n\
+  --skip-if-larger  only save converted files if they're smaller than original\n\
+  --output file     destination file path to use instead of --ext (synonym: -o)\n\
+  --ext new.png     set custom suffix/extension for output filenames\n\
+  --quality min-max don't save below min, use fewer colors below max (0-100)\n\
   --speed N         speed/quality trade-off. 1=slow, 3=default, 11=fast & rough\n\
-  --quality min-max don't save below min, use less colors below max (0-100)\n\
+  --nofs            disable Floyd-Steinberg dithering\n\
+  --posterize N     output lower-precision color (e.g. for ARGB4444 output)\n\
   --verbose         print status messages (synonym: -v)\n\
 \n\
-Quantizes one or more 32-bit RGBA PNGs to 8-bit (or smaller) RGBA-palette\n\
-PNGs using Floyd-Steinberg diffusion dithering (unless disabled).\n\
+Quantizes one or more 32-bit RGBA PNGs to 8-bit (or smaller) RGBA-palette.\n\
 The output filename is the same as the input name except that\n\
 it ends in \"-fs8.png\", \"-or8.png\" or your custom extension (unless the\n\
 input is stdin, in which case the quantized image will go to stdout).\n\
 The default behavior if the output file exists is to skip the conversion;\n\
-use --force to overwrite.\n"
+use --force to overwrite. See man page for full list of options.\n"
 
 
 #include <stdio.h>
@@ -67,6 +69,8 @@ use --force to overwrite.\n"
 #include <stdarg.h>
 #include <stdbool.h>
 #include <getopt.h>
+#include <unistd.h>
+#include <math.h>
 
 extern char *optarg;
 extern int optind, opterr;
@@ -92,12 +96,12 @@ struct pngquant_options {
     liq_log_callback_function *log_callback;
     void *log_callback_user_info;
     float floyd;
-    bool using_stdin, force, fast_compression, ie_mode,
+    bool using_stdin, using_stdout, force, fast_compression, ie_mode,
         min_quality_limit, skip_if_larger,
         verbose;
 };
 
-static pngquant_error prepare_output_image(liq_result *result, liq_image *input_image, png8_image *output_image);
+static pngquant_error prepare_output_image(liq_result *result, liq_image *input_image, rwpng_color_transform tag, png8_image *output_image);
 static void set_palette(liq_result *result, png8_image *output_image);
 static pngquant_error read_image(liq_attr *options, const char *filename, int using_stdin, png24_image *input_image_p, liq_image **liq_image_p, bool keep_input_pixels, bool verbose);
 static pngquant_error write_image(png8_image *output_image, png24_image *output_image24, const char *outname, struct pngquant_options *options);
@@ -159,12 +163,12 @@ static void log_callback_buferred(const liq_attr *attr, const char *msg, void* c
 
 static void print_full_version(FILE *fd)
 {
-    fprintf(fd, "pngquant, %s, by Greg Roelofs, Kornel Lesinski.\n"
+    fprintf(fd, "pngquant, %s, by Kornel Lesinski, Greg Roelofs.\n"
         #ifndef NDEBUG
-                    "   DEBUG (slow) version.\n" /* NDEBUG disables assert() */
+                    "   WARNING: this is a DEBUG (slow) version.\n" /* NDEBUG disables assert() */
         #endif
-        #if USE_SSE
-                    "   Compiled with SSE instructions.\n"
+        #if !USE_SSE && (defined(__SSE__) || defined(__amd64__) || defined(__X86_64__) || defined(__i386__))
+                    "   SSE acceleration disabled.\n"
         #endif
         #if _OPENMP
                     "   Compiled with OpenMP (multicore support).\n"
@@ -308,7 +312,7 @@ int main(int argc, char *argv[])
                 break;
 
             case arg_floyd:
-                options.floyd = optarg ? atof(optarg) : 1.0;
+                options.floyd = optarg ? atof(optarg) : 1.f;
                 if (options.floyd < 0 || options.floyd > 1.f) {
                     fputs("--floyd argument must be in 0..1 range\n", stderr);
                     return INVALID_ARGUMENT;
@@ -330,7 +334,7 @@ int main(int argc, char *argv[])
             case arg_iebug:
                 // opacities above 238 will be rounded up to 255, because IE6 truncates <255 to 0.
                 liq_set_min_opacity(options.liq, 238);
-                options.ie_mode = true;
+                fputs("  warning: the workaround for IE6 is deprecated\n", stderr);
                 break;
 
             case arg_transbug:
@@ -375,10 +379,20 @@ int main(int argc, char *argv[])
             case arg_map:
                 {
                     png24_image tmp = {};
-                    if (SUCCESS != read_image(options.liq, optarg, false, &tmp, &options.fixed_palette_image, false, false)) {
-                        fprintf(stderr, "  error: Unable to load %s", optarg);
+                    if (SUCCESS != read_image(options.liq, optarg, false, &tmp, &options.fixed_palette_image, true, false)) {
+                        fprintf(stderr, "  error: unable to load %s", optarg);
                         return INVALID_ARGUMENT;
                     }
+                    liq_result *tmp_quantize = liq_quantize_image(options.liq, options.fixed_palette_image);
+                    const liq_palette *pal = liq_get_palette(tmp_quantize);
+                    if (!pal) {
+                        fprintf(stderr, "  error: unable to read colors from %s", optarg);
+                        return INVALID_ARGUMENT;
+                    }
+                    for(unsigned int i=0; i < pal->count; i++) {
+                        liq_image_add_fixed_color(options.fixed_palette_image, pal->entries[i]);
+                    }
+                    liq_result_destroy(tmp_quantize);
                 }
                 break;
 
@@ -402,11 +416,11 @@ int main(int argc, char *argv[])
 
     if (argn >= argc) {
         if (argn > 1) {
-            fputs("No input files specified. See -h for help.\n", stderr);
+            fputs("No input files specified.\n", stderr);
         } else {
             print_full_version(stderr);
-            print_usage(stderr);
         }
+        print_usage(stderr);
         return MISSING_ARGUMENT;
     }
 
@@ -440,12 +454,8 @@ int main(int argc, char *argv[])
 
     if (argn == argc || (argn == argc-1 && 0==strcmp(argv[argn],"-"))) {
         options.using_stdin = true;
+        options.using_stdout = !output_file_path;
         argn = argc-1;
-    }
-
-    if (options.using_stdin && output_file_path) {
-        fputs("--output can't be mixed with stdin\n", stderr);
-        return INVALID_ARGUMENT;
     }
 
     const int num_files = argc-argn;
@@ -478,8 +488,8 @@ int main(int argc, char *argv[])
         if (opts.log_callback && omp_get_num_threads() > 1 && num_files > 1) {
             liq_set_log_callback(opts.liq, log_callback_buferred, &buf);
             liq_set_log_flush_callback(opts.liq, log_callback_buferred_flush, &buf);
-            options.log_callback = log_callback_buferred;
-            options.log_callback_user_info = &buf;
+            opts.log_callback = log_callback_buferred;
+            opts.log_callback_user_info = &buf;
         }
         #endif
 
@@ -488,17 +498,17 @@ int main(int argc, char *argv[])
 
         const char *outname = output_file_path;
         char *outname_free = NULL;
-        if (!options.using_stdin) {
+        if (!opts.using_stdout) {
             if (!outname) {
                 outname = outname_free = add_filename_extension(filename, newext);
             }
-            if (!options.force && file_exists(outname)) {
-                fprintf(stderr, "  error:  %s exists; not overwriting\n", outname);
+            if (!opts.force && file_exists(outname)) {
+                fprintf(stderr, "  error: '%s' exists; not overwriting\n", outname);
                 retval = NOT_OVERWRITING_ERROR;
             }
         }
 
-        if (!retval) {
+        if (SUCCESS == retval) {
             retval = pngquant_file(filename, outname, &opts);
         }
 
@@ -547,40 +557,44 @@ pngquant_error pngquant_file(const char *filename, const char *outname, struct p
 
     liq_image *input_image = NULL;
     png24_image input_image_rwpng = {};
-    bool keep_input_pixels = options->skip_if_larger || (options->using_stdin && options->min_quality_limit); // original may need to be output to stdout
-    if (!retval) {
+    bool keep_input_pixels = options->skip_if_larger || (options->using_stdout && options->min_quality_limit); // original may need to be output to stdout
+    if (SUCCESS == retval) {
         retval = read_image(options->liq, filename, options->using_stdin, &input_image_rwpng, &input_image, keep_input_pixels, options->verbose);
     }
 
     int quality_percent = 90; // quality on 0-100 scale, updated upon successful remap
     png8_image output_image = {};
-    if (!retval) {
+    if (SUCCESS == retval) {
         verbose_printf(options, "  read %luKB file", (input_image_rwpng.file_size+1023UL)/1024UL);
 
-#if USE_LCMS
-        if (input_image_rwpng.lcms_status == ICCP) {
+        if (RWPNG_ICCP == input_image_rwpng.input_color) {
             verbose_printf(options, "  used embedded ICC profile to transform image to sRGB colorspace");
-        } else if (input_image_rwpng.lcms_status == GAMA_CHRM) {
+        } else if (RWPNG_GAMA_CHRM == input_image_rwpng.input_color) {
             verbose_printf(options, "  used gAMA and cHRM chunks to transform image to sRGB colorspace");
-        } else if (input_image_rwpng.lcms_status == ICCP_WARN_GRAY) {
+        } else if (RWPNG_ICCP_WARN_GRAY == input_image_rwpng.input_color) {
             verbose_printf(options, "  warning: ignored ICC profile in GRAY colorspace");
-        }
-#endif
-
-        if (input_image_rwpng.gamma != 0.45455) {
-            verbose_printf(options, "  corrected image from gamma %2.1f to sRGB gamma",
+        } else if (RWPNG_COCOA == input_image_rwpng.input_color) {
+            // No comment
+        } else if (RWPNG_SRGB == input_image_rwpng.input_color) {
+            verbose_printf(options, "  passing sRGB tag from the input");
+        } else if (input_image_rwpng.gamma != 0.45455) {
+            verbose_printf(options, "  converted image from gamma %2.1f to gamma 2.2",
                            1.0/input_image_rwpng.gamma);
         }
 
         // when using image as source of a fixed palette the palette is extracted using regular quantization
-        liq_result *remap = liq_quantize_image(options->liq, options->fixed_palette_image ? options->fixed_palette_image : input_image);
+        liq_result *remap;
+        liq_error remap_error = liq_image_quantize(options->fixed_palette_image ? options->fixed_palette_image : input_image, options->liq, &remap);
 
-        if (remap) {
-            liq_set_output_gamma(remap, 0.45455); // fixed gamma ~2.2 for the web. PNG can't store exact 1/2.2
+        if (LIQ_OK == remap_error) {
+
+            // fixed gamma ~2.2 for the web. PNG can't store exact 1/2.2
+            // NB: can't change gamma here, because output_color is allowed to be an sRGB tag
+            liq_set_output_gamma(remap, 0.45455);
             liq_set_dithering_level(remap, options->floyd);
 
-            retval = prepare_output_image(remap, input_image, &output_image);
-            if (!retval) {
+            retval = prepare_output_image(remap, input_image, input_image_rwpng.output_color, &output_image);
+            if (SUCCESS == retval) {
                 if (LIQ_OK != liq_write_remapped_image_rows(remap, input_image, output_image.row_pointers)) {
                     retval = OUT_OF_MEMORY_ERROR;
                 }
@@ -594,18 +608,22 @@ pngquant_error pngquant_file(const char *filename, const char *outname, struct p
                 }
             }
             liq_result_destroy(remap);
-        } else {
+        } else if (LIQ_QUALITY_TOO_LOW == remap_error) {
             retval = TOO_LOW_QUALITY;
+        } else {
+            retval = INVALID_ARGUMENT; // dunno
         }
     }
 
-    if (!retval) {
+    if (SUCCESS == retval) {
 
         if (options->skip_if_larger) {
             // this is very rough approximation, but generally avoid losing more quality than is gained in file size.
-            // Quality is squared, because even greater savings are needed to justify big quality loss.
-            double quality = quality_percent/100.0;
-            output_image.maximum_file_size = input_image_rwpng.file_size * quality*quality;
+            // Quality is raised to 1.5, because even greater savings are needed to justify big quality loss.
+            // but >50% savings are considered always worthwile in order to allow low quality conversions to work at all
+            const double quality = quality_percent/100.0;
+            const double expected_reduced_size = pow(quality, 1.5);
+            output_image.maximum_file_size = (input_image_rwpng.file_size-1) * (expected_reduced_size < 0.5 ? 0.5 : expected_reduced_size);
         }
 
         output_image.fast_compression = options->fast_compression;
@@ -617,18 +635,16 @@ pngquant_error pngquant_file(const char *filename, const char *outname, struct p
         }
     }
 
-    if (TOO_LARGE_FILE == retval || (TOO_LOW_QUALITY == retval && options->using_stdin)) {
+    if (options->using_stdout && keep_input_pixels && (TOO_LARGE_FILE == retval || TOO_LOW_QUALITY == retval)) {
         // when outputting to stdout it'd be nasty to create 0-byte file
         // so if quality is too low, output 24-bit original
-        if (keep_input_pixels) {
-            pngquant_error write_retval = write_image(NULL, &input_image_rwpng, outname, options);
-            if (write_retval) {
-                retval = write_retval;
-            }
+        pngquant_error write_retval = write_image(NULL, &input_image_rwpng, outname, options);
+        if (write_retval) {
+            retval = write_retval;
         }
     }
 
-    liq_image_destroy(input_image);
+    if (input_image) liq_image_destroy(input_image);
     rwpng_free_image24(&input_image_rwpng);
     rwpng_free_image8(&output_image);
 
@@ -639,16 +655,10 @@ static void set_palette(liq_result *result, png8_image *output_image)
 {
     const liq_palette *palette = liq_get_palette(result);
 
-    // tRNS, etc.
     output_image->num_palette = palette->count;
-    output_image->num_trans = 0;
     for(unsigned int i=0; i < palette->count; i++) {
         liq_color px = palette->entries[i];
-        if (px.a < 255) {
-            output_image->num_trans = i+1;
-        }
-        output_image->palette[i] = (png_color){.red=px.r, .green=px.g, .blue=px.b};
-        output_image->trans[i] = px.a;
+        output_image->palette[i] = (rwpng_rgba){.r=px.r, .g=px.g, .b=px.b, .a=px.a};
     }
 }
 
@@ -674,10 +684,23 @@ static char *add_filename_extension(const char *filename, const char *newext)
     if (!outname) return NULL;
 
     strncpy(outname, filename, x);
-    if (strncmp(outname+x-4, ".png", 4) == 0 || strncmp(outname+x-4, ".PNG", 4) == 0)
+    if (strncmp(outname+x-4, ".png", 4) == 0 || strncmp(outname+x-4, ".PNG", 4) == 0) {
         strcpy(outname+x-4, newext);
-    else
+    } else {
         strcpy(outname+x, newext);
+    }
+
+    return outname;
+}
+
+static char *temp_filename(const char *basename) {
+    size_t x = strlen(basename);
+
+    char *outname = malloc(x+1+4);
+    if (!outname) return NULL;
+
+    strcpy(outname, basename);
+    strcpy(outname+x, ".tmp");
 
     return outname;
 }
@@ -689,10 +712,32 @@ static void set_binary_mode(FILE *fp)
 #endif
 }
 
+static const char *filename_part(const char *path)
+{
+    const char *outfilename = strrchr(path, '/');
+    if (outfilename) {
+        return outfilename+1;
+    } else {
+        return path;
+    }
+}
+
+static bool replace_file(const char *from, const char *to, const bool force) {
+#if defined(WIN32) || defined(__WIN32__)
+    if (force) {
+        // On Windows rename doesn't replace
+        unlink(to);
+    }
+#endif
+    return (0 == rename(from, to));
+}
+
 static pngquant_error write_image(png8_image *output_image, png24_image *output_image24, const char *outname, struct pngquant_options *options)
 {
     FILE *outfile;
-    if (options->using_stdin) {
+    char *tempname = NULL;
+
+    if (options->using_stdout) {
         set_binary_mode(stdout);
         outfile = stdout;
 
@@ -702,23 +747,19 @@ static pngquant_error write_image(png8_image *output_image, png24_image *output_
             verbose_printf(options, "  writing truecolor image to stdout");
         }
     } else {
+        tempname = temp_filename(outname);
+        if (!tempname) return OUT_OF_MEMORY_ERROR;
 
-        if ((outfile = fopen(outname, "wb")) == NULL) {
-            fprintf(stderr, "  error:  cannot open %s for writing\n", outname);
+        if ((outfile = fopen(tempname, "wb")) == NULL) {
+            fprintf(stderr, "  error: cannot open '%s' for writing\n", tempname);
+            free(tempname);
             return CANT_WRITE_ERROR;
         }
 
-        const char *outfilename = strrchr(outname, '/');
-        if (outfilename) {
-            outfilename++;
-        } else {
-            outfilename = outname;
-        }
-
         if (output_image) {
-            verbose_printf(options, "  writing %d-color image as %s", output_image->num_palette, outfilename);
+            verbose_printf(options, "  writing %d-color image as %s", output_image->num_palette, filename_part(outname));
         } else {
-            verbose_printf(options, "  writing truecolor image as %s", outfilename);
+            verbose_printf(options, "  writing truecolor image as %s", filename_part(outname));
         }
     }
 
@@ -732,12 +773,25 @@ static pngquant_error write_image(png8_image *output_image, png24_image *output_
         }
     }
 
-    if (retval && retval != TOO_LARGE_FILE) {
-        fprintf(stderr, "  error: failed writing image to %s\n", outname);
-    }
-
-    if (!options->using_stdin) {
+    if (!options->using_stdout) {
         fclose(outfile);
+
+        if (SUCCESS == retval) {
+            // Image has been written to a temporary file and then moved over destination.
+            // This makes replacement atomic and avoids damaging destination file on write error.
+            if (!replace_file(tempname, outname, options->force)) {
+                retval = CANT_WRITE_ERROR;
+            }
+        }
+
+        if (retval) {
+            unlink(tempname);
+        }
+    }
+    free(tempname);
+
+    if (retval && retval != TOO_LARGE_FILE) {
+        fprintf(stderr, "  error: failed writing image to %s (%d)\n", options->using_stdout ? "stdout" : outname, retval);
     }
 
     return retval;
@@ -766,7 +820,7 @@ static pngquant_error read_image(liq_attr *options, const char *filename, int us
     }
 
     if (retval) {
-        fprintf(stderr, "  error: rwpng_read_image() error %d\n", retval);
+        fprintf(stderr, "  error: cannot decode image %s\n", using_stdin ? "from stdin" : filename_part(filename));
         return retval;
     }
 
@@ -787,11 +841,12 @@ static pngquant_error read_image(liq_attr *options, const char *filename, int us
     return SUCCESS;
 }
 
-static pngquant_error prepare_output_image(liq_result *result, liq_image *input_image, png8_image *output_image)
+static pngquant_error prepare_output_image(liq_result *result, liq_image *input_image, rwpng_color_transform output_color, png8_image *output_image)
 {
     output_image->width = liq_image_get_width(input_image);
     output_image->height = liq_image_get_height(input_image);
     output_image->gamma = liq_get_output_gamma(result);
+    output_image->output_color = output_color;
 
     /*
     ** Step 3.7 [GRR]: allocate memory for the entire indexed image
@@ -804,19 +859,13 @@ static pngquant_error prepare_output_image(liq_result *result, liq_image *input_
         return OUT_OF_MEMORY_ERROR;
     }
 
-    for(unsigned int row = 0;  row < output_image->height;  ++row) {
-        output_image->row_pointers[row] = output_image->indexed_data + row*output_image->width;
+    for(size_t row = 0; row < output_image->height; row++) {
+        output_image->row_pointers[row] = output_image->indexed_data + row * output_image->width;
     }
 
     const liq_palette *palette = liq_get_palette(result);
     // tRNS, etc.
     output_image->num_palette = palette->count;
-    output_image->num_trans = 0;
-    for(unsigned int i=0; i < palette->count; i++) {
-        if (palette->entries[i].a < 255) {
-            output_image->num_trans = i+1;
-        }
-    }
 
     return SUCCESS;
 }
