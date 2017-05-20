@@ -1,42 +1,55 @@
 # libimagequant—Image Quantization Library
 
 Small, portable C library for high-quality conversion of RGBA images to 8-bit indexed-color (palette) images.
-It's powering [pngquant2](http://pngquant.org).
+It's powering [pngquant2](https://pngquant.org).
 
 ## License
 
-[BSD](https://raw.github.com/pornel/improved-pngquant/master/lib/COPYRIGHT).
-It can be linked with both free and closed-source software.
+Libimagequant is dual-licensed:
+
+* For Free/Libre Open Source Software it's available under [GPL v3 or later](https://raw.github.com/ImageOptim/libimagequant/master/COPYRIGHT) with additional copyright notices for older parts of the code.
+
+* For use in non-GPL software (e.g. closed-source or App Store distribution) please ask kornel@pngquant.org for a commercial license.
 
 ## Download
 
-The [library](http://pngquant.org/lib) is currently a part of the [pngquant2 project](https://github.com/pornel/improved-pngquant/tree/lib/lib).
-
-Files needed for the library are only in the `lib/` directory inside the repository (and you can ignore the rest).
+The [library](https://pngquant.org/lib) is currently a part of the [pngquant2 project](https://pngquant.org). [Repository](https://github.com/ImageOptim/libimagequant).
 
 ## Compiling and Linking
 
-The library can be linked with ANSI C and C++ programs. It has no external dependencies.
+The library can be linked with ANSI C, C++, [Rust](https://github.com/pornel/libimagequant-rust) and [Java](https://github.com/ImageOptim/libimagequant/tree/master/org/pngquant) programs. It has no external dependencies.
 
 To build on Unix-like systems run:
 
-    make -C lib
+    make static
 
-it will create `lib/libimagequant.a` which you can link with your program.
+it will create `libimagequant.a` which you can link with your program.
 
-    gcc yourprogram.c /path/to/lib/libimagequant.a
+    gcc yourprogram.c /path/to/libimagequant.a
 
 On BSD, use `gmake` (GNU make) rather than the native `make`.
 
 Alternatively you can compile the library with your program simply by including all `.c` files (and define `NDEBUG` to get a fast version):
 
-    gcc -std=c99 -O3 -DNDEBUG lib/*.c yourprogram.c
+    gcc -std=c99 -O3 -DNDEBUG libimagequant/*.c yourprogram.c
+
+In [Rust](https://github.com/pornel/libimagequant-rust),
+if using Cargo, add [`imagequant`](https://crates.io/crates/imagequant/) to dependencies.
+
+To build Java JNI interface, ensure `JAVA_HOME` is set to your JDK directory, and run:
+
+    # export JAVA_HOME=$(locate include/jni.h) # you may need to set JAVA_HOME first
+    make java
+
+It will create `libimagequant.jnilib` and classes in `org/pngquant/`.
+
+On Windows run `make java-dll` and it'll create `libimagequant.dll` instead.
 
 ### Compiling on Windows/Visual Studio
 
 The library can be compiled with any C compiler that has at least basic support for C99 (GCC, clang, ICC, C++ Builder, even Tiny C Compiler), but Visual Studio 2012 and older are not up to date with the 1999 C standard. There are 2 options for using `libimagequant` on Windows:
 
- * Use Visual Studio **2013** (MSVC 18) and an [MSVC-compatible branch of the library](https://github.com/pornel/pngquant/tree/msvc/lib)
+ * Use Visual Studio **2013** (MSVC 18) and an [MSVC-compatible branch of the library](https://github.com/ImageOptim/libimagequant/tree/msvc)
  * Or use GCC from [MinGW](http://www.mingw.org). Use GCC to build `libimagequant.a` (using the instructions above for Unix) and add it along with `libgcc.a` (shipped with the MinGW compiler) to your VC project.
 
 ## Overview
@@ -44,27 +57,35 @@ The library can be compiled with any C compiler that has at least basic support 
 The basic flow is:
 
 1. Create attributes object and configure the library.
-2. Create image object from RGBA bitmap or data source.
+2. Create image object from RGBA pixels or data source.
 3. Perform quantization (generate palette).
 4. Store remapped image and final palette.
 5. Free memory.
 
+Please note that libimagequant only handles raw uncompressed arrays of pixels in memory and is completely independent of any file format.
+
 <p>
 
-    #include "lib/libimagequant.h"
+    #include "libimagequant.h"
 
     liq_attr *attr = liq_attr_create();
-    liq_image *image = liq_image_create_rgba(attr, bitmap, width, height, 0);
-    liq_result *res = liq_quantize_image(attr, image);
+    liq_image *image = liq_image_create_rgba(attr, example_bitmap_rgba, width, height, 0);
+    liq_result *res;
+    liq_image_quantize(image, attr, &res);
 
-    liq_write_remapped_image(res, image, bitmap, bitmap_size);
+    liq_write_remapped_image(res, image, example_bitmap_8bpp, example_bitmap_size);
     const liq_palette *pal = liq_get_palette(res);
 
-    // use image and palette here
+    // Save the image and the palette now.
+    for(int i=0; i < pal->count; i++) {
+        example_copy_palette_entry(pal->entries[i]);
+    }
+    // You'll need a PNG library to write to a file.
+    example_write_image(example_bitmap_8bpp);
 
-    liq_attr_destroy(attr);
-    liq_image_destroy(image);
     liq_result_destroy(res);
+    liq_image_destroy(image);
+    liq_attr_destroy(attr);
 
 Functions returning `liq_error` return `LIQ_OK` (`0`) on success and non-zero on error.
 
@@ -72,9 +93,11 @@ It's safe to pass `NULL` to any function accepting `liq_attr`, `liq_image`, `liq
 
 There are 3 ways to create image object for quantization:
 
-  * `liq_image_create_rgba()` for simple, contiguous RGBA bitmaps (width×height×4 bytes large array).
-  * `liq_image_create_rgba_rows()` for non-contiguous RGBA bitmaps (that have padding between rows or reverse order, e.g. BMP).
+  * `liq_image_create_rgba()` for simple, contiguous RGBA pixel arrays (width×height×4 bytes large bitmap).
+  * `liq_image_create_rgba_rows()` for non-contiguous RGBA pixel arrays (that have padding between rows or reverse order, e.g. BMP).
   * `liq_image_create_custom()` for RGB, ABGR, YUV and all other formats that can be converted on-the-fly to RGBA (you have to supply the conversion function).
+
+Note that "image" here means raw uncompressed pixels. If you have a compressed image file, such as PNG, you must use another library (e.g. libpng or lodepng) to decode it first.
 
 ## Functions
 
@@ -92,6 +115,8 @@ Returns `NULL` in the unlikely case that the library cannot run on the current m
 
 Specifies maximum number of colors to use. The default is 256. Instead of setting a fixed limit it's better to use `liq_set_quality()`.
 
+The first argument is attributes object from `liq_attr_create()`.
+
 Returns `LIQ_VALUE_OUT_OF_RANGE` if number of colors is outside the range 2-256.
 
 ----
@@ -108,11 +133,13 @@ Quality is in range `0` (worst) to `100` (best) and values are analoguous to JPE
 
 Quantization will attempt to use the lowest number of colors needed to achieve `maximum` quality. `maximum` value of `100` is the default and means conversion as good as possible.
 
-If it's not possible to convert the image with at least `minimum` quality (i.e. 256 colors is not enough to meet the minimum quality), then `liq_quantize_image()` will fail. The default minumum is `0` (proceeds regardless of quality).
+If it's not possible to convert the image with at least `minimum` quality (i.e. 256 colors is not enough to meet the minimum quality), then `liq_image_quantize()` will fail. The default minumum is `0` (proceeds regardless of quality).
 
-Quality measures how well the generated palette fits image given to `liq_quantize_image()`. If a different image is remapped with `liq_write_remapped_image()` then actual quality may be different.
+Quality measures how well the generated palette fits image given to `liq_image_quantize()`. If a different image is remapped with `liq_write_remapped_image()` then actual quality may be different.
 
 Regardless of the quality settings the number of colors won't exceed the maximum (see `liq_set_max_colors()`).
+
+The first argument is attributes object from `liq_attr_create()`.
 
 Returns `LIQ_VALUE_OUT_OF_RANGE` if target is lower than minimum or any of them is outside the 0-100 range.
 Returns `LIQ_INVALID_POINTER` if `attr` appears to be invalid.
@@ -134,26 +161,28 @@ Returns the upper bound set by `liq_set_quality()`.
 
 ----
 
-    liq_image *liq_image_create_rgba(liq_attr *attr, void* bitmap, int width, int height, double gamma);
+    liq_image *liq_image_create_rgba(liq_attr *attr, void* pixels, int width, int height, double gamma);
 
-Creates image object that represents a bitmap later used for quantization and remapping. The bitmap must be contiguous run of RGBA pixels (alpha is the last component, 0 = transparent, 255 = opaque).
+Creates an object that represents the image pixels to be used for quantization and remapping. The pixel array must be contiguous run of RGBA pixels (alpha is the last component, 0 = transparent, 255 = opaque).
 
-The bitmap must not be modified or freed until this object is freed with `liq_image_destroy()`. See also `liq_image_set_memory_ownership()`.
+The first argument is attributes object from `liq_attr_create()`. The same `attr` object should be used for the entire process, from creation of images to quantization.
 
-`width` and `height` are dimensions in pixels. An image 10x10 pixel large will need 400-byte bitmap.
+The `pixels` array must not be modified or freed until this object is freed with `liq_image_destroy()`. See also `liq_image_set_memory_ownership()`.
 
-`gamma` can be `0` for images with the typical 1/2.2 [gamma](http://en.wikipedia.org/wiki/Gamma_correction).
+`width` and `height` are dimensions in pixels. An image 10x10 pixel large will need a 400-byte array.
+
+`gamma` can be `0` for images with the typical 1/2.2 [gamma](https://en.wikipedia.org/wiki/Gamma_correction).
 Otherwise `gamma` must be > 0 and < 1, e.g. `0.45455` (1/2.2) or `0.55555` (1/1.8). Generated palette will use the same gamma unless `liq_set_output_gamma()` is used. If `liq_set_output_gamma` is not used, then it only affects whether brighter or darker areas of the image will get more palette colors allocated.
 
-Returns `NULL` on failure, e.g. if `bitmap` is `NULL` or `width`/`height` is <= 0.
+Returns `NULL` on failure, e.g. if `pixels` is `NULL` or `width`/`height` is <= 0.
 
 ----
 
     liq_image *liq_image_create_rgba_rows(liq_attr *attr, void* rows[], int width, int height, double gamma);
 
-Same as `liq_image_create_rgba()`, but takes array of pointers to rows in the bitmap. This allows defining bitmaps with reversed rows (like in BMP), "stride" different than width or using only fragment of a larger bitmap, etc.
+Same as `liq_image_create_rgba()`, but takes an array of pointers to rows of pixels. This allows defining images with reversed rows (like in BMP), "stride" different than width or using only fragment of a larger bitmap, etc.
 
-`rows` array must have at least `height` elements and each row must be at least `width` RGBA pixels wide.
+The `rows` array must have at least `height` elements, and each row must be at least `width` RGBA pixels wide.
 
     unsigned char *bitmap = …;
     void *rows = malloc(height * sizeof(void*));
@@ -166,19 +195,28 @@ Same as `liq_image_create_rgba()`, but takes array of pointers to rows in the bi
     liq_image_destroy(img);
     free(rows);
 
-The row pointers and bitmap must not be modified or freed until this object is freed with `liq_image_destroy()` (you can change that with `liq_image_set_memory_ownership()`).
+The row pointers and pixels must not be modified or freed until this object is freed with `liq_image_destroy()` (you can change that with `liq_image_set_memory_ownership()`).
 
 See also `liq_image_create_rgba()` and `liq_image_create_custom()`.
 
 ----
 
-    liq_result *liq_quantize_image(liq_attr *attr, liq_image *input_image);
+    liq_error liq_image_quantize(liq_image *const input_image, liq_attr *const attr, liq_result **out_result);
 
-Performs quantization (palette generation) based on settings in `attr` and pixels of the image.
+Performs quantization (palette generation) based on settings in `attr` (from `liq_attr_create()`) and pixels of the image.
 
-Returns `NULL` if quantization fails, e.g. due to limit set in `liq_set_quality()`.
+Returns `LIQ_OK` if quantization succeeds and sets `liq_result` pointer in `out_result`. The last argument is used for receiving the `result` object:
+
+    liq_result *result;
+    if (LIQ_OK == liq_image_quantize(img, attr, &result)) { // Note &result
+        // result pointer is valid here
+    }
+
+Returns `LIQ_QUALITY_TOO_LOW` if quantization fails due to limit set in `liq_set_quality()`.
 
 See `liq_write_remapped_image()`.
+
+If you want to generate one palette for multiple images at once, see `liq_histogram_create()`.
 
 ----
 
@@ -194,9 +232,11 @@ Returns `LIQ_VALUE_OUT_OF_RANGE` if the dithering level is outside the 0-1 range
 
     liq_error liq_write_remapped_image(liq_result *result, liq_image *input_image, void *buffer, size_t buffer_size);
 
-Remaps the image to palette and writes its pixels to the given buffer, 1 pixel per byte. Buffer must be large enough to fit the entire image, i.e. width×height bytes large. For safety, pass size of the buffer as `buffer_size`.
+Remaps the image to palette and writes its pixels to the given buffer, 1 pixel per byte.
 
-For best performance call `liq_get_palette()` *after* this function, as palette is improved during remapping.
+The buffer must be large enough to fit the entire image, i.e. width×height bytes large. For safety, pass the size of the buffer as `buffer_size`.
+
+For best performance call `liq_get_palette()` *after* this function, as palette is improved during remapping (except when `liq_histogram_quantize()` is used).
 
 Returns `LIQ_BUFFER_TOO_SMALL` if given size of the buffer is not enough to fit the entire image.
 
@@ -207,7 +247,11 @@ Returns `LIQ_BUFFER_TOO_SMALL` if given size of the buffer is not enough to fit 
         // save image
     }
 
-See `liq_get_palette()` and `liq_write_remapped_image_rows()`.
+See `liq_get_palette()`.
+
+The buffer is assumed to be contiguous, with rows ordered from top to bottom, and no gaps between rows. If you need to write rows with padding or upside-down order, then use `liq_write_remapped_image_rows()`.
+
+Please note that it only writes raw uncompressed pixels to memory. It does not perform any PNG compression. If you'd like to create a PNG file then you need to pass the raw pixel data to another library, e.g. libpng or lodepng. See `rwpng.c` in `pngquant` project for an example how to do that.
 
 ----
 
@@ -228,6 +272,7 @@ Returns `NULL` on error.
     void liq_attr_destroy(liq_attr *);
     void liq_image_destroy(liq_image *);
     void liq_result_destroy(liq_result *);
+    void liq_histogram_destroy(liq_histogram *);
 
 Releases memory owned by the given object. Object must not be used any more after it has been freed.
 
@@ -262,7 +307,7 @@ Returns the value set by `liq_set_speed()`.
 
     liq_error liq_set_min_opacity(liq_attr* attr, int min);
 
-Alpha values higher than this will be rounded to opaque. This is a workaround for Internet Explorer 6 that truncates semitransparent values to completely transparent. The default is `255` (no change). 238 is a suggested value.
+Alpha values higher than this will be rounded to opaque. This is a workaround for Internet Explorer 6, but because this browser is not used any more, this option is deprecated and will be removed. The default is `255` (no change).
 
 Returns `LIQ_VALUE_OUT_OF_RANGE` if the value is outside the 0-255 range.
 
@@ -332,17 +377,17 @@ The library doesn't support RGB bitmaps "natively", because supporting only sing
 
     liq_error liq_image_set_memory_ownership(liq_image *image, int ownership_flags);
 
-Passes ownership of bitmap and/or rows memory to the `liq_image` object, so you don't have to free it yourself. Memory owned by the object will be freed at its discretion with `free` function specified in `liq_attr_create_with_allocator()` (by default it's stdlib's `free()`).
+Passes ownership of image pixel data and/or its rows array to the `liq_image` object, so you don't have to free it yourself. Memory owned by the object will be freed at its discretion with `free` function specified in `liq_attr_create_with_allocator()` (by default it's stdlib's `free()`).
 
-* `LIQ_OWN_PIXELS` makes bitmap owned by the object. The bitmap will be freed automatically at any point when it's no longer needed. If you set this flag you must **not** free the bitmap yourself. If the image has been created with `liq_image_create_rgba_rows()` then the bitmap address is assumed to be the lowest address of any row.
+* `LIQ_OWN_PIXELS` makes pixel array owned by the object. The pixels will be freed automatically at any point when it's no longer needed. If you set this flag you must **not** free the pixel array yourself. If the image has been created with `liq_image_create_rgba_rows()` then the starting address of the array of pixels is assumed to be the lowest address of any row.
 
-* `LIQ_OWN_ROWS` makes array of row pointers (but not bitmap pointed by these rows) owned by the object. Rows will be freed when object is deallocated. If you set this flag you must **not** free the rows array yourself. This flag is valid only if the object has been created with `liq_image_create_rgba_rows()`.
+* `LIQ_OWN_ROWS` makes array of row pointers (but not the pixels pointed by these rows) owned by the object. Rows will be freed when object is deallocated. If you set this flag you must **not** free the rows array yourself. This flag is valid only if the object has been created with `liq_image_create_rgba_rows()`.
 
 These flags can be combined with binary *or*, i.e. `LIQ_OWN_PIXELS | LIQ_OWN_ROWS`.
 
 This function must not be used if the image has been created with `liq_image_create_custom()`.
 
-Returns `LIQ_VALUE_OUT_OF_RANGE` if invalid flags are specified or image is not backed by a bitmap.
+Returns `LIQ_VALUE_OUT_OF_RANGE` if invalid flags are specified or the image object only takes pixels from a callback.
 
 ----
 
@@ -350,7 +395,7 @@ Returns `LIQ_VALUE_OUT_OF_RANGE` if invalid flags are specified or image is not 
 
 Similar to `liq_write_remapped_image()`. Writes remapped image, at 1 byte per pixel, to each row pointed by `row_pointers` array. The array must have at least as many elements as height of the image, and each row must have at least as many bytes as width of the image. Rows must not overlap.
 
-For best performance call `liq_get_palette()` *after* this function, as remapping may change the palette.
+For best performance call `liq_get_palette()` *after* this function, as remapping may change the palette (except when `liq_histogram_quantize()` is used).
 
 Returns `LIQ_INVALID_POINTER` if `result` or `input_image` is `NULL`.
 
@@ -358,11 +403,19 @@ Returns `LIQ_INVALID_POINTER` if `result` or `input_image` is `NULL`.
 
     double liq_get_quantization_error(liq_result *result);
 
-Returns mean square error of quantization (square of difference between pixel values in the original image and remapped image). Alpha channel and gamma correction are taken into account, so the result isn't exactly the mean square error of all channels.
+Returns mean square error of quantization (square of difference between pixel values in the source image and its remapped version). Alpha channel, gamma correction and approximate importance of pixels is taken into account, so the result isn't exactly the mean square error of all channels.
 
 For most images MSE 1-5 is excellent. 7-10 is OK. 20-30 will have noticeable errors. 100 is awful.
 
-This function should be called *after* `liq_write_remapped_image()`. It may return `-1` if the value is not available (this is affected by `liq_set_speed()` and `liq_set_quality()`).
+This function may return `-1` if the value is not available (this happens when a high speed has been requested, the image hasn't been remapped yet, and quality limit hasn't been set, see `liq_set_speed()` and `liq_set_quality()`). The value is not updated when multiple images are remapped, it applies only to the image used in `liq_image_quantize()` or the first image that has been remapped. See `liq_get_remapping_error()`.
+
+----
+
+    double liq_get_remapping_error(liq_result *result);
+
+Returns mean square error of last remapping done (square of difference between pixel values in the remapped image and its remapped version). Alpha channel and gamma correction are taken into account, so the result isn't exactly the mean square error of all channels.
+
+This function may return `-1` if the value is not available (this happens when a high speed has been requested or the image hasn't been remapped yet).
 
 ----
 
@@ -370,22 +423,29 @@ This function should be called *after* `liq_write_remapped_image()`. It may retu
 
 Analoguous to `liq_get_quantization_error()`, but returns quantization error as quality value in the same 0-100 range that is used by `liq_set_quality()`.
 
-This function should be called *after* `liq_write_remapped_image()`. It may return `-1` if the value is not available (this is affected by `liq_set_speed()` and `liq_set_quality()`).
+It may return `-1` if the value is not available (see note in `liq_get_quantization_error()`).
 
 This function can be used to add upper limit to quality options presented to the user, e.g.
 
     liq_attr *attr = liq_attr_create();
     liq_image *img = liq_image_create_rgba(…);
-    liq_result *res = liq_quantize_image(attr, img);
+    liq_result *res;
+    liq_image_quantize(img, attr, &res);
     int max_attainable_quality = liq_get_quantization_quality(res);
     printf("Please select quality between 0 and %d: ", max_attainable_quality);
     int user_selected_quality = prompt();
     if (user_selected_quality < max_attainable_quality) {
         liq_set_quality(user_selected_quality, 0);
         liq_result_destroy(res);
-        res = liq_quantize_image(attr, img);
+        liq_image_quantize(img, attr, &res);
     }
     liq_write_remapped_image(…);
+
+----
+
+    double liq_get_remapping_quality(liq_result *result);
+
+Analoguous to `liq_get_remapping_error()`, but returns quantization error as quality value in the same 0-100 range that is used by `liq_set_quality()`.
 
 ----
 
@@ -402,15 +462,36 @@ This function can be used to add upper limit to quality options presented to the
 
     void log_flush_callback_function(const liq_attr*, void *user_info) {}
 
-Sets up callback function to be called when the library reports work progress or errors. The callback must not call any library functions.
+Sets up callback function to be called when the library reports status or errors. The callback must not call any library functions.
 
-`user_info` value will be passed to the callback.
+`user_info` value will be passed through to the callback. It can be `NULL`.
 
 `NULL` callback clears the current callback.
 
-In the log callback the `message` is a zero-terminated string containing informative message to output. It is valid only until the callback returns.
+In the log callback the `message` is a zero-terminated string containing informative message to output. It is valid only until the callback returns, so you must copy it.
 
 `liq_set_log_flush_callback()` sets up callback function that will be called after the last log callback, which can be used to flush buffers and free resources used by the log callback.
+
+----
+
+    void liq_set_progress_callback(liq_attr*, liq_progress_callback_function*, void *user_info);
+    void liq_result_set_progress_callback(liq_result*, liq_progress_callback_function*, void *user_info);
+
+<p>
+
+    int progress_callback_function(const liq_attr*, float progress_percent, void *user_info) {}
+
+Sets up callback function to be called while the library is processing images. The callback may abort processing by returning `0`.
+
+Setting callback to `NULL` clears the current callback. `liq_set_progress_callback` is for quantization progress, and `liq_result_set_progress_callback` is for remapping progress (currently only dithered remapping reports progress).
+
+`user_info` value will be passed through to the callback. It can be `NULL`.
+
+The callback must not call any library functions.
+
+`progress_percent` is a value between 0 and 100 that estimates how much of the current task has been done.
+
+The callback should return `1` to continue the operation, and `0` to abort current operation.
 
 ----
 
@@ -441,6 +522,85 @@ Sets gamma correction for generated palette and remapped image. Must be > 0 and 
 Getters for `width`, `height` and `gamma` of the input image.
 
 If the input is invalid, these all return -1.
+
+---
+
+    liq_error liq_image_add_fixed_color(liq_image* img, liq_color color);
+
+Reserves a color in the output palette created from this image. It behaves as if the given color was used in the image and was very important.
+
+RGB values of `liq_color` are assumed to have the same gamma as the image.
+
+It must be called before the image is quantized.
+
+Returns error if more than 256 colors are added. If image is quantized to fewer colors than the number of fixed colors added, then excess fixed colors will be ignored.
+
+---
+
+    int liq_version();
+
+Returns version of the library as an integer. Same as `LIQ_VERSION`. Human-readable version is defined as `LIQ_VERSION_STRING`.
+
+## Multiple images with the same palette
+
+It's possible to efficiently generate a single palette that is optimal for multiple images, e.g. for an APNG animation. This is done by collecting statistics of images in a `liq_histogram` object.
+
+    liq_attr *attr = liq_attr_create();
+    liq_histogram *hist = liq_histogram_create(attr);
+
+    liq_image *image1 = liq_image_create_rgba(attr, example_bitmap_rgba1, width, height, 0);
+    liq_histogram_add_image(hist, attr, image1);
+
+    liq_image *image2 = liq_image_create_rgba(attr, example_bitmap_rgba2, width, height, 0);
+    liq_histogram_add_image(hist, attr, image2);
+
+    liq_result *result;
+    liq_error err = liq_histogram_quantize(attr, hist, &result);
+    if (LIQ_OK == err) {
+        // result will contain shared palette best for both image1 and image2
+    }
+
+---
+
+    liq_histogram *liq_histogram_create(liq_attr *attr);
+
+Creates histogram object that will be used to collect color statistics from multiple images. It must be freed using `liq_histogram_destroy()`.
+
+All options should be set on `attr` before the histogram object is created. Options changed later may not have effect.
+
+---
+
+    liq_error liq_histogram_add_image(liq_histogram *hist, liq_attr *attr, liq_image* image);
+
+"Learns" colors from the image, which will be later used to generate the palette.
+
+After the image is added to the histogram it may be freed to save memory (but it's more efficient to keep the image object if it's going to be used for remapping).
+
+Fixed colors added to the image are also added to the histogram. If total number of fixed colors exceeds 256, this function will fail with `LIQ_BUFFER_TOO_SMALL`.
+
+---
+
+    liq_error liq_histogram_add_colors(liq_histogram *hist, liq_attr *attr, liq_histogram_entry entries[], int num_entries, double gamma);
+
+Alternative to `liq_histogram_add_image()`. Intead of counting colors in an image, it directly takes an array of colors and their counts (see `liq_histogram_entry` in `libimagequant.h`). This function is only useful if you already have a histogram of the image from another source.
+
+For description of gamma, see `liq_image_create_rgba()`.
+
+---
+
+    liq_error liq_histogram_quantize(liq_histogram *const hist, liq_attr *const attr, liq_result **out_result);
+
+Generates palette from the histogram. On success returns `LIQ_OK` and writes `liq_result*` pointer to `out_result`. Use it as follows:
+
+    liq_result *result;
+    liq_error err = liq_histogram_quantize(attr, hist, &result);
+    if (LIQ_OK == err) {
+        // Use result here to remap and get palette
+    }
+
+Returns `LIQ_QUALITY_TOO_LOW` if the palette is worse than limit set in `liq_set_quality()`. One histogram object can be quantized only once.
+
+Palette generated using this function won't be improved during remapping. If you're generating palette for only one image, it's better to use `liq_image_quantize()`.
 
 ## Multithreading
 
