@@ -1,0 +1,41 @@
+<svg width="128" height="128" style="enable-background:new 0 0 128 128;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <style type="text/css">
+.st0{fill:#FCC21B;}
+.st1{fill:#2F2F2F;}
+.st2{fill:#FFFFFF;}
+.st3{clip-path:url(#SVGID_2_);fill:#2F2F2F;}
+.st4{clip-path:url(#SVGID_4_);fill:#2F2F2F;}
+  </style>
+  <g>
+    <path class="st0" d="M63.8,9.5c-62.5,0-64,70.1-64,83.9c0,13.9,28.7,25.1,64,25.1s64-11.2,64-25.1C127.8,79.6,126.3,9.5,63.8,9.5 z"/>
+    <path class="st1" d="M75.6,94.8h-24c-1.6,0-2.9-1.5-2.9-3.3c0-1.8,1.3-3.3,2.9-3.3h24c1.6,0,2.9,1.5,2.9,3.3 C78.5,93.3,77.2,94.8,75.6,94.8z"/>
+    <g>
+      <g>
+        <ellipse class="st2" cx="87.4" cy="58.8" rx="16.6" ry="16.3"/>
+        <g>
+          <defs>
+            <ellipse id="SVGID_1_" cx="87.4" cy="58.8" rx="16.6" ry="16.3"/>
+          </defs>
+          <clipPath id="SVGID_2_">
+            <use style="overflow:visible;" xlink:href="#SVGID_1_"/>
+          </clipPath>
+          <circle class="st3" cx="83.5" cy="47" r="7.9"/>
+        </g>
+      </g>
+      <g>
+        <ellipse class="st2" cx="40.6" cy="58.8" rx="16.6" ry="16.3"/>
+        <g>
+          <defs>
+            <ellipse id="SVGID_3_" cx="40.6" cy="58.8" rx="16.6" ry="16.3"/>
+          </defs>
+          <clipPath id="SVGID_4_">
+            <use style="overflow:visible;" xlink:href="#SVGID_3_"/>
+          </clipPath>
+          <circle class="st4" cx="36.7" cy="47" r="7.9"/>
+        </g>
+      </g>
+    </g>
+    <rect class="st0" height="8.7" width="34.2" x="23.6" y="72"/>
+    <rect class="st0" height="8.7" width="34.2" x="70.2" y="72"/>
+  </g>
+</svg>
