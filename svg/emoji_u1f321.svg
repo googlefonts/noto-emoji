@@ -1,0 +1,23 @@
+<svg width="128" height="128" style="enable-background:new 0 0 128 128;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <style type="text/css">
+.st0{fill:#77A3AD;}
+.st1{fill:#FFFFFF;}
+.st2{fill:#ED6C30;}
+.st3{fill:none;stroke:#77A3AD;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+  </style>
+  <g>
+    <path class="st0" d="M64,105.1L64,105.1c-6.6,0-11.9-5.3-11.9-11.9V12.9C52.1,6.3,57.4,1,64,1h0c6.6,0,11.9,5.3,11.9,11.9v80.4 C75.9,99.8,70.6,105.1,64,105.1z"/>
+    <circle class="st0" cx="64" cy="103.6" r="22.5"/>
+    <circle class="st1" cx="64" cy="103.6" r="16.9"/>
+    <path class="st1" d="M64,106.7L64,106.7c-3.8,0-6.9-3.1-6.9-6.9V14.2c0-3.8,3.1-6.9,6.9-6.9h0c3.8,0,6.9,3.1,6.9,6.9v85.6 C70.9,103.6,67.8,106.7,64,106.7z"/>
+    <path class="st2" d="M64.2,99.8h-0.3c-2.1,0-3.7-1.7-3.7-3.7V34.6c0-2.1,1.7-3.7,3.7-3.7h0.3c2.1,0,3.7,1.7,3.7,3.7V96 C67.9,98.1,66.2,99.8,64.2,99.8z"/>
+    <circle class="st2" cx="64" cy="103.6" r="12.4"/>
+    <g>
+      <line class="st3" x1="55.9" x2="62.2" y1="20.9" y2="20.9"/>
+      <line class="st3" x1="56.1" x2="62.4" y1="36.9" y2="36.9"/>
+      <line class="st3" x1="56.1" x2="62.4" y1="52.8" y2="52.8"/>
+      <line class="st3" x1="56.1" x2="62.4" y1="67.8" y2="67.8"/>
+      <line class="st3" x1="56.1" x2="62.4" y1="82.7" y2="82.7"/>
+    </g>
+  </g>
+</svg>
