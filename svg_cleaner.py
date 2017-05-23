@@ -15,6 +15,16 @@
 #
 # Google Author(s): Doug Felt
 
+"""Clean SVG.
+
+svgo could do this, but we're fussy.  Also, emacs doesn't understand
+that 'style' defaults to 'text/css' and svgo strips this out by
+default.
+
+The files we're getting that are exported from AI contain lots of extra
+data so that it can reimport the svg, and we don't need it."""
+
+
 import argparse
 import codecs
 import logging
@@ -125,13 +135,19 @@ class SvgCleaner(object):
       for k, v in node.attrs.items():
         if node.name == 'svg' and k in [
             'x', 'y', 'id', 'version', 'viewBox', 'width', 'height',
-            'enable-background', 'xml:space']:
+            'enable-background', 'xml:space', 'xmlns:graph', 'xmlns:i',
+            'xmlns:x']:
           if k == 'viewBox':
             viewBox = v
           elif k == 'width':
             width = v
           elif k == 'height':
             height = v
+          elif k.startswith('xmlns:') and 'ns.adobe.com' not in v:
+            # keep if not an adobe namespace
+            logging.debug('keep "%s" = "%s"' % (k, v))
+            nattrs[k] = v
+          logging.debug('removing %s=%s' % (k, v))
           continue
         v = re.sub('\s+', ' ', v)
         nattrs[k] = v
@@ -145,7 +161,6 @@ class SvgCleaner(object):
         nattrs['height'] = height
       node.attrs = nattrs
 
-
       # scan contents. remove any empty text nodes, or empty 'g' element nodes.
       # if a 'g' element has no attrs and only one subnode, replace it with the
       # subnode.
@@ -157,8 +172,19 @@ class SvgCleaner(object):
         elif n.name == 'g':
           if not n.contents:
             continue
+          if 'i:extraneous' in n.attrs:
+            del n.attrs['i:extraneous']
           if not n.attrs and len(n.contents) == 1:
             n = n.contents[0]
+        elif n.name == 'i:pgf' or n.name == 'foreignObject':
+          continue
+        elif n.name =='switch' and len(n.contents) == 1:
+          n = n.contents[0]
+        elif n.name == 'style':
+          # some emacsen don't default 'style' properly, so leave this in.
+          if False and n.attrs.get('type') == 'text/css':
+            del n.attrs['type']
+
         node.contents[wpos] = n
         wpos += 1
       if wpos < len(node.contents):
@@ -168,7 +194,9 @@ class SvgCleaner(object):
       text = node.text.strip()
       # common case is text is empty (line endings between elements)
       if text:
-        text = re.sub(r'\s+', ' ', text)
+        # main goal here is to leave linefeeds in for style elements
+        text = re.sub(r'[ \t]*\n+[ \t]*', '\n', text)
+        text = re.sub(r'[ \t]+', ' ', text)
       node.text = text
 
     def clean(self, node):
@@ -197,7 +225,20 @@ class SvgCleaner(object):
         margin = '  ' * indent
         line = [margin]
         line.append('<%s' % node.name)
-        for k in sorted(node.attrs.keys()):
+        # custom sort attributes of svg, yes this is a hack
+        if node.name == 'svg':
+          def svgsort(k):
+            if k == 'width': return (0, None)
+            elif k == 'height': return (1, None)
+            else: return (2, k)
+          ks = sorted(node.attrs.keys(), key=svgsort)
+        else:
+          def defsort(k):
+            if k == 'id': return (0, None)
+            elif k == 'class': return (1, None)
+            else: return (2, k)
+          ks = sorted(node.attrs.keys(), key=defsort)
+        for k in ks:
           v = node.attrs[k]
           line.append(' %s=%s' % (k, saxutils.quoteattr(v)))
         if node.contents:
@@ -250,6 +291,7 @@ def clean_svg_files(in_dir, out_dir, match_pat=None, clean=False):
     if regex and not regex.match(file_name):
       continue
     in_path = os.path.join(in_dir, file_name)
+    logging.debug('read: %s', in_path)
     with open(in_path) as in_fp:
       result = cleaner.clean_svg(in_fp.read())
     out_path = os.path.join(out_dir, file_name)
