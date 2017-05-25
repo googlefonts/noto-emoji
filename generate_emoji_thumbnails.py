@@ -38,10 +38,10 @@ logger = logging.getLogger('emoji_thumbnails')
 
 def create_thumbnail(src_path, dst_path):
   # uses imagemagik
-  # we need imagex exactly 72x72 in size, with transparent background
+  # we need images exactly 72x72 in size, with transparent background
   subprocess.check_call([
       'convert', '-thumbnail', '72x72', '-gravity', 'center', '-background',
-      'none', '-extent', '72x72', src_path, dst_path])
+      'none', '-extent', '72x72', src_path, 'PNG32:' + dst_path])
 
 
 def get_inv_aliases():
