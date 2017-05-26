@@ -273,11 +273,29 @@ def _name_data(seq, seq_file):
 
 
 def generate_names(
-    src_dir, dst_dir, skip_limit=20, pretty_print=False, verbose=False):
+    src_dir, dst_dir, skip_limit=20, omit_groups=None, pretty_print=False,
+    verbose=False):
   srcdir = tool_utils.resolve_path(src_dir)
   if not path.isdir(srcdir):
     print >> sys.stderr, '%s is not a directory' % src_dir
     return
+
+  if omit_groups:
+    unknown_groups = set(omit_groups) - set(unicode_data.get_emoji_groups())
+    if unknown_groups:
+      print >> sys.stderr, 'did not recognize %d group%s: %s' % (
+          len(unknown_groups), '' if len(unknown_groups) == 1 else 's',
+          ', '.join('"%s"' % g for g in omit_groups if g in unknown_groups))
+      print >> sys.stderr, 'valid groups are:\n  %s' % (
+          '\n  '.join(g for g in unicode_data.get_emoji_groups()))
+      return
+    print 'omitting %d group%s: %s' % (
+        len(omit_groups), '' if len(omit_groups) == 1 else 's',
+        ', '.join('"%s"' % g for g in omit_groups))
+  else:
+    # might be None
+    print 'keeping all groups'
+    omit_groups = []
 
   # make sure the destination exists
   dstdir = tool_utils.ensure_dir_exists(
@@ -323,6 +341,8 @@ def generate_names(
   last_skipped_group = None
   skipcount = 0
   for group in unicode_data.get_emoji_groups():
+    if group in omit_groups:
+      continue
     name_data = []
     for seq in unicode_data.get_emoji_in_group(group):
       if seq in excluded:
@@ -369,11 +389,14 @@ def main():
       '-m', '--missing_limit', help='number of missing images before failure '
       '(default 20), use -1 for no limit', metavar='n', default=20)
   parser.add_argument(
+      '--omit_groups', help='names of groups to omit (default "Misc")',
+      metavar='name', default=['Misc'], nargs='*')
+  parser.add_argument(
       '-v', '--verbose', help='print progress information to stdout',
       action='store_true')
   args = parser.parse_args()
   generate_names(
-      args.srcdir, args.dstdir, args.missing_limit,
+      args.srcdir, args.dstdir, args.missing_limit, args.omit_groups,
       pretty_print=args.pretty_print, verbose=args.verbose)
 
 
