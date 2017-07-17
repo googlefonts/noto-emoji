@@ -2,8 +2,6 @@
 # Noto Emoji
 Color and Black-and-White Noto emoji fonts, and tools for working with them.
 
-The color version must be built from source.
-
 ## Building NotoColorEmoji
 
 Building NotoColorEmoji requires a few files from nototools.  Clone a copy from
