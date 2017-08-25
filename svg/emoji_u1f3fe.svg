@@ -1,5 +1,18 @@
 <svg width="128" height="128" style="enable-background:new 0 0 128 128;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
   <g id="图层_1">
-    <rect height="108" style="fill:#9B643C;" width="108" x="10" y="10"/>
+    <linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="64" x2="64" y1="4.3333" y2="123.8918">
+      <stop offset="0" style="stop-color:#A56C43"/>
+      <stop offset="0.4272" style="stop-color:#A26941"/>
+      <stop offset="0.7837" style="stop-color:#97603D"/>
+      <stop offset="1" style="stop-color:#8D5738"/>
+    </linearGradient>
+    <rect height="120" style="fill:url(#SVGID_1_);" width="120" x="4" y="4"/>
+    <linearGradient id="SVGID_2_" gradientUnits="userSpaceOnUse" x1="106.0003" x2="106.0003" y1="305.2706" y2="305.2706">
+      <stop offset="0" style="stop-color:#8D5738"/>
+      <stop offset="0.2163" style="stop-color:#97603D"/>
+      <stop offset="0.5728" style="stop-color:#A26941"/>
+      <stop offset="1" style="stop-color:#A56C43"/>
+    </linearGradient>
+    <path d="M106,305.27" style="fill:url(#SVGID_2_);stroke:#875334;stroke-width:2;stroke-linejoin:round;stroke-miterlimit:10;"/>
   </g>
 </svg>

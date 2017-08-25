@@ -1,5 +1,11 @@
 <svg width="128" height="128" style="enable-background:new 0 0 128 128;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
   <g id="图层_1">
-    <rect height="108" style="fill:#E0BB95;" width="108" x="10" y="10"/>
+    <linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="64" x2="64" y1="5" y2="123.6011">
+      <stop offset="0" style="stop-color:#E0BB95"/>
+      <stop offset="0.4107" style="stop-color:#DEB892"/>
+      <stop offset="0.7432" style="stop-color:#D6B088"/>
+      <stop offset="1" style="stop-color:#CCA47A"/>
+    </linearGradient>
+    <rect height="120" style="fill:url(#SVGID_1_);" width="120" x="4" y="4"/>
   </g>
 </svg>
