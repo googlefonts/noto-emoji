@@ -96,14 +96,14 @@ def copy_with_rename(src_dir, dst_dir, accept_pred=None, rename=None):
 
 
 def build_svg_dir(dst_dir, clean=False, emoji_dir='', flags_dir=''):
-  """Copies/renames files from emoji_dir and then flag_dir, giving them the
+  """Copies/renames files from emoji_dir and then flags_dir, giving them the
   standard format and prefix ('emoji_u' followed by codepoints expressed in hex
   separated by underscore).  If clean, removes the target dir before proceding.
-  If either emoji_dir or flag_dir are empty, skips them."""
+  If either emoji_dir or flags_dir are empty, skips them."""
 
   dst_dir = tool_utils.ensure_dir_exists(dst_dir, clean=clean)
 
-  if not emoji_dir and not flag_dir:
+  if not emoji_dir and not flags_dir:
     logging.warning('Nothing to do.')
     return
 
