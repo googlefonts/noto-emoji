@@ -171,7 +171,7 @@ class FontBuilder(object):
     self.svgs.append(svg_record)
 
 
-def collect_glyphstr_file_pairs(prefix, ext, include=None, exclude=None):
+def collect_glyphstr_file_pairs(prefix, ext, include=None, exclude=None, verbosity=1):
   """Scan files with the given prefix and extension, and return a list of
   (glyphstr, filename) where glyphstr is the character or ligature, and filename
   is the image file associated with it.  The glyphstr is formed by decoding the
@@ -199,7 +199,7 @@ def collect_glyphstr_file_pairs(prefix, ext, include=None, exclude=None):
 
     if ex and ex.search(image_file):
       if verbosity > 1:
-        print "Exclude %s" % image_file
+        print("Exclude %s" % image_file)
       ex_count += 1
       continue
 
