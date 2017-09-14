@@ -17,6 +17,7 @@
 """Quick tool to display count/ids of flag images in a directory named
 either using ASCII upper case pairs or the emoji_u+codepoint_sequence
 names."""
+from __future__ import print_function
 
 import argparse
 import re
@@ -44,7 +45,7 @@ def _flag_names_from_file_names(src):
   for f in glob.glob(path.join(src, '*.png')):
     m = flag_re.match(path.basename(f))
     if not m:
-      print 'no match'
+      print('no match')
       continue
     flags.add(m.group(1))
   return flags
@@ -52,14 +53,14 @@ def _flag_names_from_file_names(src):
 
 def _dump_flag_info(names):
   prev = None
-  print '%d flags' % len(names)
+  print('%d flags' % len(names))
   for n in sorted(names):
     if n[0] != prev:
       if prev:
-        print
+        print()
       prev = n[0]
-    print n,
-  print
+    print(n, end=' ')
+  print()
 
 
 def main():
@@ -76,7 +77,7 @@ def main():
     names = _flag_names_from_file_names(args.srcdir)
   else:
     names = _flag_names_from_emoji_file_names(args.srcdir)
-  print args.srcdir
+  print(args.srcdir)
   _dump_flag_info(names)
 
 

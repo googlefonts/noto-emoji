@@ -18,6 +18,7 @@
 #
 
 
+from __future__ import print_function
 import sys, struct, StringIO
 from png import PNG
 import os
@@ -374,7 +375,7 @@ def main (argv):
 			argv.remove (key)
 
 	if len (argv) < 4:
-		print >>sys.stderr, """
+		print("""
 Usage:
 
 emoji_builder.py [-V] [-O] [-U] [-A] font.ttf out-font.ttf strike-prefix...
@@ -403,7 +404,7 @@ By default they are dropped.
 If -C is given, unused chunks (color profile, etc) are NOT
 dropped from the PNG images when embedding.
 By default they are dropped.
-"""
+""", file=sys.stderr)
 		sys.exit (1)
 
 	font_file = argv[1]
@@ -424,16 +425,16 @@ By default they are dropped.
 				pass
 
 
-	print
+	print()
 
 	font = ttx.TTFont (font_file)
-	print "Loaded font '%s'." % font_file
+	print("Loaded font '%s'." % font_file)
 
 	font_metrics = FontMetrics (font['head'].unitsPerEm,
 				    font['hhea'].ascent,
 				    -font['hhea'].descent)
-	print "Font metrics: upem=%d ascent=%d descent=%d." % \
-	      (font_metrics.upem, font_metrics.ascent, font_metrics.descent)
+	print("Font metrics: upem=%d ascent=%d descent=%d." % \
+	      (font_metrics.upem, font_metrics.ascent, font_metrics.descent))
 	glyph_metrics = font['hmtx'].metrics
 	unicode_cmap = font['cmap'].getcmap (3, 10)
 	if not unicode_cmap:
@@ -453,11 +454,11 @@ By default they are dropped.
                 return cp >= 0xfe00 and cp <= 0xfe0f
 
 	for img_prefix in img_prefixes:
-		print
+		print()
 
 		img_files = {}
 		glb = "%s*.png" % img_prefix
-		print "Looking for images matching '%s'." % glb
+		print("Looking for images matching '%s'." % glb)
 		for img_file in glob.glob (glb):
 			codes = img_file[len (img_prefix):-4]
 			if "_" in codes:
@@ -467,13 +468,13 @@ By default they are dropped.
 			else:
                                 cp = int(codes, 16)
                                 if is_vs(cp):
-                                        print "ignoring unexpected vs input %04x" % cp
+                                        print("ignoring unexpected vs input %04x" % cp)
                                         continue
 				uchars = unichr(cp)
 			img_files[uchars] = img_file
 		if not img_files:
 			raise Exception ("No image files found in '%s'." % glb)
-		print "Found images for %d characters in '%s'." % (len (img_files), glb)
+		print("Found images for %d characters in '%s'." % (len (img_files), glb))
 
 		glyph_imgs = {}
 		advance = width = height = 0
@@ -482,7 +483,7 @@ By default they are dropped.
                                 try:
                                         glyph_name = unicode_cmap.cmap[ord (uchars)]
                                 except:
-                                        print "no cmap entry for %x" % ord(uchars)
+                                        print("no cmap entry for %x" % ord(uchars))
                                         raise ValueError("%x" % ord(uchars))
 			else:
 				glyph_name = get_glyph_name_from_gsub (uchars, font, unicode_cmap.cmap)
@@ -501,11 +502,11 @@ By default they are dropped.
 		glyphs = sorted (glyph_imgs.keys ())
 		if not glyphs:
 			raise Exception ("No common characters found between font and '%s'." % glb)
-		print "Embedding images for %d glyphs for this strike." % len (glyphs)
+		print("Embedding images for %d glyphs for this strike." % len (glyphs))
 
 		advance, width, height = (div (x, len (glyphs)) for x in (advance, width, height))
 		strike_metrics = StrikeMetrics (font_metrics, advance, width, height)
-		print "Strike ppem set to %d." % (strike_metrics.y_ppem)
+		print("Strike ppem set to %d." % (strike_metrics.y_ppem))
 
 		ebdt.start_strike (strike_metrics)
 		ebdt.write_glyphs (glyphs, glyph_imgs, image_format)
@@ -513,21 +514,21 @@ By default they are dropped.
 
 		eblc.write_strike (strike_metrics, glyph_maps)
 
-	print
+	print()
 
 	ebdt = ebdt.data ()
 	add_font_table (font, 'CBDT', ebdt)
-	print "CBDT table synthesized: %d bytes." % len (ebdt)
+	print("CBDT table synthesized: %d bytes." % len (ebdt))
 	eblc.end_strikes ()
 	eblc = eblc.data ()
 	add_font_table (font, 'CBLC', eblc)
-	print "CBLC table synthesized: %d bytes." % len (eblc)
+	print("CBLC table synthesized: %d bytes." % len (eblc))
 
-	print
+	print()
 
 	if 'keep_outlines' not in options:
 		drop_outline_tables (font)
-		print "Dropped outline ('glyf', 'CFF ') and related tables."
+		print("Dropped outline ('glyf', 'CFF ') and related tables.")
 
         # hack removal of cmap pua entry for unknown flag glyph.  If we try to
         # remove it earlier, getGlyphID dies.  Need to restructure all of this
@@ -535,7 +536,7 @@ By default they are dropped.
         font_data.delete_from_cmap(font, [0xfe82b])
 
 	font.save (out_file)
-	print "Output font '%s' generated." % out_file
+	print("Output font '%s' generated." % out_file)
 
 
 if __name__ == '__main__':

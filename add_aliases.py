@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from __future__ import print_function
 import argparse
 import glob
 import os
@@ -31,7 +32,7 @@ DATA_ROOT = path.dirname(path.abspath(__file__))
 def str_to_seq(seq_str):
   res = [int(s, 16) for s in seq_str.split('_')]
   if 0xfe0f in res:
-    print '0xfe0f in file name: %s' % seq_str
+    print('0xfe0f in file name: %s' % seq_str)
     res = [x for x in res if x != 0xfe0f]
   return tuple(res)
 
@@ -66,7 +67,7 @@ def read_emoji_aliases(filename):
         als_seq = tuple([int(x, 16) for x in als.split('_')])
         trg_seq = tuple([int(x, 16) for x in trg.split('_')])
       except:
-        print 'cannot process alias %s -> %s' % (als, trg)
+        print('cannot process alias %s -> %s' % (als, trg))
         continue
       result[als_seq] = trg_seq
   return result
@@ -82,7 +83,7 @@ def add_aliases(
   be done.  Dstdir will be created if necessary, even if dry_run is true."""
 
   if not path.isdir(srcdir):
-    print >> sys.stderr, '%s is not a directory' % srcdir
+    print('%s is not a directory' % srcdir, file=sys.stderr)
     return
 
   if not dstdir:
@@ -104,8 +105,8 @@ def add_aliases(
   alias_exists = False
   for als, trg in sorted(aliases.items()):
     if trg not in seq_to_file:
-      print >> sys.stderr, 'target %s for %s does not exist' % (
-          seq_to_str(trg), seq_to_str(als))
+      print('target %s for %s does not exist' % (
+          seq_to_str(trg), seq_to_str(als)), file=sys.stderr)
       continue
     alias_name = '%s%s.%s' % (prefix, seq_to_str(als), ext)
     alias_path = path.join(dstdir, alias_name)
@@ -113,7 +114,7 @@ def add_aliases(
       if replace:
         aliases_to_replace.append(alias_name)
       else:
-        print >> sys.stderr, 'alias %s exists' % seq_to_str(als)
+        print('alias %s exists' % seq_to_str(als), file=sys.stderr)
         alias_exists = True
         continue
     target_file = seq_to_file[trg]
@@ -123,15 +124,15 @@ def add_aliases(
     if not dry_run:
       for k in sorted(aliases_to_replace):
         os.remove(path.join(dstdir, k))
-    print 'replacing %d files' % len(aliases_to_replace)
+    print('replacing %d files' % len(aliases_to_replace))
   elif alias_exists:
-    print >> sys.stderr, 'aborting, aliases exist.'
+    print('aborting, aliases exist.', file=sys.stderr)
     return
 
   for k, v in sorted(aliases_to_create.items()):
     if dry_run:
       msg = 'replace ' if k in aliases_to_replace else ''
-      print '%s%s -> %s' % (msg, k, v)
+      print('%s%s -> %s' % (msg, k, v))
     else:
       try:
         if copy:
@@ -143,10 +144,10 @@ def add_aliases(
           else:
             raise Exception('can\'t create cross-directory symlinks yet')
       except Exception as e:
-        print >> sys.stderr, 'failed to create %s -> %s' % (k, v)
+        print('failed to create %s -> %s' % (k, v), file=sys.stderr)
         raise Exception('oops, ' + str(e))
-  print 'created %d %s' % (
-      len(aliases_to_create), 'copies' if copy else 'symlinks')
+  print('created %d %s' % (
+      len(aliases_to_create), 'copies' if copy else 'symlinks'))
 
 
 def main():
