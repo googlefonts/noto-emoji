@@ -15,6 +15,7 @@
 # limitations under the License.
 
 """Generate a glyph name for flag emojis."""
+from __future__ import print_function
 
 __author__ = 'roozbeh@google.com (Roozbeh Pournader)'
 
@@ -48,8 +49,8 @@ def flag_code_to_glyph_name(flag_code):
 
 
 def main():
-    print ' '.join([
-        flag_code_to_glyph_name(flag_code) for flag_code in sys.argv[1:]])
+    print(' '.join([
+        flag_code_to_glyph_name(flag_code) for flag_code in sys.argv[1:]]))
 
 if __name__ == '__main__':
     main()

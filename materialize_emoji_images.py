@@ -16,6 +16,7 @@
 
 """Create a copy of the emoji images that instantiates aliases, etc. as
 symlinks."""
+from __future__ import print_function
 
 import argparse
 import glob
@@ -68,10 +69,10 @@ def _alias_people(code_strings, dst):
     if src[1:].lower() in code_strings:
       src_name = 'emoji_%s.png' % src.lower()
       ali_name = 'emoji_u%s.png' % ali.lower()
-      print 'creating symlink %s -> %s' % (ali_name, src_name)
+      print('creating symlink %s -> %s' % (ali_name, src_name))
       os.symlink(path.join(dst, src_name), path.join(dst, ali_name))
     else:
-      print >> os.stderr, 'people image %s not found' % src
+      print('people image %s not found' % src, file=os.stderr)
 
 
 def _alias_flags(code_strings, dst):
@@ -80,27 +81,27 @@ def _alias_flags(code_strings, dst):
     if src_str in code_strings:
       src_name = 'emoji_u%s.png' % src_str
       ali_name = 'emoji_u%s.png' % _flag_str(ali)
-      print 'creating symlink %s (%s) -> %s (%s)' % (ali_name, ali, src_name, src)
+      print('creating symlink %s (%s) -> %s (%s)' % (ali_name, ali, src_name, src))
       os.symlink(path.join(dst, src_name), path.join(dst, ali_name))
     else:
-      print >> os.stderr, 'flag image %s (%s) not found' % (src_name, src)
+      print('flag image %s (%s) not found' % (src_name, src), file=os.stderr)
 
 
 def _alias_omitted_flags(code_strings, dst):
   UNKNOWN_FLAG = 'fe82b'
   if UNKNOWN_FLAG not in code_strings:
-    print >> os.stderr, 'unknown flag missing'
+    print('unknown flag missing', file=os.stderr)
     return
   dst_name = 'emoji_u%s.png' % UNKNOWN_FLAG
   dst_path = path.join(dst, dst_name)
   for ali in sorted(OMITTED_FLAGS):
     ali_str = _flag_str(ali)
     if ali_str in code_strings:
-      print >> os.stderr, 'omitted flag %s has image %s' % (ali, ali_str)
+      print('omitted flag %s has image %s' % (ali, ali_str), file=os.stderr)
       continue
     ali_name = 'emoji_u%s.png' % ali_str
-    print 'creating symlink %s (%s) -> unknown_flag (%s)' % (
-        ali_str, ali, dst_name)
+    print('creating symlink %s (%s) -> unknown_flag (%s)' % (
+        ali_str, ali, dst_name))
     os.symlink(dst_path, path.join(dst, ali_name))
 
 

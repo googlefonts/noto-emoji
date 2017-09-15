@@ -15,6 +15,7 @@
 #
 # Google Author(s): Doug Felt
 
+from __future__ import print_function
 import argparse
 import os
 import os.path
@@ -120,9 +121,9 @@ View using Firefox&nbsp;26 and later.
     text_parts.append(text)
 
   if verbosity and glyph and not found_initial_glyph:
-    print "Did not find glyph '%s', using initial glyph '%s'" % (glyph, initial_glyph_str)
+    print("Did not find glyph '%s', using initial glyph '%s'" % (glyph, initial_glyph_str))
   elif verbosity > 1 and not glyph:
-    print "Using initial glyph '%s'" % initial_glyph_str
+    print("Using initial glyph '%s'" % initial_glyph_str)
 
   lines = [header % font_name]
   lines.append(body_head % {'font':font_name, 'glyph':initial_glyph_str,
@@ -133,28 +134,28 @@ View using Firefox&nbsp;26 and later.
   with open(html_name, 'w') as fp:
     fp.write(output)
   if verbosity:
-    print 'Wrote ' + html_name
+    print('Wrote ' + html_name)
 
 
 def do_generate_fonts(template_file, font_basename, pairs, reuse=0, verbosity=1):
   out_woff = font_basename + '.woff'
   if reuse > 1 and os.path.isfile(out_woff) and os.access(out_woff, os.R_OK):
     if verbosity:
-      print 'Reusing ' + out_woff
+      print('Reusing ' + out_woff)
     return
 
   out_ttx = font_basename + '.ttx'
   if reuse == 0:
     add_svg_glyphs.add_image_glyphs(template_file, out_ttx, pairs, verbosity=verbosity)
   elif verbosity:
-    print 'Reusing ' + out_ttx
+    print('Reusing ' + out_ttx)
 
   quiet=verbosity < 2
   font = ttx.TTFont(flavor='woff', quiet=quiet)
   font.importXML(out_ttx, quiet=quiet)
   font.save(out_woff)
   if verbosity:
-    print 'Wrote ' + out_woff
+    print('Wrote ' + out_woff)
 
 
 def main(argv):
@@ -193,7 +194,7 @@ def main(argv):
   if not out_basename:
     out_basename = args.template_file.split('.')[0] # exclude e.g. '.tmpl.ttx'
     if args.v:
-      print "Output basename is %s." % out_basename
+      print("Output basename is %s." % out_basename)
   do_generate_fonts(args.template_file, out_basename, pairs, reuse=args.reuse_font, verbosity=args.v)
   do_generate_test_html(out_basename, pairs, glyph=args.glyph, verbosity=args.v)
 

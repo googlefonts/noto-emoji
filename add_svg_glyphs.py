@@ -16,6 +16,7 @@
 # Google Author(s): Doug Felt
 
 """Tool to update GSUB, hmtx, cmap, glyf tables with svg image glyphs."""
+from __future__ import print_function
 
 import argparse
 import glob

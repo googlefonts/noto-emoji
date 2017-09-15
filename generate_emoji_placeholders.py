@@ -1,3 +1,4 @@
+from __future__ import print_function
 import os
 from os import path
 import subprocess
@@ -5,7 +6,7 @@ import subprocess
 OUTPUT_DIR = '/tmp/placeholder_emoji'
 
 def generate_image(name, text):
-  print name, text.replace('\n', '_')
+  print(name, text.replace('\n', '_'))
   subprocess.check_call(
       ['convert', '-size', '100x100', 'label:%s' % text,
        '%s/%s' % (OUTPUT_DIR, name)])
@@ -75,13 +76,13 @@ with open('sequences.txt', 'r') as f:
     elif is_flag_sequence(values):
       text = ''.join(regional_to_ascii(cp) for cp in values)
     elif has_color_patch(values):
-      print 'skipping color patch sequence %s' % seq
+      print('skipping color patch sequence %s' % seq)
     elif is_keycap_sequence(values):
       text = get_keycap_text(values)
     else:
       text = get_combining_text(values)
       if not text:
-        print 'missing %s' % seq
+        print('missing %s' % seq)
 
     if text:
       if len(text) > 3:

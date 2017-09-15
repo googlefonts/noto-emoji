@@ -16,6 +16,7 @@
 # limitations under the License.
 
 """Generate name data for emoji resources. Currently in json format."""
+from __future__ import print_function
 
 import argparse
 import collections
@@ -277,24 +278,24 @@ def generate_names(
     verbose=False):
   srcdir = tool_utils.resolve_path(src_dir)
   if not path.isdir(srcdir):
-    print >> sys.stderr, '%s is not a directory' % src_dir
+    print('%s is not a directory' % src_dir, file=sys.stderr)
     return
 
   if omit_groups:
     unknown_groups = set(omit_groups) - set(unicode_data.get_emoji_groups())
     if unknown_groups:
-      print >> sys.stderr, 'did not recognize %d group%s: %s' % (
+      print('did not recognize %d group%s: %s' % (
           len(unknown_groups), '' if len(unknown_groups) == 1 else 's',
-          ', '.join('"%s"' % g for g in omit_groups if g in unknown_groups))
-      print >> sys.stderr, 'valid groups are:\n  %s' % (
-          '\n  '.join(g for g in unicode_data.get_emoji_groups()))
+          ', '.join('"%s"' % g for g in omit_groups if g in unknown_groups)), file=sys.stderr)
+      print('valid groups are:\n  %s' % (
+          '\n  '.join(g for g in unicode_data.get_emoji_groups())), file=sys.stderr)
       return
-    print 'omitting %d group%s: %s' % (
+    print('omitting %d group%s: %s' % (
         len(omit_groups), '' if len(omit_groups) == 1 else 's',
-        ', '.join('"%s"' % g for g in omit_groups))
+        ', '.join('"%s"' % g for g in omit_groups)))
   else:
     # might be None
-    print 'keeping all groups'
+    print('keeping all groups')
     omit_groups = []
 
   # make sure the destination exists
@@ -302,9 +303,9 @@ def generate_names(
       tool_utils.resolve_path(dst_dir))
 
   # _get_image_data returns canonical cp sequences
-  print 'src dir:', srcdir
+  print('src dir:', srcdir)
   seq_to_file = generate_emoji_html._get_image_data(srcdir, 'png', 'emoji_u')
-  print 'seq to file has %d sequences' % len(seq_to_file)
+  print('seq to file has %d sequences' % len(seq_to_file))
 
   # Aliases add non-gendered versions using gendered images for the most part.
   # But when we display the images, we don't distinguish genders in the
@@ -328,9 +329,9 @@ def generate_names(
     if unicode_data.is_regional_indicator_seq(seq):
       replace_seq = canonical_aliases[seq]
       if seq in seq_to_file:
-        print 'warning, alias %s has file %s' % (
+        print('warning, alias %s has file %s' % (
             unicode_data.regional_indicator_seq_to_string(seq),
-            seq_to_file[seq])
+            seq_to_file[seq]))
         continue
       replace_file = seq_to_file.get(replace_seq)
       if replace_file:
@@ -352,11 +353,11 @@ def generate_names(
         skipcount += 1
         if verbose:
           if group != last_skipped_group:
-            print 'group %s' % group
+            print('group %s' % group)
             last_skipped_group = group
-          print '  %s (%s)' % (
+          print('  %s (%s)' % (
               unicode_data.seq_to_string(seq),
-              ', '.join(unicode_data.name(cp, 'x') for cp in seq))
+              ', '.join(unicode_data.name(cp, 'x') for cp in seq)))
         if skip_limit >= 0 and skipcount > skip_limit:
           raise Exception('skipped too many items')
       else:
@@ -368,7 +369,7 @@ def generate_names(
     indent = 2 if pretty_print else None
     separators = None if pretty_print else (',', ':')
     json.dump(data, f, indent=indent, separators=separators)
-  print 'wrote %s' % outfile
+  print('wrote %s' % outfile)
 
 
 def main():
