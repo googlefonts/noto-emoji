@@ -166,7 +166,7 @@ def main():
       metavar='pfx', default='emoji_u')
   parser.add_argument(
       '-e', '--ext', help='file name extension (default png)',
-      choices=['ai', 'png', 'sgv'], default='png')
+      choices=['ai', 'png', 'svg'], default='png')
   parser.add_argument(
       '-r', '--replace', help='replace existing files/aliases',
       action='store_true')
