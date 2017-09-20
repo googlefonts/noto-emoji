@@ -31,7 +31,7 @@ font.  Note however that NotoColorEmoji often uses the same assets to represent
 different character sequences-- notably, most gender-neutral characters or
 sequences are represented using assets named after one of the gendered
 sequences.  This means that some sequences appear to be missing.  Definitions of
-the aliasing used appear in the aliases.txt file.
+the aliasing used appear in the emoji_aliases.txt file.
 
 Also note that the images in the font might differ from the original assets.  In
 particular the flag images in the font are PNG images to which transforms have
