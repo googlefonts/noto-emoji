@@ -24,6 +24,26 @@ does.  Chrome on Linux will support it with some fontconfig tweaking, see
 [issue #36](https://github.com/googlei18n/noto-emoji/issues/36). Currently we do
 not build other color font formats.
 
+## Color emoji assets
+
+The assets provided in the repo are all those used to build the NotoColorEmoji
+font.  Note however that NotoColorEmoji often uses the same assets to represent
+different character sequences-- notably, most gender-neutral characters or
+sequences are represented using assets named after one of the gendered
+sequences.  This means that some sequences appear to be missing.  Definitions of
+the aliasing used appear in the aliases.txt file.
+
+Also note that the images in the font might differ from the original assets.  In
+particular the flag images in the font are PNG images to which transforms have
+been applied to standardize the size and generate the wave and border shadow.  We
+do not have SVG versions that reflect these transforms.
+
+## B/W emoji font
+
+The black-and-white emoji font is not under active development.  Its repertoire of
+emoji is now several years old, and the design does not reflect the current color
+emoji design.  Currently we have no plans to update this font.
+
 ## License
 
 Emoji fonts (under the fonts subdirectory) are under the
@@ -38,5 +58,6 @@ Please read [CONTRIBUTING](CONTRIBUTING.md) if you are thinking of contributing 
 
 ## News
 
+* 2017-09-13: Emoji redesign released.
 * 2015-12-09: Unicode 7 and 8 emoji image data (.png format) added.
 * 2015-09-29: All Noto fonts now licensed under the SIL Open Font License.
