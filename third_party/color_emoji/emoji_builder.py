@@ -76,7 +76,7 @@ class CBDT:
 		return self.stream
 
 	def write_header (self):
-		self.write (struct.pack (">L", 0x00020000)) # FIXED version
+		self.write (struct.pack (">L", 0x00030000)) # FIXED version
 
 	def start_strike (self, strike_metrics):
 		self.strike_metrics = strike_metrics
@@ -210,7 +210,7 @@ class CBLC:
 		return stream
 
 	def write_header (self):
-		self.write (struct.pack (">L", 0x00020000)) # FIXED version
+		self.write (struct.pack (">L", 0x00030000)) # FIXED version
 
 	def start_strikes (self, num_strikes):
 		self.num_strikes = num_strikes
