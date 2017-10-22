@@ -18,8 +18,8 @@ font will be at the top level.
 ## Using NotoColorEmoji
 
 NotoColorEmoji uses the CBDT/CBLC color font format, which is supported by Android
-and Chrome/Chromium OS, but not MacOS.  Windows supports it starting with Windows 10
-Anniversary Update.   No Browser on MacOS supports it, but Edge (on latest Windows)
+and Chrome/Chromium OS, but not macOS.  Windows supports it starting with Windows 10
+Anniversary Update.   No Browser on macOS supports it, but Edge (on latest Windows)
 does.  Chrome on Linux will support it with some fontconfig tweaking, see
 [issue #36](https://github.com/googlei18n/noto-emoji/issues/36). Currently we do
 not build other color font formats.
