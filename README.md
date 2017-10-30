@@ -4,7 +4,8 @@ Color and Black-and-White Noto emoji fonts, and tools for working with them.
 
 ## Building NotoColorEmoji
 
-Building NotoColorEmoji requires a few files from nototools.  Clone a copy from
+Building NotoColorEmoji currently requires a Python 2.x wide build.  To build
+the emoji font you will require a few files from nototools.  Clone a copy from
 https://github.com/googlei18n/nototools and either put it in your PYTHONPATH or
 use 'python setup.py develop' ('install' currently won't fully install all the
 data used by nototools).  You will also need fontTools, get it from
