@@ -20,7 +20,8 @@ LDFLAGS = -lm `pkg-config --libs cairo`
 PNGQUANTDIR := third_party/pngquant
 PNGQUANT := $(PNGQUANTDIR)/pngquant
 PNGQUANTFLAGS = --speed 1 --skip-if-larger --quality 85-95 --force
-IMOPS = -size 136x128 canvas:none -compose copy -gravity center
+BODY_DIMENSIONS = 136x128
+IMOPS := -size $(BODY_DIMENSIONS) canvas:none -compose copy -gravity center
 
 # zopflipng is better (about 5-10%) but much slower.  it will be used if
 # present.  pass ZOPFLIPNG= as an arg to make to use optipng instead.
