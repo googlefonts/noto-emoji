@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1
-.1/DTD/svg11.dtd">
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="1200" height="600" viewBox="0 0 1400 700">
-<title>Flag of Tajikistan</title>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1200" height="600" viewBox="0 0 1400 700">
 <rect width="1400" fill="#060" height="700"/>
 <rect width="1400" fill="#fff" height="500"/>
 <rect width="1400" fill="#c00" height="200"/>
@@ -15,7 +12,6 @@
 <use xlink:href="#r" transform="rotate(9.37, 700,804)"/>
 <use xlink:href="#r" transform="rotate(18.74, 700,804)"/>
 <path d="M 603,478 a 340,340 0 0 1 194,0" fill="none" stroke-width="16" stroke="#f8c300"/>
-
 <g transform="translate(700,380)">
 <g transform="translate(0,-140)">
 <polygon id="s" points="0,-513674 301930,415571 -488533,-158734 488533,-158734 -301930,415571" transform="scale(0.000048669)"/>

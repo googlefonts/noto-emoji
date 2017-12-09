@@ -1,9 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="900" height="600" viewBox="0 0 27 18">
-<path d="M0,0H27V18H0z" fill="#4189dd"/>
-<path d="M0,12H27v1H0v1H27v1H0z" fill="#f9d616"/>
-<g fill="#fff" transform="translate(4,4)">
-<path id="s" d="M0,-3 0.707107,-0.707107 3,0 0.707107,0.707107 0,3 -0.707107,0.707107 -3,0 -0.707107,-0.707107z"/>
-<use xlink:href="#s" transform="scale(0.770376)" fill="#d21034"/>
-</g>
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="600" viewBox="0 0 27 18">
+<path fill="#4189DD" d="M0,0h27v18H0V0z"/>
+<path fill="#F9D616" d="M0,12h27v1H0v1h27v1H0V12z"/>
+<polygon fill="#D21034" stroke="#FFF" stroke-width="0.2" stroke-miterlimit="10" points="4.625,3.375 4,1.349609 3.375,3.375 1.349609,4 3.375,4.625 4,6.650391 4.625,4.625 6.650391,4"/>
 </svg>

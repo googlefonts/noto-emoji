@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="520" height="320" viewBox="0 0 26 16">
 <defs>
-<g id="s">
+<!--                 8*tan(arctan(16/8)/2)-1  v  -->
+<g id="s" fill="#fff" transform="translate(3.944272,0) scale(0.625)">
 <g id="f">
 <g id="t">
-<path d="M0,-4.625V-4h0.3z" transform="rotate(18,0,-4.625)" fill="#fff" id="o"/>
-<use xlink:href="#o" transform="scale(-1,1)"/>
+<path id="o" d="M1,0H0V0.5z" transform="rotate(18,1,0)"/>
+<use xlink:href="#o" transform="scale(1,-1)"/>
 </g>
-<use xlink:href="#t" transform="rotate(72,0,-4)"/>
+<use xlink:href="#t" transform="rotate(72)"/>
 </g>
-<use xlink:href="#t" transform="rotate(-72,0,-4)"/>
-<use xlink:href="#f" transform="rotate(144,0,-4)"/>
+<use xlink:href="#t" transform="rotate(-72)"/>
+<use xlink:href="#f" transform="rotate(144)"/>
 </g>
 <clipPath id="c">
 <path d="M0,16V0L26,3 20,8 26,13z"/>
@@ -21,24 +22,28 @@
 <path d="M0,8H26" stroke-width="2"/>
 </g>
 <path d="M0,0V16L16,8z" fill="#001c5a"/>
-<!--          16/(1+sqrt(5)) v   -->
+<!-- 8*tan(arctan(16/8)/2) v  -->
 <g transform="translate(4.944272,8)">
 <circle r="3" fill="#fff"/>
 <circle r="2" fill="#c1133d"/>
-<g id="g">
+<use xlink:href="#s" x="4"/>
+<g id="s3">
 <use xlink:href="#s"/>
-<use xlink:href="#s" transform="rotate(30)"/>
-<use xlink:href="#s" transform="rotate(-60)"/>
-<g id="h">
-<use xlink:href="#s" transform="rotate(-30)"/>
-<!--                     -30deg +/- arccos(71/72) v v  -->
-<use xlink:href="#s" y="-2" transform="rotate(-39.560384)"/>
-<use xlink:href="#s" y="-2" transform="rotate(-20.439616)"/>
+<!--                   +/- 2*arcsin(0.5/(ri+1))  v  -->
+<use xlink:href="#s" x="2" transform="rotate(-9.650225)"/>
+<use xlink:href="#s" x="2" transform="rotate(9.650225)"/>
 </g>
+<g id="s6">
+<!--                          arctan(16/8)  v  -->
+<use xlink:href="#s" transform="rotate(63.434949)"/>
+<!--                       (above+below)/2  v  -->
+<use xlink:href="#s" transform="rotate(92.576212)"/>
+<!--                     90+arctan(16/8)/2  v  -->
+<use xlink:href="#s3" transform="rotate(121.717474)"/>
+<!--                         (above+180)/2  v  -->
+<use xlink:href="#s" transform="rotate(150.858737)"/>
 </g>
-<use xlink:href="#g" transform="rotate(240)"/>
-<use xlink:href="#h" transform="rotate(120)"/>
-<use xlink:href="#s" transform="rotate(150)"/>
-<use xlink:href="#s" y="-4" transform="rotate(90)"/>
+<use xlink:href="#s" transform="rotate(180)"/>
+<use xlink:href="#s6" transform="scale(1,-1)"/>
 </g>
 </svg>

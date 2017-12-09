@@ -6,7 +6,7 @@
 <g id="b2"><path id="b" d="M-6-25H6M-6-22H6M-6-19H6" stroke="#000" stroke-width="2"/>
 <use xlink:href="#b" y="44"/></g>
 <path stroke="#fff" stroke-width="1" d="M0,17v10"/>
-<circle fill="#c60c30" r="12"/>
-<path fill="#003478" d="M0-12A6,6 0 0 0 0,0A6,6 0 0 1 0,12A12,12 0 0,1 0-12Z"/></g>
+<circle fill="#cd2e3a" r="12"/>
+<path fill="#0047a0" d="M0-12A6,6 0 0 0 0,0A6,6 0 0 1 0,12A12,12 0 0,1 0-12Z"/></g>
 <g transform="rotate(-123.6900675)"><use xlink:href="#b2"/>
 <path stroke="#fff" stroke-width="1" d="M0-23.5v3M0,17v3.5M0,23.5v3"/></g></svg>

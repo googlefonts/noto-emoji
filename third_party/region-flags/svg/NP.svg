@@ -1,45 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" version="1.1" width="726" height="885" viewBox="-17.582 -4.664 71.571 87.246">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="726" height="885" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-17.582 -4.664 71.571 87.246">
 <title>Flag of Nepal</title>
-<desc>Coding according to the official construction in "Constitution of the Kingdom of Nepal, Article 5, Shedule 1", adopted in November 1990</desc>
-
-<!-- 2*TN= (17955-7335*Sqrt(2))/1468 -->
-<use xlink:href="#b" stroke="#003893" stroke-width="5.1646754223"/>
-<!-- F,G,C,A,B,D --> <!-- Fy=Gy = 80-30*Sqrt(2) -->
-<path id="b" d="M -15,37.5735931288 h 60 L -15,0 v 80 h 60 L -15,20 z" fill="#DC143C"/>
-
+<desc>Coding according to the official construction in &quot;Constitution of the Kingdom of Nepal, Article 5, Shedule 1&quot;, adopted in November 1990</desc>
+<use stroke="#003893" stroke-width="5.165" xlink:href="#a"/>
+<path id="a" fill="#DC143C" d="M-15 37.57h60L-15 0v80h60l-60-60z"/>
 <g fill="#fff">
-<!-- LN = -Px = Qx = 5/4*Sqrt(609-366*Sqrt(2)), Py = Qy= 50-75/4*Sqrt(2) -->
-<!-- MQ = 5/4*(23-9*Sqrt(2))  -->
-	<path d="M -11.9502769431,23.4834957055 A 12.8400974233,12.8400974233 0 0,0 11.9502769431,23.4834957055 A 11.9502769431 11.9502769431 0 0,1 -11.9502769431,23.4834957055"/> <!-- Px, Py, MQ, MQ, Qx, Qy, LN, LN, Px, Py -->
-<!-- Ty = (183895-69735*Sqrt(2))/2936   TM = (37095-14685*Sqrt(2))/2936 -->
-	<g transform="translate(0,29.0445562765) scale(5.5610605710)">
-		<circle r="1"/>
-		<g id="jags6">
-			<g id="jags3">
-<!-- sin(Pi/16),-cos(Pi/16), 0, -TS/TM = -Sqrt(884995-8076*Sqrt(2))/673, -sin(Pi/16),-cos(Pi/16) -->
-				<path id="jag" d="M 0.195090322016,-0.980785280403 L 0,-1.388784109750 L -0.195090322016,-0.980785280403" transform="rotate(11.25)"/>
-				<use xlink:href="#jag" transform="rotate(22.5)"/>
-				<use xlink:href="#jag" transform="rotate(45)"/>
-			</g>
-			<use xlink:href="#jags3" transform="rotate(67.5)"/>
-		</g>
-		<use xlink:href="#jags6" transform="scale(-1, 1)"/>
-	</g>
-<!--  Wy = 80-15*Sqrt(2)   NM= 15/4*(5-2*Sqrt(2)) -->
-	<g transform="translate(0,58.7867965644) scale(8.1433982822)">
-		<circle r="1"/>
-		<g id="rays4">
-			<g id="rays2">
-<!-- sin(Pi/12),cos(Pi/12), 0, LN/NM=(79+Sqrt(2))/51, -sin(Pi/12),cos(Pi/12) -->
-				<path id="ray" d="M 0.258819045103,0.965925826289 L 0,1.576749285537 L -0.258819045103,0.965925826289"/>
-				<use xlink:href="#ray" transform="rotate(180)"/>
-			</g>
-			<use xlink:href="#rays2" transform="rotate(90)"/>
-		</g>
-		<use xlink:href="#rays4" transform="rotate(30)"/>
-		<use xlink:href="#rays4" transform="rotate(60)"/>
-	</g>
-</g>
+<path d="M0 35.43c6.6 0 11.95-5.35 11.95-11.95C10.9 26.15 9 28.36 6.58 29.8l-1.02-.76 2-1.5-2.42-.62 1.28-2.17-2.5.36.37-2.48-2.17 1.3-.62-2.45-1.5 2-1.5-2-.63 2.44-2.16-1.28.37 2.5-2.5-.37 1.3 2.17-2.44.62 2 1.5-1 .77c-2.37-1.4-4.3-3.56-5.38-6.32 0 6.6 5.35 11.95 11.95 11.95z"/><path d="M-5.76 53.03l-5.36-.66 3.25 4.3-4.97 2.12 4.97 2.1-3.25 4.3 5.36-.66-.66 5.37 4.3-3.25L0 71.63l2.1-4.98 4.32 3.26-.66-5.36 5.36.67-3.25-4.3 4.97-2.1-4.97-2.12 3.25-4.3-5.36.65.66-5.36-4.3 3.25L0 45.95l-2.1 4.97-4.32-3.25.66 5.36z"/></g>
 </svg>
