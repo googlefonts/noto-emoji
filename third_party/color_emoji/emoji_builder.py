@@ -100,7 +100,7 @@ class CBDT:
 		del self.strike_metrics
 		return glyph_maps
 
-	def write_smallGlyphMetrics (self, width, height):
+	def write_bigGlyphMetrics (self, width, height):
 
 		ascent = self.font_metrics.ascent
 		descent = self.font_metrics.descent
@@ -116,19 +116,29 @@ class CBDT:
                 if y_bearing == 128:
                   y_bearing = 127
 		advance = width
-                # print "small glyph metrics h: %d w: %d" % (height, width)
-		# smallGlyphMetrics
+
+		vert_x_bearing = - width / 2
+		vert_y_bearing = 0
+		vert_advance = height
+
+		# print "big glyph metrics h: %d w: %d" % (height, width)
+		# bigGlyphMetrics
 		# Type	Name
 		# BYTE	height
 		# BYTE	width
-		# CHAR	BearingX
-		# CHAR	BearingY
-		# BYTE	Advance
+		# CHAR	horiBearingX
+		# CHAR	horiBearingY
+		# BYTE	horiAdvance
+		# CHAR	vertBearingX
+		# CHAR	vertBearingY
+		# BYTE	vertAdvance
                 try:
-                        self.write (struct.pack ("BBbbB",
+                        self.write (struct.pack ("BBbbBbbB",
 					 height, width,
 					 x_bearing, y_bearing,
-					 advance))
+					 advance,
+					 vert_x_bearing, vert_y_bearing,
+					 vert_advance))
                 except Exception as e:
                   raise ValueError("%s, h: %d w: %d x: %d y: %d %d a:" % (
                       e, height, width, x_bearing, y_bearing, advance))
@@ -164,14 +174,14 @@ class CBDT:
 
 	png_allowed_chunks =  ["IHDR", "PLTE", "tRNS", "sRGB", "IDAT", "IEND"]
 
-	def write_format17 (self, png):
+	def write_format18 (self, png):
 
 		width, height = png.get_size ()
 
 		if 'keep_chunks' not in self.options:
 			png = png.filter_chunks (self.png_allowed_chunks)
 
-		self.write_smallGlyphMetrics (width, height)
+		self.write_bigGlyphMetrics (width, height)
 
 		png_data = png.data ()
 		# ULONG data length
@@ -180,7 +190,7 @@ class CBDT:
 
 	def image_write_func (self, image_format):
 		if image_format == 1: return self.write_format1
-		if image_format == 17: return self.write_format17
+		if image_format == 18: return self.write_format18
 		return None
 
 
@@ -395,7 +405,7 @@ that the font already supports, and writes the new font out.
 If -V is given, verbose mode is enabled.
 
 If -U is given, uncompressed images are stored (imageFormat=1).
-By default, PNG images are stored (imageFormat=17).
+By default, PNG images are stored (imageFormat=18).
 
 If -O is given, the outline tables ('glyf', 'CFF ') and
 related tables are NOT dropped from the font.
@@ -442,7 +452,7 @@ By default they are dropped.
 	if not unicode_cmap:
 		raise Exception ("Failed to find a Unicode cmap.")
 
-	image_format = 1 if 'uncompressed' in options else 17
+	image_format = 1 if 'uncompressed' in options else 18
 
 	ebdt = CBDT (font_metrics, options)
 	ebdt.write_header ()
