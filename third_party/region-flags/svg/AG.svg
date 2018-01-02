@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="690" height="460" viewBox="0 0 138 92">
 <rect width="138" height="92" fill="#fff"/>
-<rect width="138" height="36" fill="#000"/>
+<rect width="138" height="46" fill="#000"/>
 <g transform="translate(69,36)">
 <g id="c3">
 <!-- y3 = -y2 = 30*sin(11.25deg)/sqrt(5-4*cos(11.25deg)-sin^2(11.25deg)) -->

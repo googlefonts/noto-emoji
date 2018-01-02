@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="600" id="flag_of_Chad">
-<rect style="fill:#002664" width="900" height="600" id="blue"/>
-<rect style="fill:#FECB00" x="300" width="600" height="600" id="yellow"/>
-<rect style="fill:#c60c30" x="600" width="300" height="600" id="red"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="450" height="300">
+<rect fill="#C60C30" width="450" height="300"/>
+<rect fill="#FECB00" width="300" height="300"/>
+<rect fill="#002664" width="150" height="300"/>
+</svg>
