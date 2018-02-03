@@ -7,6 +7,8 @@ My goal is to upgrade the Blob emojis with a fresh style which is consistent to 
 
 Another thing is that this emoji set includes some emojis and ZWJ-sequences which are not part of the current emoji standard (although some or most of them are about to be included in the upcoming Unicode-standard), which means it might be one of the biggest emoji sets currently available!
 
+Please note that I did not create most of the emojis. You can find an overview of the changes I made in the file CHANGES.txt
+
 But now to the original content of this Readme:
 
 # Noto Emoji
