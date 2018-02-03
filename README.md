@@ -1,5 +1,16 @@
 ![Noto](images/noto.png)
+# Noto Emoji with Blobs enabled
+
+This repository is intended to continue the development of the Blob emojis which have been abandoned by the original creators in 2017.
+
+My goal is to upgrade the Blob emojis with a fresh style which is consistent to other emoji vendors.
+
+Another thing is that this emoji set includes some emojis and ZWJ-sequences which are not part of the current emoji standard (although some or most of them are about to be included in the upcoming Unicode-standard), which means it might be one of the biggest emoji sets currently available!
+
+But now to the original content of this Readme:
+
 # Noto Emoji
+
 Color and Black-and-White Noto emoji fonts, and tools for working with them.
 
 ## Building NotoColorEmoji
