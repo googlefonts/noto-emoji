@@ -2,8 +2,10 @@
 
 This package is a collection of flags for geographic region and sub-region codes.
 The regions are based on the data from [BCP 47][0] and selected sub-regions (US
-states, Canadian provinces and territories, and some sub-regions of Great Britain)
-are based on [ISO 3166-2:US][1], [ISO 3166-2:CA][2], and [ISO-3166-2:GB][2].
+states, Canadian provinces and territories, and some sub-regions of Great Britain 
+and their German equivalents)
+are based on [ISO 3166-2:US][1], [ISO 3166-2:CA][3], and [ISO-3166-2:GB][2]
+and [ISO-3166-2:DE][4].
 
 Most people think of these regions from BCP 47 as country flags, but there are a
 few codes / flags that do not correspond to countries. The flags are in SVG and
@@ -33,6 +35,7 @@ The sub-regions currently covered are:
 - Canadian provinces and territories
 - Countries of England, Scotland, and Wales in Great Britain
 - The province Northern Ireland in Great Britain
+- All Bundesländer of Germany
 
 The flags are downloaded from Wikipedia. When Wikipedia flags were copyrighted,
 we worked we Wikipedia editors to either relicense them, or drew / sourced and
@@ -91,3 +94,4 @@ See file `COPYING` for details.
 [1]: https://www.iso.org/obp/ui/#iso:code:3166:US
 [2]: https://www.iso.org/obp/ui/#iso:code:3166:GB
 [3]: https://www.iso.org/obp/ui/#iso:code:3166:CA
+[4]: https://www.iso.org/obp/ui/#iso:code:3166:DE
