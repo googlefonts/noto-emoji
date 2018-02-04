@@ -13,7 +13,7 @@
    version="1.1"
    id="svg28"
    sodipodi:docname="emoji_u1f4d1.svg"
-   inkscape:version="0.92+devel unknown">
+   inkscape:version="0.92.2 (5c3e80d, 2017-08-06)">
   <metadata
      id="metadata34">
     <rdf:RDF>
@@ -38,7 +38,7 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:window-width="1680"
-     inkscape:window-height="986"
+     inkscape:window-height="987"
      id="namedview30"
      showgrid="false"
      showguides="true"
@@ -47,9 +47,9 @@
      inkscape:snap-bbox="true"
      inkscape:bbox-nodes="true"
      inkscape:snap-intersection-paths="true"
-     inkscape:zoom="3.8504174"
-     inkscape:cx="73.882927"
-     inkscape:cy="85.502362"
+     inkscape:zoom="2.7226563"
+     inkscape:cx="154.77954"
+     inkscape:cy="85.291666"
      inkscape:window-x="0"
      inkscape:window-y="27"
      inkscape:window-maximized="1"
@@ -61,9 +61,10 @@
        inkscape:locked="false" />
   </sodipodi:namedview>
   <path
-     style="vector-effect:none;fill:#ffc40e;fill-opacity:1;stroke:none;stroke-width:1;paint-order:stroke fill markers;stroke-opacity:1;stroke-linejoin:round;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none"
-     d="M 10.789062 6.4921875 C 9.6810625 6.4921875 8.7890625 7.3841875 8.7890625 8.4921875 L 8.7890625 107.06836 L 23.923828 120.3457 L 111.33984 120.3457 C 112.44784 120.3457 113.33984 119.4537 113.33984 118.3457 L 113.33984 8.4921875 C 113.33984 7.3841875 112.44784 6.4921875 111.33984 6.4921875 L 10.789062 6.4921875 z "
-     id="rect4388" />
+     style="vector-effect:none;fill:#ffc40e;fill-opacity:1;stroke:none;stroke-width:0.92518455;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
+     d="m 20.965955,6.4921875 c -0.94841,0 -1.711932,0.892 -1.711932,2 V 107.06836 l 12.954851,13.27734 h 74.825176 c 0.94841,0 1.71193,-0.892 1.71193,-2 V 8.4921875 c 0,-1.108 -0.76352,-2 -1.71193,-2 z"
+     id="rect4388"
+     inkscape:connector-curvature="0" />
   <text
      xml:space="preserve"
      style="font-size:13.33333302px;line-height:25px;font-family:'Comic Neue';-inkscape-font-specification:'Comic Neue';letter-spacing:0px;word-spacing:0px;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;"
@@ -86,89 +87,39 @@
        id="tspan4303" /></text>
   <text
      xml:space="preserve"
-     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.09423161px;line-height:6.34805632px;font-family:'Comic Neue';-inkscape-font-specification:'Comic Neue, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.99999988px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-     x="13.698531"
-     y="16.806719"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.42342424px;line-height:5.64931011px;font-family:'Comic Neue';-inkscape-font-specification:'Comic Neue, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.88992739px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     x="23.990191"
+     y="17.976137"
      id="text4316"
      transform="scale(0.99926294,1.0007376)"><tspan
        sodipodi:role="line"
        id="tspan4322"
-       x="13.698531"
-       y="16.806719"
-       style="stroke-width:0.99999988px;-inkscape-font-specification:'Comic Neue Bold';font-family:'Comic Neue';font-weight:bold;font-style:normal;font-stretch:normal;font-variant:normal">@SwiftOnSecurity:</tspan><tspan
+       x="23.990191"
+       y="17.976137"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Comic Neue';-inkscape-font-specification:'Comic Neue Bold';stroke-width:0.88992739px">@SwiftOnSecurity:</tspan><tspan
        sodipodi:role="line"
        id="tspan4324"
-       x="13.698531"
-       y="23.154776"
-       style="stroke-width:0.99999988px;-inkscape-font-specification:'Comic Neue Oblique';font-family:'Comic Neue';font-weight:normal;font-style:oblique;font-stretch:normal;font-variant:normal">  Fun fact: Linux doesn't actually</tspan><tspan
+       x="23.990191"
+       y="23.625448"
+       style="font-style:oblique;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Comic Neue';-inkscape-font-specification:'Comic Neue Oblique';stroke-width:0.88992739px">  Fun fact: Linux doesn't actually</tspan><tspan
        sodipodi:role="line"
        id="tspan4326"
-       x="13.698531"
-       y="29.502831"
-       style="stroke-width:0.99999988px;-inkscape-font-specification:'Comic Neue Oblique';font-family:'Comic Neue';font-weight:normal;font-style:oblique;font-stretch:normal;font-variant:normal">  support graphics - it just zooms</tspan><tspan
+       x="23.990191"
+       y="29.274757"
+       style="font-style:oblique;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Comic Neue';-inkscape-font-specification:'Comic Neue Oblique';stroke-width:0.88992739px">  support graphics - it just zooms</tspan><tspan
        sodipodi:role="line"
        id="tspan4328"
-       x="13.698531"
-       y="35.850887"
-       style="stroke-width:0.99999988px;-inkscape-font-specification:'Comic Neue Oblique';font-family:'Comic Neue';font-weight:normal;font-style:oblique;font-stretch:normal;font-variant:normal">  out the terminal so all the letters</tspan><tspan
+       x="23.990191"
+       y="34.924068"
+       style="font-style:oblique;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Comic Neue';-inkscape-font-specification:'Comic Neue Oblique';stroke-width:0.88992739px">  out the terminal so all the letters</tspan><tspan
        sodipodi:role="line"
-       id="tspan4330"
-       x="13.698531"
-       y="42.198944"
-       style="stroke-width:0.99999988px;-inkscape-font-specification:'Comic Neue Oblique';font-family:'Comic Neue';font-weight:normal;font-style:oblique;font-stretch:normal;font-variant:normal">  look like dots.</tspan><tspan
-       sodipodi:role="line"
-       x="13.698531"
-       y="48.546997"
-       style="stroke-width:0.99999988px;-inkscape-font-specification:'Comic Neue Oblique';font-family:'Comic Neue';font-weight:normal;font-style:oblique;font-stretch:normal;font-variant:normal"
-       id="tspan4340" /><tspan
-       sodipodi:role="line"
-       x="13.698531"
-       y="54.895054"
-       style="stroke-width:0.99999988px;-inkscape-font-specification:'Comic Neue Bold';font-family:'Comic Neue';font-weight:bold;font-style:normal;font-stretch:normal;font-variant:normal"
-       id="tspan4342">@Emojipedia:</tspan><tspan
-       sodipodi:role="line"
-       x="13.698531"
-       y="61.243111"
-       style="stroke-width:0.99999988px;-inkscape-font-specification:'Comic Neue Oblique';font-family:'Comic Neue';font-weight:normal;font-style:oblique;font-stretch:normal;font-variant:normal"
-       id="tspan4344">  The Thinking Face Emoji </tspan><tspan
-       sodipodi:role="line"
-       x="13.698531"
-       y="67.591164"
-       style="stroke-width:0.99999988px;-inkscape-font-specification:'Comic Neue Oblique';font-family:'Comic Neue';font-weight:normal;font-style:oblique;font-stretch:normal;font-variant:normal"
-       id="tspan4346">  Is the Symbol of Our Time</tspan><tspan
-       sodipodi:role="line"
-       x="13.698531"
-       y="73.939224"
-       style="stroke-width:0.99999988px;-inkscape-font-specification:'Comic Neue Oblique';font-family:'Comic Neue';font-weight:normal;font-style:oblique;font-stretch:normal;font-variant:normal"
-       id="tspan4348" /><tspan
-       sodipodi:role="line"
-       x="13.698531"
-       y="80.287277"
-       style="stroke-width:0.99999988px;-inkscape-font-specification:'Comic Neue Bold';font-family:'Comic Neue';font-weight:bold;font-style:normal;font-stretch:normal;font-variant:normal"
-       id="tspan4350">@InternetofShit</tspan><tspan
-       sodipodi:role="line"
-       x="13.698531"
-       y="86.635338"
-       style="stroke-width:0.99999988px;-inkscape-font-specification:'Comic Neue Oblique';font-family:'Comic Neue';font-weight:normal;font-style:oblique;font-stretch:normal;font-variant:normal"
-       id="tspan4352">  me, a teenager: solar eclipses are</tspan><tspan
-       sodipodi:role="line"
-       x="13.698531"
-       y="92.983391"
-       style="stroke-width:0.99999988px;-inkscape-font-specification:'Comic Neue Oblique';font-family:'Comic Neue';font-weight:normal;font-style:oblique;font-stretch:normal;font-variant:normal"
-       id="tspan4356">   cool i made glasses to watch it!!</tspan><tspan
-       sodipodi:role="line"
-       x="13.698531"
-       y="99.331444"
-       style="stroke-width:0.99999988px;-inkscape-font-specification:'Comic Neue Oblique';font-family:'Comic Neue';font-weight:normal;font-style:oblique;font-stretch:normal;font-variant:normal"
-       id="tspan4354">  me, an adult: cool i can watch an</tspan><tspan
-       sodipodi:role="line"
-       x="13.698531"
-       y="105.6795"
-       style="stroke-width:0.99999988px;-inkscape-font-specification:'Comic Neue Oblique';font-family:'Comic Neue';font-weight:normal;font-style:oblique;font-stretch:normal;font-variant:normal"
-       id="tspan4358">   eclipse without leaving twitter</tspan></text>
+       x="23.990191"
+       y="40.57338"
+       style="font-style:oblique;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Comic Neue';-inkscape-font-specification:'Comic Neue Oblique';stroke-width:0.88992739px"
+       id="tspan4358">  look like dots.</tspan></text>
   <g
      id="g4382"
-     transform="rotate(-4.4504428,114.23115,23.083252)">
+     transform="rotate(-4.4504428,112.762,60.89251)">
     <rect
        ry="2"
        rx="1.9999998"
@@ -186,7 +137,7 @@
   </g>
   <g
      id="g4378"
-     transform="rotate(3.5134191,114.23115,56.087341)">
+     transform="rotate(3.5134191,112.762,8.1853317)">
     <rect
        style="vector-effect:none;fill:#ff1d1d;fill-opacity:0.83963964;stroke:none;stroke-width:3.07999969;paint-order:stroke fill markers"
        id="rect4368"
@@ -204,7 +155,7 @@
   </g>
   <g
      id="g4386"
-     transform="rotate(-2.2746458,114.23115,80.713204)">
+     transform="rotate(-2.2746458,112.762,154.71615)">
     <rect
        ry="2"
        rx="1.9999998"
@@ -221,7 +172,8 @@
        inkscape:connector-curvature="0" />
   </g>
   <path
-     style="vector-effect:none;fill:#d39f00;fill-opacity:1;stroke:none;stroke-width:1;paint-order:stroke fill markers;opacity:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-     d="M 20.582031 105.71094 C 20.449383 105.69992 20.315272 105.70245 20.177734 105.71875 L 8.7890625 107.06836 L 23.923828 120.3457 L 22.398438 107.46875 C 22.284346 106.50599 21.51057 105.78809 20.582031 105.71094 z "
-     id="path4393" />
+     style="opacity:1;vector-effect:none;fill:#d39f00;fill-opacity:1;stroke:none;stroke-width:0.92518455;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:stroke fill markers"
+     d="m 33.942271,105.71094 c -0.113542,-0.011 -0.228337,-0.008 -0.346065,0.008 l -9.74832,1.34961 12.954851,13.27734 -1.305683,-12.87695 c -0.09766,-0.96276 -0.759985,-1.68066 -1.554783,-1.75781 z"
+     id="path4393"
+     inkscape:connector-curvature="0" />
 </svg>
