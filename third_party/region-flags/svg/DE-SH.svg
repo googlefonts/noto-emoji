@@ -1,0 +1,11 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg>
+<svg xmlns="http://www.w3.org/2000/svg"
+	version="1.1"
+	width="1000"
+	height="600">
+	
+ <rect id="blue_stripe" width="1000" height="600" fill="#0039ad" />
+ <rect id="white_stripe" width="1000" height="600" y="200" fill="#fff" />
+ <rect id="red_stripe" width="1000" height="600" y="400" fill="#d61810" />
+</svg>

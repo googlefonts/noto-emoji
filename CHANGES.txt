@@ -1,0 +1,162 @@
+# These are the files which are/were not included in the original Noto Emoji.
+# Due to the fact that I didn't worked with git in mind, ALL emojis have been
+# reuploaded.
+# There are currently four types of changes:
+#   new:  Completely new emojis which do not have to do anything with the
+#             original Noto Emoji project
+#   new*: New emojis based on the assets provided by Noto Emoji
+#   alt:  Emojis which I updated because I either didn't like their look or
+#         because they weren't compatible to other emoji fonts
+#   goo:  Although I'm not a fan of the current Noto Emoji style, I didn't want
+#         To have black squares for new emojis I didn't implement yet. 
+#         So I decided to write a small script (which is so bad that I don't
+#         want to publish it here) which replaces the two color gradients with
+#         a one color gradient (so basically a solid color).
+#         At the end these are the emojis copied from the new version of 
+#         Noto-Emoji.
+#   ?:    My file browser says I altered the file but there is no (visible)
+#         difference
+#
+#   pattern:
+#       <UNICODE SEQUENCE>: <TYPE> [(COMMENT)]
+#
+#   '<UNICODE SEQUENCE>*' means that all variations have been altered/added
+#   '<UNICODE SEQUENCE>-<UNICODE SEQUENCE>' means a range of emojis
+#
+#   The names are currently not in order
+
+
+1f928_200d_1f922: new*
+1f354: new
+1f9d4*: new*
+fe82b: new
+2603: alt
+2139: alt
+2122: alt
+2049: alt
+267f: alt (Based on accessibleicon.org)
+26c4: alt
+1f991: alt
+1f988: alt
+1f985: alt
+1f982: alt
+1f981: alt
+1f954: alt
+1f952: alt
+1f939*: alt (I think this emoji has been lacking of skin modifiers)
+1f923: alt
+1f914: ?
+1f689: alt (updated with new train emoji)
+1f686: new
+1f684: new
+1f683: new
+1f644: alt
+1f638-1f640: alt (the cats now have different styles)
+1f633: alt
+1f632: alt
+1f631: alt
+1f628: alt
+1f627: alt
+1f625: alt
+1f615: alt
+1f614: alt
+1f613: alt
+1f609: alt
+1f608: alt
+1f602: alt
+1f601: alt
+1f600: alt
+1f529: alt
+1f519: alt
+1f517: alt
+1f435: alt
+1f432: alt
+1f419: alt
+1f410: alt
+1f409: alt
+1f405: alt
+1f402: alt
+1f369: alt
+1f357: alt
+1f351: alt
+1f346: alt
+1f192-1f199: alt
+1f98a-1f98d: alt
+1f69e: new*
+1f61f-1f62e: alt
+1f61a: alt
+1f47f: alt
+1f43f: alt
+1f43a: alt
+1f42e: alt
+1f42a: alt
+1f42b: alt
+1f40d: alt
+1f36b: alt
+1f36a: alt
+1f33d: ? (I think I just flipped the direction)
+1f5d3: new*
+1f5b1: new
+1f4f1-1f4f5: new* (base on a new phone model)
+1f4d1-1f4da: new*
+1f4ce: new
+1f4b4-1f4b7: alt
+1f4af: new* (the answer to the life, universe and everything)
+1f3ab: new
+1f432*: new* (cats with skin/fur color)
+1f3f4: new*
+1f6f7: goo
+1f932*: goo
+1f91f*: goo
+1f9d8*: new*/goo (a bit buggy)
+1f9d6*: new*/goo
+1f965: goo
+1f963: goo
+1f960: new(*)
+1f962: goo
+1f96a: goo
+1f993: goo
+1f952: goo
+1f992: goo
+1f9e2: goo
+1f6f8: goo
+1f9e6: goo
+1f9e4: goo
+1f967: goo
+1f9de*: goo
+1f997: goo
+1f995: goo
+1f96b: goo
+1f9e3: goo
+1f996: goo
+1f964: goo
+1f969: goo
+1f9e0: goo
+1f961: goo
+1f94c: goo
+1f9e5: goo
+1f92b: new*
+1f3f3: new
+1f9d0: new*
+1f97a: new*
+1f976: new*
+1f975: new*
+1f971: new*
+1f970: new*
+1f9d5*: new*
+1f9d1-1f9d3*: new*
+1f96d: new
+1f968: alt/goo
+1f966: alt/goo
+1f994: alt/goo
+1f92f: new*
+1f92e: new*
+1f9c2: new
+1f973: new*
+1f9df: new*
+1f9e1: new*
+1f929: new*
+1f92d: new*
+1f92c: new*
+1f92a: new*
+1f928: new*
