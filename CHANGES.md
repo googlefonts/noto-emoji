@@ -20,14 +20,7 @@ There are currently four types of changes:
 	Noto-Emoji.
 - `?`:	My file browser says I altered the file but there is no (visible) difference.
 
-Pattern:
-
-    <UNICODE SEQUENCE>: <TYPE> [(COMMENT)]
-	
-	'<UNICODE SEQUENCE>*' means that all variations have been altered/added
-	'<UNICODE SEQUENCE>-<UNICODE SEQUENCE>' means a range of emojis
-
-The names are currently not in order
+The entries are currently not in order
 
 | Image	| Unicode	| Status	| Comment	|
 | ----	| ----	| ----	| ----	|
