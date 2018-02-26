@@ -2,7 +2,7 @@
 
 CONFIG="config.mk"
 PREFIX="/usr/local"
-VERSION=$(grep "define PNGQUANT_VERSION" ../pngquant.c | grep -Eo "[12]\.[0-9.]+")
+VERSION=$(grep LIQ_VERSION_STRING libimagequant.h | grep -Eo "2\.[0-9.]+")
 
 DEBUG=
 SSE=auto
@@ -21,14 +21,18 @@ for i in "$@"; do
     case $i in
     --help)
         echo
-        help "--prefix=                     installation directory [$PREFIX]"
-        help "--extra-cflags=               append to CFLAGS"
-        help "--extra-ldflags=              append to LDFLAGS"
+        help "--prefix=<dir>                installation directory [$PREFIX]"
+        help "--extra-cflags=<flags>        append to CFLAGS"
+        help "--extra-ldflags=<flags>       append to LDFLAGS"
         echo
         help "--enable-debug"
         help "--enable-sse/--disable-sse    enable/disable SSE instructions"
         echo
-        help "--with-openmp                 compile with multicore support"
+        help "--with-openmp=static          compile with multicore support"
+        echo
+        help "CC=<compiler>                 use given compiler command"
+        help "CFLAGS=<flags>                pass options to the compiler"
+        help "LDFLAGS=<flags>               pass options to the linker"
         echo
         exit 0
         ;;
@@ -54,6 +58,9 @@ for i in "$@"; do
     --with-openmp)
         OPENMP=1
         ;;
+    --with-openmp=static)
+        OPENMP=static
+        ;;
     --prefix=*)
         PREFIX=${i#*=}
         ;;
@@ -65,8 +72,7 @@ for i in "$@"; do
         EXTRA_LDFLAGS="$EXTRA_LDFLAGS ${i#*=}"
         ;;
     *)
-        echo "error: unknown switch ${i%%=*}"
-        exit 1
+        echo "warning: unknown switch ${i%%=*} (see $0 --help for the list)"
         ;;
     esac
 done
@@ -93,7 +99,7 @@ status() {
 # Append to CFLAGS if compiler supports flag, with optional prerequisite.
 # Fails on errors and warnings.
 conditional_cflags() {
-    if [ -z "$("$CC" -xc -S -o /dev/null $2 $1 <(echo) 2>&1)" ]; then
+    if [ -z "$(echo | "$CC" -xc -S -o /dev/null $2 $1 - 2>&1)" ]; then
         cflags "$1"
     fi
 }
@@ -106,32 +112,34 @@ error() {
 
 echo
 
-# basic check
-if ! "$CC" -xc -std=c99 <(echo "int main(){}") -o /dev/null &> /dev/null; then
-    error "Compiler" "$CC is no C compiler"
+# /tmp, because mingw has problems opening /dev/null and gives false negative
+if ! echo "int main(){}" | "$CC" -xc -std=c99 -o /tmp/gcccheck - > /dev/null; then
+    error "Compiler" "$CC failed to compile anything (make sure it's installed and supports C99)"
 fi
 
 status "Compiler" "$CC"
 
 # init flags
-CFLAGS=${CFLAGS:--O3 -fno-math-errno -funroll-loops -fomit-frame-pointer -Wall}
+CFLAGS=${CFLAGS:--fno-math-errno -funroll-loops -fomit-frame-pointer -Wall}
 cflags "-std=c99 -I."
-lflags "-lm lib/libimagequant.a"
 
 # DEBUG
 if [ -z "$DEBUG" ]; then
-    cflags "-DNDEBUG"
+    cflags "-O3 -DNDEBUG"
     status "Debug" "no"
 else
-    cflags "-g"
+    cflags "-O1 -g"
     status "Debug" "yes"
 fi
 
 # SSE
 if [ "$SSE" = 'auto' ]; then
-    if [[ "$(uname -m)" =~ (amd|x86_)64 ||
-          "$(grep -E -m1 "^flags" /proc/cpuinfo)" =~ "sse" ]]; then
-        SSE=1
+    SSE=0
+    if type uname > /dev/null; then
+        if [[ "$(uname -m)" =~ "amd64" || "$(uname -m)" =~ "x86_64" ||
+              "$(grep -E -m1 "^flags" /proc/cpuinfo)" =~ "sse" ]]; then
+            SSE=1
+        fi
     fi
 fi
 
@@ -150,21 +158,45 @@ fi
 
 # OpenMP
 if [ -n "$OPENMP" ]; then
-    if [[ "$("$CC" -xc -E -fopenmp <(echo -e \
-          "#ifdef _OPENMP
+    if [ "static" = "$OPENMP" ]; then
+        OPENMPFLAGS="-static-libgcc -Bstatic -fopenmp -Bdynamic"
+    else
+        OPENMPFLAGS="-fopenmp"
+    fi
+    if [[ "$("$CC" -xc -E $OPENMPFLAGS <(echo "#ifdef _OPENMP
            #include <omp.h>
            #endif") 2>&1)" =~ "omp_get_thread_num" ]]; then
-        cflags "-fopenmp"
-        lflags "-fopenmp"
+        cflags "$OPENMPFLAGS"
+        lflags "$OPENMPFLAGS"
         status "OpenMP" "yes"
     else
-        error "OpenMP" "not supported by compiler"
+        error "OpenMP" "not supported by compiler (please install a compiler that supports OpenMP (e.g. gcc) and specify it with the CC= argument)"
     fi
 else
     # silence warnings about omp pragmas
     cflags "-Wno-unknown-pragmas"
     conditional_cflags "-wd3180" # ICC
     status "OpenMP" "no"
+fi
+
+# Cocoa
+if [[ "$OSTYPE" =~ "darwin" ]]; then
+    cflags "-mmacosx-version-min=10.6"
+    lflags "-mmacosx-version-min=10.6"
+fi
+
+if [[ "$OSTYPE" =~ "darwin" ]]; then
+    SOLIBSUFFIX=dylib
+
+    # Search Developer SDK paths, since Apple seems to have dropped the standard Unixy ones
+    XCODE_CMD="xcode-select"
+    XCODE_PATH=$($XCODE_CMD -p)
+    DIRS+=("$XCODE_PATH/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk/usr/include $XCODE_PATH/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk/usr/lib")
+    DIRS+=("$XCODE_PATH/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/usr/include $XCODE_PATH/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/usr/lib")
+elif [[ "$OSTYPE" =~ "msys" ]]; then
+    SOLIBSUFFIX=dll
+else
+    SOLIBSUFFIX=so
 fi
 
 echo
@@ -203,4 +235,5 @@ VERSION = $VERSION
 CC = $CC
 CFLAGS = $CFLAGS
 LDFLAGS = $LDFLAGS
-" > $CONFIG
+SOLIBSUFFIX = $SOLIBSUFFIX
+" > "$CONFIG"

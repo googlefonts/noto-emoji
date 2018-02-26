@@ -1,10 +1,10 @@
-URL: https://github.com/pornel/pngquant/archive/2.8.0.tar.gz
-Version: 2.8.0
+URL: https://github.com/ImageOptim/libimagequant/archive/2.9.1.tar.gz
+Version: 2.9.1
 License: GPLv3
 License File: LICENSE
 
 Description:
-A lossy PNG compressor.
+Image Quantization Library.
 
 Local Modifications:
 The COPYIRIGHT file is renamed LICENSE.

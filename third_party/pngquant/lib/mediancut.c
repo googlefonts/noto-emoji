@@ -1,8 +1,25 @@
 /*
+** © 2009-2015 by Kornel Lesiński.
+**
+** This file is part of libimagequant.
+**
+** libimagequant is free software: you can redistribute it and/or modify
+** it under the terms of the GNU General Public License as published by
+** the Free Software Foundation, either version 3 of the License, or
+** (at your option) any later version.
+**
+** libimagequant is distributed in the hope that it will be useful,
+** but WITHOUT ANY WARRANTY; without even the implied warranty of
+** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+** GNU General Public License for more details.
+**
+** You should have received a copy of the GNU General Public License
+** along with libimagequant. If not, see <http://www.gnu.org/licenses/>.
+*/
+/*
 ** Copyright (C) 1989, 1991 by Jef Poskanzer.
 ** Copyright (C) 1997, 2000, 2002 by Greg Roelofs; based on an idea by
 **                                Stefan Schneider.
-** © 2009-2013 by Kornel Lesinski.
 **
 ** Permission to use, copy, modify, and distribute this software and its
 ** documentation for any purpose and without fee is hereby granted, provided
@@ -21,7 +38,7 @@
 
 #define index_of_channel(ch) (offsetof(f_pixel,ch)/sizeof(float))
 
-static f_pixel averagepixels(unsigned int clrs, const hist_item achv[], float min_opaque_val, const f_pixel center);
+static f_pixel averagepixels(unsigned int clrs, const hist_item achv[]);
 
 struct box {
     f_pixel color;
@@ -46,7 +63,7 @@ static f_pixel box_variance(const hist_item achv[], const struct box *box)
     double variancea=0, variancer=0, varianceg=0, varianceb=0;
 
     for(unsigned int i = 0; i < box->colors; ++i) {
-        f_pixel px = achv[box->ind + i].acolor;
+        const f_pixel px = achv[box->ind + i].acolor;
         double weight = achv[box->ind + i].adjusted_weight;
         variancea += variance_diff(mean.a - px.a, 2.0/256.0)*weight;
         variancer += variance_diff(mean.r - px.r, 1.0/256.0)*weight;
@@ -97,7 +114,7 @@ inline static unsigned int qsort_pivot(const hist_item *const base, const unsign
     const unsigned int aidx=8, bidx=len/2, cidx=len-1;
     const unsigned int a=base[aidx].tmp.sort_value, b=base[bidx].tmp.sort_value, c=base[cidx].tmp.sort_value;
     return (a < b) ? ((b < c) ? bidx : ((a < c) ? cidx : aidx ))
-                   : ((b > c) ? bidx : ((a < c) ? aidx : cidx ));
+           : ((b > c) ? bidx : ((a < c) ? aidx : cidx ));
 }
 
 ALWAYS_INLINE static unsigned int qsort_partition(hist_item *const base, const unsigned int len);
@@ -191,10 +208,10 @@ static double prepare_sort(struct box *b, hist_item achv[])
      ** Sort dimensions by their variance, and then sort colors first by dimension with highest variance
      */
     channelvariance channels[4] = {
+        {index_of_channel(a), b->variance.a},
         {index_of_channel(r), b->variance.r},
         {index_of_channel(g), b->variance.g},
         {index_of_channel(b), b->variance.b},
-        {index_of_channel(a), b->variance.a},
     };
 
     qsort(channels, 4, sizeof(channels[0]), comparevariance);
@@ -228,7 +245,7 @@ static f_pixel get_median(const struct box *b, hist_item achv[])
 
     // technically the second color is not guaranteed to be sorted correctly
     // but most of the time it is good enough to be useful
-    return averagepixels(2, &achv[b->ind + median_start], 1.0, (f_pixel){0.5,0.5,0.5,0.5});
+    return averagepixels(2, &achv[b->ind + median_start]);
 }
 
 /*
@@ -261,15 +278,13 @@ static int best_splittable_box(struct box* bv, unsigned int boxes, const double 
 inline static double color_weight(f_pixel median, hist_item h)
 {
     float diff = colordifference(median, h.acolor);
-    // if color is "good enough", don't split further
-    if (diff < 2.f/256.f/256.f) diff /= 2.f;
     return sqrt(diff) * (sqrt(1.0+h.adjusted_weight)-1.0);
 }
 
 static void set_colormap_from_boxes(colormap *map, struct box* bv, unsigned int boxes, hist_item *achv);
-static void adjust_histogram(hist_item *achv, const colormap *map, const struct box* bv, unsigned int boxes);
+static void adjust_histogram(hist_item *achv, const struct box* bv, unsigned int boxes);
 
-double box_error(const struct box *box, const hist_item achv[])
+static double box_error(const struct box *box, const hist_item achv[])
 {
     f_pixel avg = box->color;
 
@@ -306,12 +321,22 @@ static bool total_box_error_below_target(double target_mse, struct box bv[], uns
     return true;
 }
 
+static void box_init(struct box *box, const hist_item *achv, const unsigned int ind, const unsigned int colors, const double sum) {
+    box->ind = ind;
+    box->colors = colors;
+    box->sum = sum;
+    box->total_error = -1;
+    box->color = averagepixels(colors, &achv[ind]);
+    box->variance = box_variance(achv, box);
+    box->max_error = box_max_error(achv, box);
+}
+
 /*
  ** Here is the fun part, the median-cut colormap generator.  This is based
  ** on Paul Heckbert's paper, "Color Image Quantization for Frame Buffer
  ** Display," SIGGRAPH 1982 Proceedings, page 297.
  */
-LIQ_PRIVATE colormap *mediancut(histogram *hist, const float min_opaque_val, unsigned int newcolors, const double target_mse, const double max_mse, void* (*malloc)(size_t), void (*free)(void*))
+LIQ_PRIVATE colormap *mediancut(histogram *hist, unsigned int newcolors, const double target_mse, const double max_mse, void* (*malloc)(size_t), void (*free)(void*))
 {
     hist_item *achv = hist->achv;
     struct box bv[newcolors];
@@ -319,30 +344,18 @@ LIQ_PRIVATE colormap *mediancut(histogram *hist, const float min_opaque_val, uns
     /*
      ** Set up the initial box.
      */
-    bv[0].ind = 0;
-    bv[0].colors = hist->size;
-    bv[0].color = averagepixels(bv[0].colors, &achv[bv[0].ind], min_opaque_val, (f_pixel){0.5,0.5,0.5,0.5});
-    bv[0].variance = box_variance(achv, &bv[0]);
-    bv[0].max_error = box_max_error(achv, &bv[0]);
-    bv[0].sum = 0;
-    bv[0].total_error = -1;
-    for(unsigned int i=0; i < bv[0].colors; i++) bv[0].sum += achv[i].adjusted_weight;
+        double sum = 0;
+    for(unsigned int i=0; i < hist->size; i++) {
+            sum += achv[i].adjusted_weight;
+        }
+    box_init(&bv[0], achv, 0, hist->size, sum);
 
     unsigned int boxes = 1;
-
-    // remember smaller palette for fast searching
-    colormap *representative_subset = NULL;
-    unsigned int subset_size = ceilf(powf(newcolors,0.7f));
 
     /*
      ** Main loop: split boxes until we have enough.
      */
     while (boxes < newcolors) {
-
-        if (boxes == subset_size) {
-            representative_subset = pam_colormap(boxes, malloc, free);
-            set_colormap_from_boxes(representative_subset, bv, boxes, achv);
-        }
 
         // first splits boxes that exceed quality limit (to have colors for things like odd green pixel),
         // later raises the limit to allow large smooth areas/gradients get colors.
@@ -380,20 +393,8 @@ LIQ_PRIVATE colormap *mediancut(histogram *hist, const float min_opaque_val, uns
         double lowersum = 0;
         for(unsigned int i=0; i < break_at; i++) lowersum += achv[indx + i].adjusted_weight;
 
-        const f_pixel previous_center = bv[bi].color;
-        bv[bi].colors = break_at;
-        bv[bi].sum = lowersum;
-        bv[bi].color = averagepixels(bv[bi].colors, &achv[bv[bi].ind], min_opaque_val, previous_center);
-        bv[bi].total_error = -1;
-        bv[bi].variance = box_variance(achv, &bv[bi]);
-        bv[bi].max_error = box_max_error(achv, &bv[bi]);
-        bv[boxes].ind = indx + break_at;
-        bv[boxes].colors = clrs - break_at;
-        bv[boxes].sum = sm - lowersum;
-        bv[boxes].color = averagepixels(bv[boxes].colors, &achv[bv[boxes].ind], min_opaque_val, previous_center);
-        bv[boxes].total_error = -1;
-        bv[boxes].variance = box_variance(achv, &bv[boxes]);
-        bv[boxes].max_error = box_max_error(achv, &bv[boxes]);
+        box_init(&bv[bi], achv, bv[bi].ind, break_at, lowersum);
+        box_init(&bv[boxes], achv, indx + break_at, clrs - break_at, sm - lowersum);
 
         ++boxes;
 
@@ -405,8 +406,7 @@ LIQ_PRIVATE colormap *mediancut(histogram *hist, const float min_opaque_val, uns
     colormap *map = pam_colormap(boxes, malloc, free);
     set_colormap_from_boxes(map, bv, boxes, achv);
 
-    map->subset_palette = representative_subset;
-    adjust_histogram(achv, map, bv, boxes);
+    adjust_histogram(achv, bv, boxes);
 
     return map;
 }
@@ -433,72 +433,35 @@ static void set_colormap_from_boxes(colormap *map, struct box* bv, unsigned int 
 }
 
 /* increase histogram popularity by difference from the final color (this is used as part of feedback loop) */
-static void adjust_histogram(hist_item *achv, const colormap *map, const struct box* bv, unsigned int boxes)
+static void adjust_histogram(hist_item *achv, const struct box* bv, unsigned int boxes)
 {
     for(unsigned int bi = 0; bi < boxes; ++bi) {
         for(unsigned int i=bv[bi].ind; i < bv[bi].ind+bv[bi].colors; i++) {
-            achv[i].adjusted_weight *= sqrt(1.0 +colordifference(map->palette[bi].acolor, achv[i].acolor)/4.0);
             achv[i].tmp.likely_colormap_index = bi;
         }
     }
 }
 
-static f_pixel averagepixels(unsigned int clrs, const hist_item achv[], const float min_opaque_val, const f_pixel center)
+static f_pixel averagepixels(unsigned int clrs, const hist_item achv[])
 {
-    double r = 0, g = 0, b = 0, a = 0, new_a=0, sum = 0;
-    float maxa = 0;
+    double r = 0, g = 0, b = 0, a = 0, sum = 0;
 
-    // first find final opacity in order to blend colors at that opacity
-    for(unsigned int i = 0; i < clrs; ++i) {
+    for(unsigned int i = 0; i < clrs; i++) {
         const f_pixel px = achv[i].acolor;
-        new_a += px.a * achv[i].adjusted_weight;
-        sum += achv[i].adjusted_weight;
+        const double weight = achv[i].adjusted_weight;
 
-        /* find if there are opaque colors, in case we're supposed to preserve opacity exactly (ie_bug) */
-        if (px.a > maxa) maxa = px.a;
-    }
-
-    if (sum) new_a /= sum;
-
-    /** if there was at least one completely opaque color, "round" final color to opaque */
-    if (new_a >= min_opaque_val && maxa >= (255.0/256.0)) new_a = 1;
-
-    sum=0;
-    // reverse iteration for cache locality with previous loop
-    for(int i = clrs-1; i >= 0; i--) {
-        double tmp, weight = 1.0f;
-        f_pixel px = achv[i].acolor;
-
-        /* give more weight to colors that are further away from average
-         this is intended to prevent desaturation of images and fading of whites
-         */
-        tmp = (center.r - px.r);
-        weight += tmp*tmp;
-        tmp = (center.g - px.g);
-        weight += tmp*tmp;
-        tmp = (center.b - px.b);
-        weight += tmp*tmp;
-
-        weight *= achv[i].adjusted_weight;
         sum += weight;
-
-        if (px.a) {
-            px.r /= px.a;
-            px.g /= px.a;
-            px.b /= px.a;
-        }
-
-        r += px.r * new_a * weight;
-        g += px.g * new_a * weight;
-        b += px.b * new_a * weight;
-        a += new_a * weight;
+        a += px.a * weight;
+        r += px.r * weight;
+        g += px.g * weight;
+        b += px.b * weight;
     }
 
     if (sum) {
-    a /= sum;
-    r /= sum;
-    g /= sum;
-    b /= sum;
+        a /= sum;
+        r /= sum;
+        g /= sum;
+        b /= sum;
     }
 
     assert(!isnan(r) && !isnan(g) && !isnan(b) && !isnan(a));

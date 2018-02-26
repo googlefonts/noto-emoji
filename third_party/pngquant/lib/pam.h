@@ -29,7 +29,7 @@
 #define MAX_DIFF 1e20
 
 #ifndef USE_SSE
-#  if defined(__SSE__) && (defined(WIN32) || defined(__WIN32__))
+#  if defined(__SSE__) && (defined(__amd64__) || defined(__X86_64__) || defined(_WIN64) || defined(WIN32) || defined(__WIN32__))
 #    define USE_SSE 1
 #  else
 #    define USE_SSE 0
@@ -43,9 +43,20 @@
 #    define SSE_ALIGN
 #  else
 #    define SSE_ALIGN __attribute__ ((aligned (16)))
-#    define cpuid(func,ax,bx,cx,dx)\
-    __asm__ __volatile__ ("cpuid":\
-    "=a" (ax), "=b" (bx), "=c" (cx), "=d" (dx) : "a" (func));
+#    if defined(__i386__) && defined(__PIC__)
+#       define cpuid(func,ax,bx,cx,dx)\
+        __asm__ __volatile__ ( \
+        "push %%ebx\n" \
+        "cpuid\n" \
+        "mov %%ebx, %1\n" \
+        "pop %%ebx\n" \
+        : "=a" (ax), "=r" (bx), "=c" (cx), "=d" (dx) \
+        : "a" (func));
+#    else
+#       define cpuid(func,ax,bx,cx,dx)\
+        __asm__ __volatile__ ("cpuid":\
+        "=a" (ax), "=b" (bx), "=c" (cx), "=d" (dx) : "a" (func));
+#    endif
 #endif
 #else
 #  define SSE_ALIGN
@@ -82,8 +93,8 @@ LIQ_PRIVATE void to_f_set_gamma(float gamma_lut[], const double gamma);
  Converts 8-bit color to internal gamma and premultiplied alpha.
  (premultiplied color space is much better for blending of semitransparent colors)
  */
-ALWAYS_INLINE static f_pixel to_f(const float gamma_lut[], const rgba_pixel px);
-inline static f_pixel to_f(const float gamma_lut[], const rgba_pixel px)
+ALWAYS_INLINE static f_pixel rgba_to_f(const float gamma_lut[], const rgba_pixel px);
+inline static f_pixel rgba_to_f(const float gamma_lut[], const rgba_pixel px)
 {
     float a = px.a/255.f;
 
@@ -95,7 +106,7 @@ inline static f_pixel to_f(const float gamma_lut[], const rgba_pixel px)
     };
 }
 
-inline static rgba_pixel to_rgb(const float gamma, const f_pixel px)
+inline static rgba_pixel f_to_rgb(const float gamma, const f_pixel px)
 {
     if (px.a < 1.f/256.f) {
         return (rgba_pixel){0,0,0,0};
@@ -130,7 +141,7 @@ inline static double colordifference_ch(const double x, const double y, const do
     // maximum of channel blended on white, and blended on black
     // premultiplied alpha and backgrounds 0/1 shorten the formula
     const double black = x-y, white = black+alphas;
-    return black*black + white*white;
+    return MAX(black*black, white*white);
 }
 
 ALWAYS_INLINE static float colordifference_stdc(const f_pixel px, const f_pixel py);
@@ -155,23 +166,6 @@ inline static float colordifference_stdc(const f_pixel px, const f_pixel py)
            colordifference_ch(px.b, py.b, alphas);
 }
 
-ALWAYS_INLINE static double min_colordifference_ch(const double x, const double y, const double alphas);
-inline static double min_colordifference_ch(const double x, const double y, const double alphas)
-{
-    const double black = x-y, white = black+alphas;
-    return MIN(black*black , white*white) * 2.f;
-}
-
-/* least possible difference between colors (difference varies depending on background they're blended on) */
-ALWAYS_INLINE static float min_colordifference(const f_pixel px, const f_pixel py);
-inline static float min_colordifference(const f_pixel px, const f_pixel py)
-{
-    const double alphas = py.a-px.a;
-    return min_colordifference_ch(px.r, py.r, alphas) +
-           min_colordifference_ch(px.g, py.g, alphas) +
-           min_colordifference_ch(px.b, py.b, alphas);
-}
-
 ALWAYS_INLINE static float colordifference(f_pixel px, f_pixel py);
 inline static float colordifference(f_pixel px, f_pixel py)
 {
@@ -188,7 +182,7 @@ inline static float colordifference(f_pixel px, f_pixel py)
 
     onblack = _mm_mul_ps(onblack, onblack);
     onwhite = _mm_mul_ps(onwhite, onwhite);
-    const __m128 max = _mm_add_ps(onwhite, onblack);
+    const __m128 max = _mm_max_ps(onwhite, onblack);
 
     // add rgb, not a
     const __m128 maxhl = _mm_movehl_ps(max, max);
@@ -232,13 +226,13 @@ typedef struct {
 typedef struct {
     f_pixel acolor;
     float popularity;
+    bool fixed; // if true it's user-supplied and must not be changed (e.g in K-Means iteration)
 } colormap_item;
 
 typedef struct colormap {
     unsigned int colors;
     void* (*malloc)(size_t);
     void (*free)(void*);
-    struct colormap *subset_palette;
     colormap_item palette[];
 } colormap;
 
@@ -248,11 +242,8 @@ struct acolorhist_arr_item {
 };
 
 struct acolorhist_arr_head {
+    struct acolorhist_arr_item inline1, inline2;
     unsigned int used, capacity;
-    struct {
-        union rgba_as_int color;
-        float perceptual_weight;
-    } inline1, inline2;
     struct acolorhist_arr_item *other_items;
 };
 
@@ -269,6 +260,7 @@ LIQ_PRIVATE void pam_freeacolorhash(struct acolorhash_table *acht);
 LIQ_PRIVATE struct acolorhash_table *pam_allocacolorhash(unsigned int maxcolors, unsigned int surface, unsigned int ignorebits, void* (*malloc)(size_t), void (*free)(void*));
 LIQ_PRIVATE histogram *pam_acolorhashtoacolorhist(const struct acolorhash_table *acht, const double gamma, void* (*malloc)(size_t), void (*free)(void*));
 LIQ_PRIVATE bool pam_computeacolorhash(struct acolorhash_table *acht, const rgba_pixel *const pixels[], unsigned int cols, unsigned int rows, const unsigned char *importance_map);
+LIQ_PRIVATE bool pam_add_to_hash(struct acolorhash_table *acht, unsigned int hash, float boost, union rgba_as_int px, unsigned int row, unsigned int rows);
 
 LIQ_PRIVATE void pam_freeacolorhist(histogram *h);
 
