@@ -19,6 +19,7 @@
 This takes a list of directories containing emoji image files, and
 builds an html page presenting the images along with their composition
 (for sequences) and unicode names (for individual emoji)."""
+from __future__ import print_function
 
 import argparse
 import codecs
@@ -109,11 +110,11 @@ def _get_desc(key_tuple, aliases, dir_infos, basepaths):
       if cp_key in aliases:
         fp = get_key_filepath(aliases[cp_key])
       else:
-        print 'no alias for %s' % unicode_data.seq_to_string(cp_key)
+        print('no alias for %s' % unicode_data.seq_to_string(cp_key))
     if not fp:
-      print 'no part for %s in %s' % (
+      print('no part for %s in %s' % (
           unicode_data.seq_to_string(cp_key),
-          unicode_data.seq_to_string(key_tuple))
+          unicode_data.seq_to_string(key_tuple)))
     return fp
 
   def _get_part(cp):
@@ -153,7 +154,7 @@ def _get_name(key_tuple, annotations):
     elif key_tuple == (0xfe82b,):
       seq_name = '(unknown flag PUA codepoint)'
     else:
-      print 'no name for %s' % unicode_data.seq_to_string(key_tuple)
+      print('no name for %s' % unicode_data.seq_to_string(key_tuple))
       seq_name = '(oops)'
   return CELL_PREFIX + seq_name
 
@@ -308,8 +309,8 @@ def _get_image_data(image_dir, ext, prefix):
       continue
     result[cps] = filename
   if fails:
-    print >> sys.stderr, 'get_image_data failed (%s, %s, %s):\n  %s' % (
-        image_dir, ext, prefix, '\n  '.join(fails))
+    print('get_image_data failed (%s, %s, %s):\n  %s' % (
+        image_dir, ext, prefix, '\n  '.join(fails)), file=sys.stderr)
     raise ValueError('get image data failed')
   return result
 
@@ -356,9 +357,9 @@ def _add_aliases(keys, aliases):
     v_str = unicode_data.seq_to_string(v)
     if k in keys:
       msg = '' if v in keys else ' but it\'s not present'
-      print 'have alias image %s, should use %s%s' % (k_str, v_str, msg)
+      print('have alias image %s, should use %s%s' % (k_str, v_str, msg))
     elif v not in keys:
-      print 'can\'t use alias %s, no image matching %s' % (k_str, v_str)
+      print('can\'t use alias %s, no image matching %s' % (k_str, v_str))
   to_add = {k for k, v in aliases.iteritems() if k not in keys and v in keys}
   return keys | to_add
 
@@ -449,9 +450,9 @@ def _instantiate_template(template, arg_dict):
   keyset = set(arg_dict.keys())
   extra_args = keyset - ids
   if extra_args:
-    print >> sys.stderr, (
+    print((
         'the following %d args are unused:\n%s' %
-        (len(extra_args), ', '.join(sorted(extra_args))))
+        (len(extra_args), ', '.join(sorted(extra_args)))), file=sys.stderr)
   return string.Template(template).substitute(arg_dict)
 
 
@@ -605,7 +606,7 @@ def main():
   file_parts = path.splitext(args.outfile)
   if file_parts[1] != '.html':
     args.outfile = file_parts[0] + '.html'
-    print 'added .html extension to filename:\n%s' % args.outfile
+    print('added .html extension to filename:\n%s' % args.outfile)
 
   if args.annotate:
     annotations = _parse_annotation_file(args.annotate)

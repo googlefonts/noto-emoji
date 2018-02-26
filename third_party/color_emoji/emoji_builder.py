@@ -18,6 +18,7 @@
 #
 
 
+from __future__ import print_function
 import sys, struct, StringIO
 from png import PNG
 import os
@@ -75,7 +76,7 @@ class CBDT:
 		return self.stream
 
 	def write_header (self):
-		self.write (struct.pack (">L", 0x00020000)) # FIXED version
+		self.write (struct.pack (">L", 0x00030000)) # FIXED version
 
 	def start_strike (self, strike_metrics):
 		self.strike_metrics = strike_metrics
@@ -99,7 +100,7 @@ class CBDT:
 		del self.strike_metrics
 		return glyph_maps
 
-	def write_smallGlyphMetrics (self, width, height):
+	def write_bigGlyphMetrics (self, width, height):
 
 		ascent = self.font_metrics.ascent
 		descent = self.font_metrics.descent
@@ -115,19 +116,29 @@ class CBDT:
                 if y_bearing == 128:
                   y_bearing = 127
 		advance = width
-                # print "small glyph metrics h: %d w: %d" % (height, width)
-		# smallGlyphMetrics
+
+		vert_x_bearing = - width / 2
+		vert_y_bearing = 0
+		vert_advance = height
+
+		# print "big glyph metrics h: %d w: %d" % (height, width)
+		# bigGlyphMetrics
 		# Type	Name
 		# BYTE	height
 		# BYTE	width
-		# CHAR	BearingX
-		# CHAR	BearingY
-		# BYTE	Advance
+		# CHAR	horiBearingX
+		# CHAR	horiBearingY
+		# BYTE	horiAdvance
+		# CHAR	vertBearingX
+		# CHAR	vertBearingY
+		# BYTE	vertAdvance
                 try:
-                        self.write (struct.pack ("BBbbB",
+                        self.write (struct.pack ("BBbbBbbB",
 					 height, width,
 					 x_bearing, y_bearing,
-					 advance))
+					 advance,
+					 vert_x_bearing, vert_y_bearing,
+					 vert_advance))
                 except Exception as e:
                   raise ValueError("%s, h: %d w: %d x: %d y: %d %d a:" % (
                       e, height, width, x_bearing, y_bearing, advance))
@@ -163,14 +174,14 @@ class CBDT:
 
 	png_allowed_chunks =  ["IHDR", "PLTE", "tRNS", "sRGB", "IDAT", "IEND"]
 
-	def write_format17 (self, png):
+	def write_format18 (self, png):
 
 		width, height = png.get_size ()
 
 		if 'keep_chunks' not in self.options:
 			png = png.filter_chunks (self.png_allowed_chunks)
 
-		self.write_smallGlyphMetrics (width, height)
+		self.write_bigGlyphMetrics (width, height)
 
 		png_data = png.data ()
 		# ULONG data length
@@ -179,7 +190,7 @@ class CBDT:
 
 	def image_write_func (self, image_format):
 		if image_format == 1: return self.write_format1
-		if image_format == 17: return self.write_format17
+		if image_format == 18: return self.write_format18
 		return None
 
 
@@ -209,7 +220,7 @@ class CBLC:
 		return stream
 
 	def write_header (self):
-		self.write (struct.pack (">L", 0x00020000)) # FIXED version
+		self.write (struct.pack (">L", 0x00030000)) # FIXED version
 
 	def start_strikes (self, num_strikes):
 		self.num_strikes = num_strikes
@@ -374,7 +385,7 @@ def main (argv):
 			argv.remove (key)
 
 	if len (argv) < 4:
-		print >>sys.stderr, """
+		print("""
 Usage:
 
 emoji_builder.py [-V] [-O] [-U] [-A] font.ttf out-font.ttf strike-prefix...
@@ -394,7 +405,7 @@ that the font already supports, and writes the new font out.
 If -V is given, verbose mode is enabled.
 
 If -U is given, uncompressed images are stored (imageFormat=1).
-By default, PNG images are stored (imageFormat=17).
+By default, PNG images are stored (imageFormat=18).
 
 If -O is given, the outline tables ('glyf', 'CFF ') and
 related tables are NOT dropped from the font.
@@ -403,7 +414,7 @@ By default they are dropped.
 If -C is given, unused chunks (color profile, etc) are NOT
 dropped from the PNG images when embedding.
 By default they are dropped.
-"""
+""", file=sys.stderr)
 		sys.exit (1)
 
 	font_file = argv[1]
@@ -424,16 +435,16 @@ By default they are dropped.
 				pass
 
 
-	print
+	print()
 
 	font = ttx.TTFont (font_file)
-	print "Loaded font '%s'." % font_file
+	print("Loaded font '%s'." % font_file)
 
 	font_metrics = FontMetrics (font['head'].unitsPerEm,
 				    font['hhea'].ascent,
 				    -font['hhea'].descent)
-	print "Font metrics: upem=%d ascent=%d descent=%d." % \
-	      (font_metrics.upem, font_metrics.ascent, font_metrics.descent)
+	print("Font metrics: upem=%d ascent=%d descent=%d." % \
+	      (font_metrics.upem, font_metrics.ascent, font_metrics.descent))
 	glyph_metrics = font['hmtx'].metrics
 	unicode_cmap = font['cmap'].getcmap (3, 10)
 	if not unicode_cmap:
@@ -441,7 +452,7 @@ By default they are dropped.
 	if not unicode_cmap:
 		raise Exception ("Failed to find a Unicode cmap.")
 
-	image_format = 1 if 'uncompressed' in options else 17
+	image_format = 1 if 'uncompressed' in options else 18
 
 	ebdt = CBDT (font_metrics, options)
 	ebdt.write_header ()
@@ -453,11 +464,11 @@ By default they are dropped.
                 return cp >= 0xfe00 and cp <= 0xfe0f
 
 	for img_prefix in img_prefixes:
-		print
+		print()
 
 		img_files = {}
 		glb = "%s*.png" % img_prefix
-		print "Looking for images matching '%s'." % glb
+		print("Looking for images matching '%s'." % glb)
 		for img_file in glob.glob (glb):
 			codes = img_file[len (img_prefix):-4]
 			if "_" in codes:
@@ -467,13 +478,13 @@ By default they are dropped.
 			else:
                                 cp = int(codes, 16)
                                 if is_vs(cp):
-                                        print "ignoring unexpected vs input %04x" % cp
+                                        print("ignoring unexpected vs input %04x" % cp)
                                         continue
 				uchars = unichr(cp)
 			img_files[uchars] = img_file
 		if not img_files:
 			raise Exception ("No image files found in '%s'." % glb)
-		print "Found images for %d characters in '%s'." % (len (img_files), glb)
+		print("Found images for %d characters in '%s'." % (len (img_files), glb))
 
 		glyph_imgs = {}
 		advance = width = height = 0
@@ -482,7 +493,7 @@ By default they are dropped.
                                 try:
                                         glyph_name = unicode_cmap.cmap[ord (uchars)]
                                 except:
-                                        print "no cmap entry for %x" % ord(uchars)
+                                        print("no cmap entry for %x" % ord(uchars))
                                         raise ValueError("%x" % ord(uchars))
 			else:
 				glyph_name = get_glyph_name_from_gsub (uchars, font, unicode_cmap.cmap)
@@ -501,11 +512,11 @@ By default they are dropped.
 		glyphs = sorted (glyph_imgs.keys ())
 		if not glyphs:
 			raise Exception ("No common characters found between font and '%s'." % glb)
-		print "Embedding images for %d glyphs for this strike." % len (glyphs)
+		print("Embedding images for %d glyphs for this strike." % len (glyphs))
 
 		advance, width, height = (div (x, len (glyphs)) for x in (advance, width, height))
 		strike_metrics = StrikeMetrics (font_metrics, advance, width, height)
-		print "Strike ppem set to %d." % (strike_metrics.y_ppem)
+		print("Strike ppem set to %d." % (strike_metrics.y_ppem))
 
 		ebdt.start_strike (strike_metrics)
 		ebdt.write_glyphs (glyphs, glyph_imgs, image_format)
@@ -513,21 +524,21 @@ By default they are dropped.
 
 		eblc.write_strike (strike_metrics, glyph_maps)
 
-	print
+	print()
 
 	ebdt = ebdt.data ()
 	add_font_table (font, 'CBDT', ebdt)
-	print "CBDT table synthesized: %d bytes." % len (ebdt)
+	print("CBDT table synthesized: %d bytes." % len (ebdt))
 	eblc.end_strikes ()
 	eblc = eblc.data ()
 	add_font_table (font, 'CBLC', eblc)
-	print "CBLC table synthesized: %d bytes." % len (eblc)
+	print("CBLC table synthesized: %d bytes." % len (eblc))
 
-	print
+	print()
 
 	if 'keep_outlines' not in options:
 		drop_outline_tables (font)
-		print "Dropped outline ('glyf', 'CFF ') and related tables."
+		print("Dropped outline ('glyf', 'CFF ') and related tables.")
 
         # hack removal of cmap pua entry for unknown flag glyph.  If we try to
         # remove it earlier, getGlyphID dies.  Need to restructure all of this
@@ -535,7 +546,7 @@ By default they are dropped.
         font_data.delete_from_cmap(font, [0xfe82b])
 
 	font.save (out_file)
-	print "Output font '%s' generated." % out_file
+	print("Output font '%s' generated." % out_file)
 
 
 if __name__ == '__main__':

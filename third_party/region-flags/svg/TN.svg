@@ -1,10 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg version="1.0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1200" height="800" viewBox="-60 -40 120 80">
-<g fill="#e70013">
-	<rect x="-60" y="-40" width="120" height="80"/>
-	<circle r="20" fill="#fff"/>
-	<circle r="15"/>
-	<circle cx="4" r="12" fill="#fff"/>   
-	<path transform="translate(4)scale(9)rotate(-90)" d="M0,-1 L0.58779,0.80902 L-0.95106,-0.30902 L0.95106,-0.30902 L-0.58779,0.80902z"/>
-</g>
-</svg>
+<svg height="800" viewBox="-60 -40 120 80" width="1200" xmlns="http://www.w3.org/2000/svg"><g fill="#e70013"><path d="m-60-40h120v80h-120z"/><circle fill="#fff" r="20"/><path d="m600 250a150 150 0 0 0 -150 150 150 150 0 0 0  150 150 150 150 0 0 0  121.02344-61.64844 120 120 0 0 1 -81.02344 31.64844 120 120 0 0 1 -120-120 120 120 0 0 1  120-120 120 120 0 0 1  81.01367 31.67383 150 150 0 0 0 -121.01367-61.67383z" fill="#e70013" stroke-width="10" transform="matrix(.1 0 0 .1 -60 -40)"/><path d="m0-1 .58779 1.80902-1.53885-1.11804h1.90212l-1.53885 1.11804z" fill="#e70013" transform="matrix(0 -9 9 0 4 0)"/></g></svg>

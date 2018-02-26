@@ -15,6 +15,7 @@
 # limitations under the License.
 
 """Compare emoji image file namings against unicode property data."""
+from __future__ import print_function
 
 import argparse
 import collections
@@ -95,9 +96,9 @@ def _check_valid_emoji(sorted_seq_to_filepath):
         not_emoji[cp].append(fp)
 
   if len(not_emoji):
-    print >> sys.stderr, '%d non-emoji found:' % len(not_emoji)
+    print('%d non-emoji found:' % len(not_emoji), file=sys.stderr)
     for cp in sorted(not_emoji):
-      print >> sys.stderr, '%04x (in %s)' % (cp, ', '.join(not_emoji[cp]))
+      print('%04x (in %s)' % (cp, ', '.join(not_emoji[cp])), file=sys.stderr)
 
 
 def _check_zwj(sorted_seq_to_filepath):
@@ -109,21 +110,21 @@ def _check_zwj(sorted_seq_to_filepath):
     if ZWJ not in seq:
       continue
     if seq[0] == 0x200d:
-      print >> sys.stderr, 'zwj at head of sequence in %s' % fp
+      print('zwj at head of sequence in %s' % fp, file=sys.stderr)
     if len(seq) == 1:
       continue
     if seq[-1] == 0x200d:
-      print >> sys.stderr, 'zwj at end of sequence in %s' % fp
+      print('zwj at end of sequence in %s' % fp, file=sys.stderr)
     for i, cp in enumerate(seq):
       if cp == ZWJ:
         if i > 0:
           pcp = seq[i-1]
           if pcp != EMOJI_PRESENTATION_VS and not unicode_data.is_emoji(pcp):
-            print >> sys.stderr, 'non-emoji %04x preceeds ZWJ in %s' % (pcp, fp)
+            print('non-emoji %04x preceeds ZWJ in %s' % (pcp, fp), file=sys.stderr)
         if i < len(seq) - 1:
           fcp = seq[i+1]
           if not unicode_data.is_emoji(fcp):
-            print >> sys.stderr, 'non-emoji %04x follows ZWJ in %s' % (fcp, fp)
+            print('non-emoji %04x follows ZWJ in %s' % (fcp, fp), file=sys.stderr)
 
 
 def _check_flags(sorted_seq_to_filepath):
@@ -136,11 +137,11 @@ def _check_flags(sorted_seq_to_filepath):
       if have_reg == None:
         have_reg = is_reg
       elif have_reg != is_reg:
-        print >> sys.stderr, 'mix of regional and non-regional in %s' % fp
+        print('mix of regional and non-regional in %s' % fp, file=sys.stderr)
     if have_reg and len(seq) > 2:
       # We provide dummy glyphs for regional indicators, so there are sequences
       # with single regional indicator symbols.
-      print >> sys.stderr, 'regional indicator sequence length != 2 in %s' % fp
+      print('regional indicator sequence length != 2 in %s' % fp, file=sys.stderr)
 
 
 def _check_skintone(sorted_seq_to_filepath):
@@ -153,13 +154,13 @@ def _check_skintone(sorted_seq_to_filepath):
       if _is_skintone_modifier(cp):
         if i == 0:
           if len(seq) > 1:
-            print >> sys.stderr, 'skin color selector first in sequence %s' % fp
+            print('skin color selector first in sequence %s' % fp, file=sys.stderr)
           # standalone are ok
           continue
         pcp = seq[i-1]
         if not unicode_data.is_emoji_modifier_base(pcp):
-          print >> sys.stderr, (
-              'emoji skintone modifier applied to non-base at %d: %s' % (i, fp))
+          print((
+              'emoji skintone modifier applied to non-base at %d: %s' % (i, fp)), file=sys.stderr)
       elif unicode_data.is_emoji_modifier_base(cp):
         if i < len(seq) - 1 and _is_skintone_modifier(seq[i+1]):
           base_to_modifiers[cp].add(seq[i+1])
@@ -167,9 +168,9 @@ def _check_skintone(sorted_seq_to_filepath):
           base_to_modifiers[cp] = set()
   for cp, modifiers in sorted(base_to_modifiers.iteritems()):
     if len(modifiers) != 5:
-      print >> sys.stderr, 'emoji base %04x has %d modifiers defined (%s) in %s' % (
+      print('emoji base %04x has %d modifiers defined (%s) in %s' % (
           cp, len(modifiers),
-          ', '.join('%04x' % cp for cp in sorted(modifiers)), fp)
+          ', '.join('%04x' % cp for cp in sorted(modifiers)), fp), file=sys.stderr)
 
 
 def _check_zwj_sequences(seq_to_filepath):
@@ -189,7 +190,7 @@ def _check_zwj_sequences(seq_to_filepath):
   for seq, fp in zwj_seq_to_filepath.iteritems():
     if seq not in zwj_sequence_to_name:
       if seq not in zwj_sequence_without_vs_to_name_canonical:
-        print >> sys.stderr, 'zwj sequence not defined: %s' % fp
+        print('zwj sequence not defined: %s' % fp, file=sys.stderr)
       else:
         _, can = zwj_sequence_without_vs_to_name_canonical[seq]
         # print >> sys.stderr, 'canonical sequence %s contains vs: %s' % (
@@ -211,7 +212,7 @@ def read_emoji_aliases():
       try:
         trg_seq = tuple([int(x, 16) for x in trg.split('_')])
       except:
-        print 'cannot process alias %s -> %s' % (als, trg)
+        print('cannot process alias %s -> %s' % (als, trg))
         continue
       result[als_seq] = trg_seq
   return result
@@ -229,11 +230,11 @@ def _check_coverage(seq_to_filepath):
   aliases = read_emoji_aliases()
   for k, v in sorted(aliases.items()):
     if v not in seq_to_filepath and v not in non_vs_to_canonical:
-      print 'alias %s missing target %s' % (_seq_string(k), _seq_string(v))
+      print('alias %s missing target %s' % (_seq_string(k), _seq_string(v)))
       continue
     if k in seq_to_filepath or k in non_vs_to_canonical:
-      print 'alias %s already exists as %s (%s)' % (
-          _seq_string(k), _seq_string(v), seq_name(v))
+      print('alias %s already exists as %s (%s)' % (
+          _seq_string(k), _seq_string(v), seq_name(v)))
       continue
     filename = seq_to_filepath.get(v) or seq_to_filepath[non_vs_to_canonical[v]]
     seq_to_filepath[k] = 'alias:' + filename
@@ -242,13 +243,13 @@ def _check_coverage(seq_to_filepath):
   emoji = sorted(unicode_data.get_emoji(age=age))
   for cp in emoji:
     if tuple([cp]) not in seq_to_filepath:
-      print 'missing single %04x (%s)' % (cp, unicode_data.name(cp, '<no name>'))
+      print('missing single %04x (%s)' % (cp, unicode_data.name(cp, '<no name>')))
 
   # special characters
   # all but combining enclosing keycap are currently marked as emoji
   for cp in [ord('*'), ord('#'), ord(u'\u20e3')] + range(0x30, 0x3a):
     if cp not in emoji and tuple([cp]) not in seq_to_filepath:
-      print 'missing special %04x (%s)' % (cp, unicode_data.name(cp))
+      print('missing special %04x (%s)' % (cp, unicode_data.name(cp)))
 
   # combining sequences
   comb_seq_to_name = sorted(
@@ -258,22 +259,22 @@ def _check_coverage(seq_to_filepath):
       # strip vs and try again
       non_vs_seq = strip_vs(seq)
       if non_vs_seq not in seq_to_filepath:
-        print 'missing combining sequence %s (%s)' % (_seq_string(seq), name)
+        print('missing combining sequence %s (%s)' % (_seq_string(seq), name))
 
   # flag sequences
   flag_seq_to_name = sorted(
       unicode_data.get_emoji_flag_sequences(age=age).iteritems())
   for seq, name in flag_seq_to_name:
     if seq not in seq_to_filepath:
-      print 'missing flag sequence %s (%s)' % (_seq_string(seq), name)
+      print('missing flag sequence %s (%s)' % (_seq_string(seq), name))
 
   # skin tone modifier sequences
   mod_seq_to_name = sorted(
       unicode_data.get_emoji_modifier_sequences(age=age).iteritems())
   for seq, name in mod_seq_to_name:
     if seq not in seq_to_filepath:
-      print 'missing modifier sequence %s (%s)' % (
-          _seq_string(seq), name)
+      print('missing modifier sequence %s (%s)' % (
+          _seq_string(seq), name))
 
   # zwj sequences
   # some of ours include the emoji presentation variation selector and some
@@ -294,14 +295,14 @@ def _check_coverage(seq_to_filepath):
     else:
       test_seq = seq
     if test_seq not in zwj_seq_without_vs:
-      print 'missing (canonical) zwj sequence %s (%s)' % (
-          _seq_string(seq), name)
+      print('missing (canonical) zwj sequence %s (%s)' % (
+          _seq_string(seq), name))
 
   # check for 'unknown flag'
   # this is either emoji_ufe82b or 'unknown_flag', we filter out things that
   # don't start with our prefix so 'unknown_flag' would be excluded by default.
   if tuple([0xfe82b]) not in seq_to_filepath:
-    print 'missing unknown flag PUA fe82b'
+    print('missing unknown flag PUA fe82b')
 
 
 def check_sequence_to_filepath(seq_to_filepath):
@@ -322,7 +323,7 @@ def create_sequence_to_filepath(name_to_dirpath, prefix, suffix):
   result = {}
   for name, dirname in name_to_dirpath.iteritems():
     if not name.startswith(prefix):
-      print 'expected prefix "%s" for "%s"' % (prefix, name)
+      print('expected prefix "%s" for "%s"' % (prefix, name))
       continue
 
     segments = name[len(prefix): -len(suffix)].split('_')
@@ -330,12 +331,12 @@ def create_sequence_to_filepath(name_to_dirpath, prefix, suffix):
     seq = []
     for s in segments:
       if not segment_re.match(s):
-        print 'bad codepoint name "%s" in %s/%s' % (s, dirname, name)
+        print('bad codepoint name "%s" in %s/%s' % (s, dirname, name))
         segfail = True
         continue
       n = int(s, 16)
       if n > 0x10ffff:
-        print 'codepoint "%s" out of range in %s/%s' % (s, dirname, name)
+        print('codepoint "%s" out of range in %s/%s' % (s, dirname, name))
         segfail = True
         continue
       seq.append(n)
@@ -356,8 +357,8 @@ def collect_name_to_dirpath(directory, prefix, suffix):
       if not f.endswith(suffix):
         continue
       if f in result:
-        print >> sys.stderr, 'duplicate file "%s" in %s and %s ' % (
-            f, dirname, result[f])
+        print('duplicate file "%s" in %s and %s ' % (
+            f, dirname, result[f]), file=sys.stderr)
         continue
       result[f] = dirname
   return result
@@ -375,15 +376,15 @@ def collect_name_to_dirpath_with_override(dirs, prefix, suffix):
 
 
 def run_check(dirs, prefix, suffix):
-  print 'Checking files with prefix "%s" and suffix "%s" in:\n  %s' % (
-      prefix, suffix, '\n  '.join(dirs))
+  print('Checking files with prefix "%s" and suffix "%s" in:\n  %s' % (
+      prefix, suffix, '\n  '.join(dirs)))
   name_to_dirpath = collect_name_to_dirpath_with_override(
       dirs, prefix=prefix, suffix=suffix)
-  print 'checking %d names' % len(name_to_dirpath)
+  print('checking %d names' % len(name_to_dirpath))
   seq_to_filepath = create_sequence_to_filepath(name_to_dirpath, prefix, suffix)
-  print 'checking %d sequences' % len(seq_to_filepath)
+  print('checking %d sequences' % len(seq_to_filepath))
   check_sequence_to_filepath(seq_to_filepath)
-  print 'done.'
+  print('done.')
 
 
 def main():

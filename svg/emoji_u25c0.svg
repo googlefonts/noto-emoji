@@ -1,6 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 19.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="レイヤー_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
-	 y="0px" viewBox="0 0 128 128" style="enable-background:new 0 0 128 128;" xml:space="preserve">
-<polygon style="fill:#40C0E7;" points="106,112.5 106,15.5 22,64 "/>
+<svg width="128" height="128" style="enable-background:new 0 0 128 128;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g>
+    <linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="64" x2="64" y1="4.25" y2="123.9133">
+      <stop offset="0" style="stop-color:#FFAB40"/>
+      <stop offset="1" style="stop-color:#FF6D00"/>
+    </linearGradient>
+    <path d="M116,124H12c-4.42,0-8-3.58-8-8V12c0-4.42,3.58-8,8-8h104c4.42,0,8,3.58,8,8v104 C124,120.42,120.42,124,116,124z" style="fill:url(#SVGID_1_);"/>
+    <g style="opacity:0.2;">
+      <path d="M116,7c2.76,0,5,2.24,5,5v104c0,2.76-2.24,5-5,5H12c-2.76,0-5-2.24-5-5V12c0-2.76,2.24-5,5-5H116 M116,4H12c-4.42,0-8,3.58-8,8v104c0,4.42,3.58,8,8,8h104c4.42,0,8-3.58,8-8V12C124,7.58,120.42,4,116,4L116,4z" style="fill:#424242;"/>
+    </g>
+    <g style="opacity:0.2;">
+      <path d="M81.72,36c1.19,0,2.28,0.98,2.28,2.34V64v25.66c0,1.36-1.09,2.34-2.28,2.34 c-0.38,0-0.76-0.1-1.12-0.31L37.15,66.03c-1.53-0.9-1.53-3.16,0-4.05L80.6,36.31C80.96,36.1,81.35,36,81.72,36 M81.72,33 c-0.92,0-1.84,0.25-2.64,0.72L35.62,59.39C33.98,60.35,33,62.08,33,64s0.98,3.65,2.63,4.61l43.44,25.66 C79.89,94.75,80.8,95,81.72,95c2.91,0,5.28-2.39,5.28-5.34V64V38.34C87,35.39,84.63,33,81.72,33L81.72,33z" style="fill:#424242;"/>
+    </g>
+    <path d="M84,64V38.34c0-1.79-1.89-2.91-3.4-2.03L37.15,61.97c-1.53,0.9-1.53,3.16,0,4.05L80.6,91.69 c1.52,0.89,3.4-0.23,3.4-2.03V64z" style="fill:#FAFAFA;"/>
+  </g>
 </svg>

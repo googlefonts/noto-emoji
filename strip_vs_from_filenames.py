@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from __future__ import print_function
 import argparse
 import glob
 import os
@@ -51,17 +52,17 @@ def strip_vs_from_filenames(imagedir, prefix, ext, dry_run=False):
     if seq and EMOJI_VS in seq:
       newname = '%s%s.%s' % (prefix, seq_to_str(strip_vs(seq)), ext)
       if newname in names:
-        print >> sys.stderr, '%s non-vs name %s already exists.' % (
-            name, newname)
+        print('%s non-vs name %s already exists.' % (
+            name, newname), file=sys.stderr)
         return
       renames[name] = newname
 
   for k, v in renames.iteritems():
     if dry_run:
-      print '%s -> %s' % (k, v)
+      print('%s -> %s' % (k, v))
     else:
       os.rename(path.join(imagedir, k), path.join(imagedir, v))
-  print 'renamed %d files in %s' % (len(renames), imagedir)
+  print('renamed %d files in %s' % (len(renames), imagedir))
 
 
 def main():

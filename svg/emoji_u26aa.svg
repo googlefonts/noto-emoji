@@ -1,9 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 19.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="图层_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 128 128" style="enable-background:new 0 0 128 128;" xml:space="preserve">
-<g>
-	<path style="fill:#E0E0E0;" d="M64,24.3c-21.92,0-39.69,17.78-39.69,39.71S42.08,103.7,64,103.7s39.69-17.77,39.69-39.69
-		S85.92,24.3,64,24.3z"/>
-</g>
+<svg width="128" height="128" style="enable-background:new 0 0 128 128;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g>
+    <linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="64" x2="64" y1="4.6818" y2="123.666">
+      <stop offset="0" style="stop-color:#FFFFFF"/>
+      <stop offset="0.6578" style="stop-color:#ECECEC"/>
+      <stop offset="1" style="stop-color:#E0E0E0"/>
+    </linearGradient>
+    <circle cx="64" cy="64" r="60" style="fill:url(#SVGID_1_);"/>
+    <g style="opacity:0.2;">
+      <path d="M64,7c31.43,0,57,25.57,57,57s-25.57,57-57,57S7,95.43,7,64S32.57,7,64,7 M64,4 C30.86,4,4,30.86,4,64s26.86,60,60,60s60-26.86,60-60S97.14,4,64,4L64,4z" style="fill:#424242;"/>
+    </g>
+  </g>
 </svg>

@@ -1,24 +1,21 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 19.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="レイヤー_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
-	 y="0px" viewBox="0 0 128 128" style="enable-background:new 0 0 128 128;" xml:space="preserve">
-<g>
-	<g>
-		<defs>
-			<path id="SVGID_1_" d="M104.27,0.48c-1.47,0-3.73,0.47-6.19,2.73l-32.27,29.6c-0.9,0.83-2.72,0.83-3.62,0L29.92,3.21
-				c-2.46-2.26-4.72-2.73-6.19-2.73c-3.46,0-7.18,2.69-7.18,8.61v70.42c0,5.21,2.9,11.78,6.74,15.3l32.26,29.49
-				c2.28,2.08,5.28,3.23,8.46,3.23c3.18,0,6.18-1.14,8.46-3.23l32.25-29.49c3.85-3.52,6.74-10.09,6.74-15.3V9.09
-				C111.46,3.17,107.73,0.48,104.27,0.48z"/>
-		</defs>
-		<use xlink:href="#SVGID_1_"  style="overflow:visible;fill:#FCC21B;"/>
-		<clipPath id="SVGID_2_">
-			<use xlink:href="#SVGID_1_"  style="overflow:visible;"/>
-		</clipPath>
-		<g style="clip-path:url(#SVGID_2_);">
-			<g>
-				<polygon style="fill:#757F3F;" points="119.33,-23.68 64.27,24.88 64.27,140.88 119.33,92.47 				"/>
-			</g>
-		</g>
-	</g>
-</g>
+<svg width="128" height="128" style="enable-background:new 0 0 128 128;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g>
+    <linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="40" x2="40" y1="4" y2="124.204">
+      <stop offset="0" style="stop-color:#FFFF00"/>
+      <stop offset="1" style="stop-color:#FFD600"/>
+    </linearGradient>
+    <path d="M61.5,34l-39-29.12C19.88,2.79,16,4.65,16,8.01v82.07c0,1.22,0.55,2.36,1.5,3.12l44,29.92 c0.73,0.58,1.61,0.88,2.5,0.88V34.88C63.12,34.88,62.23,34.59,61.5,34z" style="fill:url(#SVGID_1_);"/>
+    <linearGradient id="SVGID_2_" gradientUnits="userSpaceOnUse" x1="88" x2="88" y1="4" y2="124.204">
+      <stop offset="0" style="stop-color:#4DB6AC"/>
+      <stop offset="0.4722" style="stop-color:#2BA296"/>
+      <stop offset="1" style="stop-color:#00897B"/>
+    </linearGradient>
+    <path d="M105.5,4.88L66.5,34c-0.73,0.58-1.61,0.88-2.5,0.88V124c0.88,0,1.77-0.29,2.5-0.88l44-29.92 c0.95-0.76,1.5-1.91,1.5-3.12V8.01C112,4.65,108.12,2.79,105.5,4.88z" style="fill:url(#SVGID_2_);"/>
+    <g style="opacity:0.2;">
+      <path d="M20.02,7c0.22,0,0.42,0.07,0.61,0.23l0.04,0.03l0.04,0.03l38.97,29.09 c0.41,0.32,0.86,0.6,1.33,0.82v81.95L19.32,90.81c-0.2-0.19-0.32-0.45-0.32-0.73V8.01C19,7.31,19.6,7,20.02,7 M20.02,4 C17.95,4,16,5.63,16,8.01v82.07c0,1.22,0.55,2.36,1.5,3.12l44,29.92c0.73,0.58,1.61,0.88,2.5,0.88V34.88 c-0.88,0-1.77-0.29-2.5-0.88l-39-29.12C21.74,4.27,20.87,4,20.02,4L20.02,4z" style="fill:#424242;"/>
+    </g>
+    <g style="opacity:0.2;">
+      <path d="M107.98,7C108.4,7,109,7.31,109,8.01v82.07c0,0.28-0.11,0.54-0.32,0.73L67,119.15V37.2 c0.47-0.22,0.92-0.5,1.33-0.82L107.3,7.29l0.04-0.03l0.04-0.03C107.57,7.07,107.76,7,107.98,7 M107.98,4 c-0.85,0-1.72,0.27-2.48,0.88L66.5,34c-0.73,0.58-1.61,0.88-2.5,0.88V124c0.88,0,1.77-0.29,2.5-0.88l44-29.92 c0.95-0.76,1.5-1.91,1.5-3.12V8.01C112,5.63,110.05,4,107.98,4L107.98,4z" style="fill:#424242;"/>
+    </g>
+  </g>
 </svg>

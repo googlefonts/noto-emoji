@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="900" height="600">
-	<rect width="900" height="600"/>
-	<rect y="100" width="900" height="100" fill="#fcdc04"/>
+	<rect width="900" height="600" fill="#000"/>
+	<rect y="100" width="900" height="200" fill="#fcdc04"/>
 	<rect y="200" width="900" height="100" fill="#d90000"/>
-	<rect y="400" width="900" height="100" fill="#fcdc04"/>
+	<rect y="400" width="900" height="200" fill="#fcdc04"/>
 	<rect y="500" width="900" height="100" fill="#d90000"/>
 	<circle cx="450" cy="300" r="93.5" fill="#fff"/>
 	<g stroke="#000">

@@ -36,12 +36,19 @@ from nototools import unicode_data
 
 logger = logging.getLogger('emoji_thumbnails')
 
-def create_thumbnail(src_path, dst_path):
-  # uses imagemagik
-  # we need imagex exactly 72x72 in size, with transparent background
-  subprocess.check_call([
-      'convert', '-thumbnail', '72x72', '-gravity', 'center', '-background',
-      'none', '-extent', '72x72', src_path, dst_path])
+def create_thumbnail(src_path, dst_path, crop):
+  # Uses imagemagik
+  # We need images exactly 72x72 in size, with transparent background.
+  # Remove 4-pixel LR margins from 136x128 source images if we crop.
+  if crop:
+    cmd = [
+        'convert', src_path, '-crop', '128x128+4+0!', '-thumbnail', '72x72',
+        'PNG32:' + dst_path]
+  else:
+    cmd = [
+        'convert', '-thumbnail', '72x72', '-gravity', 'center', '-background',
+        'none', '-extent', '72x72', src_path, 'PNG32:' + dst_path]
+  subprocess.check_call(cmd)
 
 
 def get_inv_aliases():
@@ -77,14 +84,16 @@ def sequence_to_filename(seq, prefix, suffix):
   return ''.join((prefix, unicode_data.seq_to_string(seq), suffix))
 
 
-def create_thumbnails_and_aliases(src_dir, dst_dir, dst_prefix):
+def create_thumbnails_and_aliases(src_dir, dst_dir, crop, dst_prefix):
   """Creates thumbnails in dst_dir based on sources in src.dir, using
   dst_prefix. Assumes the source prefix is 'emoji_u' and the common suffix
   is '.png'."""
 
+  src_dir = tool_utils.resolve_path(src_dir)
   if not path.isdir(src_dir):
     raise ValueError('"%s" is not a directory')
-  dst_dir = tool_utils.ensure_dir_exists(dst_dir)
+
+  dst_dir = tool_utils.ensure_dir_exists(tool_utils.resolve_path(dst_dir))
 
   src_prefix = 'emoji_u'
   suffix = '.png'
@@ -104,8 +113,9 @@ def create_thumbnails_and_aliases(src_dir, dst_dir, dst_prefix):
     dst_file = sequence_to_filename(seq, dst_prefix, suffix)
     dst_path = path.join(dst_dir, dst_file)
 
-    create_thumbnail(src_path, dst_path)
-    logger.info('wrote thumbnail: %s' % dst_file)
+    create_thumbnail(src_path, dst_path, crop)
+    logger.info('wrote thumbnail%s: %s' % (
+        ' with crop' if crop else '', dst_file))
 
     for alias_seq in inv_aliases.get(seq, ()):
       alias_file = sequence_to_filename(alias_seq, dst_prefix, suffix)
@@ -115,15 +125,22 @@ def create_thumbnails_and_aliases(src_dir, dst_dir, dst_prefix):
 
 
 def main():
+  SRC_DEFAULT = '[emoji]/build/compressed_pngs'
+  PREFIX_DEFAULT = 'android_'
+
   parser = argparse.ArgumentParser()
   parser.add_argument(
-      '-s', '--src_dir', help='source images', metavar='dir', required=True)
+      '-s', '--src_dir', help='source images (default \'%s\')' % SRC_DEFAULT,
+      default=SRC_DEFAULT, metavar='dir')
   parser.add_argument(
       '-d', '--dst_dir', help='destination directory', metavar='dir',
       required=True)
   parser.add_argument(
-      '-p', '--prefix', help='prefix for thumbnail', metavar='str',
-      default='android_')
+      '-p', '--prefix', help='prefix for thumbnail (default \'%s\')' %
+      PREFIX_DEFAULT, default=PREFIX_DEFAULT, metavar='str')
+  parser.add_argument(
+      '-c', '--crop', help='crop images (will automatically crop if '
+      'src dir is the default)', action='store_true')
   parser.add_argument(
       '-v', '--verbose', help='write log output', metavar='level',
       choices='warning info debug'.split(), const='info',
@@ -133,8 +150,9 @@ def main():
   if args.verbose is not None:
     logging.basicConfig(level=getattr(logging, args.verbose.upper()))
 
+  crop = args.crop or (args.src_dir == SRC_DEFAULT)
   create_thumbnails_and_aliases(
-      args.src_dir, args.dst_dir, args.prefix)
+      args.src_dir, args.dst_dir, crop, args.prefix)
 
 
 if __name__ == '__main__':
