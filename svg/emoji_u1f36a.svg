@@ -52,25 +52,27 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1440"
-     inkscape:window-height="837"
+     inkscape:window-width="1920"
+     inkscape:window-height="1046"
      id="namedview44"
      showgrid="false"
-     inkscape:zoom="3.8504174"
-     inkscape:cx="55.659348"
-     inkscape:cy="57.673942"
-     inkscape:window-x="0"
-     inkscape:window-y="27"
+     inkscape:zoom="1.9252087"
+     inkscape:cx="-12.479772"
+     inkscape:cy="61.655067"
+     inkscape:window-x="-11"
+     inkscape:window-y="-11"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg42" />
   <g
      id="g854"
-     clip-path="none">
+     clip-path="none"
+     style="fill:#eea94d;fill-opacity:1">
     <g
        inkscape:label="Clip"
-       id="g852">
+       id="g852"
+       style="fill:#eea94d;fill-opacity:1">
       <use
-         style="overflow:visible;fill:#eda23f;fill-opacity:1"
+         style="overflow:visible;fill:#eea94d;fill-opacity:1"
          xlink:href="#SVGID_1_"
          id="use5"
          x="0"
@@ -79,84 +81,77 @@
          height="100%" />
     </g>
   </g>
-  <use
-     height="100%"
-     width="100%"
-     id="use858"
-     xlink:href="#g852"
-     y="0"
-     x="0" />
   <g
      id="g38"
      clip-path="url(#SVGID_2_)"
-     style="fill:#3a1504;fill-opacity:1">
+     style="fill:#270e03;fill-opacity:1">
     <path
        inkscape:connector-curvature="0"
        id="path10"
-       style="fill:#3a1504;fill-opacity:1"
+       style="fill:#270e03;fill-opacity:1"
        d="m 85.64,3.53 c -0.28,0.56 -0.48,1.27 -0.59,2.15 -0.28,2.33 -0.41,5.08 -0.04,7.36 0.24,1.5 0.62,4.15 2.22,4.81 1.48,0.6 2.91,-0.2 4.24,-0.74 1.44,-0.59 2.96,-1.28 4.49,-1.68 2.41,-0.62 4.68,-2.24 6.94,-3.28 1.91,-0.87 1.1,-3.32 -0.28,-4.42 C 101.66,6.96 100.51,6.34 99.51,5.56 98.44,4.71 97.07,3.99 95.83,3.43 94,2.6 92.15,2.26 90.2,1.85 88.4,1.47 86.54,1.74 85.64,3.53 Z" />
     <path
        inkscape:connector-curvature="0"
        id="path12"
-       style="fill:#3a1504;fill-opacity:1"
+       style="fill:#270e03;fill-opacity:1"
        d="m 110.04,38.55 c -0.5,-0.33 -1.12,-0.54 -1.85,-0.58 -1.12,-0.05 -2.48,0.17 -3.58,0.31 -1.52,0.19 -3.57,0.63 -4.89,1.34 -1.04,0.55 -1.32,0.93 -1.21,1.99 0.18,1.97 0.1,3.8 0.59,5.75 0.6,2.43 0.78,6.71 3.85,7.08 1.94,0.23 4.35,0.12 6.24,-0.25 1.26,-0.24 3.34,-0.47 4.4,-1.19 0.78,-0.53 0.87,-1.46 0.87,-2.37 -0.01,-1.88 -0.86,-3.67 -1.32,-5.46 -0.42,-1.57 -1.04,-3.04 -1.59,-4.55 -0.31,-0.87 -0.8,-1.59 -1.51,-2.07 z" />
     <path
        inkscape:connector-curvature="0"
        id="path14"
-       style="fill:#3a1504;fill-opacity:1"
+       style="fill:#270e03;fill-opacity:1"
        d="m 53.49,31.1 c -1.73,-0.53 -3.85,0.07 -5.61,0.52 -2.85,0.73 -6.23,0.94 -8.86,2.26 -1.51,0.76 -1.4,3.83 -1.43,5.31 -0.04,1.48 -0.14,3.07 -0.01,4.54 0.1,1.06 0.12,2.46 0.48,3.46 0.7,1.93 4.08,1.18 5.8,1.19 3.27,0.02 6.34,-0.79 9.45,-1.7 0.82,-0.23 2.12,-0.42 2.74,-1.13 0.48,-0.56 0.51,-1.8 0.6,-2.49 0.22,-1.86 0.24,-3.57 -0.11,-5.38 -0.32,-1.67 -0.03,-3.59 -1.04,-5.08 -0.55,-0.8 -1.24,-1.26 -2.01,-1.5 z" />
     <path
        inkscape:connector-curvature="0"
        id="path16"
-       style="fill:#3a1504;fill-opacity:1"
+       style="fill:#270e03;fill-opacity:1"
        d="m 31.48,75.02 c -0.12,-0.03 -0.23,-0.05 -0.37,-0.07 -1.03,-0.13 -2.06,-0.31 -3.18,-0.42 -1.17,-0.12 -2.23,-0.24 -3.42,-0.26 -1.71,-0.02 -3.32,-0.42 -4.89,0.67 -0.6,0.4 -0.87,0.98 -1.14,1.57 -1.19,2.53 -3.48,6.22 -1.48,8.92 2.09,2.83 13.79,3.46 15.21,-0.02 0.82,-1.98 1.4,-4.3 1.46,-6.45 0.02,-1.3 -0.75,-3.6 -2.19,-3.94 z" />
     <path
        inkscape:connector-curvature="0"
        id="path18"
-       style="fill:#3a1504;fill-opacity:1"
+       style="fill:#270e03;fill-opacity:1"
        d="m 77.32,86.38 c 0.92,2.08 2.03,3.93 3.58,5.58 0.59,0.62 1.3,1.37 1.93,1.93 0.87,0.76 2.04,0.87 3.15,0.97 2.21,0.22 5.05,0.31 7.27,-0.01 1.81,-0.26 3.78,-2.22 4.53,-3.88 0.91,-2 2.09,-3.5 1.76,-5.81 -0.21,-1.42 -1.4,-2.35 -2.14,-3.5 -0.87,-1.38 -1.62,-2.51 -2.95,-3.53 -2.02,-1.53 -4.53,-2.89 -7.13,-2.37 -2.72,0.54 -4.88,2.71 -6.82,4.53 -1.83,1.71 -4.44,3.26 -3.18,6.09 z" />
     <path
        inkscape:connector-curvature="0"
        id="path20"
-       style="fill:#3a1504;fill-opacity:1"
+       style="fill:#270e03;fill-opacity:1"
        d="m 53.13,107.17 c -2.48,0.14 -4.94,1.82 -6.84,3.42 -1.66,1.39 -3.05,2.2 -2.12,4.6 1.46,3.74 4.37,6.7 7.62,8.75 1.79,1.13 3.16,0.56 4.96,-0.52 2.31,-1.38 9.7,-5.31 6.28,-9.03 -0.94,-1.03 -1.8,-1.99 -2.72,-3.02 -1.09,-1.22 -2.29,-2.16 -3.64,-3.14 -1.13,-0.84 -2.34,-1.14 -3.54,-1.06 z" />
     <g
        id="g36"
-       style="fill:#3a1504;fill-opacity:1">
+       style="fill:#270e03;fill-opacity:1">
       <path
          inkscape:connector-curvature="0"
          id="path22"
-         style="fill:#3a1504;fill-opacity:1"
+         style="fill:#270e03;fill-opacity:1"
          d="m 92.23,113.28 c -0.2,-0.48 -0.58,-0.93 -1.17,-1.33 -2.43,-1.61 -6.89,-0.44 -8.31,2.12 -2.04,3.68 4.86,4.8 7.1,3.58 1.4,-0.78 3.07,-2.66 2.38,-4.37 z" />
       <path
          inkscape:connector-curvature="0"
          id="path24"
-         style="fill:#3a1504;fill-opacity:1"
+         style="fill:#270e03;fill-opacity:1"
          d="m 99.57,104.17 c 2.19,1.99 8.39,2.29 7.91,-1.94 -0.24,-2.11 -5.09,-2.48 -6.61,-2.07 -1.49,0.41 -2.65,2.79 -1.3,4.01 z" />
       <path
          inkscape:connector-curvature="0"
          id="path26"
-         style="fill:#3a1504;fill-opacity:1"
+         style="fill:#270e03;fill-opacity:1"
          d="m 116.61,89.6 c 0.89,-0.37 1.58,-1.02 1.8,-2.01 0.28,-1.3 -0.49,-2.28 -1.76,-2.6 -1.56,-0.39 -4.52,-0.55 -5.66,0.82 -1.02,1.23 -0.55,2.5 0.65,3.37 1.19,0.85 3.39,1.08 4.97,0.42 z" />
       <path
          inkscape:connector-curvature="0"
          id="path28"
-         style="fill:#3a1504;fill-opacity:1"
+         style="fill:#270e03;fill-opacity:1"
          d="m 64.14,100.65 c 1.19,0.02 2.31,-0.31 2.87,-1.1 0.89,-1.24 1.05,-4.14 -0.68,-4.81 -2.43,-0.94 -7.95,0.11 -6.46,3.77 0.51,1.28 2.47,2.1 4.27,2.14 z" />
       <path
          inkscape:connector-curvature="0"
          id="path30"
-         style="fill:#3a1504;fill-opacity:1"
+         style="fill:#270e03;fill-opacity:1"
          d="m 95.37,67.07 c 1.16,-0.03 3.04,-0.26 3.47,-1.53 0.28,-0.8 0.24,-2.09 -0.29,-2.79 -1.47,-1.9 -8.07,-1.2 -7.33,1.94 0.39,1.73 2.28,2.43 4.15,2.38 z" />
       <path
          inkscape:connector-curvature="0"
          id="path32"
-         style="fill:#3a1504;fill-opacity:1"
+         style="fill:#270e03;fill-opacity:1"
          d="m 111.5,72.3 c 2.71,0.77 6.89,-2.14 5.71,-4.87 -1.46,-3.42 -9.12,-1.05 -7.58,3.1 0.39,0.98 1.05,1.54 1.87,1.77 z" />
       <path
          inkscape:connector-curvature="0"
          id="path34"
-         style="fill:#3a1504;fill-opacity:1"
+         style="fill:#270e03;fill-opacity:1"
          d="m 80.31,45.46 c 3.49,-0.42 4.35,-4.12 1.59,-5.35 -3.36,-1.49 -7.77,2.76 -4.72,4.82 0.79,0.54 2.08,0.65 3.13,0.53 z" />
     </g>
   </g>
