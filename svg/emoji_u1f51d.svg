@@ -1,10 +1,66 @@
-<svg width="128" height="128" style="enable-background:new 0 0 128 128;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-  <g>
-    <g>
-      <path d="M65.03,92.5c-9.09,0-14.78,6.42-14.78,14.34c0,7.93,5.69,14.35,14.78,14.35 c9.1,0,14.78-6.42,14.78-14.35C79.81,98.92,74.12,92.5,65.03,92.5z M65.03,114.29c-4.72,0-7.68-3.33-7.68-7.45 c0-4.11,2.95-7.45,7.68-7.45c4.73,0,7.68,3.34,7.68,7.45C72.71,110.96,69.75,114.29,65.03,114.29z" style="fill:#78A3AD;"/>
-      <path d="M94.65,92.77H84.56c-0.02,0-0.03,0.02-0.05,0.03h-1.78c-0.33,0-0.6,0.27-0.6,0.6v26.9 c0,0.33,0.27,0.6,0.6,0.6h5.84c0.33,0,0.6-0.27,0.6-0.6v-8.55h5.5c5.28,0,9.58-4.25,9.58-9.48 C104.23,97.03,99.93,92.77,94.65,92.77z M94.06,106.15c-0.05,0-0.1,0.02-0.15,0.02h-4.65l-0.15-0.16V98.5l0.15-0.15h4.65 c0.06,0,0.11,0.01,0.17,0.02c2,0.1,3.6,1.8,3.6,3.89C97.68,104.36,96.07,106.07,94.06,106.15z" style="fill:#78A3AD;"/>
-      <path d="M50.46,98.18v-4.8c0-0.33-0.27-0.6-0.6-0.6h-25.5c-0.33,0-0.6,0.27-0.6,0.6v4.8 c0,0.33,0.27,0.6,0.6,0.6h9.23v21.51c0,0.33,0.27,0.6,0.6,0.6h5.84c0.33,0,0.6-0.27,0.6-0.6V98.78h9.23 C50.19,98.78,50.46,98.52,50.46,98.18z" style="fill:#78A3AD;"/>
-    </g>
-    <path d="M64.01,18.96l33.81,46.11H76.72v16.18H51.5V65.08h-21.3L64.01,18.96z" style="fill:#FCC21B;"/>
-  </g>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="128"
+   height="128"
+   style="enable-background:new 0 0 128 128;"
+   version="1.1"
+   id="svg14"
+   sodipodi:docname="emoji_u1f51d.svg"
+   inkscape:version="0.92.2 (5c3e80d, 2017-08-06)">
+  <metadata
+     id="metadata20">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs18" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1046"
+     id="namedview16"
+     showgrid="false"
+     inkscape:zoom="1.84375"
+     inkscape:cx="64"
+     inkscape:cy="64"
+     inkscape:window-x="-11"
+     inkscape:window-y="-11"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg14" />
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#78a3ad;fill-opacity:1;stroke:none"
+     x="28.5725"
+     y="120.40678"
+     id="text829"><tspan
+       sodipodi:role="line"
+       id="tspan827"
+       x="28.5725"
+       y="120.40678"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Comic Neue';-inkscape-font-specification:'Comic Neue Bold';fill:#78a3ad;fill-opacity:1">TOP</tspan></text>
+  <path
+     inkscape:connector-curvature="0"
+     id="path10"
+     style="fill:#fcc21b"
+     d="M 64.01,18.96 97.82,65.07 H 76.72 V 81.25 H 51.5 V 65.08 H 30.2 Z" />
 </svg>

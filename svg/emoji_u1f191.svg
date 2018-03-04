@@ -1,9 +1,66 @@
-<svg width="128" height="128" style="enable-background:new 0 0 128 128;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-  <g>
-    <path d="M120.88,0.11H6.88C3.09,0.11,0,3.21,0,7v114.01c0,3.78,3.09,6.88,6.88,6.88h114.01 c3.78,0,6.88-3.1,6.88-6.88V7C127.76,3.21,124.67,0.11,120.88,0.11z" style="fill:#DB4437;"/>
-    <g>
-      <path d="M59.82,79.39c-0.09-0.3-0.35-0.53-0.66-0.58c-0.31-0.05-0.63,0.07-0.82,0.31 C54.87,83.61,48.95,87,44.56,87C36.12,87,30,77.09,30,63.44c0-13.65,6.12-23.55,14.56-23.55c4.58,0,9.3,2.43,12.31,6.35 c0.19,0.25,0.51,0.37,0.81,0.31c0.31-0.05,0.56-0.27,0.66-0.56l6.96-20.68c0.09-0.27,0.04-0.57-0.13-0.79 c-5.24-6.77-12.19-10.2-20.67-10.2c-18.45,0-31.33,20.2-31.33,49.11c0,28.92,12.88,49.12,31.33,49.12 c8.38,0,15.61-4.13,21.46-12.29c0.16-0.22,0.2-0.49,0.12-0.75L59.82,79.39z" style="fill:#FFFFFF;"/>
-      <path d="M111.9,92.45H86.89V17.69c0-0.87-0.71-1.59-1.59-1.59H73.14c-0.88,0-1.59,0.72-1.59,1.59v91.5 c0,0.88,0.72,1.59,1.59,1.59h8.94h3.22h26.6c0.88,0,1.59-0.71,1.59-1.59V94.04C113.49,93.16,112.78,92.45,111.9,92.45z" style="fill:#FFFFFF;"/>
-    </g>
-  </g>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="128"
+   height="128"
+   style="enable-background:new 0 0 128 128;"
+   version="1.1"
+   id="svg12"
+   sodipodi:docname="emoji_u1f191.svg"
+   inkscape:version="0.92.2 (5c3e80d, 2017-08-06)">
+  <metadata
+     id="metadata18">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs16" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1046"
+     id="namedview14"
+     showgrid="false"
+     inkscape:zoom="1.84375"
+     inkscape:cx="64"
+     inkscape:cy="64"
+     inkscape:window-x="-11"
+     inkscape:window-y="-11"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg12" />
+  <path
+     inkscape:connector-curvature="0"
+     id="path2"
+     style="fill:#db4437"
+     d="M 120.88,0.11 H 6.88 C 3.09,0.11 0,3.21 0,7 v 114.01 c 0,3.78 3.09,6.88 6.88,6.88 h 114.01 c 3.78,0 6.88,-3.1 6.88,-6.88 V 7 c -0.01,-3.79 -3.1,-6.89 -6.89,-6.89 z" />
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+     x="7.1582499"
+     y="96.736"
+     id="text830"><tspan
+       sodipodi:role="line"
+       id="tspan828"
+       x="7.1582499"
+       y="96.736"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:96px;font-family:'Comic Neue';-inkscape-font-specification:'Comic Neue Bold';fill:#ffffff;fill-opacity:1">CL</tspan></text>
 </svg>
