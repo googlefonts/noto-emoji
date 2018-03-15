@@ -7,7 +7,8 @@ reuploaded.
 
 There are currently four types of changes:
 
-- `new`:	Completely new emojis which do not have to do anything with the original Noto Emoji project
+- `new`:	Completely new emojis which do not have to do anything with the original Noto Emoji project. 
+	This includes the '?', '!!', etc. emojis where I changed the font to Comic Neue.
 - `new*`:	New emojis based on the assets provided by Noto Emoji
 - `alt`:	Emojis which I updated because I either didn't like their look or
 	because they weren't compatible to other emoji fonts
@@ -209,3 +210,42 @@ The entries are currently not in order
 | ![&#x1f92c;](https://rawgit.com/googlei18n/noto-emoji/e456654119cc3a5f9bebb7bbd00512456f983d2d/png/128/emoji_u1f92c.png) | ![&#x1f92c;](http://rawgit.com/C1710/blobmoji/master/png/128/emoji_u1f92c.png)	| U+1f92c	| new*	| 	|  
 | ![&#x1f92a;](https://rawgit.com/googlei18n/noto-emoji/e456654119cc3a5f9bebb7bbd00512456f983d2d/png/128/emoji_u1f92a.png) | ![&#x1f92a;](http://rawgit.com/C1710/blobmoji/master/png/128/emoji_u1f92a.png)	| U+1f92a	| new*	| 	|  
 | ![&#x1f928;](https://rawgit.com/googlei18n/noto-emoji/e456654119cc3a5f9bebb7bbd00512456f983d2d/png/128/emoji_u1f928.png) | ![&#x1f928;](http://rawgit.com/C1710/blobmoji/master/png/128/emoji_u1f928.png)	| U+1f928	| new*	| 	|  
+
+| ![&#x1f18e;](https://rawgit.com/googlei18n/noto-emoji/e456654119cc3a5f9bebb7bbd00512456f983d2d/png/128/emoji_u1f18e.png) | ![&#x1f18e;](http://rawgit.com/C1710/blobmoji/master/png/128/emoji_u1f18e.png)	| U+1f18e	| alt	| 	|  
+| ![&#x1f17e;](https://rawgit.com/googlei18n/noto-emoji/e456654119cc3a5f9bebb7bbd00512456f983d2d/png/128/emoji_u1f17e.png) | ![&#x1f17e;](http://rawgit.com/C1710/blobmoji/master/png/128/emoji_u1f17e.png)	| U+1f17e	| alt	| 	|  
+| ![&#x1f170;](https://rawgit.com/googlei18n/noto-emoji/e456654119cc3a5f9bebb7bbd00512456f983d2d/png/128/emoji_u1f170.png) | ![&#x1f170;](http://rawgit.com/C1710/blobmoji/master/png/128/emoji_u1f170.png)	| U+1f170	| alt	| 	|  
+| ![&#x1f17f;](https://rawgit.com/googlei18n/noto-emoji/e456654119cc3a5f9bebb7bbd00512456f983d2d/png/128/emoji_u1f17f.png) | ![&#x1f17f;](http://rawgit.com/C1710/blobmoji/master/png/128/emoji_u1f17f.png)	| U+1f17f	| alt	| 	|  
+| ![&#x1f171;](https://rawgit.com/googlei18n/noto-emoji/e456654119cc3a5f9bebb7bbd00512456f983d2d/png/128/emoji_u1f171.png) | ![&#x1f171;](http://rawgit.com/C1710/blobmoji/master/png/128/emoji_u1f171.png)	| U+1f171	| alt	| 	|  
+| ![&#x1f191;](https://rawgit.com/googlei18n/noto-emoji/e456654119cc3a5f9bebb7bbd00512456f983d2d/png/128/emoji_u1f191.png) | ![&#x1f191;](http://rawgit.com/C1710/blobmoji/master/png/128/emoji_u1f191.png)	| U+1f191	| alt	| 	|  
+| ![&#x1f19a;](https://rawgit.com/googlei18n/noto-emoji/e456654119cc3a5f9bebb7bbd00512456f983d2d/png/128/emoji_u1f19a.png) | ![&#x1f19a;](http://rawgit.com/C1710/blobmoji/master/png/128/emoji_u1f19a.png)	| U+1f19a	| alt	| 	|  
+| ![&#x00a9;](https://rawgit.com/googlei18n/noto-emoji/e456654119cc3a5f9bebb7bbd00512456f983d2d/png/128/emoji_u00a9.png) | ![&#x00a9;](http://rawgit.com/C1710/blobmoji/master/png/128/emoji_u00a9.png)	| U+00a9	| alt	| 	|  
+| ![&#x00ae;](https://rawgit.com/googlei18n/noto-emoji/e456654119cc3a5f9bebb7bbd00512456f983d2d/png/128/emoji_u00ae.png) | ![&#x00ae;](http://rawgit.com/C1710/blobmoji/master/png/128/emoji_u00ae.png)	| U+00ae	| alt	| 	|  
+| ![&#x1f51e;](https://rawgit.com/googlei18n/noto-emoji/e456654119cc3a5f9bebb7bbd00512456f983d2d/png/128/emoji_u1f51e.png) | ![&#x1f51e;](http://rawgit.com/C1710/blobmoji/master/png/128/emoji_u1f51e.png)	| U+1f51e	| alt	| 	|  
+| ![&#x203c;](https://rawgit.com/googlei18n/noto-emoji/e456654119cc3a5f9bebb7bbd00512456f983d2d/png/128/emoji_u203c.png) | ![&#x203c;](http://rawgit.com/C1710/blobmoji/master/png/128/emoji_u203c.png)	| U+203c	| alt	| 	|  
+| ![&#x24c2;](https://rawgit.com/googlei18n/noto-emoji/e456654119cc3a5f9bebb7bbd00512456f983d2d/png/128/emoji_u24c2.png) | ![&#x24c2;](http://rawgit.com/C1710/blobmoji/master/png/128/emoji_u24c2.png)	| U+24c2	| alt	| 	|  
+| ![&#x1f949;](https://rawgit.com/googlei18n/noto-emoji/e456654119cc3a5f9bebb7bbd00512456f983d2d/png/128/emoji_u1f949.png) | ![&#x1f949;](http://rawgit.com/C1710/blobmoji/master/png/128/emoji_u1f949.png)	| U+1f949	| alt	| 	|  
+| ![&#x1f948;](https://rawgit.com/googlei18n/noto-emoji/e456654119cc3a5f9bebb7bbd00512456f983d2d/png/128/emoji_u1f948.png) | ![&#x1f948;](http://rawgit.com/C1710/blobmoji/master/png/128/emoji_u1f948.png)	| U+1f948	| alt	| 	|  
+| ![&#x1f947;](https://rawgit.com/googlei18n/noto-emoji/e456654119cc3a5f9bebb7bbd00512456f983d2d/png/128/emoji_u1f947.png) | ![&#x1f947;](http://rawgit.com/C1710/blobmoji/master/png/128/emoji_u1f947.png)	| U+1f947	| alt	| 	|  
+| ![&#x1f6be;](https://rawgit.com/googlei18n/noto-emoji/e456654119cc3a5f9bebb7bbd00512456f983d2d/png/128/emoji_u1f6be.png) | ![&#x1f6be;](http://rawgit.com/C1710/blobmoji/master/png/128/emoji_u1f6be.png)	| U+1f6be	| alt	| 	|  
+| ![&#x1f51a;](https://rawgit.com/googlei18n/noto-emoji/e456654119cc3a5f9bebb7bbd00512456f983d2d/png/128/emoji_u1f51a.png) | ![&#x1f51a;](http://rawgit.com/C1710/blobmoji/master/png/128/emoji_u1f51a.png)	| U+1f51a	| alt	| 	|  
+| ![&#x1f51d;](https://rawgit.com/googlei18n/noto-emoji/e456654119cc3a5f9bebb7bbd00512456f983d2d/png/128/emoji_u1f51d.png) | ![&#x1f51d;](http://rawgit.com/C1710/blobmoji/master/png/128/emoji_u1f51d.png)	| U+1f51d	| alt	| 	|  
+| ![&#x1f51b;](https://rawgit.com/googlei18n/noto-emoji/e456654119cc3a5f9bebb7bbd00512456f983d2d/png/128/emoji_u1f51b.png) | ![&#x1f51b;](http://rawgit.com/C1710/blobmoji/master/png/128/emoji_u1f51b.png)	| U+1f51b	| alt	| 	|  
+| ![&#x1f51c;](https://rawgit.com/googlei18n/noto-emoji/e456654119cc3a5f9bebb7bbd00512456f983d2d/png/128/emoji_u1f51c.png) | ![&#x1f51c;](http://rawgit.com/C1710/blobmoji/master/png/128/emoji_u1f51c.png)	| U+1f51c	| alt	| 	|  
+| ![&#x1f36f;](https://rawgit.com/googlei18n/noto-emoji/e456654119cc3a5f9bebb7bbd00512456f983d2d/png/128/emoji_u1f36f.png) | ![&#x1f36f;](http://rawgit.com/C1710/blobmoji/master/png/128/emoji_u1f36f.png)	| U+1f36f	| alt	| 	|  
+| ![&#x1f37b;](https://rawgit.com/googlei18n/noto-emoji/e456654119cc3a5f9bebb7bbd00512456f983d2d/png/128/emoji_u1f37b.png) | ![&#x1f37b;](http://rawgit.com/C1710/blobmoji/master/png/128/emoji_u1f37b.png)	| U+1f37b	| alt	| More beer!	|  
+| ![&#x1f37a;](https://rawgit.com/googlei18n/noto-emoji/e456654119cc3a5f9bebb7bbd00512456f983d2d/png/128/emoji_u1f37a.png) | ![&#x1f37a;](http://rawgit.com/C1710/blobmoji/master/png/128/emoji_u1f37a.png)	| U+1f37a	| alt	| More beer!	|  
+| ![&#x1f509;](https://rawgit.com/googlei18n/noto-emoji/e456654119cc3a5f9bebb7bbd00512456f983d2d/png/128/emoji_u1f509.png) | ![&#x1f509;](http://rawgit.com/C1710/blobmoji/master/png/128/emoji_u1f509.png)	| U+1f509	| new	| 	|  
+| ![&#x1f50a;](https://rawgit.com/googlei18n/noto-emoji/e456654119cc3a5f9bebb7bbd00512456f983d2d/png/128/emoji_u1f50a.png) | ![&#x1f50a;](http://rawgit.com/C1710/blobmoji/master/png/128/emoji_u1f50a.png)	| U+1f50a	| new	| 	|  
+| ![&#x1f507;](https://rawgit.com/googlei18n/noto-emoji/e456654119cc3a5f9bebb7bbd00512456f983d2d/png/128/emoji_u1f507.png) | ![&#x1f507;](http://rawgit.com/C1710/blobmoji/master/png/128/emoji_u1f507.png)	| U+1f507	| alt/new	| 	|  
+| ![&#x1f508;](https://rawgit.com/googlei18n/noto-emoji/e456654119cc3a5f9bebb7bbd00512456f983d2d/png/128/emoji_u1f508.png) | ![&#x1f508;](http://rawgit.com/C1710/blobmoji/master/png/128/emoji_u1f508.png)	| U+1f508	| new	| 	|  
+| ![&#x2754;](https://rawgit.com/googlei18n/noto-emoji/e456654119cc3a5f9bebb7bbd00512456f983d2d/png/128/emoji_u2754.png) | ![&#x2754;](http://rawgit.com/C1710/blobmoji/master/png/128/emoji_u2754.png)	| U+2754	| new	| 	|  
+| ![&#x2753;](https://rawgit.com/googlei18n/noto-emoji/e456654119cc3a5f9bebb7bbd00512456f983d2d/png/128/emoji_u2753.png) | ![&#x2753;](http://rawgit.com/C1710/blobmoji/master/png/128/emoji_u2753.png)	| U+2753	| new	| 	|  
+| ![&#x2757;](https://rawgit.com/googlei18n/noto-emoji/e456654119cc3a5f9bebb7bbd00512456f983d2d/png/128/emoji_u2757.png) | ![&#x2757;](http://rawgit.com/C1710/blobmoji/master/png/128/emoji_u2757.png)	| U+2757	| new	| 	|  
+| ![&#x2755;](https://rawgit.com/googlei18n/noto-emoji/e456654119cc3a5f9bebb7bbd00512456f983d2d/png/128/emoji_u2755.png) | ![&#x2755;](http://rawgit.com/C1710/blobmoji/master/png/128/emoji_u2755.png)	| U+2755	| new	| 	|  
+| ![&#x1f9e9;](https://rawgit.com/googlei18n/noto-emoji/e456654119cc3a5f9bebb7bbd00512456f983d2d/png/128/emoji_u1f9e9.png) | ![&#x1f9e9;](http://rawgit.com/C1710/blobmoji/master/png/128/emoji_u1f9e9.png)	| U+1f9e9	| new	| 	|  
+| ![&#x1f974;](https://rawgit.com/googlei18n/noto-emoji/e456654119cc3a5f9bebb7bbd00512456f983d2d/png/128/emoji_u1f974.png) | ![&#x1f974;](http://rawgit.com/C1710/blobmoji/master/png/128/emoji_u1f974.png)	| U+1f974	| new*	| 	|  
+| ![&#x1f974;](https://rawgit.com/googlei18n/noto-emoji/e456654119cc3a5f9bebb7bbd00512456f983d2d/png/128/emoji_u1f431.png) | ![&#x1f974;](http://rawgit.com/C1710/blobmoji/master/png/128/emoji_u1f431_f3fb.png)	| U+1f431-f3fb	| new*	| Cat skin tone	|  
+| ![&#x1f974;](https://rawgit.com/googlei18n/noto-emoji/e456654119cc3a5f9bebb7bbd00512456f983d2d/png/128/emoji_u1f431.png) | ![&#x1f974;](http://rawgit.com/C1710/blobmoji/master/png/128/emoji_u1f431_f3fc.png)	| U+1f431-f3fc	| new*	| Cat skin tone	|  
+| ![&#x1f974;](https://rawgit.com/googlei18n/noto-emoji/e456654119cc3a5f9bebb7bbd00512456f983d2d/png/128/emoji_u1f431.png) | ![&#x1f974;](http://rawgit.com/C1710/blobmoji/master/png/128/emoji_u1f431_f3fd.png)	| U+1f431-f3fd	| new*	| Cat skin tone	|  
+| ![&#x1f974;](https://rawgit.com/googlei18n/noto-emoji/e456654119cc3a5f9bebb7bbd00512456f983d2d/png/128/emoji_u1f431.png) | ![&#x1f974;](http://rawgit.com/C1710/blobmoji/master/png/128/emoji_u1f431_f3fe.png)	| U+1f431-f3fe	| new*	| Cat skin tone	|  
+| ![&#x1f974;](https://rawgit.com/googlei18n/noto-emoji/e456654119cc3a5f9bebb7bbd00512456f983d2d/png/128/emoji_u1f431.png) | ![&#x1f974;](http://rawgit.com/C1710/blobmoji/master/png/128/emoji_u1f431_f3ff.png)	| U+1f431-f3ff	| new*	| Cat skin tone	|  
