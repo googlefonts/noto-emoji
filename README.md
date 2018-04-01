@@ -1,3 +1,7 @@
+
+#### DISCLAIMER:
+I am **neither** affiliated nor in _any_ relationship to the original creators or to Emojipedia or anything or anyone else.
+
 ![Noto](images/noto.png)
 # Noto Emoji with Blobs enabled
 
@@ -8,6 +12,10 @@ My goal is to upgrade the Blob emojis with a fresh style which is consistent to 
 Another thing is that this emoji set includes some emojis and ZWJ-sequences which are not part of the current emoji standard (although some or most of them are about to be included in the upcoming Unicode-standard), which means it might be one of the biggest emoji sets currently available!
 
 Please note that I did not create most of the emojis. You can find an overview of the changes I made in the file CHANGES.txt
+
+Most information on this fork will be included in the [Wiki](https://github.com/C1710/blobmoji/wiki). There you'll find more detailed build instructions and other helpful information on how to use this font and much more.
+
+(_[Emojipedia®](https://emojipedia.org) is a registered trademark of Emojipedia Pty Ltd_)
 
 But now to the original content of this Readme:
 
@@ -60,18 +68,22 @@ emoji design.  Currently we have no plans to update this font.
 
 ## License
 
-Emoji fonts (under the fonts subdirectory) are under the
+ > Emoji fonts (under the fonts subdirectory) are under the
 [SIL Open Font License, version 1.1](fonts/LICENSE).<br/>
 Tools and most image resources are under the [Apache license, version 2.0](./LICENSE).
 Flag images under third_party/region-flags are in the public domain or
 otherwise exempt from copyright ([more info](third_party/region-flags/LICENSE)).
 
+_First of all, this licensing is used for this project too to avoid any confusion. This might be extended in the future for all files entirely made by myself._
+
 ## Contributing
 
-Please read [CONTRIBUTING](CONTRIBUTING.md) if you are thinking of contributing to this project.
+ > Please read [CONTRIBUTING](CONTRIBUTING.md) if you are thinking of contributing to this project.
+
+_Note: On this fork you can simply send pull requests or issues. I'll try to respond as soon as possible._
 
 ## News
-
+* _2018-02-03: Blobmoji Fork created_
 * 2017-09-13: Emoji redesign released.
 * 2015-12-09: Unicode 7 and 8 emoji image data (.png format) added.
 * 2015-09-29: All Noto fonts now licensed under the SIL Open Font License.
