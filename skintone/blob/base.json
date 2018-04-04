@@ -1,0 +1,17 @@
+{
+  "name": "base",
+  "extension": "",
+  "tolerance": 5,
+  "colors":
+  {
+    "skin": "#FEE133",
+    "stroke": "#eb8f00",
+    "dark": "#242424",
+    "tongue": "#e04c74",
+    "tongue_dark": "#ab3d2e",
+    "blue": "#40c0e7",
+    "blue_stroke": "#47a9b0",
+    "water": "#5f7aff",
+    "water_stroke": "#4864ed"
+  }
+}
