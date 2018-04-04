@@ -22,7 +22,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -37,16 +37,16 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="993"
-     inkscape:window-height="506"
+     inkscape:window-width="1920"
+     inkscape:window-height="1046"
      id="namedview2297"
      showgrid="false"
      inkscape:zoom="2.6074563"
-     inkscape:cx="70.595868"
-     inkscape:cy="147.32815"
-     inkscape:window-x="570"
-     inkscape:window-y="591"
-     inkscape:window-maximized="0"
+     inkscape:cx="-53.998176"
+     inkscape:cy="120.6589"
+     inkscape:window-x="-11"
+     inkscape:window-y="-11"
+     inkscape:window-maximized="1"
      inkscape:current-layer="svg2295" />
   <path
      style="fill:#f9f7ee;fill-opacity:1;stroke:#000000;stroke-width:1.99999988;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.34567901;paint-order:stroke fill markers"
@@ -54,4 +54,8 @@
      id="path830"
      inkscape:connector-curvature="0"
      sodipodi:nodetypes="sssssasssssss" />
+  <path
+     style="fill:#ffe4de;fill-opacity:1;stroke:none;stroke-width:1.99999988;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.34567901;paint-order:stroke fill markers"
+     d="M 36.175781 61.273438 C 36.080894 61.608176 35.991101 61.944773 35.880859 62.275391 C 30.655873 77.945275 23.702605 88.373509 27.013672 102.18164 C 28.270833 107.42439 37.611959 108.82639 39.136719 102.32422 C 41.833642 90.823449 38.923137 87.347501 43.666016 75.34375 C 44.557035 73.08867 45.629488 71.303173 46.820312 69.865234 A 42.372879 36.542374 7.2432575 0 1 36.175781 61.273438 z M 88.042969 73.101562 A 42.372879 36.542374 7.2432575 0 1 74.916016 76.099609 C 75.207698 77.443845 75.261636 78.897109 75.007812 80.457031 C 72.934941 93.196271 67.850325 95.462659 64.339844 106.55664 C 62.325004 112.92403 73.751374 116.95262 75.273438 111.77148 C 78.959914 99.222637 82.71945 95.179584 86.269531 78.457031 C 86.656185 76.635711 87.276678 74.856471 88.042969 73.101562 z "
+     id="path814" />
 </svg>
