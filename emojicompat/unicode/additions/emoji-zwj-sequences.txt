@@ -1,0 +1,30 @@
+# © 2017 Unicode®, Inc.
+# Unicode and the Unicode Logo are registered trademarks of Unicode, Inc. in the U.S. and other countries.
+# For terms of use, see http://www.unicode.org/terms_of_use.html
+
+# Note: this file is not published by Unicode, but since its format follows Unicode's format, it's
+# basically derived from Unicode data files.
+
+# Backward compatibility with earlier platforms that supported these
+1F93C 1F3FB 200D 2640 FE0F                        ; Emoji_ZWJ_Sequence  ; women wrestling: light skin tone
+1F93C 1F3FB 200D 2642 FE0F                        ; Emoji_ZWJ_Sequence  ; men wrestling: light skin tone
+1F93C 1F3FC 200D 2640 FE0F                        ; Emoji_ZWJ_Sequence  ; women wrestling: medium-light skin tone
+1F93C 1F3FC 200D 2642 FE0F                        ; Emoji_ZWJ_Sequence  ; men wrestling: medium-light skin tone
+1F93C 1F3FD 200D 2640 FE0F                        ; Emoji_ZWJ_Sequence  ; women wrestling: medium skin tone
+1F93C 1F3FD 200D 2642 FE0F                        ; Emoji_ZWJ_Sequence  ; men wrestling: medium skin tone
+1F93C 1F3FE 200D 2640 FE0F                        ; Emoji_ZWJ_Sequence  ; women wrestling: medium-dark skin tone
+1F93C 1F3FE 200D 2642 FE0F                        ; Emoji_ZWJ_Sequence  ; men wrestling: medium-dark skin tone
+1F93C 1F3FF 200D 2640 FE0F                        ; Emoji_ZWJ_Sequence  ; women wrestling: dark skin tone
+1F93C 1F3FF 200D 2642 FE0F                        ; Emoji_ZWJ_Sequence  ; men wrestling: dark skin tone
+
+# New Sequences added for Blobmoji
+1F9B8 200D 2063 FE0F                              ; Emoji_ZWJ_Sequence  ; super hero
+1F9B8 200D 2063 FE0F                              ; Emoji_ZWJ_Sequence  ; super villain
+
+1F92A 200D 2063 FE0F                              ; Emoji_ZWJ_Sequence  ; Crazy face (compat)
+1F924 200D 2063 FE0F                              ; Emoji_ZWJ_Sequence  ; Drooling face (compat)
+1F644 200D 2063 FE0F                              ; Emoji_ZWJ_Sequence  ; Face looking up (compat)
+1F52B 200D 2063 FE0F                              ; Emoji_ZWJ_Sequence  ; Water pistol (compat)
+
+1F95A 200D 1F3A8                                  ; Emoji_ZWJ_Sequence  ; Easter egg
+1F928 200D 1F922                                  ; Emoji_ZWJ_Sequence  ; Disgusted face

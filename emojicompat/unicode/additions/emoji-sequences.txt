@@ -1,0 +1,47 @@
+# © 2017 Unicode®, Inc.
+# Unicode and the Unicode Logo are registered trademarks of Unicode, Inc. in the U.S. and other countries.
+# For terms of use, see http://www.unicode.org/terms_of_use.html
+
+# Note: this file is not published by Unicode, but since its format follows Unicode's format, it's
+# basically derived from Unicode data files.
+
+# Backward compatibility with earlier platforms that supported these
+1F93C 1F3FF                                       ; Emoji_Modifier_Sequence   ; wrestlers: light skin tone
+1F93C 1F3FE                                       ; Emoji_Modifier_Sequence   ; wrestlers: medium-light skin tone
+1F93C 1F3FD                                       ; Emoji_Modifier_Sequence   ; wrestlers: medium skin tone
+1F93C 1F3FC                                       ; Emoji_Modifier_Sequence   ; wrestlers: medium-dark skin tone
+1F93C 1F3FB                                       ; Emoji_Modifier_Sequence   ; wrestlers: dark skin tone
+1F91D 1F3FF                                       ; Emoji_Modifier_Sequence   ; handshake: light skin tone
+1F91D 1F3FE                                       ; Emoji_Modifier_Sequence   ; handshake: medium-light skin tone
+1F91D 1F3FD                                       ; Emoji_Modifier_Sequence   ; handshake: medium skin tone
+1F91D 1F3FC                                       ; Emoji_Modifier_Sequence   ; handshake: medium-dark skin tone
+1F91D 1F3FB                                       ; Emoji_Modifier_Sequence   ; handshake: dark skin tone
+
+# Blobmoji Sequences
+
+1F431 1F3FB                                       ; Emoji_Modifier_Sequence   ; cat face:        light skin tone
+1F431 1F3FC                                       ; Emoji_Modifier_Sequence   ; cat face: medium-light skin tone
+1F431 1F3FD                                       ; Emoji_Modifier_Sequence   ; cat face: medium       skin tone
+1F431 1F3FE                                       ; Emoji_Modifier_Sequence   ; cat face: medium-dark  skin tone
+1F431 1F3FF                                       ; Emoji_Modifier_Sequence   ; cat face:        dark  skin tone
+
+# Flags
+
+# # Germany
+
+1F3F4 E0064 E0065 E006D E0076 E007F; Emoji_Tag_Sequence; Mecklenburg Vorpommern
+1F3F4 E0064 E0065 E006E E0069 E007F; Emoji_Tag_Sequence; Niedersachsen
+1F3F4 E0064 E0065 E006E E0077 E007F; Emoji_Tag_Sequence; Nordrhein Westfalen
+1F3F4 E0064 E0065 E0062 E0062 E007F; Emoji_Tag_Sequence; Brandenburg
+1F3F4 E0064 E0065 E0062 E0065 E007F; Emoji_Tag_Sequence; Berlin
+1F3F4 E0064 E0065 E0062 E0062 E007F; Emoji_Tag_Sequence; Baden Württemberg
+1F3F4 E0064 E0065 E0062 E0079 E007F; Emoji_Tag_Sequence; Bayern
+1F3F4 E0064 E0065 E0068 E0062 E007F; Emoji_Tag_Sequence; Bremen
+1F3F4 E0064 E0065 E0068 E0065 E007F; Emoji_Tag_Sequence; Hessen
+1F3F4 E0064 E0065 E0068 E0068 E007F; Emoji_Tag_Sequence; Hamburg
+1F3F4 E0064 E0065 E0072 E0070 E007F; Emoji_Tag_Sequence; Rheinland-Pfalz
+1F3F4 E0064 E0065 E0073 E006C E007F; Emoji_Tag_Sequence; Saarland
+1F3F4 E0064 E0065 E0073 E006E E007F; Emoji_Tag_Sequence; Sachsen Anhalt
+1F3F4 E0064 E0065 E0073 E0068 E007F; Emoji_Tag_Sequence; Schleswig Holstein
+1F3F4 E0064 E0065 E0073 E0074 E007F; Emoji_Tag_Sequence; Sachsen Anhalt
+1F3F4 E0064 E0065 E0074 E0068 E007F; Emoji_Tag_Sequence; Thüringen
