@@ -1,9 +1,10 @@
-Changes from Google Noto Color Emoji v x.x
+Changes from Google Noto Color Emoji v2017-05-18 (approx.)
 =======
 
-These are the files which are/were not included in the original Noto Emoji.
-Due to the fact that I didn't worked with git in mind, ALL emojis have been
-reuploaded.
+These are the SVG/PNG files which are/were not included in the original Noto Emoji (or have been modified).
+Due to the fact that I didn't worked with git in mind, ALL emojis have been reuploaded although not every file has been modified.  
+Any other modifications that have been made can be seen in the Git history as these modifications have been made _after_ uploading
+this repository to Github.
 
 There are currently four types of changes:
 

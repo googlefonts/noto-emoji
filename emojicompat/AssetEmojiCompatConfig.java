@@ -1,6 +1,25 @@
+/*
+ * Original file (https://android.googlesource.com/platform/frameworks/support/+/master/emoji/bundled/src/main/java/android/support/text/emoji/bundled/BundledEmojiCompatConfig.java):
+ *     Copyright (C) 2017 The Android Open Source Project
+ * Modifications Copyright (C) 2018 Constantin A.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
+import android.content.Context;
 import android.content.res.AssetManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.text.emoji.EmojiCompat;
 import android.support.text.emoji.MetadataRepo;
 import android.util.Log;
@@ -13,6 +32,7 @@ import android.support.v4.util.Preconditions;
  * Changes are marked with comments. Formatting and other simple changes are not always marked.
  */
 public class AssetEmojiCompatConfig extends EmojiCompat.Config {
+    // The class name is obviously changed from the original file
 
     /**
      * Create a new configuration for this EmojiCompat
@@ -78,7 +98,7 @@ public class AssetEmojiCompatConfig extends EmojiCompat.Config {
         public void run() {
             try {
                 final AssetManager assetManager = context.getAssets();
-                final MetadataRepo resourceIndex = MetadataRepo.create(mgr, FONT_NAME);
+                final MetadataRepo resourceIndex = MetadataRepo.create(assetManager, FONT_NAME);
                 loaderCallback.onLoaded(resourceIndex);
             } catch (Throwable t) {
                 loaderCallback.onFailed(t);
