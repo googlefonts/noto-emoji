@@ -31,7 +31,7 @@
      inkscape:window-y="-11"
      inkscape:window-x="-11"
      inkscape:cy="91.810295"
-     inkscape:cx="42.172452"
+     inkscape:cx="-48.011284"
      inkscape:zoom="3.6203867"
      showgrid="false"
      id="namedview8"
@@ -514,6 +514,14 @@
   <g
      transform="translate(0,-1.8)"
      id="g4534">
+    <rect
+       style="opacity:1;vector-effect:none;fill:#fbfbfb;fill-opacity:1;stroke:#646464;stroke-width:2.17340326;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:stroke fill markers"
+       id="rect2876"
+       width="69.668694"
+       height="112.44213"
+       x="29.165653"
+       y="9.5789347"
+       rx="2.99751" />
     <g
        id="barcode"
        style="fill:#000000"
@@ -4606,13 +4614,5 @@
          y="144"
          x="132" />
     </g>
-    <rect
-       style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;stroke:#646464;stroke-width:2.17340326;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:stroke fill markers"
-       id="rect2876"
-       width="69.668694"
-       height="112.44213"
-       x="29.165653"
-       y="9.5789347"
-       rx="2.99751" />
   </g>
 </svg>
