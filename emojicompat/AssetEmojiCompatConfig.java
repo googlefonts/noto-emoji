@@ -98,11 +98,11 @@ public class AssetEmojiCompatConfig extends EmojiCompat.Config {
         @Override
         public void run() {
             try {
-                final AssetManager assetManager = mContext.getAssets();
+                final AssetManager assetManager = context.getAssets();
                 final MetadataRepo resourceIndex = MetadataRepo.create(assetManager, FONT_NAME);
-                mLoaderCallback.onLoaded(resourceIndex);
+                loaderCallback.onLoaded(resourceIndex);
             } catch (Throwable t) {
-                mLoaderCallback.onFailed(t);
+                loaderCallback.onFailed(t);
             }
         }
     }
