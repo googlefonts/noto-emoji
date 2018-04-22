@@ -68,8 +68,9 @@ public class AssetEmojiCompatConfig extends EmojiCompat.Config {
         @Override
         @RequiresApi(19)
         public void load(@NonNull EmojiCompat.MetadataRepoLoaderCallback loaderCallback) {
-            Preconditions.checkNotNull(loaderCallback, "loaderCallback cannot be null");
-            final InitRunnable runnable = new InitRunnable(mContext, loaderCallback);
+            // This one doesn't work as it's not android.support
+            //Preconditions.checkNotNull(loaderCallback, "loaderCallback cannot be null");
+            final InitRunnable runnable = new InitRunnable(mContext, loaderCallback, assetName);
             final Thread thread = new Thread(runnable);
             thread.setDaemon(false);
             thread.start();
