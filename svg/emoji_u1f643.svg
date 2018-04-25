@@ -14,12 +14,12 @@
   <g id="Layer_1">
     <g>
       <linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="64" x2="64" y1="19.7166" y2="107.7021">
-        <stop offset="0.1" style="stop-color:#F6A323"/>
-        <stop offset="0.1166" style="stop-color:#F7A924"/>
-        <stop offset="0.2025" style="stop-color:#FAC12B"/>
-        <stop offset="0.2924" style="stop-color:#FCD32F"/>
-        <stop offset="0.3882" style="stop-color:#FEDE32"/>
         <stop offset="0.5" style="stop-color:#FEE133"/>
+        <stop offset="0.6118" style="stop-color:#FEDE32"/>
+        <stop offset="0.7076" style="stop-color:#FCD32F"/>
+        <stop offset="0.7975" style="stop-color:#FAC12B"/>
+        <stop offset="0.8834" style="stop-color:#F7A924"/>
+        <stop offset="0.9" style="stop-color:#F6A323"/>
       </linearGradient>
       <path d="M64,119.89C36.07,119.89,6,102.4,6,64S36.07,8.11,64,8.11c15.48,0,29.81,5.12,40.36,14.43 C115.9,32.72,122,47.06,122,64c0,16.86-6.1,31.17-17.64,41.39C93.78,114.74,79.45,119.89,64,119.89z" style="fill:url(#SVGID_1_);"/>
       <path d="M64,10.11L64,10.11c14.99,0,28.86,4.95,39.03,13.93C114.13,33.83,120,47.65,120,64 c0,16.27-5.87,30.07-16.97,39.89c-10.21,9.03-24.07,14-39.03,14c-15.04,0-28.9-4.91-39.04-13.82C13.86,94.32,8,80.46,8,64 c0-16.54,5.86-30.42,16.96-40.15C35.07,14.99,48.93,10.11,64,10.11 M64,6.11L64,6.11L64,6.11L64,6.11C32.85,6.11,4,26.11,4,64 c0,37.68,28.85,57.89,60,57.89h0h0h0c31.15,0,60-20.73,60-57.89C124,26.63,95.15,6.11,64,6.11L64,6.11z" style="fill:#EB8F00;"/>
