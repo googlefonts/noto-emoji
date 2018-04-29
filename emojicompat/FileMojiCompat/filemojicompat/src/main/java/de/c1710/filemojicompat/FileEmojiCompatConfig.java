@@ -29,6 +29,7 @@ import android.util.Log;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * A simple implementation of EmojiCompat.Config using typeface files.
@@ -66,7 +67,7 @@ public class FileEmojiCompatConfig extends EmojiCompat.Config {
                                  // NEW
                                  @NonNull File fontFile) {
         super(new FileMetadataLoader(context, fontFile));
-        fallback = !fontFile.exists();
+        fallback = !fontFile.exists() || !fontFile.canRead();
     }
 
     @Override
