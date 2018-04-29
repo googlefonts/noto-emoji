@@ -3,6 +3,11 @@
 This is a library providing an easy solution to use [EmojiCompat](https://developer.android.com/guide/topics/ui/look-and-feel/emoji-compat) 
 with fonts that are either stored in the `assets`-folder with another name than `NotoColorEmojiCompat.ttf` or you can use
 EmojiCompat fonts which are stored anywhere on the device's local storage.
+## How do I get this library?
+That's relatively easy: Just add the following line to your module's `build.gradle` inside `dependencies`:
+```
+implementation 'de.c1710:filemojicompat:1.0.1'
+```
 ## How do I use it?
 There are two different methods included in this library:
 1. ### [`AssetEmojiCompatConfig`](https://github.com/C1710/blobmoji/blob/filemojicompat/emojicompat/FileMojiCompat/filemojicompat/src/main/java/de/c1710/filemojicompat/AssetEmojiCompatConfig.java)  
