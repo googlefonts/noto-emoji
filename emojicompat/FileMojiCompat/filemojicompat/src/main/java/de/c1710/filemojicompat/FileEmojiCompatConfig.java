@@ -1,6 +1,6 @@
 package de.c1710.filemojicompat;
 /*
- * Original file (https://android.googlesource.com/platform/frameworks/support/+/master/emoji/bundled/src/main/java/android/support/text/emoji/bundled/BundledEmojiCompatConfig.java):
+ * Adapted from https://android.googlesource.com/platform/frameworks/support/+/master/emoji/bundled/src/main/java/android/support/text/emoji/bundled/BundledEmojiCompatConfig.java
  *     Copyright (C) 2017 The Android Open Source Project
  * Modifications Copyright (C) 2018 Constantin A.
  *
@@ -20,6 +20,7 @@ package de.c1710.filemojicompat;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.text.emoji.EmojiCompat;
@@ -29,6 +30,8 @@ import android.util.Log;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -44,7 +47,8 @@ public class FileEmojiCompatConfig extends EmojiCompat.Config {
     /**
      * This boolean indicates whether the fallback solution is used.
      */
-    private final boolean fallback;
+    private boolean fallback;
+    private static final HashMap<File, InitRunnable.EmojiFontFailListener> listeners = new HashMap<>(1);
 
     /**
      * Create a new configuration for this EmojiCompat
@@ -67,7 +71,8 @@ public class FileEmojiCompatConfig extends EmojiCompat.Config {
                                  // NEW
                                  @NonNull File fontFile) {
         super(new FileMetadataLoader(context, fontFile));
-        fallback = !fontFile.exists() || !fontFile.canRead();
+        // The InitRunable needs to find this config if it fails.
+        listeners.put(fontFile, this::onFailed);
     }
 
     @Override
@@ -77,9 +82,17 @@ public class FileEmojiCompatConfig extends EmojiCompat.Config {
         }
         else {
             super.setReplaceAll(false);
-            Log.w(TAG, "setReplaceAll: Cannot replace all emojis. Fallback font is active");
+            if(replaceAll) {
+                // If replaceAll would have been set to false anyway, there's no need for apologizing.
+                Log.w(TAG, "setReplaceAll: Cannot replace all emojis. Fallback font is active");
+            }
         }
         return this;
+    }
+
+    private void onFailed() {
+        fallback = true;
+        setReplaceAll(false);
     }
 
     /**
@@ -91,9 +104,9 @@ public class FileEmojiCompatConfig extends EmojiCompat.Config {
         // NEW
         private final File fontFile;
 
-        private FileMetadataLoader(@NonNull Context context, 
-                                    // NEW
-                                    File fontFile) {
+        private FileMetadataLoader(@NonNull Context context,
+                                   // NEW
+                                   File fontFile) {
             this.mContext = context.getApplicationContext();
             // NEW
             this.fontFile = fontFile;
@@ -142,6 +155,14 @@ public class FileEmojiCompatConfig extends EmojiCompat.Config {
             catch (Throwable t) {
                 // Instead of crashing, this one will first try to load the fallback font
                 try {
+                    /*
+                     This solution is very bad but it's impossible to not use such a solution since
+                     EmojiCompat.Config is very restricted.
+                    */
+                    if(listeners.containsKey(FONT_FILE)) {
+                        listeners.get(FONT_FILE).onFailed();
+                    }
+                    android.util.Log.w(TAG, "Error while loading the font file.", t);
                     final AssetManager assetManager = context.getAssets();
                     final MetadataRepo resourceIndex =
                             MetadataRepo.create(assetManager, "NoEmojiCompat.ttf");
@@ -150,6 +171,10 @@ public class FileEmojiCompatConfig extends EmojiCompat.Config {
                     loaderCallback.onFailed(t);
                 }
             }
+        }
+
+        interface EmojiFontFailListener {
+            void onFailed();
         }
     }
 }
