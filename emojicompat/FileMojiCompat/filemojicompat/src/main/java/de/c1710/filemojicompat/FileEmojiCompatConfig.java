@@ -22,6 +22,7 @@ import android.content.res.AssetManager;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.text.emoji.EmojiCompat;
 import android.support.text.emoji.MetadataRepo;
@@ -68,9 +69,9 @@ public class FileEmojiCompatConfig extends EmojiCompat.Config {
      */
     public FileEmojiCompatConfig(@NonNull Context context,
                                  // NEW
-                                 @NonNull File fontFile) {
+                                 @Nullable File fontFile) {
         super(new FileMetadataLoader(context, fontFile));
-        if(fontFile.exists() && fontFile.canRead()) {
+        if(fontFile != null && fontFile.exists() && fontFile.canRead()) {
             try {
                 // Is it a font?
                 Typeface typeface = Typeface.createFromFile(fontFile);
@@ -136,7 +137,7 @@ public class FileEmojiCompatConfig extends EmojiCompat.Config {
 
         private FileMetadataLoader(@NonNull Context context,
                                    // NEW
-                                   File fontFile) {
+                                   @Nullable File fontFile) {
             this.mContext = context.getApplicationContext();
             // NEW
             this.fontFile = fontFile;
