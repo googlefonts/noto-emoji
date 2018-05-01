@@ -18,7 +18,7 @@ ext {
     libraryDescription = 'An EmojiCompat implementation using files from a local file or a file inside your assets directory'
     siteUrl = 'https://github.com/c1710/blobmoji'
     gitUrl = 'https://github.com/c1710/blobmoji.git'
-    libraryVersion = '1.0.2'
+    libraryVersion = '1.0.3'
     developerId = 'c1710'
     developerName = 'Constantin A.'
     developerEmail = 'c1710.apps@outlook.com'
