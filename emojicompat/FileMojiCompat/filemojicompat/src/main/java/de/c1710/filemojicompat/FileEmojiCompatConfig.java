@@ -48,7 +48,6 @@ public class FileEmojiCompatConfig extends EmojiCompat.Config {
      * This boolean indicates whether the fallback solution is used.
      */
     private boolean fallback;
-    private static final HashMap<File, InitRunnable.EmojiFontFailListener> listeners = new HashMap<>(1);
 
     /**
      * Create a new configuration for this EmojiCompat
@@ -71,8 +70,38 @@ public class FileEmojiCompatConfig extends EmojiCompat.Config {
                                  // NEW
                                  @NonNull File fontFile) {
         super(new FileMetadataLoader(context, fontFile));
-        // The InitRunable needs to find this config if it fails.
-        listeners.put(fontFile, this::onFailed);
+        if(fontFile.exists() && fontFile.canRead()) {
+            try {
+                // Is it a font?
+                Typeface typeface = Typeface.createFromFile(fontFile);
+                // Is it an EmojiCompat font?
+                /*
+                    Please note that this will possibly cause a race condition. But all in all it's
+                    better to have a chance of detecting such a non-valid font than either having to
+                    wait for a long time or not being able to detect it at all.
+                    However, since this Thread is started immediately, it should be faster than
+                    the initialization process of EmojiCompat itself...
+                */
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    new Thread(() -> {
+                        try {
+                            MetadataRepo.create(typeface, new FileInputStream(fontFile));
+                        } catch (Throwable t) {
+                            fallback = true;
+                            setReplaceAll(false);
+                            Log.w(TAG, "FileEmojiCompatConfig: No valid EmojiCompat font provided. Fallback enabled", t);
+                        }
+                    }).start();
+                }
+            } catch (RuntimeException ex) {
+                fallback = true;
+                Log.e(TAG, "FileEmojiCompatConfig: Font file corrupt. Fallback enabled", ex);
+            }
+        } else {
+            // The heck, this is not even an actual _file_!
+            fallback = true;
+        }
+
     }
 
     @Override
@@ -91,8 +120,9 @@ public class FileEmojiCompatConfig extends EmojiCompat.Config {
     }
 
     private void onFailed() {
+        Log.d(TAG, "onFailed: Could not load font");
         fallback = true;
-        setReplaceAll(false);
+        super.setReplaceAll(false);
     }
 
     /**
@@ -155,13 +185,6 @@ public class FileEmojiCompatConfig extends EmojiCompat.Config {
             catch (Throwable t) {
                 // Instead of crashing, this one will first try to load the fallback font
                 try {
-                    /*
-                     This solution is very bad but it's impossible to not use such a solution since
-                     EmojiCompat.Config is very restricted.
-                    */
-                    if(listeners.containsKey(FONT_FILE)) {
-                        listeners.get(FONT_FILE).onFailed();
-                    }
                     android.util.Log.w(TAG, "Error while loading the font file.", t);
                     final AssetManager assetManager = context.getAssets();
                     final MetadataRepo resourceIndex =
