@@ -1,12 +1,2 @@
-<svg width="128" height="128" style="enable-background:new 0 0 128 128;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-  <g id="图层_1">
-    <linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="64" x2="64" y1="4.5" y2="123.8241">
-      <stop offset="0" style="stop-color:#F9DDBD"/>
-      <stop offset="0.3705" style="stop-color:#FADCBA"/>
-      <stop offset="0.6842" style="stop-color:#FCD8AF"/>
-      <stop offset="0.9763" style="stop-color:#FFD39E"/>
-      <stop offset="1" style="stop-color:#FFD29C"/>
-    </linearGradient>
-    <rect height="120" style="fill:url(#SVGID_1_);" width="120" x="4" y="4"/>
-  </g>
-</svg>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="128" height="128" enable-background="new 0 0 128 128" xmlns="http://www.w3.org/2000/svg"><linearGradient id="a" x1="64" x2="64" y1="4.5" y2="123.82" gradientUnits="userSpaceOnUse"><stop stop-color="#F9DDBD" offset="0"/><stop stop-color="#FADCBA" offset=".3705"/><stop stop-color="#FCD8AF" offset=".6842"/><stop stop-color="#FFD39E" offset=".9763"/><stop stop-color="#FFD29C" offset="1"/></linearGradient><rect x="4" y="4" width="120" height="120" fill="url(#a)"/></svg>
