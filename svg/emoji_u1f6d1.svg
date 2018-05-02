@@ -1,11 +1,1 @@
-<svg width="128" height="128" style="enable-background:new 0 0 128 128;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-  <rect height="0.67" style="fill:#F2F2F2;" width="0" x="50" y="-56.67"/>
-  <linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="64" x2="64" y1="6" y2="122.6544">
-    <stop offset="0" style="stop-color:#E53935"/>
-    <stop offset="1" style="stop-color:#C62828"/>
-  </linearGradient>
-  <polygon points="41.1,124 4,87.54 4,38.17 41.1,4 90.48,4 124,38.17 124,87.54 90.48,124 " style="fill:url(#SVGID_1_);"/>
-  <g style="opacity:0.2;">
-    <path d="M88.74,7.88l31.15,31.95l0.18,46.16l-31.13,34.05l-46.22,0.09L8.01,85.85L7.93,39.95L42.75,7.97 L88.74,7.88 M90.43,3.87l-49.24,0.1L3.92,38.19l0.1,49.34l37.07,36.6l49.62-0.1l33.37-36.5l-0.19-49.34L90.43,3.87L90.43,3.87z" style="fill:#424242;"/>
-  </g>
-</svg>
+<svg enable-background="new 0 0 128 128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg"><rect x="50" y="-56.67" width="0" height=".67" fill="#F2F2F2"/><linearGradient id="a" x1="64" x2="64" y1="6" y2="122.65" gradientUnits="userSpaceOnUse"><stop stop-color="#E53935" offset="0"/><stop stop-color="#C62828" offset="1"/></linearGradient><polygon points="41.1 124 4 87.54 4 38.17 41.1 4 90.48 4 124 38.17 124 87.54 90.48 124" fill="url(#a)"/><g opacity=".2"><path d="m88.74 7.88 31.15 31.95 0.18 46.16-31.13 34.05-46.22 0.09-34.71-34.28-0.08-45.9 34.82-31.98 45.99-0.09m1.69-4.01-49.24 0.1-37.27 34.22 0.1 49.34 37.07 36.6 49.62-0.1 33.37-36.5-0.19-49.34-33.46-34.32z" fill="#424242"/></g></svg>

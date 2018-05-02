@@ -1,13 +1,1 @@
-<svg width="128" height="128" style="enable-background:new 0 0 128 128;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-  <g>
-    <linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="64" x2="64" y1="3.5455" y2="122.5368">
-      <stop offset="0" style="stop-color:#616161"/>
-      <stop offset="0.3517" style="stop-color:#4E4E4E"/>
-      <stop offset="1" style="stop-color:#212121"/>
-    </linearGradient>
-    <circle cx="64" cy="64" r="60" style="fill:url(#SVGID_1_);"/>
-    <g style="opacity:0.2;">
-      <path d="M64,7c31.43,0,57,25.57,57,57s-25.57,57-57,57S7,95.43,7,64S32.57,7,64,7 M64,4 C30.86,4,4,30.86,4,64s26.86,60,60,60s60-26.86,60-60S97.14,4,64,4L64,4z" style="fill:#EEEEEE;"/>
-    </g>
-  </g>
-</svg>
+<svg enable-background="new 0 0 128 128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg"><linearGradient id="a" x1="64" x2="64" y1="3.5455" y2="122.54" gradientUnits="userSpaceOnUse"><stop stop-color="#616161" offset="0"/><stop stop-color="#4E4E4E" offset=".3517"/><stop stop-color="#212121" offset="1"/></linearGradient><circle cx="64" cy="64" r="60" fill="url(#a)"/><g opacity=".2"><path d="M64,7c31.43,0,57,25.57,57,57s-25.57,57-57,57S7,95.43,7,64S32.57,7,64,7 M64,4 C30.86,4,4,30.86,4,64s26.86,60,60,60s60-26.86,60-60S97.14,4,64,4L64,4z" fill="#eee"/></g></svg>
