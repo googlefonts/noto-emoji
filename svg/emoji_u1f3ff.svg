@@ -1,11 +1,1 @@
-<svg width="128" height="128" style="enable-background:new 0 0 128 128;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-  <g id="图层_1">
-    <linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="64" x2="64" y1="4.3704" y2="123.5215">
-      <stop offset="0" style="stop-color:#70534A"/>
-      <stop offset="0.4665" style="stop-color:#6D5047"/>
-      <stop offset="0.8416" style="stop-color:#63463D"/>
-      <stop offset="1" style="stop-color:#5C4037"/>
-    </linearGradient>
-    <rect height="120" style="fill:url(#SVGID_1_);" width="120" x="4" y="4"/>
-  </g>
-</svg>
+<svg enable-background="new 0 0 128 128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg"><linearGradient id="a" x1="64" x2="64" y1="4.3704" y2="123.52" gradientUnits="userSpaceOnUse"><stop stop-color="#70534A" offset="0"/><stop stop-color="#6D5047" offset=".4665"/><stop stop-color="#63463D" offset=".8416"/><stop stop-color="#5C4037" offset="1"/></linearGradient><rect x="4" y="4" width="120" height="120" fill="url(#a)"/></svg>
