@@ -6,7 +6,7 @@ EmojiCompat fonts which are stored anywhere on the device's local storage.
 ## How do I get this library?
 That's relatively easy: Just add the following line to your module's `build.gradle` inside `dependencies`:
 ```
-implementation 'de.c1710:filemojicompat:1.0.1'
+implementation 'de.c1710:filemojicompat:1.0.7'
 ```
 ## How do I use it?
 There are two different methods included in this library:
@@ -17,18 +17,19 @@ There are two different methods included in this library:
    ```java
    EmojiCompat.Config config = new AssetEmojiCompatConfig(getContext(), "Blobmoji.ttf");
    ```
-   This will create a new EmojiCompat configuration using the file provided in `assets/Blobmoji.ttf`.
-2. ### [`FileEmojiCOmpatConfig`](https://github.com/C1710/blobmoji/blob/filemojicompat/emojicompat/FileMojiCompat/filemojicompat/src/main/java/de/c1710/filemojicompat/FileEmojiCompatConfig.java)
+   This will create a new EmojiCompat configuration using the file provided in `assets/Blobmoji.ttf`.  
+   Anyhow, I don't recommend using `AssetEmojiCompatConfig` anymore as [this](#i-want-to-let-my-users-only-choose-another-font-if-they-dont-like-my-current-one) approach is more flexible and just as easy to use.
+2. ### [`FileEmojiCompatConfig`](https://github.com/C1710/blobmoji/blob/filemojicompat/emojicompat/FileMojiCompat/filemojicompat/src/main/java/de/c1710/filemojicompat/FileEmojiCompatConfig.java)
    This is the more complex and interesting option.  
    Instead of providing a short String containing the font's name, you can provide a [`File`](https://developer.android.com/reference/java/io/File)
    (or the String containing the full path of it).  
    This will try to load the font from this path.  
-   In case it gets into any trouble - let's say because of missing permissions or a non-existent file, it will fallback to using no EmojiCOmpat at all.  
+   In case it gets into any trouble - let's say because of missing permissions or a non-existent file, it will fallback to using no EmojiCompat at all.  
    (Technically this is wrong as leaving EmojiCompat uninitialized would crash the components using it. There's an explanation below).  
    Example:
    ```java
    Context context = getContext();
-   File fontFile = new File(context.getExternalFilesDir(null), "emoji/Blobmoji.ttf"),
+   File fontFile = new File(context.getExternalFilesDir(null), "emoji/Blobmoji.ttf");
    EmojiCompat.Config config = new FileEmojiCompatConfig(context, fontFile);
    ```
    In this example, your app would try to load the font file `Blobmoji.ttf` located at `/storage/emulated/0/Android/data/[your.app.package]/files/Blobmoji.ttf`.
@@ -46,10 +47,26 @@ To prevent this case, `FileEmojiCompatConfig` includes a fallback solution - ins
 is much smaller than most of the EmojiCompat font files (~40kiB). That's because it only includes 10 characters which are the flags for China, Germany, Spain, France, United Kingdom, Italy, Japan, South Korea, Russia, USA.  
 These are the flags which where originally included in [Noto Emoji](https://github.com/googlei18n/noto-emoji) and they are only used to _fill_ the font
 file with something.  
-#### WIll my users see these flags when the fallback font is used?
+#### Will my users see these flags when the fallback font is used?
 Yes, they will. But only if their device either doesn't support these flags (which is basically impossible) or if they use a device which already uses
 these assets as their default emojis. They won't replace any existing emojis.
 #### But I did `setReplaceAll(true)`?!
-This won't change anything as `FileEmojiCompatConfig` will detect if the font file doesn't exist (or can't be read) and it will simply ignore `setReplaceAll(true)`.
-However, this is currently _not_ the case if something else goes wrong, e.g. if the file is not an EmojiCompat font.  
-But even in this case only these flags are affected.
+This won't change anything as `FileEmojiCompatConfig` will detect if the font file is not valid and it will simply ignore `setReplaceAll(true)`.  
+## I want to let my users only choose another font if they don't like my current one
+This is easily possible with the introduction of `FileMojiCompat 1.0.6`.  
+In this case you override the fallback font by putting your font into the `assets` folder of your app using the name `NoEmojiCompat.ttf`.  
+Whenever the fallback font is needed (which is the case if the user doesn't specify another one), this font is being used.  
+In order to prevent blocking the `setReplaceAll` method, you'll have to call it with `setReplaceAll(true, true)`.  
+The second argument indicates that you want to ignore this `replaceAll`-prevention (if set to `true`. Setting it to `false` won't change anything).  
+So here's a short example of using this very flexible, yet easy to use method.  
+But please be aware that changing the emoji font using this snippet isn't very easy as it needs the user to copy (and potentially rename) some files:
+```java
+   Context context = getContext();
+   File fontFile = new File(context.getExternalFilesDir(null), "emoji.ttf");
+   EmojiCompat.Config config = new FileEmojiCompatConfig(context, fontFile)
+                                 .setReplaceAll(true, true);
+```
+In this case, the font specified in `assets/NoEmojiCompat.ttf` will be used until `/storage/emulated/0/Android/[yourpackage]/files/emoji.ttf` exists and includes a valid `EmojiCompat` font.  
+This method combines the easy approach of `AssetEmojiCompatConfig` and the flexibility of `FileEmojiCompatConfig` with some tradeoffs on the usability side.  
+If you need a different asset path for your fallback file, you can simply add it as another argument when creating this font. This feature has been introduced in `1.0.7`.
+**_PLEASE use at least this method in your app. It's always better to give the users a choice._**
