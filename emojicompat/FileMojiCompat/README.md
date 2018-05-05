@@ -6,7 +6,7 @@ EmojiCompat fonts which are stored anywhere on the device's local storage.
 ## How do I get this library?
 That's relatively easy: Just add the following line to your module's `build.gradle` inside `dependencies`:
 ```
-implementation 'de.c1710:filemojicompat:1.0.6'
+implementation 'de.c1710:filemojicompat:1.0.7'
 ```
 ## How do I use it?
 There are two different methods included in this library:
@@ -18,7 +18,7 @@ There are two different methods included in this library:
    EmojiCompat.Config config = new AssetEmojiCompatConfig(getContext(), "Blobmoji.ttf");
    ```
    This will create a new EmojiCompat configuration using the file provided in `assets/Blobmoji.ttf`.  
-   Anyhow, I don't recommend using `AssetEmojiCompatConfig` anymore as [this](#i-want-to-let-my-users-only-choose-another-font-if-they-dont-like-my-current-one) approach is more flexible and just as easy to use. There will be a feature to rename the fallback font in the next release.
+   Anyhow, I don't recommend using `AssetEmojiCompatConfig` anymore as [this](#i-want-to-let-my-users-only-choose-another-font-if-they-dont-like-my-current-one) approach is more flexible and just as easy to use.
 2. ### [`FileEmojiCompatConfig`](https://github.com/C1710/blobmoji/blob/filemojicompat/emojicompat/FileMojiCompat/filemojicompat/src/main/java/de/c1710/filemojicompat/FileEmojiCompatConfig.java)
    This is the more complex and interesting option.  
    Instead of providing a short String containing the font's name, you can provide a [`File`](https://developer.android.com/reference/java/io/File)
@@ -68,4 +68,5 @@ But please be aware that changing the emoji font using this snippet isn't very e
 ```
 In this case, the font specified in `assets/NoEmojiCompat.ttf` will be used until `/storage/emulated/0/Android/[yourpackage]/files/emoji.ttf` exists and includes a valid `EmojiCompat` font.  
 This method combines the easy approach of `AssetEmojiCompatConfig` and the flexibility of `FileEmojiCompatConfig` with some tradeoffs on the usability side.  
+If you need a different asset path for your fallback file, you can simply add it as another argument when creating this font. This feature has been introduced in `1.0.7`.
 **_PLEASE use at least this method in your app. It's always better to give the users a choice._**
