@@ -68,5 +68,5 @@ But please be aware that changing the emoji font using this snippet isn't very e
 ```
 In this case, the font specified in `assets/NoEmojiCompat.ttf` will be used until `/storage/emulated/0/Android/[yourpackage]/files/emoji.ttf` exists and includes a valid `EmojiCompat` font.  
 This method combines the easy approach of `AssetEmojiCompatConfig` and the flexibility of `FileEmojiCompatConfig` with some tradeoffs on the usability side.  
-If you need a different asset path for your fallback file, you can simply add it as another argument when creating this font. This feature has been introduced in `1.0.7`.  
+If you need a different asset path for your fallback file, you can simply add it as another argument for `FileEmojiCompatConfig`. This feature has been introduced in `1.0.7`.  
 **_PLEASE use at least this method in your app. It's always better to give the users a choice._**
