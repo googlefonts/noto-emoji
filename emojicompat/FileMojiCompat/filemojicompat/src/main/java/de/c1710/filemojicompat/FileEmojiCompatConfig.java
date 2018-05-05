@@ -34,6 +34,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * A simple implementation of EmojiCompat.Config using typeface files.
@@ -49,6 +50,10 @@ public class FileEmojiCompatConfig extends EmojiCompat.Config {
      * This boolean indicates whether the fallback solution is used.
      */
     private boolean fallback;
+    /**
+     * Indicates whether all emojis should be replaced when the fallback font is used.
+     */
+    private boolean replaceAllOnFallback = false;
 
     /**
      * Create a new configuration for this EmojiCompat
@@ -107,7 +112,19 @@ public class FileEmojiCompatConfig extends EmojiCompat.Config {
 
     @Override
     public FileEmojiCompatConfig setReplaceAll(boolean replaceAll) {
-        if(!fallback) {
+        return setReplaceAll(replaceAll, replaceAllOnFallback);
+    }
+
+    /**
+     * Replace all emojis
+     * @param replaceAll Whether all emojis should be replaced
+     * @param replaceAllOnFallback true if this is supposed to be the case even when using the fallback font.
+     *                             Useful if the NoEmojiCompat.ttf is overridden by a "real" EmojiCompat font.
+     * @return This EmojiCompat.Config
+     */
+    public FileEmojiCompatConfig setReplaceAll(boolean replaceAll, boolean replaceAllOnFallback) {
+        this.replaceAllOnFallback = replaceAllOnFallback;
+        if(!fallback || replaceAllOnFallback) {
             super.setReplaceAll(replaceAll);
         }
         else {
