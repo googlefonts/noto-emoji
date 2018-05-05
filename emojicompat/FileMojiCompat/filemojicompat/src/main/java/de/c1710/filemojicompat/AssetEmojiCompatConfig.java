@@ -1,4 +1,4 @@
-package com.keylesspalace.tusky;
+package de.c1710.filemojicompat;
 /*
  * Original file (https://android.googlesource.com/platform/frameworks/support/+/master/emoji/bundled/src/main/java/android/support/text/emoji/bundled/BundledEmojiCompatConfig.java):
  *     Copyright (C) 2017 The Android Open Source Project
@@ -18,52 +18,50 @@ package com.keylesspalace.tusky;
  */
 
 import android.content.Context;
-import android.graphics.Typeface;
+import android.content.res.AssetManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.text.emoji.EmojiCompat;
 import android.support.text.emoji.MetadataRepo;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
+import android.util.Log;
+import android.support.v4.util.Preconditions;
 
 /**
- * A simple implementation of EmojiCompat.Config using typeface files.
+ * A simple implementation of EmojiCompat.Config using typeface assets.
  * Based on:
  * https://android.googlesource.com/platform/frameworks/support/+/master/emoji/bundled/src/main/java/android/support/text/emoji/bundled/BundledEmojiCompatConfig.java
  * Changes are marked with comments. Formatting and other simple changes are not always marked.
  */
-public class FileEmojiCompatConfig extends EmojiCompat.Config {
+public class AssetEmojiCompatConfig extends EmojiCompat.Config {
     // The class name is obviously changed from the original file
 
     /**
      * Create a new configuration for this EmojiCompat
-     * @param path The file name/path of the requested font
+     * @param assetName The file name/path of the requested font
      * @param context Context instance
      */
-    public FileEmojiCompatConfig(@NonNull Context context,
-                                 // NEW
-                                 @NonNull String path) {
-        // This one is obviously new
-        super(new FileMetadataLoader(context, path));
+    public AssetEmojiCompatConfig(@NonNull Context context,
+                                  // NEW
+                                  @NonNull String assetName) {
+        // This one is oviously new
+        super(new AssetMetadataLoader(context, assetName));
     }
 
     /**
      * This is the MetadataLoader. Derived from BundledMetadataLoader but with
-     * the addition of a custom file name.
+     * the addition of a custom asset name.
      */
-    private static class FileMetadataLoader implements EmojiCompat.MetadataRepoLoader{
+    private static class AssetMetadataLoader implements EmojiCompat.MetadataRepoLoader{
         private final Context mContext;
         // NEW
-        private final String fileName;
+        private final String assetName;
 
-        private FileMetadataLoader(@NonNull Context context, 
+        private AssetMetadataLoader(@NonNull Context context, 
                                     // NEW
-                                    String fileName) {
+                                    String assetName) {
             this.mContext = context.getApplicationContext();
             // NEW
-            this.fileName = fileName;
+            this.assetName = assetName;
         }
 
 
@@ -71,8 +69,9 @@ public class FileEmojiCompatConfig extends EmojiCompat.Config {
         @Override
         @RequiresApi(19)
         public void load(@NonNull EmojiCompat.MetadataRepoLoaderCallback loaderCallback) {
+            // This one doesn't work as it's not android.support
             //Preconditions.checkNotNull(loaderCallback, "loaderCallback cannot be null");
-            final InitRunnable runnable = new InitRunnable(mContext, loaderCallback, fileName);
+            final InitRunnable runnable = new InitRunnable(mContext, loaderCallback, assetName);
             final Thread thread = new Thread(runnable);
             thread.setDaemon(false);
             thread.start();
@@ -101,10 +100,8 @@ public class FileEmojiCompatConfig extends EmojiCompat.Config {
         @Override
         public void run() {
             try {
-                final Typeface typeface = Typeface.createFromFile(FONT_NAME);
-                final File fontFile = new File(FONT_NAME);
-                final InputStream stream = new FileInputStream(fontFile);
-                final MetadataRepo resourceIndex = MetadataRepo.create(typeface, stream);
+                final AssetManager assetManager = context.getAssets();
+                final MetadataRepo resourceIndex = MetadataRepo.create(assetManager, FONT_NAME);
                 loaderCallback.onLoaded(resourceIndex);
             } catch (Throwable t) {
                 loaderCallback.onFailed(t);
