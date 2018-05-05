@@ -17,7 +17,8 @@ There are two different methods included in this library:
    ```java
    EmojiCompat.Config config = new AssetEmojiCompatConfig(getContext(), "Blobmoji.ttf");
    ```
-   This will create a new EmojiCompat configuration using the file provided in `assets/Blobmoji.ttf`.
+   This will create a new EmojiCompat configuration using the file provided in `assets/Blobmoji.ttf`.  
+   Anyhow, I don't recommend using `AssetEmojiCompatConfig` anymore as [this](#i-want-to-let-my-users-only-choose-another-font-if-they-dont-like-my-current-one) approach is more flexible and just as easy to use. There will be a feature to rename the fallback font in the next release.
 2. ### [`FileEmojiCompatConfig`](https://github.com/C1710/blobmoji/blob/filemojicompat/emojicompat/FileMojiCompat/filemojicompat/src/main/java/de/c1710/filemojicompat/FileEmojiCompatConfig.java)
    This is the more complex and interesting option.  
    Instead of providing a short String containing the font's name, you can provide a [`File`](https://developer.android.com/reference/java/io/File)
@@ -51,7 +52,7 @@ Yes, they will. But only if their device either doesn't support these flags (whi
 these assets as their default emojis. They won't replace any existing emojis.
 #### But I did `setReplaceAll(true)`?!
 This won't change anything as `FileEmojiCompatConfig` will detect if the font file is not valid and it will simply ignore `setReplaceAll(true)`.  
-### I want to let my users only choose another font if they don't like my current one
+## I want to let my users only choose another font if they don't like my current one
 This is easily possible with the introduction of `FileMojiCompat 1.0.6`.  
 In this case you override the fallback font by putting your font into the `assets` folder of your app using the name `NoEmojiCompat.ttf`.  
 Whenever the fallback font is needed (which is the case if the user doesn't specify another one), this font is being used.  
