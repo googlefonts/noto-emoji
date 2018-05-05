@@ -31,10 +31,6 @@ import android.util.Log;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * A simple implementation of EmojiCompat.Config using typeface files.
@@ -54,6 +50,10 @@ public class FileEmojiCompatConfig extends EmojiCompat.Config {
      * Indicates whether all emojis should be replaced when the fallback font is used.
      */
     private boolean replaceAllOnFallback = false;
+    /**
+     * The default name of the fallback font
+     */
+    private static final String FONT_FALLBACK = "NoEmojiCompat.ttf";
 
     /**
      * Create a new configuration for this EmojiCompat
@@ -64,7 +64,21 @@ public class FileEmojiCompatConfig extends EmojiCompat.Config {
                                  // NEW
                                  @NonNull String path) {
         // This one is obviously new
-        this(context, new File(path));
+        this(context, path, FONT_FALLBACK);
+    }
+
+    /**
+     * Create a new configuration for this EmojiCompat
+     * @param path The file name/path of the requested font
+     * @param context Context instance
+     * @param fallbackFont The asset path of the fallback font
+     */
+    public FileEmojiCompatConfig(@NonNull Context context,
+                                 // NEW
+                                 @NonNull String path,
+                                 @Nullable String fallbackFont) {
+        // This one is obviously new
+        this(context, new File(path), fallbackFont);
     }
 
     /**
@@ -75,7 +89,22 @@ public class FileEmojiCompatConfig extends EmojiCompat.Config {
     public FileEmojiCompatConfig(@NonNull Context context,
                                  // NEW
                                  @Nullable File fontFile) {
-        super(new FileMetadataLoader(context, fontFile));
+        this(context, fontFile, FONT_FALLBACK);
+    }
+
+    /**
+     * Create a new configuration for this EmojiCompat based on a file
+     * @param context Context instance
+     * @param fontFile The file containing the EmojiCompat font
+     * @param fallbackFont The asset path of the fallback font
+     */
+    public FileEmojiCompatConfig(@NonNull Context context,
+                                 // NEW
+                                 @Nullable File fontFile,
+                                 @Nullable String fallbackFont) {
+        super(new FileMetadataLoader(context,
+                fontFile,
+                fallbackFont != null ? fallbackFont : FONT_FALLBACK));
         if(fontFile != null && fontFile.exists() && fontFile.canRead()) {
             try {
                 // Is it a font?
@@ -137,12 +166,6 @@ public class FileEmojiCompatConfig extends EmojiCompat.Config {
         return this;
     }
 
-    private void onFailed() {
-        Log.d(TAG, "onFailed: Could not load font");
-        fallback = true;
-        super.setReplaceAll(false);
-    }
-
     /**
      * This is the MetadataLoader. Derived from BundledMetadataLoader but with
      * the addition of a custom file name.
@@ -151,13 +174,16 @@ public class FileEmojiCompatConfig extends EmojiCompat.Config {
         private final Context mContext;
         // NEW
         private final File fontFile;
+        private final String fallbackFont;
 
         private FileMetadataLoader(@NonNull Context context,
                                    // NEW
-                                   @Nullable File fontFile) {
+                                   @Nullable File fontFile,
+                                   @NonNull String fallbackFont) {
             this.mContext = context.getApplicationContext();
             // NEW
             this.fontFile = fontFile;
+            this.fallbackFont = fallbackFont;
         }
 
 
@@ -166,7 +192,7 @@ public class FileEmojiCompatConfig extends EmojiCompat.Config {
         @RequiresApi(19)
         public void load(@NonNull EmojiCompat.MetadataRepoLoaderCallback loaderCallback) {
             //Preconditions.checkNotNull(loaderCallback, "loaderCallback cannot be null");
-            final InitRunnable runnable = new InitRunnable(mContext, loaderCallback, fontFile);
+            final InitRunnable runnable = new InitRunnable(mContext, loaderCallback, fontFile, fallbackFont);
             final Thread thread = new Thread(runnable);
             thread.setDaemon(false);
             thread.start();
@@ -175,8 +201,9 @@ public class FileEmojiCompatConfig extends EmojiCompat.Config {
 
     @RequiresApi(19)
     private static class InitRunnable implements Runnable {
-        // The font name is assigned in the constructor.
+        // The font names are assigned in the constructor.
         private final File FONT_FILE;
+        private final String FONT_FALLBACK;
         // Slightly different variable names
         private final EmojiCompat.MetadataRepoLoaderCallback loaderCallback;
         private final Context context;
@@ -184,11 +211,13 @@ public class FileEmojiCompatConfig extends EmojiCompat.Config {
         private InitRunnable(final Context context,
                              final EmojiCompat.MetadataRepoLoaderCallback loaderCallback,
                              // NEW parameter
-                             final File FONT_FILE) {
+                             final File FONT_FILE,
+                             final String FONT_FALLBACK) {
             // This has been changed a bit in order to get some consistency
             this.context = context;
             this.loaderCallback = loaderCallback;
             this.FONT_FILE = FONT_FILE;
+            this.FONT_FALLBACK = FONT_FALLBACK;
         }
 
         @Override
@@ -206,16 +235,12 @@ public class FileEmojiCompatConfig extends EmojiCompat.Config {
                     android.util.Log.w(TAG, "Error while loading the font file.", t);
                     final AssetManager assetManager = context.getAssets();
                     final MetadataRepo resourceIndex =
-                            MetadataRepo.create(assetManager, "NoEmojiCompat.ttf");
+                            MetadataRepo.create(assetManager, FONT_FALLBACK);
                     loaderCallback.onLoaded(resourceIndex);
                 } catch (Throwable t2) {
                     loaderCallback.onFailed(t);
                 }
             }
-        }
-
-        interface EmojiFontFailListener {
-            void onFailed();
         }
     }
 }
