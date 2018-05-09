@@ -100,7 +100,7 @@ class CBDT:
 		del self.strike_metrics
 		return glyph_maps
 
-	def write_bigGlyphMetrics (self, width, height):
+	def write_glyphMetrics (self, width, height, big_metrics):
 
 		ascent = self.font_metrics.ascent
 		descent = self.font_metrics.descent
@@ -122,23 +122,30 @@ class CBDT:
 		vert_advance = height
 
 		# print "big glyph metrics h: %d w: %d" % (height, width)
-		# bigGlyphMetrics
+		# smallGlyphMetrics
 		# Type	Name
 		# BYTE	height
 		# BYTE	width
 		# CHAR	horiBearingX
 		# CHAR	horiBearingY
 		# BYTE	horiAdvance
+                # add for bigGlyphMetrics:
 		# CHAR	vertBearingX
 		# CHAR	vertBearingY
 		# BYTE	vertAdvance
                 try:
+                  if big_metrics:
                         self.write (struct.pack ("BBbbBbbB",
 					 height, width,
 					 x_bearing, y_bearing,
 					 advance,
 					 vert_x_bearing, vert_y_bearing,
 					 vert_advance))
+                  else:
+                        self.write (struct.pack ("BBbbB",
+					 height, width,
+					 x_bearing, y_bearing,
+					 advance))
                 except Exception as e:
                   raise ValueError("%s, h: %d w: %d x: %d y: %d %d a:" % (
                       e, height, width, x_bearing, y_bearing, advance))
@@ -174,14 +181,19 @@ class CBDT:
 
 	png_allowed_chunks =  ["IHDR", "PLTE", "tRNS", "sRGB", "IDAT", "IEND"]
 
-	def write_format18 (self, png):
+	def write_format17 (self, png):
+                self.write_format17or18(png, False)
 
+        def write_format18 (self, png):
+                self.write_format17or18(png, True)
+
+	def write_format17or18 (self, png, big_metrics):
 		width, height = png.get_size ()
 
 		if 'keep_chunks' not in self.options:
 			png = png.filter_chunks (self.png_allowed_chunks)
 
-		self.write_bigGlyphMetrics (width, height)
+		self.write_glyphMetrics (width, height, big_metrics)
 
 		png_data = png.data ()
 		# ULONG data length
@@ -190,6 +202,7 @@ class CBDT:
 
 	def image_write_func (self, image_format):
 		if image_format == 1: return self.write_format1
+                if image_format == 17: return self.write_format17
 		if image_format == 18: return self.write_format18
 		return None
 
@@ -376,6 +389,7 @@ def main (argv):
 		"-V": "verbose",
 		"-O": "keep_outlines",
 		"-U": "uncompressed",
+                "-S": "small_glyph_metrics",
 		"-C": "keep_chunks",
 	}
 
@@ -388,7 +402,7 @@ def main (argv):
 		print("""
 Usage:
 
-emoji_builder.py [-V] [-O] [-U] [-A] font.ttf out-font.ttf strike-prefix...
+emoji_builder.py [-V] [-O] [-U] [-S] [-A] font.ttf out-font.ttf strike-prefix...
 
 This will search for files that have strike-prefix followed
 by a hex number, and end in ".png".  For example, if strike-prefix
@@ -405,7 +419,10 @@ that the font already supports, and writes the new font out.
 If -V is given, verbose mode is enabled.
 
 If -U is given, uncompressed images are stored (imageFormat=1).
-By default, PNG images are stored (imageFormat=18).
+
+If -S is given, PNG images are stored with small glyph metrics (imageFormat=17).
+
+By default, PNG images are stored with big glyph metrics (imageFormat=18).
 
 If -O is given, the outline tables ('glyf', 'CFF ') and
 related tables are NOT dropped from the font.
@@ -452,7 +469,8 @@ By default they are dropped.
 	if not unicode_cmap:
 		raise Exception ("Failed to find a Unicode cmap.")
 
-	image_format = 1 if 'uncompressed' in options else 18
+	image_format = 1 if 'uncompressed' in options else (17
+                if 'small_glyph_metrics' in options else 18)
 
 	ebdt = CBDT (font_metrics, options)
 	ebdt.write_header ()
