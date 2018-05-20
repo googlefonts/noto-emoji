@@ -13,7 +13,8 @@ Another thing is that this emoji set includes some emojis and ZWJ-sequences whic
 
 Please note that I did not create most of the emojis. You can find an overview of the changes I made in the file CHANGES.txt
 
-Most information on this fork will be included in the [Wiki](https://github.com/C1710/blobmoji/wiki). There you'll find more detailed build instructions and other helpful information on how to use this font and much more.
+Most information on this fork will be included in the [Wiki](https://github.com/C1710/blobmoji/wiki). There you'll find more detailed build instructions and other helpful information on how to use this font and much more.  
+If you want to use this font - there's a [Wiki page](https://github.com/C1710/blobmoji/wiki/Installation-Usage) :D
 
 (_[Emojipedia®](https://emojipedia.org) is a registered trademark of Emojipedia Pty Ltd_)
 
