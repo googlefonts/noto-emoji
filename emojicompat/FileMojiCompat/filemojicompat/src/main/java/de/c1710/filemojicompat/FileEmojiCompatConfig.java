@@ -238,6 +238,7 @@ public class FileEmojiCompatConfig extends EmojiCompat.Config {
                             MetadataRepo.create(assetManager, FONT_FALLBACK);
                     loaderCallback.onLoaded(resourceIndex);
                 } catch (Throwable t2) {
+                    Log.e(TAG, "Even the fallback font couldn't be loaded", t2);
                     loaderCallback.onFailed(t);
                 }
             }
