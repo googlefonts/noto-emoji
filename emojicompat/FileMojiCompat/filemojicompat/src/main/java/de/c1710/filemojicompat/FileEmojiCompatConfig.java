@@ -56,6 +56,52 @@ public class FileEmojiCompatConfig extends EmojiCompat.Config {
     private static final String FONT_FALLBACK = "NoEmojiCompat.ttf";
 
     /**
+     * Creates a new FileEmojiCompatConfig based on an asset.
+     * <p/>
+     * This means that you can have the flexibility of {@link AssetEmojiCompatConfig}
+     * while giving your users the choice to optionally override the font.
+     * <p/>
+     * The default location for a substituting font is
+     * {@code /sdcard/Android/data/your.apps.package/files/EmojiCompat.ttf}.
+     *
+     * @param context   The app's context is needed for several tasks
+     * @param assetPath The path inside the {@code assets} folder for the default font file
+     * @return A FileEmojiCompatConfig which will use the given font by default
+     */
+    public FileEmojiCompatConfig createFromAsset(@NonNull Context context,
+                                                 @Nullable String assetPath) {
+        if (assetPath != null) {
+            FileEmojiCompatConfig config = new FileEmojiCompatConfig(context,
+                    new File(context.getExternalFilesDir(null), "EmojiCompat.ttf"),
+                    assetPath);
+            config.replaceAllOnFallback = true;
+            return config;
+        } else {
+            return createFromAsset(context);
+        }
+    }
+
+    /**
+     * Creates a new FileEmojiCompatConfig based on an asset.
+     * <p/>
+     * This means that you can have the flexibility of {@link AssetEmojiCompatConfig}
+     * while giving your users the choice to optionally override the font.
+     * <p/>
+     * The default location for a substituting font is
+     * {@code /sdcard/Android/data/your.apps.package/files/EmojiCompat.ttf}.
+     * <p/>
+     * The default name for the Assets font is {@code NoEmojiCompat.ttf}.
+     * If you wish to use a different name for this font, please use
+     * {@link #createFromAsset(Context, String)}.
+     *
+     * @param context The app's context is needed for several tasks
+     * @return A FileEmojiCompatConfig which will use the given font by default
+     */
+    public FileEmojiCompatConfig createFromAsset(@NonNull Context context) {
+        return createFromAsset(context, FONT_FALLBACK);
+    }
+
+    /**
      * Create a new configuration for this EmojiCompat
      * @param path The file name/path of the requested font
      * @param context Context instance
