@@ -29,6 +29,7 @@ import android.support.text.emoji.MetadataRepo;
  * Based on:
  * https://android.googlesource.com/platform/frameworks/support/+/master/emoji/bundled/src/main/java/android/support/text/emoji/bundled/BundledEmojiCompatConfig.java
  * Changes are marked with comments. Formatting and other simple changes are not always marked.
+ *
  * @deprecated Please use {@link FileEmojiCompatConfig#createFromAsset(Context, String)} instead
  * for greater flexibility.
  */
@@ -38,8 +39,9 @@ public class AssetEmojiCompatConfig extends EmojiCompat.Config {
 
     /**
      * Create a new configuration for this EmojiCompat
+     *
      * @param assetName The file name/path of the requested font
-     * @param context Context instance
+     * @param context   Context instance
      */
     public AssetEmojiCompatConfig(@NonNull Context context,
                                   // NEW
@@ -52,12 +54,12 @@ public class AssetEmojiCompatConfig extends EmojiCompat.Config {
      * This is the MetadataLoader. Derived from BundledMetadataLoader but with
      * the addition of a custom asset name.
      */
-    private static class AssetMetadataLoader implements EmojiCompat.MetadataRepoLoader{
+    private static class AssetMetadataLoader implements EmojiCompat.MetadataRepoLoader {
         private final Context mContext;
         // NEW
         private final String assetName;
 
-        private AssetMetadataLoader(@NonNull Context context, 
+        private AssetMetadataLoader(@NonNull Context context,
                                     // NEW
                                     String assetName) {
             this.mContext = context.getApplicationContext();
@@ -96,7 +98,7 @@ public class AssetEmojiCompatConfig extends EmojiCompat.Config {
             this.loaderCallback = loaderCallback;
             this.FONT_NAME = FONT_NAME;
         }
-        
+
         // This has been copied from BundledEmojiCompatConfig
         @Override
         public void run() {

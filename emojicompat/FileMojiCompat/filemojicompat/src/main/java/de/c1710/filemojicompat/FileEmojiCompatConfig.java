@@ -41,7 +41,10 @@ import java.io.InputStream;
 public class FileEmojiCompatConfig extends EmojiCompat.Config {
     // The class name is obviously changed from the original file
     private final static String TAG = "FileEmojiCompatConfig";
-
+    /**
+     * The default name of the fallback font
+     */
+    private static final String FONT_FALLBACK = "NoEmojiCompat.ttf";
     /**
      * This boolean indicates whether the fallback solution is used.
      */
@@ -50,17 +53,101 @@ public class FileEmojiCompatConfig extends EmojiCompat.Config {
      * Indicates whether all emojis should be replaced when the fallback font is used.
      */
     private boolean replaceAllOnFallback = false;
+
     /**
-     * The default name of the fallback font
+     * Create a new configuration for this EmojiCompat
+     *
+     * @param path    The file name/path of the requested font
+     * @param context Context instance
      */
-    private static final String FONT_FALLBACK = "NoEmojiCompat.ttf";
+    public FileEmojiCompatConfig(@NonNull Context context,
+                                 // NEW
+                                 @NonNull String path) {
+        // This one is obviously new
+        this(context, path, FONT_FALLBACK);
+    }
+
+    /**
+     * Create a new configuration for this EmojiCompat
+     *
+     * @param path         The file name/path of the requested font
+     * @param context      Context instance
+     * @param fallbackFont The asset path of the fallback font
+     */
+    public FileEmojiCompatConfig(@NonNull Context context,
+                                 // NEW
+                                 @NonNull String path,
+                                 @Nullable String fallbackFont) {
+        // This one is obviously new
+        this(context, new File(path), fallbackFont);
+    }
+
+    /**
+     * Create a new configuration for this EmojiCompat based on a file
+     *
+     * @param context  Context instance
+     * @param fontFile The file containing the EmojiCompat font
+     */
+    public FileEmojiCompatConfig(@NonNull Context context,
+                                 // NEW
+                                 @Nullable File fontFile) {
+        this(context, fontFile, FONT_FALLBACK);
+    }
+
+    /**
+     * Create a new configuration for this EmojiCompat based on a file
+     *
+     * @param context      Context instance
+     * @param fontFile     The file containing the EmojiCompat font
+     * @param fallbackFont The asset path of the fallback font
+     */
+    public FileEmojiCompatConfig(@NonNull Context context,
+                                 // NEW
+                                 @Nullable File fontFile,
+                                 @Nullable String fallbackFont) {
+        super(new FileMetadataLoader(context,
+                fontFile,
+                fallbackFont != null ? fallbackFont : FONT_FALLBACK));
+        if (fontFile != null && fontFile.exists() && fontFile.canRead()) {
+            try {
+                // Is it a font?
+                Typeface typeface = Typeface.createFromFile(fontFile);
+                // Is it an EmojiCompat font?
+                /*
+                    Please note that this will possibly cause a race condition. But all in all it's
+                    better to have a chance of detecting such a non-valid font than either having to
+                    wait for a long time or not being able to detect it at all.
+                    However, since this Thread is started immediately, it should be faster than
+                    the initialization process of EmojiCompat itself...
+                */
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    new Thread(() -> {
+                        try {
+                            MetadataRepo.create(typeface, new FileInputStream(fontFile));
+                        } catch (Throwable t) {
+                            fallback = true;
+                            setReplaceAll(false);
+                            Log.w(TAG, "FileEmojiCompatConfig: No valid EmojiCompat font provided. Fallback enabled", t);
+                        }
+                    }).start();
+                }
+            } catch (RuntimeException ex) {
+                fallback = true;
+                Log.e(TAG, "FileEmojiCompatConfig: Font file corrupt. Fallback enabled", ex);
+            }
+        } else {
+            // The heck, this is not even an actual _file_!
+            fallback = true;
+        }
+
+    }
 
     /**
      * Creates a new FileEmojiCompatConfig based on an asset.
-     * <p/>
+     * <p>
      * This means that you can have the flexibility of {@link AssetEmojiCompatConfig}
      * while giving your users the choice to optionally override the font.
-     * <p/>
+     * <p>
      * The default location for a substituting font is
      * {@code /sdcard/Android/data/your.apps.package/files/EmojiCompat.ttf}.
      *
@@ -83,13 +170,13 @@ public class FileEmojiCompatConfig extends EmojiCompat.Config {
 
     /**
      * Creates a new FileEmojiCompatConfig based on an asset.
-     * <p/>
+     * <p>
      * This means that you can have the flexibility of {@link AssetEmojiCompatConfig}
      * while giving your users the choice to optionally override the font.
-     * <p/>
+     * <p>
      * The default location for a substituting font is
      * {@code /sdcard/Android/data/your.apps.package/files/EmojiCompat.ttf}.
-     * <p/>
+     * <p>
      * The default name for the Assets font is {@code NoEmojiCompat.ttf}.
      * If you wish to use a different name for this font, please use
      * {@link #createFromAsset(Context, String)}.
@@ -101,90 +188,6 @@ public class FileEmojiCompatConfig extends EmojiCompat.Config {
         return createFromAsset(context, FONT_FALLBACK);
     }
 
-    /**
-     * Create a new configuration for this EmojiCompat
-     * @param path The file name/path of the requested font
-     * @param context Context instance
-     */
-    public FileEmojiCompatConfig(@NonNull Context context,
-                                 // NEW
-                                 @NonNull String path) {
-        // This one is obviously new
-        this(context, path, FONT_FALLBACK);
-    }
-
-    /**
-     * Create a new configuration for this EmojiCompat
-     * @param path The file name/path of the requested font
-     * @param context Context instance
-     * @param fallbackFont The asset path of the fallback font
-     */
-    public FileEmojiCompatConfig(@NonNull Context context,
-                                 // NEW
-                                 @NonNull String path,
-                                 @Nullable String fallbackFont) {
-        // This one is obviously new
-        this(context, new File(path), fallbackFont);
-    }
-
-    /**
-     * Create a new configuration for this EmojiCompat based on a file
-     * @param context Context instance
-     * @param fontFile The file containing the EmojiCompat font
-     */
-    public FileEmojiCompatConfig(@NonNull Context context,
-                                 // NEW
-                                 @Nullable File fontFile) {
-        this(context, fontFile, FONT_FALLBACK);
-    }
-
-    /**
-     * Create a new configuration for this EmojiCompat based on a file
-     * @param context Context instance
-     * @param fontFile The file containing the EmojiCompat font
-     * @param fallbackFont The asset path of the fallback font
-     */
-    public FileEmojiCompatConfig(@NonNull Context context,
-                                 // NEW
-                                 @Nullable File fontFile,
-                                 @Nullable String fallbackFont) {
-        super(new FileMetadataLoader(context,
-                fontFile,
-                fallbackFont != null ? fallbackFont : FONT_FALLBACK));
-        if(fontFile != null && fontFile.exists() && fontFile.canRead()) {
-            try {
-                // Is it a font?
-                Typeface typeface = Typeface.createFromFile(fontFile);
-                // Is it an EmojiCompat font?
-                /*
-                    Please note that this will possibly cause a race condition. But all in all it's
-                    better to have a chance of detecting such a non-valid font than either having to
-                    wait for a long time or not being able to detect it at all.
-                    However, since this Thread is started immediately, it should be faster than
-                    the initialization process of EmojiCompat itself...
-                */
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    new Thread(() -> {
-                        try {
-                            MetadataRepo.create(typeface, new FileInputStream(fontFile));
-                        } catch (Throwable t) {
-                            fallback = true;
-                            setReplaceAll(false);
-                            Log.w(TAG, "FileEmojiCompatConfig: No valid EmojiCompat font provided. Fallback enabled", t);
-                        }
-                    }).start();
-                }
-            } catch (RuntimeException ex) {
-                fallback = true;
-                Log.e(TAG, "FileEmojiCompatConfig: Font file corrupt. Fallback enabled", ex);
-            }
-        } else {
-            // The heck, this is not even an actual _file_!
-            fallback = true;
-        }
-
-    }
-
     @Override
     public FileEmojiCompatConfig setReplaceAll(boolean replaceAll) {
         return setReplaceAll(replaceAll, replaceAllOnFallback);
@@ -192,19 +195,19 @@ public class FileEmojiCompatConfig extends EmojiCompat.Config {
 
     /**
      * Replace all emojis
-     * @param replaceAll Whether all emojis should be replaced
+     *
+     * @param replaceAll           Whether all emojis should be replaced
      * @param replaceAllOnFallback true if this is supposed to be the case even when using the fallback font.
      *                             Useful if the NoEmojiCompat.ttf is overridden by a "real" EmojiCompat font.
      * @return This EmojiCompat.Config
      */
     public FileEmojiCompatConfig setReplaceAll(boolean replaceAll, boolean replaceAllOnFallback) {
         this.replaceAllOnFallback = replaceAllOnFallback;
-        if(!fallback || replaceAllOnFallback) {
+        if (!fallback || replaceAllOnFallback) {
             super.setReplaceAll(replaceAll);
-        }
-        else {
+        } else {
             super.setReplaceAll(false);
-            if(replaceAll) {
+            if (replaceAll) {
                 // If replaceAll would have been set to false anyway, there's no need for apologizing.
                 Log.w(TAG, "setReplaceAll: Cannot replace all emojis. Fallback font is active");
             }
@@ -216,7 +219,7 @@ public class FileEmojiCompatConfig extends EmojiCompat.Config {
      * This is the MetadataLoader. Derived from BundledMetadataLoader but with
      * the addition of a custom file name.
      */
-    private static class FileMetadataLoader implements EmojiCompat.MetadataRepoLoader{
+    private static class FileMetadataLoader implements EmojiCompat.MetadataRepoLoader {
         private final Context mContext;
         // NEW
         private final File fontFile;
@@ -274,8 +277,7 @@ public class FileEmojiCompatConfig extends EmojiCompat.Config {
                 final InputStream stream = new FileInputStream(FONT_FILE);
                 MetadataRepo resourceIndex = MetadataRepo.create(typeface, stream);
                 loaderCallback.onLoaded(resourceIndex);
-            }
-            catch (Throwable t) {
+            } catch (Throwable t) {
                 // Instead of crashing, this one will first try to load the fallback font
                 try {
                     android.util.Log.w(TAG, "Error while loading the font file.", t);

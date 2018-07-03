@@ -18,7 +18,7 @@ ext {
     libraryDescription = 'An EmojiCompat implementation using files from a local file or a file inside your assets directory'
     siteUrl = 'https://github.com/c1710/blobmoji'
     gitUrl = 'https://github.com/c1710/blobmoji.git'
-    libraryVersion = '1.0.11'
+    libraryVersion = '1.0.13'
     developerId = 'c1710'
     developerName = 'Constantin A.'
     developerEmail = 'c1710.apps@outlook.com'
@@ -33,8 +33,8 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 27
-        versionCode 12
-        versionName "1.0.12"
+        versionCode 13
+        versionName "1.0.13"
     }
 
 
@@ -48,6 +48,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:support-emoji:27.1.1'
 }
+
 
 apply from: 'https://raw.githubusercontent.com/numetriclabz/jcenter/master/installv.gradle'
 apply from: 'https://raw.githubusercontent.com/numetriclabz/jcenter/master/bintrayv.gradle'
