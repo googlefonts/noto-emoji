@@ -23,15 +23,16 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.text.emoji.EmojiCompat;
 import android.support.text.emoji.MetadataRepo;
-import android.util.Log;
-import android.support.v4.util.Preconditions;
 
 /**
  * A simple implementation of EmojiCompat.Config using typeface assets.
  * Based on:
  * https://android.googlesource.com/platform/frameworks/support/+/master/emoji/bundled/src/main/java/android/support/text/emoji/bundled/BundledEmojiCompatConfig.java
  * Changes are marked with comments. Formatting and other simple changes are not always marked.
+ * @deprecated Please use {@link FileEmojiCompatConfig#createFromAsset(Context, String)} instead
+ * for greater flexibility.
  */
+@Deprecated
 public class AssetEmojiCompatConfig extends EmojiCompat.Config {
     // The class name is obviously changed from the original file
 
