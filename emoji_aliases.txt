@@ -32,7 +32,6 @@
 1f3cc_1f3fd;1f3cc_1f3fd_200d_2642 # medium skin tone
 1f3cc_1f3fe;1f3cc_1f3fe_200d_2642 # medium-dark skin tone
 1f3cc_1f3ff;1f3cc_1f3ff_200d_2642 # dark skin tone
-1f46a;1f468_200d_1f469_200d_1f466 # FAMILY -> family: man, woman, boy
 1f46e;1f46e_200d_2642 # POLICE OFFICER -> man police officer
 1f46e_1f3fb;1f46e_1f3fb_200d_2642 # light skin tone
 1f46e_1f3fc;1f46e_1f3fc_200d_2642 # medium-light skin tone
@@ -82,8 +81,6 @@
 1f487_1f3fd;1f487_1f3fd_200d_2640 # medium skin tone
 1f487_1f3fe;1f487_1f3fe_200d_2640 # medium-dark skin tone
 1f487_1f3ff;1f487_1f3ff_200d_2640 # dark skin tone
-1f48f;1f469_200d_2764_200d_1f48b_200d_1f468 # KISS -> kiss: woman, man
-1f491;1f469_200d_2764_200d_1f468 # COUPLE WITH HEART -> couple with heart: woman, man
 1f575;1f575_200d_2642 # SLEUTH OR SPY -> man detective
 1f575_1f3fb;1f575_1f3fb_200d_2642 # light skin tone
 1f575_1f3fc;1f575_1f3fc_200d_2642 # medium-light skin tone
@@ -198,7 +195,10 @@ fe82b;unknown_flag # no name -> no name
 # flag aliases
 1f1e7_1f1fb;1f1f3_1f1f4 # BV -> NO
 1f1e8_1f1f5;1f1eb_1f1f7 # CP -> FR
+1f1e9_1f1ec;1f1ee_1f1f4 # DG -> IO
+1f1ea_1f1e6;1f1ea_1f1f8 # EA -> ES
 1f1ed_1f1f2;1f1e6_1f1fa # HM -> AU
+1f1f2_1f1eb;1f1eb_1f1f7 # MF -> FR
 1f1f8_1f1ef;1f1f3_1f1f4 # SJ -> NO
 1f1fa_1f1f2;1f1fa_1f1f8 # UM -> US
 

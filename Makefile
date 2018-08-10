@@ -30,6 +30,8 @@ ZOPFLIPNG = zopflipng
 OPTIPNG = optipng
 
 EMOJI_BUILDER = third_party/color_emoji/emoji_builder.py
+# flag for emoji builder.  Default to legacy small metrics for the time being.
+SMALL_METRICS := -S
 ADD_GLYPHS = add_glyphs.py
 ADD_GLYPHS_FLAGS = -a emoji_aliases.txt
 PUA_ADDER = map_pua_emoji.py
@@ -47,32 +49,34 @@ QUANTIZED_DIR := $(BUILD_DIR)/quantized_pngs
 COMPRESSED_DIR := $(BUILD_DIR)/compressed_pngs
 
 # Unknown flag is PUA fe82b
+# Note, we omit some flags below that we support via aliasing instead.
 
 LIMITED_FLAGS = CN DE ES FR GB IT JP KR RU US
 SELECTED_FLAGS = AC AD AE AF AG AI AL AM AO AQ AR AS AT AU AW AX AZ \
 	BA BB BD BE BF BG BH BI BJ BM BN BO BR BS BT BW BY BZ \
 	CA CC CD CF CG CH CI CK CL CM CN CO CR CU CV CW CX CY CZ \
 	DE DJ DK DM DO DZ \
-	EC EE EG ER ES ET EU \
-	FI FJ FM FO FR \
-	GA GB GD GE GG GH GI GL GM GN GQ GR GT GU GW GY \
+	EC EE EG EH ER ES ET EU \
+	FI FJ FK FM FO FR \
+	GA GB GD GE GF GG GH GI GL GM GN GP GQ GR GS GT GU GW GY \
 	HK HN HR HT HU \
 	IC ID IE IL IM IN IO IQ IR IS IT \
 	JE JM JO JP \
 	KE KG KH KI KM KN KP KR KW KY KZ \
 	LA LB LC LI LK LR LS LT LU LV LY \
 	MA MC MD ME MG MH MK ML MM MN MO MP MR MS MT MU MV MW MX MY MZ \
-	NA NE NF NG NI NL NO NP NR NU NZ \
+	NA NC NE NF NG NI NL NO NP NR NU NZ \
 	OM \
-	PA PE PF PG PH PK PL PN PR PS PT PW PY \
+	PA PE PF PG PH PK PL PM PN PR PS PT PW PY \
 	QA \
 	RO RS RU RW \
 	SA SB SC SD SE SG SH SI SK SL SM SN SO SR SS ST SV SX SY SZ \
 	TA TC TD TG TH TJ TK TL TM TN TO TR TT TV TW TZ \
 	UA UG UN US UY UZ \
 	VA VC VE VG VI VN VU \
-	WS \
-	YE \
+	WF WS \
+	XK \
+	YE YT \
 	ZA ZM ZW \
         GB-ENG GB-SCT GB-WLS
 
@@ -213,7 +217,7 @@ endif
 
 $(EMOJI).ttf: $(EMOJI).tmpl.ttf $(EMOJI_BUILDER) $(PUA_ADDER) \
 	$(ALL_COMPRESSED_FILES) | check_vs_adder
-	@python $(EMOJI_BUILDER) -V $< "$@" "$(COMPRESSED_DIR)/emoji_u"
+	@python $(EMOJI_BUILDER) $(SMALL_METRICS) -V $< "$@" "$(COMPRESSED_DIR)/emoji_u"
 	@python $(PUA_ADDER) "$@" "$@-with-pua"
 	@$(VS_ADDER) -vs 2640 2642 2695 --dstdir '.' -o "$@-with-pua-varsel" "$@-with-pua"
 	@mv "$@-with-pua-varsel" "$@"

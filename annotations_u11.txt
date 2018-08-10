@@ -1,0 +1,264 @@
+# new unicode 11 emoji
+# generated using unicode_data and alpha UCD11 data.
+# emoji sort order
+annotation: ok
+1f970 # smiling face with 3 hearts
+1f975 # hot face
+1f976 # cold face
+1f973 # partying face
+1f974 # woozy face
+1f97a # pleading face
+1f468 200d 1f9b0 # man, red haired
+1f468 1f3fb 200d 1f9b0 # man, red haired: light skin tone
+1f468 1f3fc 200d 1f9b0 # man, red haired: medium-light skin tone
+1f468 1f3fd 200d 1f9b0 # man, red haired: medium skin tone
+1f468 1f3fe 200d 1f9b0 # man, red haired: medium-dark skin tone
+1f468 1f3ff 200d 1f9b0 # man, red haired: dark skin tone
+1f469 200d 1f9b0 # woman, red haired
+1f469 1f3fb 200d 1f9b0 # woman, red haired: light skin tone
+1f469 1f3fc 200d 1f9b0 # woman, red haired: medium-light skin tone
+1f469 1f3fd 200d 1f9b0 # woman, red haired: medium skin tone
+1f469 1f3fe 200d 1f9b0 # woman, red haired: medium-dark skin tone
+1f469 1f3ff 200d 1f9b0 # woman, red haired: dark skin tone
+1f468 200d 1f9b1 # man, curly haired
+1f468 1f3fb 200d 1f9b1 # man, curly haired: light skin tone
+1f468 1f3fc 200d 1f9b1 # man, curly haired: medium-light skin tone
+1f468 1f3fd 200d 1f9b1 # man, curly haired: medium skin tone
+1f468 1f3fe 200d 1f9b1 # man, curly haired: medium-dark skin tone
+1f468 1f3ff 200d 1f9b1 # man, curly haired: dark skin tone
+1f469 200d 1f9b1 # woman, curly haired
+1f469 1f3fb 200d 1f9b1 # woman, curly haired: light skin tone
+1f469 1f3fc 200d 1f9b1 # woman, curly haired: medium-light skin tone
+1f469 1f3fd 200d 1f9b1 # woman, curly haired: medium skin tone
+1f469 1f3fe 200d 1f9b1 # woman, curly haired: medium-dark skin tone
+1f469 1f3ff 200d 1f9b1 # woman, curly haired: dark skin tone
+1f468 200d 1f9b2 # man, bald
+1f468 1f3fb 200d 1f9b2 # man, bald: light skin tone
+1f468 1f3fc 200d 1f9b2 # man, bald: medium-light skin tone
+1f468 1f3fd 200d 1f9b2 # man, bald: medium skin tone
+1f468 1f3fe 200d 1f9b2 # man, bald: medium-dark skin tone
+1f468 1f3ff 200d 1f9b2 # man, bald: dark skin tone
+1f469 200d 1f9b2 # woman, bald
+1f469 1f3fb 200d 1f9b2 # woman, bald: light skin tone
+1f469 1f3fc 200d 1f9b2 # woman, bald: medium-light skin tone
+1f469 1f3fd 200d 1f9b2 # woman, bald: medium skin tone
+1f469 1f3fe 200d 1f9b2 # woman, bald: medium-dark skin tone
+1f469 1f3ff 200d 1f9b2 # woman, bald: dark skin tone
+1f468 200d 1f9b3 # man, white haired
+1f468 1f3fb 200d 1f9b3 # man, white haired: light skin tone
+1f468 1f3fc 200d 1f9b3 # man, white haired: medium-light skin tone
+1f468 1f3fd 200d 1f9b3 # man, white haired: medium skin tone
+1f468 1f3fe 200d 1f9b3 # man, white haired: medium-dark skin tone
+1f468 1f3ff 200d 1f9b3 # man, white haired: dark skin tone
+1f469 200d 1f9b3 # woman, white haired
+1f469 1f3fb 200d 1f9b3 # woman, white haired: light skin tone
+1f469 1f3fc 200d 1f9b3 # woman, white haired: medium-light skin tone
+1f469 1f3fd 200d 1f9b3 # woman, white haired: medium skin tone
+1f469 1f3fe 200d 1f9b3 # woman, white haired: medium-dark skin tone
+1f469 1f3ff 200d 1f9b3 # woman, white haired: dark skin tone
+1f9b8 # superhero
+1f9b8 1f3fb # superhero: light skin tone
+1f9b8 1f3fc # superhero: medium-light skin tone
+1f9b8 1f3fd # superhero: medium skin tone
+1f9b8 1f3fe # superhero: medium-dark skin tone
+1f9b8 1f3ff # superhero: dark skin tone
+1f9b8 200d 2640 fe0f # woman superhero
+1f9b8 1f3fb 200d 2640 fe0f # woman superhero: light skin tone
+1f9b8 1f3fc 200d 2640 fe0f # woman superhero: medium-light skin tone
+1f9b8 1f3fd 200d 2640 fe0f # woman superhero: medium skin tone
+1f9b8 1f3fe 200d 2640 fe0f # woman superhero: medium-dark skin tone
+1f9b8 1f3ff 200d 2640 fe0f # woman superhero: dark skin tone
+1f9b8 200d 2642 fe0f # man superhero
+1f9b8 1f3fb 200d 2642 fe0f # man superhero: light skin tone
+1f9b8 1f3fc 200d 2642 fe0f # man superhero: medium-light skin tone
+1f9b8 1f3fd 200d 2642 fe0f # man superhero: medium skin tone
+1f9b8 1f3fe 200d 2642 fe0f # man superhero: medium-dark skin tone
+1f9b8 1f3ff 200d 2642 fe0f # man superhero: dark skin tone
+1f9b9 # supervillain
+1f9b9 1f3fb # supervillain: light skin tone
+1f9b9 1f3fc # supervillain: medium-light skin tone
+1f9b9 1f3fd # supervillain: medium skin tone
+1f9b9 1f3fe # supervillain: medium-dark skin tone
+1f9b9 1f3ff # supervillain: dark skin tone
+1f9b9 200d 2640 fe0f # woman supervillain
+1f9b9 1f3fb 200d 2640 fe0f # woman supervillain: light skin tone
+1f9b9 1f3fc 200d 2640 fe0f # woman supervillain: medium-light skin tone
+1f9b9 1f3fd 200d 2640 fe0f # woman supervillain: medium skin tone
+1f9b9 1f3fe 200d 2640 fe0f # woman supervillain: medium-dark skin tone
+1f9b9 1f3ff 200d 2640 fe0f # woman supervillain: dark skin tone
+1f9b9 200d 2642 fe0f # man supervillain
+1f9b9 1f3fb 200d 2642 fe0f # man supervillain: light skin tone
+1f9b9 1f3fc 200d 2642 fe0f # man supervillain: medium-light skin tone
+1f9b9 1f3fd 200d 2642 fe0f # man supervillain: medium skin tone
+1f9b9 1f3fe 200d 2642 fe0f # man supervillain: medium-dark skin tone
+1f9b9 1f3ff 200d 2642 fe0f # man supervillain: dark skin tone
+1f9b5 # leg
+1f9b5 1f3fb # leg: light skin tone
+1f9b5 1f3fc # leg: medium-light skin tone
+1f9b5 1f3fd # leg: medium skin tone
+1f9b5 1f3fe # leg: medium-dark skin tone
+1f9b5 1f3ff # leg: dark skin tone
+1f9b6 # foot
+1f9b6 1f3fb # foot: light skin tone
+1f9b6 1f3fc # foot: medium-light skin tone
+1f9b6 1f3fd # foot: medium skin tone
+1f9b6 1f3fe # foot: medium-dark skin tone
+1f9b6 1f3ff # foot: dark skin tone
+1f9b0 # red-haired
+1f9b1 # curly-haired
+1f9b2 # bald
+1f9b3 # white-haired
+1f9b4 # bone
+1f9b7 # tooth
+1f97d # goggles
+1f97c # lab coat
+1f97e # hiking boot
+1f97f # woman’s flat shoe
+1f99d # raccoon
+1f999 # llama
+1f99b # hippopotamus
+1f998 # kangaroo
+1f9a1 # badger
+1f9a2 # swan
+1f99a # peacock
+1f99c # parrot
+1f99e # lobster
+1f99f # mosquito
+1f9a0 # microbe
+1f96d # mango
+1f96c # leafy green
+1f96f # bagel
+1f9c2 # salt
+1f96e # moon cake
+1f9c1 # cupcake
+1f9ed # compass
+1f9f1 # bricks
+1f6f9 # skateboard
+1f9f3 # luggage
+1f9e8 # firecracker
+1f9e7 # red envelope
+1f94e # softball
+1f94f # flying disc
+1f94d # lacrosse
+1f9ff # nazar amulet
+1f9e9 # jigsaw
+1f9f8 # teddy bear
+1f9f5 # thread
+1f9f6 # yarn
+1f9ee # abacus
+1f9fe # receipt
+1f9f0 # toolbox
+1f9f2 # magnet
+1f9ea # test tube
+1f9eb # petri dish
+1f9ec # dna
+1f9f4 # lotion bottle
+1f9f7 # safety pin
+1f9f9 # broom
+1f9fa # basket
+1f9fb # roll of paper
+1f9fc # soap
+1f9fd # sponge
+1f9ef # fire extinguisher
+
+# bugfixes, codepoint order
+annotation: warning
+0023
+002a
+0030
+0031
+0032
+0033
+0034
+0035
+0036
+0037
+0038
+0039
+1f311
+1f312
+1f313
+1f314
+1f315
+1f316
+1f317
+1f318
+1f319
+# 1f31a # new moon face
+1f31b
+1f31c
+# 1f31d # full moon face
+1f31e # sun with face
+1f3bb
+1f3e5
+1f3f9
+1f410
+1f415
+# 1f41d # honeybee
+1f422
+1f42a
+1f42b
+1f436
+1f46a
+1f482 1f3fb 200d 2640
+1f482 1f3fb 200d 2642
+1f482 1f3fc 200d 2640
+1f482 1f3fc 200d 2642
+1f482 1f3fd 200d 2640
+1f482 1f3fd 200d 2642
+1f482 1f3fe 200d 2640
+1f482 1f3fe 200d 2642
+1f482 1f3ff 200d 2640
+1f482 1f3ff 200d 2642
+1f482 200d 2640
+1f482 200d 2642
+1f491
+1f4a3
+1f4be
+1f52a
+1f52b
+1f5e1
+1f62a
+1f634
+1f641
+1f643
+1f691
+1f699
+1f912
+1f925
+1f92a
+# 1f939 200d 2642 # man juggling
+1f94c
+1f953
+1f957
+1f992
+1f997
+1f9c0
+1f9d9 1f3fd 200d 2640
+2139
+2694
+
+annotation: ok
+# 'new' in that they now have emoji presentation
+265f # chess pawn
+267e # infinity
+
+# I believe this is new but u11 emoji-zwj-sequences.txt lists this as 7.0
+1f3f4 200d 2620  # pirate flag
+
+# flags
+annotation: ok
+1f1e9 1f1ec # DG  -- alias IO
+1f1ea 1f1e6 # EA  -- alias ES
+1f1ea 1f1ed # EH
+1f1eb 1f1f0 # FK
+1f1ec 1f1eb # GF
+1f1ec 1f1f5 # GP
+1f1ec 1f1f8 # GS
+1f1f2 1f1eb # MF  -- alias FR
+1f1f3 1f1e8 # NC
+1f1f5 1f1f2 # PM
+1f1fc 1f1eb # WF
+1f1fd 1f1f0 # XK
+1f1fe 1f1f9 # YT
+
