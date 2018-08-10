@@ -43,7 +43,6 @@ fi
 
 for file in "$SRC_DIR"/*.svg; do
   dst="${file##*/}"
-  echo $dst
   scour $SCOUR_ARGS -i "$file" -o "$DST_DIR/$dst"
 done
   
