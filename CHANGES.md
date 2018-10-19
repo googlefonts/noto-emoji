@@ -6,6 +6,8 @@ Due to the fact that I didn't worked with git in mind, ALL emojis have been reup
 Any other modifications that have been made can be seen in the Git history as these modifications have been made _after_ uploading
 this repository to Github.
 
+It's totally possible that this list is not complete and it might be broken in some parts since it's in many parts semi-automatically created.
+
 There are currently four types of changes:
 
 - `new`:	Completely new emojis which do not have to do anything with the original Noto Emoji project. 
@@ -185,7 +187,6 @@ The entries are currently not in order
 | ![&#x1f94c;](https://rawgit.com/googlei18n/noto-emoji/png/128/emoji_u1f94c.png) | ![&#x1f94c;](http://rawgit.com/C1710/blobmoji/master/png/128/emoji_u1f94c.png)	| U+1f94c	| goo	| 	|  
 | ![&#x1f9e5;](https://rawgit.com/googlei18n/noto-emoji/png/128/emoji_u1f9e5.png) | ![&#x1f9e5;](http://rawgit.com/C1710/blobmoji/master/png/128/emoji_u1f9e5.png)	| U+1f9e5	| goo	| 	|  
 | ![&#x1f92b;](https://rawgit.com/googlei18n/noto-emoji/e456654119cc3a5f9bebb7bbd00512456f983d2d/png/128/emoji_u1f92b.png) | ![&#x1f92b;](http://rawgit.com/C1710/blobmoji/master/png/128/emoji_u1f92b.png)	| U+1f92b	| new*	| 	|  
-| ![&#x1f3f3;](https://rawgit.com/googlei18n/noto-emoji/e456654119cc3a5f9bebb7bbd00512456f983d2d/png/128/emoji_u1f3f3.png) | ![&#x1f3f3;](http://rawgit.com/C1710/blobmoji/master/png/128/emoji_u1f3f3.png)	| U+1f3f3	| new	| 	|  
 | ![&#x1f9d0;](https://rawgit.com/googlei18n/noto-emoji/e456654119cc3a5f9bebb7bbd00512456f983d2d/png/128/emoji_u1f9d0.png) | ![&#x1f9d0;](http://rawgit.com/C1710/blobmoji/master/png/128/emoji_u1f9d0.png)	| U+1f9d0	| new*	| 	|  
 | ![&#x1f97a;](https://rawgit.com/googlei18n/noto-emoji/e456654119cc3a5f9bebb7bbd00512456f983d2d/png/128/emoji_u1f97a.png) | ![&#x1f97a;](http://rawgit.com/C1710/blobmoji/master/png/128/emoji_u1f97a.png)	| U+1f97a	| new*	| 	|  
 | ![&#x1f976;](https://rawgit.com/googlei18n/noto-emoji/e456654119cc3a5f9bebb7bbd00512456f983d2d/png/128/emoji_u1f976.png) | ![&#x1f976;](http://rawgit.com/C1710/blobmoji/master/png/128/emoji_u1f976.png)	| U+1f976	| new*	| 	|  
