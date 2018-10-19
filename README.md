@@ -33,7 +33,7 @@ use 'python setup.py develop' ('install' currently won't fully install all the
 data used by nototools).  You will also need fontTools, get it from
 https://github.com/behdad/fonttools.git.
 
-Then run make.  NotoColorEmoji is the default target.  It's suggested to use -j,
+Then run `make`.  NotoColorEmoji is the default target.  It's suggested to use `-j`,
 especially if you are using zopflipng for compression.  Intermediate products
 (compressed image files, for example) will be put into a build subdirectory; the
 font will be at the top level.
