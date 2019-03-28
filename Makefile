@@ -37,7 +37,7 @@ ADD_GLYPHS_FLAGS = -a emoji_aliases.txt
 PUA_ADDER = map_pua_emoji.py
 VS_ADDER = add_vs_cmap.py # from nototools
 
-EMOJI_SRC_DIR := png/128
+EMOJI_SRC_DIR ?= png/128
 FLAGS_SRC_DIR := third_party/region-flags/png
 
 BUILD_DIR := build
