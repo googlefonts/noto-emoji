@@ -1,8 +1,1 @@
-<svg width="128" height="128" style="enable-background:new 0 0 128 128;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-  <g>
-    <circle cx="64" cy="64" r="58" style="fill:none;stroke:#F79229;stroke-width:11;stroke-miterlimit:10;"/>
-    <line style="fill:none;stroke:#F79229;stroke-width:11;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" x1="64" x2="64" y1="6" y2="122"/>
-    <line style="fill:none;stroke:#F79229;stroke-width:11;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" x1="64" x2="105.01" y1="64" y2="105.01"/>
-    <line style="fill:none;stroke:#F79229;stroke-width:11;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" x1="22.99" x2="64" y1="105.01" y2="64"/>
-  </g>
-</svg>
+<svg width="128" height="128" xmlns="http://www.w3.org/2000/svg"><g fill="none" stroke="#f79229" stroke-width="11" stroke-miterlimit="10"><circle cx="64" cy="64" r="58"/><path stroke-linecap="round" stroke-linejoin="round" d="M64 6v116M64 64l41.01 41.01M22.99 105.01L64 64"/></g></svg>

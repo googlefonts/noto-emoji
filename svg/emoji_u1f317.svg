@@ -1,12 +1,1 @@
-<svg width="128" height="128" style="enable-background:new 0 0 128 128;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-  <g>
-    <defs>
-      <path id="SVGID_1_" d="M0.24,64c0,35.21,28.54,63.77,63.76,63.77c35.21,0,63.77-28.55,63.77-63.77 c0-35.22-28.55-63.77-63.77-63.77C28.78,0.23,0.24,28.78,0.24,64z"/>
-    </defs>
-    <use style="overflow:visible;fill:#2F2F2F;" xlink:href="#SVGID_1_"/>
-    <clipPath id="SVGID_2_">
-      <use style="overflow:visible;" xlink:href="#SVGID_1_"/>
-    </clipPath>
-    <rect height="158.99" style="clip-path:url(#SVGID_2_);fill:#FCC21B;" width="88.89" x="-24.89" y="-17.32"/>
-  </g>
-</svg>
+<svg width="128" height="128" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs><path id="a" d="M.24 64c0 35.21 28.54 63.77 63.76 63.77 35.21 0 63.77-28.55 63.77-63.77S99.22.23 64 .23.24 28.78.24 64z"/></defs><use xlink:href="#a" overflow="visible" fill="#2f2f2f"/><clipPath id="b"><use xlink:href="#a" overflow="visible"/></clipPath><path clip-path="url(#b)" fill="#fcc21b" d="M-24.89-17.32H64v158.99h-88.89z"/></svg>
