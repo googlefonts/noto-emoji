@@ -43,13 +43,14 @@
      inkscape:snap-bbox-midpoints="true"
      inkscape:object-nodes="false"
      inkscape:snap-page="true"
-     inkscape:zoom="1.84375"
-     inkscape:cx="-118.04881"
-     inkscape:cy="47.423621"
+     inkscape:zoom="3.6875"
+     inkscape:cx="82.859018"
+     inkscape:cy="59.671101"
      inkscape:window-x="-11"
      inkscape:window-y="-11"
      inkscape:window-maximized="1"
-     inkscape:current-layer="svg12" />
+     inkscape:current-layer="svg12"
+     inkscape:bbox-nodes="true" />
   <path
      d="M116 128H12c-6.6 0-12-5.4-12-12V12C0 5.4 5.4 0 12 0h104c6.6 0 12 5.4 12 12v104c0 6.6-5.4 12-12 12z"
      fill="#1bb7fc"
@@ -70,7 +71,7 @@
      font-size="17.903"
      letter-spacing="0"
      word-spacing="0"
-     id="text10">
+     id="text825">
     <tspan
        x="21.136793"
        y="94.660309"
@@ -78,6 +79,24 @@
        font-weight="700"
        font-size="92.073"
        letter-spacing="-9.08"
-       id="tspan8">10</tspan>
+       id="tspan823">1</tspan>
+  </text>
+  <text
+     id="text821"
+     word-spacing="0"
+     letter-spacing="0"
+     font-size="17.903"
+     font-weight="400"
+     y="94.660309"
+     x="51.619408"
+     style="font-weight:400;font-size:17.90299988px;line-height:1.25;font-family:'Playfair Display';-inkscape-font-specification:'Playfair Display';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0;word-spacing:0;text-anchor:middle;fill:#ffffff;stroke-width:0.95899999">
+    <tspan
+       id="tspan819"
+       letter-spacing="-9.08"
+       font-size="92.073"
+       font-weight="700"
+       style="font-weight:700;font-size:92.07299805px;font-family:'Comic Neue';-inkscape-font-specification:'Comic Neue Bold';text-align:start;letter-spacing:-9.07999992;text-anchor:start"
+       y="94.660309"
+       x="51.619408">0</tspan>
   </text>
 </svg>
