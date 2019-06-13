@@ -1,4 +1,4 @@
-# Please note that all these features (except for the Blobmoji EmojiCompat font itself) are now included in their own library which you can find at [FileMojiCompat](FileMojiCompat). This page (and folder) will be updated soon :sweat_smile:
+# Please note that all these features (except for the Blobmoji EmojiCompat font itself) are now included in their own library which you can find at [FileMojiCompat](https://github.com/C1710/FilemojiCompat). This page (and folder) will be updated soon :sweat_smile:
 ## You can use this font in [EmojiCompat](https://developer.android.com/guide/topics/ui/look-and-feel/emoji-compat.html)!
 The most important file for this is `NotoEmojiCompat.ttf`. This is the font you'll need.  
 There are three different ways to use this font in EmojiCompat:  
