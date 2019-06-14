@@ -1,13 +1,133 @@
-<svg width="128" height="128" style="enable-background:new 0 0 128 128;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-  <g>
-    <rect height="127.74" style="fill:#FFFFFF;" width="127.63" x="0.18" y="0.13"/>
-    <g>
-      <path d="M0.19,0.13v63.93h63.81V0.13H0.19z M54.19,54.31c-0.18,0.26-0.47,0.42-0.79,0.42H42.75 c-0.42,0-0.79-0.27-0.92-0.67l-2.47-7.42H24.84l-2.47,7.42c-0.12,0.4-0.5,0.67-0.91,0.67H10.8c-0.32,0-0.62-0.16-0.79-0.42 c-0.19-0.26-0.22-0.6-0.11-0.89l16.25-43.21c0.15-0.38,0.51-0.63,0.91-0.63h10.1c0.4,0,0.76,0.25,0.9,0.63L54.3,53.42 C54.42,53.72,54.38,54.05,54.19,54.31z" style="fill:#ED6C30;"/>
-      <polygon points="27.88,37.47 36.32,37.47 32.1,24.76 " style="fill:#ED6C30;"/>
-      <path d="M64.01,64.06v63.81h63.81V64.06H64.01z M96.74,118.76H77.89c-0.53,0-0.97-0.44-0.97-0.97V74.15 c0-0.53,0.43-0.97,0.97-0.97h18.85c13.04,0,21.8,9.16,21.8,22.79C118.54,109.6,109.78,118.76,96.74,118.76z" style="fill:#ED6C30;"/>
-      <path d="M97.71,83.97c-0.32-0.04-0.64-0.07-0.97-0.1c-0.19,0-0.36-0.05-0.56-0.05 c-0.11,0-0.23,0.03-0.33,0.07c-0.03-0.01-0.05-0.01-0.07-0.02c-0.03,0-0.06-0.01-0.09-0.01h-6.36c-0.51,0-0.94,0.42-0.94,0.93 v22.34c0,0.51,0.43,0.94,0.94,0.94h6.36c0.04,0,0.06-0.02,0.09-0.02c0.02,0,0.05-0.01,0.07-0.02c0.1,0.04,0.22,0.07,0.33,0.07 c0.2,0,0.37-0.04,0.56-0.05c0.33-0.02,0.65-0.05,0.97-0.09c5.65-0.72,9.37-5.32,9.37-12C107.08,89.3,103.36,84.69,97.71,83.97z" style="fill:#ED6C30;"/>
-      <path d="M79.95,54.94h18.43c7.98,0,14.46-5.85,14.46-13.03c0-4.34-2.38-8.2-6.02-10.55 c2.45-2.34,3.97-5.49,3.97-8.96c0-7.18-6.49-13.03-14.47-13.03H79.95c-0.53,0-0.97,0.44-0.97,0.97v43.64 C78.98,54.51,79.42,54.94,79.95,54.94z M96.22,46.52c-0.07,0-0.13,0.02-0.2,0.02h-6.38l-0.22-0.22V36.09l0.22-0.22h6.38 c0.04,0,0.08,0.01,0.13,0.01c2.64,0.07,4.75,2.42,4.75,5.31C100.9,44.07,98.82,46.4,96.22,46.52z M95.66,27.3h-6.05l-0.22-0.22 v-8.77l0.22-0.23h6.05c2.43,0,4.4,2.07,4.4,4.61C100.06,25.24,98.08,27.3,95.66,27.3z" style="fill:#2F2F2F;"/>
-      <path d="M48.2,103.71l-0.45,0.11c-2.91,2.32-7.94,4.07-11.69,4.07c-7.24,0-12.29-4.9-12.29-11.92 c0-7.02,5.05-11.91,12.29-11.91c3.92,0,7.93,1.26,10.47,3.29l0.44,0.1l0.37-0.27l5.17-9.83l-0.14-0.66 c-4.22-3.34-9.58-4.97-16.36-4.97c-14.46,0-24.97,10.2-24.97,24.25c0,14.05,10.5,24.25,24.97,24.25c6.62,0,12.34-2.01,17-5.99 l0.13-0.63l-4.57-9.59L48.2,103.71z" style="fill:#2F2F2F;"/>
-    </g>
-  </g>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="128"
+   height="128"
+   style="enable-background:new 0 0 128 128;"
+   version="1.1"
+   id="svg20"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   sodipodi:docname="emoji_u1f520.svg">
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1046"
+     id="namedview15"
+     showgrid="false"
+     inkscape:snap-bbox="true"
+     inkscape:bbox-nodes="true"
+     inkscape:snap-bbox-edge-midpoints="true"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     inkscape:snap-bbox-midpoints="true"
+     inkscape:zoom="5.2149125"
+     inkscape:cx="11.584812"
+     inkscape:cy="52.738215"
+     inkscape:window-x="-11"
+     inkscape:window-y="-11"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg20">
+    <sodipodi:guide
+       position="32.095,32.035002"
+       orientation="1,0"
+       id="guide825"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="95.915003,95.905001"
+       orientation="0,1"
+       id="guide827"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="95.915004,32.035001"
+       orientation="1,0"
+       id="guide829"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="95.915004,32.035001"
+       orientation="0,1"
+       id="guide831"
+       inkscape:locked="false" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata26">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs24" />
+  <path
+     style="opacity:1;fill:#3e99ff;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;"
+     d="M 7.4,2e-6 C 26.266667,2e-6 44.55806,0.95879 63.424727,0.95879 82.291393,0.95879 101.73333,2e-6 120.6,2e-6 c 4.0996,0 7.4,3.3004 7.4,7.4 0,18.866667 -0.57527,30.446538 -0.57527,49.313205 0,18.866667 0.57527,45.020123 0.57527,63.886793 0,4.0996 -3.3004,7.4 -7.4,7.4 -18.86667,0 -35.240482,-1.91758 -54.107149,-1.91758 C 47.626184,126.08242 26.266667,128 7.4,128 3.3004,128 0,124.6996 0,120.6 0,101.73333 0.958789,81.90788 0.958789,63.041213 0.958789,44.174547 0,26.266669 0,7.400002 0,3.300402 3.3004,2e-6 7.4,2e-6 Z"
+     id="rect840" />
+  <path
+     style="fill:#2089ff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     d="M 125.14258,1.177736 C 87.201878,46.083946 32.053071,77.426049 0.8710935,124.19531 c 1.355344,1.6066 3.382124,2.62695 5.658203,2.62695 18.8666675,0 40.2251315,-1.91797 59.0917975,-1.91797 18.866667,0 35.240756,1.91797 54.107426,1.91797 4.0996,0 7.40039,-3.30079 7.40039,-7.40039 0,-18.86667 -0.57617,-45.020044 -0.57617,-63.886711 0,-18.866667 0.57617,-30.445833 0.57617,-49.312501 0,-1.955406 -0.75603,-3.724575 -1.98633,-5.044922 z"
+     id="path855" />
+  <text
+     style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:66.139328px;line-height:1.25;font-family:'Comic Neue';font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-feature-settings:normal;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:0px;word-spacing:0px;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+     x="75.312607"
+     y="54.549301"
+     id="text835">
+    <tspan
+       sodipodi:role="line"
+       id="tspan833"
+       x="75.312607"
+       y="54.549301"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:66.139328px;line-height:1.25;font-family:'Comic Neue';font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-feature-settings:normal;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:0px;word-spacing:0px;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1">B</tspan>
+  </text>
+  <text
+     id="text893"
+     y="118.51851"
+     x="11.095763"
+     style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:66.139328px;line-height:1.25;font-family:'Comic Neue';font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-feature-settings:normal;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:0px;word-spacing:0px;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1">
+    <tspan
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:66.139328px;line-height:1.25;font-family:'Comic Neue';font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-feature-settings:normal;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:0px;word-spacing:0px;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       y="118.51851"
+       x="11.095763"
+       id="tspan891"
+       sodipodi:role="line">C</tspan>
+  </text>
+  <text
+     style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:66.139328px;line-height:1.25;font-family:'Comic Neue';font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-feature-settings:normal;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:0px;word-spacing:0px;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;opacity:1;fill:#2f2f2f;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+     x="11.327251"
+     y="54.813858"
+     id="text917">
+    <tspan
+       sodipodi:role="line"
+       id="tspan915"
+       x="11.327251"
+       y="54.813858"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:66.139328px;line-height:1.25;font-family:'Comic Neue';font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-feature-settings:normal;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:0px;word-spacing:0px;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1">A</tspan>
+  </text>
+  <text
+     style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:66.139328px;line-height:1.25;font-family:'Comic Neue';font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-feature-settings:normal;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:0px;word-spacing:0px;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;opacity:1;fill:#2f2f2f;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+     x="75.081116"
+     y="117.85712"
+     id="text921">
+    <tspan
+       sodipodi:role="line"
+       id="tspan919"
+       x="75.081116"
+       y="117.85712"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:66.139328px;line-height:1.25;font-family:'Comic Neue';font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-feature-settings:normal;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:0px;word-spacing:0px;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1">D</tspan>
+  </text>
 </svg>

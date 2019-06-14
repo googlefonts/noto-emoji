@@ -87,11 +87,12 @@ SELECTED_FLAGS = AC AD AE AF AG AI AL AM AO AQ AR AS AT AU AW AX AZ \
         US-SD US-IN US-MD US-NY CA-NB US-HI CA-ON CA-QC \
         US-ND US-RI US-MI CA-BC US-MN US-VA CA-MB US-MT \
         US-DC US-NE CA-PE US-LA US-ME US-IA US-WY US-DE \
-        US-NV US-OR
+        US-NV US-OR \
+	
 
 ALL_FLAGS = $(basename $(notdir $(wildcard $(FLAGS_SRC_DIR)/*.png)))
 
-FLAGS = $(SELECTED_FLAGS)
+FLAGS = $(ALL_FLAGS)
 
 FLAG_NAMES = $(FLAGS:%=%.png)
 FLAG_FILES = $(addprefix $(FLAGS_DIR)/, $(FLAG_NAMES))

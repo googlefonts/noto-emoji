@@ -15,6 +15,7 @@
 #    limitations under the License.
 
 import os
+import sys
 
 # That's what we'd like to insert in our CHANGES.md later
 pattern = "\n| ![&#x{0};](https://rawgit.com/googlei18n/noto-emoji/e456654119cc3a5f9bebb7bbd00512456f983d2d/png/128/emoji_u{0}.png) | ![&#x{0};](http://rawgit.com/C1710/blobmoji/master/png/128/emoji_u{0}.png)	| U+{0}	| {1}	| {2}	|  "
@@ -72,6 +73,43 @@ def review(details: list) -> bool:
         descision = input('Are you sure you want to add these? [y/n]: ')
     return descision.lower() == 'y'
 
+def seq_from_file(filename: str) -> list:
+    with open(filename) as file:
+        if not '#' in file.read(128):
+            file.seek(0)
+            return file.readlines()
+        else:
+            file.seek(0)
+            return seq_from_unicode(file)
+
+
+def seq_from_unicode(file) -> list:
+    sequences = []
+    # Read all the lines
+    for line in file:
+        # Remove comments and any other information that is not needed
+        line = line.split('#')[0].strip()
+        line = line.split(';')[0].strip()
+        # Is there any content left?
+        if len(line):
+            # Handle sequences
+            sequence = line.split(' ')
+            sequence = [c.strip() for c in sequence if len(c.strip())]
+            if len(sequence) == 1:
+                # Handle ranges
+                codepoints = sequence[0].split('..')
+                codepoints = [int(x, base=16) for x in codepoints]
+                if len(codepoints) == 2:
+                    for i in range(codepoints[0], codepoints[1]+1):
+                        sequences.append(hex(i)[2:])
+                else:
+                    # Handle single codepoints
+                    sequences.append(hex(codepoints[0])[2:])
+            else:
+                sequences.append('_'.join(sequence).lower())
+    return sequences
+
+
 path = 'CHANGES.md'
 
 def write(strings: list):
@@ -80,6 +118,15 @@ def write(strings: list):
             	md_file.write(line)
 
 if __name__ == '__main__':
-    details = get_details(get_sequences())
+    if len(sys.argv) <= 1:
+        sequences = get_sequences()
+    else:
+        sequences = []
+        for f in sys.argv[1:]:
+            sequences.extend(seq_from_file(sys.argv[1]))
+    
+    # remove duplicates
+    sequences = list(dict.fromkeys(sequences))
+    details = get_details(sequences)
     if review(details):
         write(produce_strings(details))

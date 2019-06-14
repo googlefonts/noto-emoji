@@ -1,6 +1,1 @@
-<svg width="128" height="128" style="enable-background:new 0 0 128 128;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-  <g>
-    <polygon points="20.97,50.92 20.97,95.94 107.03,95.94 107.03,50.92 64,72.31 " style="fill-rule:evenodd;clip-rule:evenodd;fill:#FCC21B;"/>
-    <polygon points="20.97,32.06 20.97,44.04 64,65.43 107.03,44.04 107.03,32.06 " style="fill-rule:evenodd;clip-rule:evenodd;fill:#FCC21B;"/>
-  </g>
-</svg>
+<svg width="128" height="128" xmlns="http://www.w3.org/2000/svg"><g fill-rule="evenodd" clip-rule="evenodd" fill="#fcc21b"><path d="M20.97 50.92v45.02h86.06V50.92L64 72.31z"/><path d="M20.97 32.06v11.98L64 65.43l43.03-21.39V32.06z"/></g></svg>

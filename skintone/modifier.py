@@ -5,7 +5,7 @@ import os
 class Modifier:
     """An Object containing all relevant information about one skin tone Modifier"""
 
-    def __init__(self, name: str, colors: dict, extension: str, tolerance: int = 2, *args, **kwargs):
+    def __init__(self, name: str, colors: dict, extension: str, tolerance: int = 16, *args, **kwargs):
         """
         Creates a new skin tone modifier
         :param name: The name of this skin tone
@@ -18,62 +18,68 @@ class Modifier:
         self.extension = extension
         self.tolerance = tolerance
 
-    def replace(self, base) -> dict:
+    def replace(self, colors, base) -> dict:
         """
-        Creates a dict containing all replacements
+        Creates a dict containing all color replacements
+        :param colors: A dict containing the original color strings and their RGB values
         :param base: The base Modifier
-        :return: A dict containing the replacement rules as regular expressions
-        (e.g.: {'#(00|01|02)(00|01|02)(00|01|02)': '#ffffff', '#(10|11|12|13|14)(32|33|34|35|36)(54|55|56|57|58)': '#28923'}
+        :return: A dict containing the replacement rules as from: to (they can be applied by using simple string substitution)
         """
-        # Create a new dict
-        replace = dict()
-        # Color: The color's name (e.g. 'skin')
-        # Value: The actual color code
-        for color, value in base.colors.items():
-            try:
-                # Try to find an appropiate replacement
-                replace.update({base.generate_tolerance(value): self.colors[color]})
-            except KeyError:
-                try:
-                    # We'll now try to ignore any extensions added with '_'
-                    # (e.g. "hand_2" -> "hand", "skin_boo_ya" -> "skin")
-                    replace.update({base.generate_tolerance(value): self.colors[color.split('_')[0]]})
-                except KeyError:
-                    # Replacement not found
-                    print('Didn\'t find replacement for color {} from {} (Name: "{}" or "{}") in {}.'.format(value, base.name, color, color.split('_')[0], self.name))
-        return replace
+        # Create a new list
+        replace = list()
+        # The base colors as a RGBA: hex string dict
+        basecolors = Modifier.build_rgb(base)
 
-    def generate_tolerance(self, val: str) -> str:
+        # Go through all the colors that have been found
+        for old_color, value in colors.items():
+            # ...And try to find a matching base color
+            for base_value, color_name in basecolors.items():
+                # Also match some surrounding colors
+                if Modifier.eucl_dist(value, base_value) <= self.tolerance:
+                    # It's a match!
+                    try:
+                        # Try to find an appropiate replacement
+                        new_color = self.colors[color_name]
+                        replace.append((old_color, new_color))
+                    except KeyError:
+                        try:
+                            # We'll now try to ignore any extensions added with '_'
+                            # (e.g. "hand_2" -> "hand", "skin_boo_ya" -> "skin")
+                            new_color = self.colors[color_name.split('_')[0]]
+                            replace.append((old_color, new_color))
+                        except KeyError:
+                            # Replacement not found
+                            print('Didn\'t find replacement for color {} from {} (Name: "{}" or "{}") in {}.'.format(value, base.name, color, color.split('_')[0], self.name))  
+        return dict(replace)
+
+    @staticmethod
+    def eucl_dist(a, b):
         """
-        Generates a color radius to get a little tolerance
-        Please note this is really bad code. 
-        Even in comparison to the rest of this crap.
-        :param val: The color's hex code (e.g. #12345D)
-        :return: a regular expression covering this radius (e.g: #(10|11|12|13|14)(32|33|34|35|36)(5B|5C|5D|5E|5F))
+        Returns the euclidean distance between two tuples
+        :param a: The first tuple
+        :param b: The second tuple
+        :return: Their euclidean distance
         """
-        if len(val) == 7: # RGB
-            pairs = [val[1:3], val[3:5], val[5:7]]
-        else: # RGBA
-            pairs = [val[1:3], val[3:5], val[5:7], val[7:9]]
-        # Placeholder for the new color components
-        new_pairs = []
-        for pair in pairs:
-            # Create a new Hex String with the two digits
-            hex = HexString(pair, 0, 0xff, 2)
-            # This one will contain all variations
-            # (42 will become [40,41,42,43,44])
-            vals = []
-            # Go through all possible values
-            for plus in range(-self.tolerance, self.tolerance + 1):
-                try:
-                    # Try to add an offset
-                    vals.append(hex + plus)
-                except ValueError: 
-                    # Ignore if the maximum range is exceeded
-                    pass
-            # Apply the new values
-            new_pairs.append('({})'.format('|'.join((str(val) for val in vals))))
-        return '#' + ''.join(new_pairs)
+        pairs = zip(a,b)
+        dist = map(lambda x: (x[0]-x[1])**2, pairs)
+        return sum(dist)**(1/2)
+
+    def build_rgb(self) -> dict:
+        """
+        Returns the colors dict with the RGBA values as a tuple instead of a hex string and with the colors as keys
+        :return: A dict with RGBA tuple:color name
+        """
+        colors = list()
+        for name, value in self.colors.items():
+            # Get rid of the #
+            value = value.replace('#','').strip()
+            value = [value[0:2], value[2:4], value[4:6], value[6:8]]
+            # Add an alpha value if necessary
+            if not value[3]:
+                value[3] = 'ff'
+            value = tuple(int(v, 16) for v in value)
+            colors.append((value, name))
+        return dict(colors)
 
     @staticmethod
     def generate_from_json(file: str):

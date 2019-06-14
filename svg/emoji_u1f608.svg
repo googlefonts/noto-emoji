@@ -1,145 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="128"
-   height="128"
-   style="enable-background:new 0 0 128 128;"
-   version="1.1"
-   id="svg44"
-   sodipodi:docname="emoji_u1f608.svg"
-   inkscape:version="0.92+devel unknown">
-  <metadata
-     id="metadata50">
-    <rdf:RDF>
-      <cc:Work
-         rdf:about="">
-        <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-      </cc:Work>
-    </rdf:RDF>
-  </metadata>
-  <defs
-     id="defs48" />
-  <sodipodi:namedview
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     inkscape:document-rotation="0"
-     borderopacity="1"
-     objecttolerance="10"
-     gridtolerance="10"
-     guidetolerance="10"
-     inkscape:pageopacity="0"
-     inkscape:pageshadow="2"
-     inkscape:window-width="1680"
-     inkscape:window-height="986"
-     id="namedview46"
-     showgrid="false"
-     inkscape:zoom="5.4453125"
-     inkscape:cx="64"
-     inkscape:cy="64"
-     inkscape:window-x="0"
-     inkscape:window-y="27"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="svg44" />
-  <path
-     inkscape:connector-curvature="0"
-     id="path2"
-     style="fill:#8d25e7;fill-opacity:1"
-     d="m 64.46,24.82 c -58.32,0 -59.7,65.38 -59.7,78.33 0,12.93 26.75,23.43 59.7,23.43 32.99,0 59.7,-10.5 59.7,-23.43 0.01,-12.95 -1.37,-78.33 -59.7,-78.33 z" />
-  <path
-     d="m 83.92,40.16 c 0.71,-2.01 2.2,-3.9 4.43,-5.65 1.82,-1.43 3.75,-2.83 5.25,-4.61 4.42,-5.26 6.58,-13.45 5.58,-20.29 -0.23,-1.53 -1.72,-4.48 -0.71,-5.87 1.75,-2.38 6.08,0.08 7.47,1.45 4.35,4.28 6.96,10.15 8.23,16.05 1.59,7.33 1.37,14.93 -1.06,22.03 -2.02,5.88 -6.87,11.69 -13.12,13.07 -5.36,1.19 -11.15,-2.35 -14.11,-6.56 -2.39,-3.42 -3.01,-6.65 -1.96,-9.62 z"
-     style="fill:#8d25e7;fill-opacity:1"
-     id="path4"
-     inkscape:connector-curvature="0" />
-  <path
-     d="M 45.01,39.32 C 44.3,37.32 42.83,35.43 40.58,33.67 38.75,32.24 36.86,30.84 35.34,29.06 30.93,23.8 28.77,15.62 29.77,8.78 30,7.24 31.47,4.3 30.47,2.91 28.73,0.51 24.4,2.98 23,4.36 18.66,8.64 16.05,14.51 14.76,20.4 c -1.57,7.32 -1.36,14.93 1.08,22.03 2.01,5.88 6.88,11.69 13.12,13.08 5.35,1.19 11.14,-2.36 14.08,-6.56 2.4,-3.43 3.03,-6.65 1.97,-9.63 z"
-     style="fill:#8d25e7;fill-opacity:1"
-     id="path6"
-     inkscape:connector-curvature="0" />
-  <g
-     id="g36">
-    <g
-       id="g22">
-      <defs
-         id="defs13">
-        <path
-           id="SVGID_1_"
-           d="M 38.06,89.86 C 24.24,87.02 22.79,74.36 23.77,68.86 L 58.03,79.12 C 57.06,84.59 47.76,91.84 38.06,89.86 Z"
-           inkscape:connector-curvature="0" />
-      </defs>
-      <use
-         style="overflow:visible;fill:#2f2f2f"
-         xlink:href="#SVGID_1_"
-         id="use15"
-         x="0"
-         y="0"
-         width="100%"
-         height="100%" />
-      <clipPath
-         id="SVGID_2_">
-        <use
-           style="overflow:visible"
-           xlink:href="#SVGID_1_"
-           id="use17"
-           x="0"
-           y="0"
-           width="100%"
-           height="100%" />
-      </clipPath>
-      <path
-         d="M 39.47,84.11 C 30.3,82.32 29.48,73.07 30.82,69.43 l 21.47,6.8 c -0.13,3.62 -6.35,9.15 -12.82,7.88 z"
-         style="fill:#fbb817"
-         clip-path="url(#SVGID_2_)"
-         id="path20"
-         inkscape:connector-curvature="0" />
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 128 128" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:1.41421;">
+    <path d="M64.46,24.82C6.14,24.82 4.76,90.2 4.76,103.15C4.76,116.08 31.51,126.58 64.46,126.58C97.45,126.58 124.16,116.08 124.16,103.15C124.17,90.2 122.79,24.82 64.46,24.82Z" style="fill:rgb(180,124,228);fill-rule:nonzero;"/>
+    <path d="M83.92,40.16C84.63,38.15 86.12,36.26 88.35,34.51C90.17,33.08 92.1,31.68 93.6,29.9C98.02,24.64 100.18,16.45 99.18,9.61C98.95,8.08 97.46,5.13 98.47,3.74C100.22,1.36 104.55,3.82 105.94,5.19C110.29,9.47 112.9,15.34 114.17,21.24C115.76,28.57 115.54,36.17 113.11,43.27C111.09,49.15 106.24,54.96 99.99,56.34C94.63,57.53 88.84,53.99 85.88,49.78C83.49,46.36 82.87,43.13 83.92,40.16ZM45.01,39.32C44.3,37.32 42.83,35.43 40.58,33.67C38.75,32.24 36.86,30.84 35.34,29.06C30.93,23.8 28.77,15.62 29.77,8.78C30,7.24 31.47,4.3 30.47,2.91C28.73,0.51 24.4,2.98 23,4.36C18.66,8.64 16.05,14.51 14.76,20.4C13.19,27.72 13.4,35.33 15.84,42.43C17.85,48.31 22.72,54.12 28.96,55.51C34.31,56.7 40.1,53.15 43.04,48.95C45.44,45.52 46.07,42.3 45.01,39.32Z" style="fill:rgb(180,124,228);fill-rule:nonzero;"/>
+    <path id="a" d="M38.06,89.86C24.24,87.02 22.79,74.36 23.77,68.86L58.03,79.12C57.06,84.59 47.76,91.84 38.06,89.86Z" style="fill:rgb(47,47,47);fill-rule:nonzero;"/>
+    <clipPath id="_clip1">
+        <path d="M38.06,89.86C24.24,87.02 22.79,74.36 23.77,68.86L58.03,79.12C57.06,84.59 47.76,91.84 38.06,89.86Z"/>
+    </clipPath>
+    <g clip-path="url(#_clip1)">
+        <path d="M39.47,84.11C30.3,82.32 29.48,73.07 30.82,69.43L52.29,76.23C52.16,79.85 45.94,85.38 39.47,84.11Z" style="fill:rgb(251,184,23);fill-rule:nonzero;"/>
     </g>
-    <g
-       id="g34">
-      <defs
-         id="defs25">
-        <path
-           id="SVGID_3_"
-           d="m 90.87,89.86 c 13.82,-2.84 15.27,-15.5 14.29,-21 L 70.9,79.11 c 0.97,5.48 10.28,12.73 19.97,10.75 z"
-           inkscape:connector-curvature="0" />
-      </defs>
-      <use
-         style="overflow:visible;fill:#2f2f2f"
-         xlink:href="#SVGID_3_"
-         id="use27"
-         x="0"
-         y="0"
-         width="100%"
-         height="100%" />
-      <clipPath
-         id="SVGID_4_">
-        <use
-           style="overflow:visible"
-           xlink:href="#SVGID_3_"
-           id="use29"
-           x="0"
-           y="0"
-           width="100%"
-           height="100%" />
-      </clipPath>
-      <path
-         d="m 89.45,84.11 c 9.17,-1.79 9.99,-11.04 8.65,-14.68 l -21.46,6.8 c 0.12,3.62 6.34,9.15 12.81,7.88 z"
-         style="fill:#fbb817"
-         clip-path="url(#SVGID_4_)"
-         id="path32"
-         inkscape:connector-curvature="0" />
+    <g>
+        <path id="c" d="M90.87,89.86C104.69,87.02 106.14,74.36 105.16,68.86L70.9,79.11C71.87,84.59 81.18,91.84 90.87,89.86Z" style="fill:rgb(47,47,47);fill-rule:nonzero;"/>
+        <clipPath id="_clip2">
+            <path d="M90.87,89.86C104.69,87.02 106.14,74.36 105.16,68.86L70.9,79.11C71.87,84.59 81.18,91.84 90.87,89.86Z"/>
+        </clipPath>
+        <g clip-path="url(#_clip2)">
+            <path d="M89.45,84.11C98.62,82.32 99.44,73.07 98.1,69.43L76.64,76.23C76.76,79.85 82.98,85.38 89.45,84.11Z" style="fill:rgb(251,184,23);fill-rule:nonzero;"/>
+        </g>
     </g>
-  </g>
-  <path
-     inkscape:connector-curvature="0"
-     id="path40"
-     style="fill:#2f2f2f"
-     d="m 65.74,113.02 c -0.63,0 -1.31,-0.03 -1.98,-0.06 -15.84,-0.95 -21.84,-9.54 -22.09,-9.9 -0.9,-1.3 -0.54,-3.06 0.74,-3.94 1.29,-0.88 3.03,-0.54 3.92,0.73 0.23,0.32 4.93,6.69 17.77,7.44 12.8,0.74 18.38,-7.62 18.45,-7.7 0.83,-1.31 2.6,-1.69 3.91,-0.84 1.31,0.85 1.69,2.6 0.83,3.91 -0.28,0.45 -6.86,10.36 -21.55,10.36 z" />
+    <path d="M65.74,113.02C65.11,113.02 64.43,112.99 63.76,112.96C47.92,112.01 41.92,103.42 41.67,103.06C40.77,101.76 41.13,100 42.41,99.12C43.7,98.24 45.44,98.58 46.33,99.85C46.56,100.17 51.26,106.54 64.1,107.29C76.9,108.03 82.48,99.67 82.55,99.59C83.38,98.28 85.15,97.9 86.46,98.75C87.77,99.6 88.15,101.35 87.29,102.66C87.01,103.11 80.43,113.02 65.74,113.02Z" style="fill:rgb(47,47,47);fill-rule:nonzero;"/>
 </svg>
