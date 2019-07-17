@@ -17,7 +17,12 @@
 # Google Author(s): Behdad Esfahbod
 #
 
-import struct, StringIO
+import struct
+import sys
+if sys.version_info >= (3,0,0): # Python3
+   from io import StringIO
+else:
+   from StringIO import StringIO
 
 
 class PNG:
@@ -26,7 +31,7 @@ class PNG:
 
 	def __init__ (self, f):
 
-		if isinstance(f, basestring):
+		if (isinstance(f, str) or isinstance(f, type(u''))):
 			f = open (f, 'rb')
 
 		self.f = f
@@ -43,7 +48,10 @@ class PNG:
 
 	def data (self):
 		self.seek (0)
-		return bytearray (self.f.read ())
+		if sys.version_info >= (3,0,0): # Python3
+			return bytearray (self.f.read (), 'iso-8859-1')
+		else:
+			return bytearray (self.f.read ())
 
 	class BadSignature (Exception): pass
 	class BadChunk (Exception): pass
@@ -55,7 +63,8 @@ class PNG:
 		return PNG.signature
 
 	def read_chunk (self):
-		length = struct.unpack (">I", self.f.read (4))[0]
+		buf = self.f.read (4)
+		length = struct.unpack (">I", buf)[0]
 		chunk_type = self.f.read (4)
 		chunk_data = self.f.read (length)
 		if len (chunk_data) != length:
@@ -67,7 +76,7 @@ class PNG:
 
 	def read_IHDR (self):
 		(chunk_type, chunk_data, crc) = self.read_chunk ()
-		if chunk_type != "IHDR":
+		if chunk_type not in ("IHDR", b"IHDR"):
 			raise PNG.BadChunk
 		#  Width:              4 bytes
 		#  Height:             4 bytes
@@ -93,15 +102,24 @@ class PNG:
 
 	def filter_chunks (self, chunks):
 		self.seek (0);
-		out = StringIO.StringIO ()
-		out.write (self.read_signature ())
+		out = StringIO ()
+		if sys.version_info >= (3,0,0): # Python3
+			out.write (self.read_signature ().decode('iso-8859-1'))
+		else:
+			out.write (self.read_signature ())
 		while True:
 			chunk_type, chunk_data, crc = self.read_chunk ()
 			if chunk_type in chunks:
-				out.write (struct.pack (">I", len (chunk_data)))
-				out.write (chunk_type)
-				out.write (chunk_data)
-				out.write (crc)
-			if chunk_type == "IEND":
+				if sys.version_info >= (3,0,0): # Python3
+					out.write (struct.pack (">I", len (chunk_data)).decode('iso-8859-1'))
+					out.write (chunk_type.decode('iso-8859-1'))
+					out.write (chunk_data.decode('iso-8859-1'))
+					out.write (crc.decode('iso-8859-1'))
+				else:
+					out.write (struct.pack (">I", len (chunk_data)))
+					out.write (chunk_type)
+					out.write (chunk_data)
+					out.write (crc)
+			if chunk_type in ("IEND", b"IEND"):
 				break
 		return PNG (out)
