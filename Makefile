@@ -209,11 +209,7 @@ endif
 %.ttx: %.ttx.tmpl $(ADD_GLYPHS) $(ALL_COMPRESSED_FILES)
 	@python $(ADD_GLYPHS) -f "$<" -o "$@" -d "$(COMPRESSED_DIR)" $(ADD_GLYPHS_FLAGS)
 
-%.ttf: %.ttx
-	@rm -f "$@"
-	ttx "$<"
-
-$(EMOJI).ttf: $(EMOJI).tmpl.ttf $(EMOJI_BUILDER) $(PUA_ADDER) \
+$(EMOJI).ttf: $(EMOJI).tmpl.ttx $(EMOJI_BUILDER) $(PUA_ADDER) \
 	$(ALL_COMPRESSED_FILES) | check_vs_adder
 	@python $(EMOJI_BUILDER) $(SMALL_METRICS) -V $< "$@" "$(COMPRESSED_DIR)/emoji_u"
 	@python $(PUA_ADDER) "$@" "$@-with-pua"

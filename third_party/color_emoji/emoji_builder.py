@@ -475,7 +475,11 @@ By default they are dropped.
 
 	print()
 
-	font = ttx.TTFont(font_file)
+	if font_file.endswith(".ttx"):
+		font = ttx.TTFont()
+		font.importXML(font_file)
+	else:
+		font = ttx.TTFont(font_file)
 	print("Loaded font '%s'." % font_file)
 
 	font_metrics = FontMetrics(font['head'].unitsPerEm, font['hhea'].ascent,
