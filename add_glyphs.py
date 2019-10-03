@@ -228,7 +228,10 @@ def get_rtl_seq(seq):
 
   rev_seq = list(seq)
   rev_seq.reverse()
-  for i in xrange(1, len(rev_seq)):
+  starts_with_fp = is_fitzpatrick(rev_seq[0])
+  for i in range(1, len(rev_seq)):
+    if i == 2 and starts_with_fp:
+      continue
     if is_fitzpatrick(rev_seq[i-1]):
       tmp = rev_seq[i]
       rev_seq[i] = rev_seq[i-1]
