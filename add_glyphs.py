@@ -228,11 +228,9 @@ def get_rtl_seq(seq):
 
   rev_seq = list(seq)
   rev_seq.reverse()
-  for i in range(1, len(rev_seq)):
+  for i in range(len(rev_seq)-1, 0, -1):
     if is_fitzpatrick(rev_seq[i-1]):
-      tmp = rev_seq[i]
-      rev_seq[i] = rev_seq[i-1]
-      rev_seq[i-1] = tmp
+      rev_seq[i-1], rev_seq[i] = rev_seq[i], rev_seq[i-1]
   return tuple(rev_seq)
 
 
