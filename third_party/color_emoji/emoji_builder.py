@@ -26,6 +26,12 @@ from os import path
 
 from nototools import font_data
 
+
+try:
+	unichr  # py2
+except NameError:
+	unichr = chr  # py3
+
 def get_glyph_name_from_gsub (string, font, cmap_dict):
 	ligatures = font['GSUB'].table.LookupList.Lookup[0].SubTable[0].ligatures
 	first_glyph = cmap_dict[ord (string[0])]
@@ -179,10 +185,7 @@ class CBDT:
 				self.write (pixel)
 			offset += stride
 
-	png_allowed_chunks =  [
-		"IHDR", "PLTE", "tRNS", "sRGB", "IDAT", "IEND", # Python2
-		b"IHDR", b"PLTE", b"tRNS", b"sRGB", b"IDAT", b"IEND", # Python3
-	]
+	png_allowed_chunks =  [b"IHDR", b"PLTE", b"tRNS", b"sRGB", b"IDAT", b"IEND"]
 
 	def write_format17 (self, png):
                 self.write_format17or18(png, False)
@@ -444,10 +447,7 @@ By default they are dropped.
 
 	def add_font_table (font, tag, data):
 		tab = ttLib.tables.DefaultTable.DefaultTable (tag)
-		if sys.version_info >= (3, 0, 0):
-			tab.data = data
-		else:
-			tab.data = str(data)
+		tab.data = data
 		font[tag] = tab
 
 	def drop_outline_tables (font):
@@ -498,19 +498,13 @@ By default they are dropped.
 			if "_" in codes:
 				pieces = codes.split ("_")
 				cps = [int(code, 16) for code in pieces]
-				if sys.version_info >= (3, 0, 0):
-					uchars = "".join ([chr(cp) for cp in cps if not is_vs(cp)])
-				else:
-					uchars = "".join ([unichr(cp) for cp in cps if not is_vs(cp)])
+				uchars = "".join (unichr(cp) for cp in cps if not is_vs(cp))
 			else:
 				cp = int(codes, 16)
 				if is_vs(cp):
 				        print("ignoring unexpected vs input %04x" % cp)
 				        continue
-				if sys.version_info >= (3, 0, 0):
-					uchars = chr(cp)
-				else:
-					uchars = unichr(cp)
+				uchars = unichr(cp)
 			img_files[uchars] = img_file
 		if not img_files:
 			raise Exception ("No image files found in '%s'." % glb)
