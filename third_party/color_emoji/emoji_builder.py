@@ -19,12 +19,18 @@
 
 
 from __future__ import print_function
-import sys, struct, StringIO
+import sys, struct
 from png import PNG
 import os
 from os import path
 
 from nototools import font_data
+
+
+try:
+	unichr  # py2
+except NameError:
+	unichr = chr  # py3
 
 def get_glyph_name_from_gsub (string, font, cmap_dict):
 	ligatures = font['GSUB'].table.LookupList.Lookup[0].SubTable[0].ligatures
@@ -112,9 +118,9 @@ class CBDT:
 		line_height = (ascent + descent) * y_ppem / float (upem)
 		line_ascent = ascent * y_ppem / float (upem)
 		y_bearing = int (round (line_ascent - .5 * (line_height - height)))
-                # fudge y_bearing if calculations are a bit off
-                if y_bearing == 128:
-                  y_bearing = 127
+		# fudge y_bearing if calculations are a bit off
+		if y_bearing == 128:
+			y_bearing = 127
 		advance = width
 
 		vert_x_bearing = - width / 2
@@ -133,22 +139,22 @@ class CBDT:
 		# CHAR	vertBearingX
 		# CHAR	vertBearingY
 		# BYTE	vertAdvance
-                try:
-                  if big_metrics:
-                        self.write (struct.pack ("BBbbBbbB",
+		try:
+		  if big_metrics:
+		        self.write (struct.pack ("BBbbBbbB",
 					 height, width,
 					 x_bearing, y_bearing,
 					 advance,
 					 vert_x_bearing, vert_y_bearing,
 					 vert_advance))
-                  else:
-                        self.write (struct.pack ("BBbbB",
+		  else:
+		        self.write (struct.pack ("BBbbB",
 					 height, width,
 					 x_bearing, y_bearing,
 					 advance))
-                except Exception as e:
-                  raise ValueError("%s, h: %d w: %d x: %d y: %d %d a:" % (
-                      e, height, width, x_bearing, y_bearing, advance))
+		except Exception as e:
+		  raise ValueError("%s, h: %d w: %d x: %d y: %d %d a:" % (
+		      e, height, width, x_bearing, y_bearing, advance))
 
 	def write_format1 (self, png):
 
@@ -179,12 +185,12 @@ class CBDT:
 				self.write (pixel)
 			offset += stride
 
-	png_allowed_chunks =  ["IHDR", "PLTE", "tRNS", "sRGB", "IDAT", "IEND"]
+	png_allowed_chunks =  [b"IHDR", b"PLTE", b"tRNS", b"sRGB", b"IDAT", b"IEND"]
 
 	def write_format17 (self, png):
                 self.write_format17or18(png, False)
 
-        def write_format18 (self, png):
+	def write_format18 (self, png):
                 self.write_format17or18(png, True)
 
 	def write_format17or18 (self, png, big_metrics):
@@ -202,7 +208,7 @@ class CBDT:
 
 	def image_write_func (self, image_format):
 		if image_format == 1: return self.write_format1
-                if image_format == 17: return self.write_format17
+		if image_format == 17: return self.write_format17
 		if image_format == 18: return self.write_format18
 		return None
 
@@ -441,7 +447,7 @@ By default they are dropped.
 
 	def add_font_table (font, tag, data):
 		tab = ttLib.tables.DefaultTable.DefaultTable (tag)
-		tab.data = str(data)
+		tab.data = data
 		font[tag] = tab
 
 	def drop_outline_tables (font):
@@ -478,7 +484,7 @@ By default they are dropped.
 	eblc.write_header ()
 	eblc.start_strikes (len (img_prefixes))
 
-        def is_vs(cp):
+	def is_vs(cp):
                 return cp >= 0xfe00 and cp <= 0xfe0f
 
 	for img_prefix in img_prefixes:
@@ -491,13 +497,13 @@ By default they are dropped.
 			codes = img_file[len (img_prefix):-4]
 			if "_" in codes:
 				pieces = codes.split ("_")
-                                cps = [int(code, 16) for code in pieces]
-				uchars = "".join ([unichr(cp) for cp in cps if not is_vs(cp)])
+				cps = [int(code, 16) for code in pieces]
+				uchars = "".join (unichr(cp) for cp in cps if not is_vs(cp))
 			else:
-                                cp = int(codes, 16)
-                                if is_vs(cp):
-                                        print("ignoring unexpected vs input %04x" % cp)
-                                        continue
+				cp = int(codes, 16)
+				if is_vs(cp):
+				        print("ignoring unexpected vs input %04x" % cp)
+				        continue
 				uchars = unichr(cp)
 			img_files[uchars] = img_file
 		if not img_files:
@@ -561,8 +567,7 @@ By default they are dropped.
         # hack removal of cmap pua entry for unknown flag glyph.  If we try to
         # remove it earlier, getGlyphID dies.  Need to restructure all of this
         # code.
-        font_data.delete_from_cmap(font, [0xfe82b])
-
+	font_data.delete_from_cmap(font, [0xfe82b])
 	font.save (out_file)
 	print("Output font '%s' generated." % out_file)
 

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
 # Copyright 2014 Google Inc. All rights reserved.
 #
@@ -19,6 +19,7 @@
 __author__ = 'roozbeh@google.com (Roozbeh Pournader)'
 
 import sys
+import itertools
 
 from fontTools import ttLib
 
@@ -53,8 +54,9 @@ def add_pua_cmap(source_file, target_file):
     """Add PUA characters to the cmap of the first font and save as second."""
     font = ttLib.TTFont(source_file)
     cmap = font_data.get_cmap(font)
-    for pua, (ch1, ch2) in (add_emoji_gsub.EMOJI_KEYCAPS.items()
-                            + add_emoji_gsub.EMOJI_FLAGS.items()):
+    for pua, (ch1, ch2) in itertools.chain(
+        add_emoji_gsub.EMOJI_KEYCAPS.items(), add_emoji_gsub.EMOJI_FLAGS.items()
+    ):
         if pua not in cmap:
             glyph_name = get_glyph_name_from_gsub([ch1, ch2], font)
             if glyph_name is not None:
