@@ -19,6 +19,7 @@ CFLAGS = -std=c99 -Wall -Wextra `pkg-config --cflags --libs cairo`
 LDFLAGS = -lm `pkg-config --libs cairo`
 PNGQUANTDIR := third_party/pngquant
 PNGQUANT := $(PNGQUANTDIR)/pngquant
+PYTHON = python3
 PNGQUANTFLAGS = --speed 1 --skip-if-larger --quality 85-95 --force
 BODY_DIMENSIONS = 136x128
 IMOPS := -size $(BODY_DIMENSIONS) canvas:none -compose copy -gravity center
@@ -30,12 +31,14 @@ ZOPFLIPNG = zopflipng
 OPTIPNG = optipng
 
 EMOJI_BUILDER = third_party/color_emoji/emoji_builder.py
+# flag for emoji builder.  Default to legacy small metrics for the time being.
+SMALL_METRICS := -S
 ADD_GLYPHS = add_glyphs.py
 ADD_GLYPHS_FLAGS = -a emoji_aliases.txt
 PUA_ADDER = map_pua_emoji.py
 VS_ADDER = add_vs_cmap.py # from nototools
 
-EMOJI_SRC_DIR := png/128
+EMOJI_SRC_DIR ?= png/128
 FLAGS_SRC_DIR := third_party/region-flags/png
 
 BUILD_DIR := build
@@ -98,7 +101,7 @@ FLAG_NAMES = $(FLAGS:%=%.png)
 FLAG_FILES = $(addprefix $(FLAGS_DIR)/, $(FLAG_NAMES))
 RESIZED_FLAG_FILES = $(addprefix $(RESIZED_FLAGS_DIR)/, $(FLAG_NAMES))
 
-FLAG_GLYPH_NAMES = $(shell ./flag_glyph_name.py $(FLAGS))
+FLAG_GLYPH_NAMES = $(shell $(PYTHON) flag_glyph_name.py $(FLAGS))
 RENAMED_FLAG_NAMES = $(FLAG_GLYPH_NAMES:%=emoji_%.png)
 RENAMED_FLAG_FILES = $(addprefix $(RENAMED_FLAGS_DIR)/, $(RENAMED_FLAG_NAMES))
 
@@ -219,7 +222,7 @@ endif
 # Run make without -j if this happens.
 
 %.ttx: %.ttx.tmpl $(ADD_GLYPHS) $(ALL_COMPRESSED_FILES)
-	@python $(ADD_GLYPHS) -f "$<" -o "$@" -d "$(COMPRESSED_DIR)" $(ADD_GLYPHS_FLAGS)
+	@$(PYTHON) $(ADD_GLYPHS) -f "$<" -o "$@" -d "$(COMPRESSED_DIR)" $(ADD_GLYPHS_FLAGS)
 
 %.ttf: %.ttx
 	@rm -f "$@"
@@ -227,8 +230,8 @@ endif
 
 $(EMOJI).ttf: $(EMOJI).tmpl.ttf $(EMOJI_BUILDER) $(PUA_ADDER) \
 	$(ALL_COMPRESSED_FILES) | check_vs_adder
-	@python $(EMOJI_BUILDER) -V $< "$@" "$(COMPRESSED_DIR)/emoji_u"
-	@python $(PUA_ADDER) "$@" "$@-with-pua"
+	@$(PYTHON) $(EMOJI_BUILDER) $(SMALL_METRICS) -V $< "$@" "$(COMPRESSED_DIR)/emoji_u"
+	@$(PYTHON) $(PUA_ADDER) "$@" "$@-with-pua"
 	@$(VS_ADDER) -vs 2640 2642 2695 --dstdir '.' -o "$@-with-pua-varsel" "$@-with-pua"
 	@mv "$@-with-pua-varsel" "$@"
 	@rm "$@-with-pua"

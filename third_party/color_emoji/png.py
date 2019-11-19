@@ -17,7 +17,15 @@
 # Google Author(s): Behdad Esfahbod
 #
 
-import struct, StringIO
+import struct
+import sys
+from io import BytesIO
+
+
+try:
+	basestring  # py2
+except NameError:
+	basestring = str  # py3
 
 
 class PNG:
@@ -55,7 +63,8 @@ class PNG:
 		return PNG.signature
 
 	def read_chunk (self):
-		length = struct.unpack (">I", self.f.read (4))[0]
+		buf = self.f.read (4)
+		length = struct.unpack (">I", buf)[0]
 		chunk_type = self.f.read (4)
 		chunk_data = self.f.read (length)
 		if len (chunk_data) != length:
@@ -67,7 +76,7 @@ class PNG:
 
 	def read_IHDR (self):
 		(chunk_type, chunk_data, crc) = self.read_chunk ()
-		if chunk_type != "IHDR":
+		if chunk_type != b"IHDR":
 			raise PNG.BadChunk
 		#  Width:              4 bytes
 		#  Height:             4 bytes
@@ -93,7 +102,7 @@ class PNG:
 
 	def filter_chunks (self, chunks):
 		self.seek (0);
-		out = StringIO.StringIO ()
+		out = BytesIO ()
 		out.write (self.read_signature ())
 		while True:
 			chunk_type, chunk_data, crc = self.read_chunk ()
@@ -102,6 +111,6 @@ class PNG:
 				out.write (chunk_type)
 				out.write (chunk_data)
 				out.write (crc)
-			if chunk_type == "IEND":
+			if chunk_type == b"IEND":
 				break
 		return PNG (out)

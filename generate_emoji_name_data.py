@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-#
 #
 # Copyright 2015 Google Inc. All rights reserved.
@@ -390,8 +390,8 @@ def main():
       '-m', '--missing_limit', help='number of missing images before failure '
       '(default 20), use -1 for no limit', metavar='n', default=20)
   parser.add_argument(
-      '--omit_groups', help='names of groups to omit (default "Misc")',
-      metavar='name', default=['Misc'], nargs='*')
+      '--omit_groups', help='names of groups to omit (default "Misc, Flags")',
+      metavar='name', default=['Misc', 'Flags'], nargs='*')
   parser.add_argument(
       '-v', '--verbose', help='print progress information to stdout',
       action='store_true')
