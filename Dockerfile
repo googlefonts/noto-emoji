@@ -10,8 +10,11 @@ WORKDIR /nototools
 RUN pip install -r requirements.txt
 RUN pip install -e .
 
+# Create output dir
+RUN mkdir /output
+
 ADD . /blobmoji
 WORKDIR /blobmoji
 
 # Build blobmoji font
-CMD make -j $(nproc)
+CMD make -j $(nproc) && cp NotoColorEmoji.ttf /output/

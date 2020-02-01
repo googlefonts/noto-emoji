@@ -38,6 +38,11 @@ especially if you are using zopflipng for compression.  Intermediate products
 (compressed image files, for example) will be put into a build subdirectory; the
 font will be at the top level.
 
+## Docker build
+
+Alternatively, you can also build the font within Docker through the provided Dockerfile.
+Just run `docker build . -t blobmoji && docker run --rm -it -v "$PWD/output:/output" blobmoji`. The resulting font will reside in the 'output' folder in your current working directory.
+
 ## Using NotoColorEmoji
 
 NotoColorEmoji uses the CBDT/CBLC color font format, which is supported by Android
