@@ -214,23 +214,26 @@ def get_rtl_seq(seq):
   """Return the rtl variant of the sequence, if it has one, else the empty
   sequence.
   """
-  # Sequences with ZWJ or TAG_END in them will reflect.  Fitzpatrick modifiers
+  # Sequences with ZWJ in them will reflect.  Fitzpatrick modifiers
   # however do not, so if we reflect we make a pass to swap them back into their
   # logical order.
+  # Used to check for TAG_END 0xe007f as well but Android fontchain_lint
+  # dislikes the resulting mangling of flags for England, Scotland, Wales.
 
   ZWJ = 0x200d
-  TAG_END = 0xe007f
   def is_fitzpatrick(cp):
     return 0x1f3fb <= cp <= 0x1f3ff
 
-  if not (ZWJ in seq or TAG_END in seq):
+  if ZWJ not in seq:
     return ()
 
   rev_seq = list(seq)
   rev_seq.reverse()
-  for i in range(len(rev_seq)-1, 0, -1):
+  for i in range(1, len(rev_seq)):
     if is_fitzpatrick(rev_seq[i-1]):
-      rev_seq[i-1], rev_seq[i] = rev_seq[i], rev_seq[i-1]
+      tmp = rev_seq[i]
+      rev_seq[i] = rev_seq[i-1]
+      rev_seq[i-1] = tmp
   return tuple(rev_seq)
 
 
