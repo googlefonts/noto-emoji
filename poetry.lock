@@ -1,0 +1,48 @@
+[[package]]
+category = "main"
+description = "Tools to manipulate font files"
+name = "fonttools"
+optional = false
+python-versions = ">=3.6"
+version = "4.7.0"
+
+[package.extras]
+all = ["fs (>=2.2.0,<3)", "lxml (>=4.0,<5)", "zopfli (>=0.1.4)", "lz4 (>=1.7.4.2)", "matplotlib", "sympy", "brotli (>=1.0.1)", "scipy", "brotlipy (>=0.7.0)", "munkres", "unicodedata2 (>=13.0.0)", "xattr"]
+graphite = ["lz4 (>=1.7.4.2)"]
+interpolatable = ["scipy", "munkres"]
+lxml = ["lxml (>=4.0,<5)"]
+plot = ["matplotlib"]
+symfont = ["sympy"]
+type1 = ["xattr"]
+ufo = ["fs (>=2.2.0,<3)"]
+unicode = ["unicodedata2 (>=13.0.0)"]
+woff = ["zopfli (>=0.1.4)", "brotli (>=1.0.1)", "brotlipy (>=0.7.0)"]
+
+[[package]]
+category = "main"
+description = "Noto font tools"
+name = "nototools"
+optional = false
+python-versions = "*"
+version = "0.2.0"
+
+[package.dependencies]
+fontTools = "*"
+
+[package.extras]
+shapediff = ["booleanoperations", "defcon", "pillow"]
+
+[package.source]
+reference = "e0a39bad11ca47f924b432bb05c3cccd87e68571"
+type = "git"
+url = "https://github.com/googlefonts/nototools.git"
+[metadata]
+content-hash = "1b3d3ee95aca31cb8d69bd8a8fae3504b6de0dc2b32462f86e3798e225ebcdf5"
+python-versions = "^3.7.2"
+
+[metadata.files]
+fonttools = [
+    {file = "fonttools-4.7.0-py3-none-any.whl", hash = "sha256:454db99e20e6cafb7ed3e30b15c9daf2d46c4370a800c1a6db11ba3eb3b43116"},
+    {file = "fonttools-4.7.0.zip", hash = "sha256:ce977f10f070752301e2d49ed822cfc860c881046d81c376fade1e6529b2046c"},
+]
+nototools = []
