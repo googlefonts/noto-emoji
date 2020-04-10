@@ -1,4 +1,4 @@
-from os import path
+from os import path, walk
 import collections
 import sys
 import copy
@@ -295,7 +295,6 @@ def get_emoji_map(font):
                         subsequence = sequence[:sub_len]
                         assert subsequence not in emoji_map
                     emoji_map[sequence] = ligature.LigGlyph
-    print(emoji_map)
     return emoji_map
 
 
@@ -388,15 +387,82 @@ def check_emoji_defaults(default_emoji):
         )
 
 
+def reorder_elements(elements):
+    if type(elements) != str:
+        if '0x2640' in elements:
+            elements.append('0x200d')
+            elements.remove('0x200d')
+            elements.append('0x2640')
+            elements.remove('0x2640')
+        if '0x2642' in elements:
+            elements.append('0x200d')
+            elements.remove('0x200d')
+            elements.append('0x2642')
+            elements.remove('0x2642')
+    return elements
+
+
+def convert_dec_to_hex(decimal_set):
+    if type(decimal_set) == int:
+        result = hex(decimal_set)
+    else:
+        result = [hex(dec) for dec in decimal_set]
+    return result
+
+def decimal_list_to_emoji_filename(all_emoji):
+    hex_names = [convert_dec_to_hex(seq) for seq in all_emoji]
+    emoji_prefix = "emoji_u"
+    emoji_suffix = ".png"
+    file_list = []
+    for elements in hex_names:
+        elements = reorder_elements(elements)
+        if type(elements) == str:
+            if len(elements) == 4:
+                elements = "00" + elements
+
+            file_list.append(emoji_prefix + elements.replace("0x", "") + emoji_suffix)
+        else:
+            string_name = ""
+            for elem in elements:
+                string_name += "_" + elem.replace("0x", "")
+            file_list.append((emoji_prefix + string_name + emoji_suffix).replace("_fe0f.png", ".png").replace("emoji_u_", "emoji_u"))
+    return file_list
+
+
+def check_missing_files(filenames, png_dir):
+    # Get all files in png dir
+    for files in walk(png_dir):
+        present_files = [filename for filename in files][2]
+
+    # Check if every exspected glyph is available in the png folder
+    count = 0
+    for filename in filenames:
+        if filename not in present_files:
+            count += 1
+            print(f"Not found expected emoji: {filename} Resource not found in png_dir")
+    print(f"Total not found expected emoji: {count}")
+
+    # Check if there additional emoji that are not expeted
+    count2 = 0
+    for filename in present_files:
+        if filename not in filenames:
+            count2 += 1
+            print(f"Unexpected emoji: {filename} Not present in expected emoji")
+    print(f"Total unexpected emoji: {count2}")
+
+
 def main():
     ucd_path = "./ucd"
     parse_ucd(ucd_path)
 
     # Generate all expected emoji
     all_emoji, default_emoji, equivalent_emoji = compute_expected_emoji()
-    print(all_emoji)
 
-    check_emoji_coverage(all_emoji, equivalent_emoji)
+    # Generate file names
+    expected_filenames = decimal_list_to_emoji_filename(all_emoji)
+
+    check_missing_files(expected_filenames, './png/128/')
+    # check_emoji_coverage(all_emoji, equivalent_emoji)
     # check_emoji_defaults(default_emoji)
 
 
