@@ -4,14 +4,19 @@ Color and Black-and-White Noto emoji fonts, and tools for working with them.
 
 ## Building NotoColorEmoji
 
-Building NotoColorEmoji currently requires a Python 2.x wide build.  To build
-the emoji font you will require a few files from nototools.  Clone a copy from
-https://github.com/googlei18n/nototools and either put it in your PYTHONPATH or
-use 'python setup.py develop' ('install' currently won't fully install all the
-data used by nototools).  You will also need fontTools, get it from
-https://github.com/behdad/fonttools.git.
+Create a virtual environment called:
 
-Then run make.  NotoColorEmoji is the default target.  It's suggested to use -j,
+	python3 -m venv noto-emoji-env
+
+Activate the virtual environment:
+
+	source noto-emoji-env/bin/activate
+
+Install the python requirements with:
+	
+	pip install -r requirements.txt
+
+Then run `make`.  NotoColorEmoji is the default target.  It's suggested to use -j,
 especially if you are using zopflipng for compression.  Intermediate products
 (compressed image files, for example) will be put into a build subdirectory; the
 font will be at the top level.
