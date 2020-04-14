@@ -134,7 +134,7 @@ compressed: $(ALL_COMPRESSED_FILES)
 check_compress_tool:
 ifdef MISSING_ZOPFLI
   ifdef MISSING_OPTIPNG
-	$(error "neither $(ZOPFLIPNG) nor $(OPTIPNG) is available")
+	$(error "neither $(ZOPFLIPNG) nor $(OPTIPNG) is available. For installation instructions, see README.md")
   else
 	@echo "using $(OPTIPNG)"
   endif

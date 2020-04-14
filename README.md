@@ -2,8 +2,14 @@
 # Noto Emoji
 Color and Black-and-White Noto emoji fonts, and tools for working with them.
 
+## Prerequisites
+- This project uses Python 3. 
+- You need either [zopflipng](https://github.com/google/zopfli) or [optipng](ttp://optipng.sourceforge.net/). (Zopflipng is better (about 5-10%) but much slower.)
+- You need [pkg-config](https://www.freedesktop.org/wiki/Software/pkg-config/)
+
+
 ## Building NotoColorEmoji
-Building NotoColorEmoji requires Python 3, and uses virtual environments to manage dependencies. Use the following steps to get up and running.
+This project uses a virtual environment to manage dependencies. Use the following steps to get up and running.
 
 Create a virtual environment called `noto-emoji-env`:
 
