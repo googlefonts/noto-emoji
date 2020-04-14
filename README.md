@@ -5,7 +5,7 @@ Color and Black-and-White Noto emoji fonts, and tools for working with them.
 ## Building NotoColorEmoji
 Building NotoColorEmoji requires Python 3, and uses virtual envorinments to manage dependencies. Use the following steps to get up and running.
 
-Create a virtual environment called:
+Create a virtual environment called `noto-emoji-env`:
 
 	python3 -m venv noto-emoji-env
 
