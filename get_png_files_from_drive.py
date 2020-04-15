@@ -14,6 +14,9 @@ from googleapiclient.http import MediaIoBaseDownload
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ["https://www.googleapis.com/auth/drive"]
 
+# Use this file like this:
+# python get_png_files_from_drive.py main "Drive_folder_name" "Output_dir_name"
+
 
 def main(folder_name, output_dir):
 
