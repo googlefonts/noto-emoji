@@ -1,5 +1,21 @@
 #!/usr/bin/env python3
 
+# Copyright 2020 Google, Inc. All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Google Author(s): Guido Theelen
+
 from __future__ import print_function
 import pickle
 from os import path, makedirs, walk, listdir
@@ -15,9 +31,6 @@ from googleapiclient.http import MediaIoBaseDownload
 
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ["https://www.googleapis.com/auth/drive"]
-
-# Use this file like this:
-# python get_png_files_from_drive.py main "Drive_folder_name" "Output_dir_name" --reporting
 
 
 def main(folder_name, output_dir, reporting=False):
@@ -46,6 +59,7 @@ def main(folder_name, output_dir, reporting=False):
 
 
 def get_service():
+    """Autenticate yourself and create a token.pickle to use the google apiclient"""
 
     # The file token.pickle stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first
@@ -61,12 +75,10 @@ def get_service():
             creds.refresh(Request())
         else:
             if not path.exists("credentials.json"):
-                print("""
-                      Your missing 'credentials.json'.
-                      Please get this file here:
-                      https://developers.google.com/drive/api/v3/quickstart/python
-                      and include it in the root of your project.
-                      """)
+                print("You are missing 'credentials.json'. "
+                      "Please get this file here: "
+                      "https://developers.google.com/drive/api/v3/quickstart/python "
+                      "and include it in the root of your project.")
                 sys.exit(1)
             flow = InstalledAppFlow.from_client_secrets_file("credentials.json", SCOPES)
             creds = flow.run_local_server(port=0)
@@ -80,6 +92,7 @@ def get_service():
 
 
 def get_folder_id(service, folder_name):
+    """ Get the folder id instead of the folder name. """
     folder = service.files().list(
             q=f"name='{folder_name}' and mimeType='application/vnd.google-apps.folder'",
             fields='files(id, name, parents)').execute()
@@ -87,7 +100,7 @@ def get_folder_id(service, folder_name):
     total = len(folder['files'])
 
     if total != 1:
-        print(f'{total} folders found, needs exately one')
+        print(f'{total} folders found, needs exactly one')
         sys.exit(1)
 
     else:
@@ -97,6 +110,7 @@ def get_folder_id(service, folder_name):
 
 
 def create_dir(dir_name):
+    """ Create dir if it does not yet exist. """
     if not path.exists(dir_name):
         makedirs(dir_name)
 
@@ -104,7 +118,7 @@ def create_dir(dir_name):
 
 
 def get_file_list(service, folder_id):
-
+    """ Get all files in the Google drive folder. """
     result = []
     page_token = None
     while True:
@@ -124,6 +138,7 @@ def get_file_list(service, folder_id):
 
 
 def download_files(service, file_list, output_dir):
+    """ Download all the files in the file_list. """
 
     print("Downloading files")
     for file in file_list:
@@ -155,16 +170,11 @@ def download_files(service, file_list, output_dir):
 
 
 def report_on_download(output_dir):
+    """ Summarize the process and print findings. """
     path, dirs, files = next(walk("./png/128"))
-    file_count = len(files)
-
-    print(files)
-    print(f"The original PNG directory contains {file_count} files.")
 
     out_path, out_dirs, out_files = next(walk(output_dir))
     downloaded_file_count = len(out_files)
-
-    print(f"The downloaded PNG directory contains {downloaded_file_count} files.")
 
     overlap_count = 0
     new_file_count = 0
@@ -174,19 +184,22 @@ def report_on_download(output_dir):
         else:
             new_file_count += 1
 
-    print(f"{overlap_count} files in the {output_dir} are also in the original PNG folder")
-    print(f"{new_file_count} files are new files that dont excist in the original PNG folder")
-    print("These folders are now being combined in the combined_png directory")
+    print(f"Imported {downloaded_file_count} files,"
+          f" of which {new_file_count} are new, and {overlap_count}"
+          " will be used instead of local files.")
 
 
 def merge_png_dirs(output_dir):
-    copy_tree("./png/128", "./combined_png")
+    """ Create one output dir that can be used  """
+
+    copy_tree("./png/128", "./build/combined_png")
     src_files = listdir(output_dir)
     for file_name in src_files:
         full_file_name = path.join(output_dir, file_name)
         if path.isfile(full_file_name):
-            shutil.copy(full_file_name, "./combined_png")
+            shutil.copy(full_file_name, "./build/combined_png")
     shutil.rmtree(output_dir)
 
+
 if __name__ == "__main__":
-    fire.Fire()
+    fire.Fire(main)
