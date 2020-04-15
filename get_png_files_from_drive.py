@@ -92,7 +92,7 @@ def get_service():
 
 
 def get_folder_id(service, folder_name):
-    """ Get the folder id instead of the folder name. """
+    """Get the folder id instead of the folder name."""
     folder = service.files().list(
             q=f"name='{folder_name}' and mimeType='application/vnd.google-apps.folder'",
             fields='files(id, name, parents)').execute()
@@ -110,7 +110,7 @@ def get_folder_id(service, folder_name):
 
 
 def create_dir(dir_name):
-    """ Create dir if it does not yet exist. """
+    """Create dir if it does not yet exist."""
     if not path.exists(dir_name):
         makedirs(dir_name)
 
@@ -118,7 +118,7 @@ def create_dir(dir_name):
 
 
 def get_file_list(service, folder_id):
-    """ Get all files in the Google drive folder. """
+    """Get all files in the Google drive folder."""
     result = []
     page_token = None
     while True:
@@ -138,7 +138,7 @@ def get_file_list(service, folder_id):
 
 
 def download_files(service, file_list, output_dir):
-    """ Download all the files in the file_list. """
+    """Download all the files in the file_list."""
 
     print("Downloading files")
     for file in file_list:
@@ -170,7 +170,7 @@ def download_files(service, file_list, output_dir):
 
 
 def report_on_download(output_dir):
-    """ Summarize the process and print findings. """
+    """Summarize the process and print findings."""
     path, dirs, files = next(walk("./png/128"))
 
     out_path, out_dirs, out_files = next(walk(output_dir))
@@ -190,7 +190,7 @@ def report_on_download(output_dir):
 
 
 def merge_png_dirs(output_dir):
-    """ Create one output dir that can be used  """
+    """Combine local and downloaded PNGs."""
 
     copy_tree("./png/128", "./build/combined_png")
     src_files = listdir(output_dir)
