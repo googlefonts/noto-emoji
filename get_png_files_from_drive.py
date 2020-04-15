@@ -4,6 +4,7 @@ from __future__ import print_function
 import pickle
 import os.path
 import io
+import fire
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
@@ -14,50 +15,21 @@ SCOPES = ["https://www.googleapis.com/auth/drive"]
 
 
 def main(folder_name, output_dir):
-    """Shows basic usage of the Drive v3 API.
-    Prints the names and ids of the first 10 files the user has access to.
-    """
 
     # Create a token.pickle file to store the users session
     service = get_service()
 
     # Get the folder instance
-    folder = get_folder_id(service, folder_name)
+    folder_id = get_folder_id(service, folder_name)
 
     # Create output dir
-    output_dir = create_dir("downloaded_png")
+    output_dir = create_dir(output_dir)
 
+    # Get the file IDs
+    file_list = get_file_list(service, folder_id)
 
-
-    # Call the Drive v3 API
-    results = (
-        service.files()
-        .list(
-            pageSize=1000,
-            fields="nextPageToken, files(id, name)",
-            q=f"'{folder_id}' in parents",
-        )
-        .execute()
-    )
-    items = results.get("files", [])
-
-    if not items:
-        print("No files found.")
-    else:
-        print("Downloading files")
-        for item in items:
-            print("Downloading: {0} ({1})".format(item["name"], item["id"]))
-            file_id = item["id"]
-            request = service.files().get_media(fileId=file_id)
-            fh = io.BytesIO()
-            downloader = MediaIoBaseDownload(fh, request)
-            done = False
-            while done is False:
-                status, done = downloader.next_chunk()
-
-            filelocation = f"downloaded_pngs/{item['name']}"
-            with open(filelocation, "wb") as f:
-                f.write(fh.getbuffer())
+    # Fetch the files from the drive
+    download_files(service, file_list, output_dir)
 
 
 def get_service():
@@ -111,11 +83,56 @@ def create_dir(dir_name):
     return folder
 
 
+def get_file_list(service, folder_id):
 
-def download_files():
-    
+    result = []
+    page_token = None
+    while True:
+        files = service.files().list(
+                q=f"'{folder_id}' in parents",
+                fields='nextPageToken, files(id, name, mimeType)',
+                pageToken=page_token,
+                pageSize=1000).execute()
 
+        result.extend(files['files'])
+
+        page_token = files.get("nextPageToken")
+
+        if not page_token:
+            break
+    return result
+
+
+def download_files(service, file_list, output_dir):
+
+    print("Downloading files")
+    for file in file_list:
+        file_id = file['id']
+        filename = file['name']
+
+        request = service.files().get_media(fileId=file_id)
+        fh = io.BytesIO()
+        downloader = MediaIoBaseDownload(fh, request)
+        done = False
+        while done is False:
+            status, done = downloader.next_chunk()
+
+        filelocation = f"{output_dir}/{filename['name']}"
+        with open(filelocation, "wb") as f:
+            f.write(fh.getbuffer())
+
+        print(f"Downloading: {filename} ({file_id})")
+        request = service.files().get_media(fileId=file_id)
+        fh = io.BytesIO()
+        downloader = MediaIoBaseDownload(fh, request)
+        done = False
+        while done is False:
+            status, done = downloader.next_chunk()
+
+        filelocation = f"downloaded_pngs/{filename}"
+        with open(filelocation, "wb") as f:
+            f.write(fh.getbuffer())
 
 
 if __name__ == "__main__":
-    main()
+    fire.Fire()
