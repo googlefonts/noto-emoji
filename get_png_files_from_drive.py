@@ -2,7 +2,7 @@
 
 from __future__ import print_function
 import pickle
-import os.path
+from os import path, makedirs
 import io
 import fire
 import sys
@@ -23,13 +23,13 @@ def main(folder_name, output_dir):
     # Get the folder instance
     folder_id = get_folder_id(service, folder_name)
 
-    # Create output dir
+    # Create output_dir
     output_dir = create_dir(output_dir)
 
     # Get the file IDs
     file_list = get_file_list(service, folder_id)
 
-    # Fetch the files from the drive
+    # Download the files from the drive and put them in the output_dir
     download_files(service, file_list, output_dir)
 
 
@@ -40,7 +40,7 @@ def get_service():
     # time.
 
     creds = None
-    if os.path.exists("token.pickle"):
+    if path.exists("token.pickle"):
         with open("token.pickle", "rb") as token:
             creds = pickle.load(token)
     # If there are no (valid) credentials available, let the user log in.
@@ -48,6 +48,14 @@ def get_service():
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
+            if not path.exists("credentials.json"):
+                print("""
+                      Your missing 'credentials.json'.
+                      Please get this file here:
+                      https://developers.google.com/drive/api/v3/quickstart/python
+                      and include it in the root of your project.
+                      """)
+                sys.exit(1)
             flow = InstalledAppFlow.from_client_secrets_file("credentials.json", SCOPES)
             creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
@@ -69,6 +77,7 @@ def get_folder_id(service, folder_name):
     if total != 1:
         print(f'{total} folders found, needs exately one')
         sys.exit(1)
+
     else:
         folder_id = folder['files'][0]['id']
 
@@ -76,12 +85,10 @@ def get_folder_id(service, folder_name):
 
 
 def create_dir(dir_name):
-    if not os.path.exists(dir_name):
-        os.makedirs(dir_name)
+    if not path.exists(dir_name):
+        makedirs(dir_name)
 
-    folder = os.path(dir_name)
-
-    return folder
+    return dir_name
 
 
 def get_file_list(service, folder_id):
@@ -118,7 +125,7 @@ def download_files(service, file_list, output_dir):
         while done is False:
             status, done = downloader.next_chunk()
 
-        filelocation = f"{output_dir}/{filename['name']}"
+        filelocation = f"./{output_dir}/{filename}"
         with open(filelocation, "wb") as f:
             f.write(fh.getbuffer())
 
