@@ -38,6 +38,8 @@ def main(folder_name, output_dir, reporting=False):
     # Create a token.pickle file to store the users session
     service = get_service()
 
+    folder_name = input("Please enter the name of your drive folder: ")
+
     # Get the folder instance
     folder_id = get_folder_id(service, folder_name)
 
@@ -164,7 +166,7 @@ def download_files(service, file_list, output_dir):
         while done is False:
             status, done = downloader.next_chunk()
 
-        filelocation = f"downloaded_pngs/{filename}"
+        filelocation = f"{output_dir}/{filename}"
         with open(filelocation, "wb") as f:
             f.write(fh.getbuffer())
 
@@ -198,7 +200,7 @@ def merge_png_dirs(output_dir):
         full_file_name = path.join(output_dir, file_name)
         if path.isfile(full_file_name):
             shutil.copy(full_file_name, "./build/combined_png")
-    shutil.rmtree("./downloaded_pngs/")
+    shutil.rmtree(output_dir)
 
 
 if __name__ == "__main__":

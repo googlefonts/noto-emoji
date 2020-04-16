@@ -31,7 +31,9 @@ ZOPFLIPNG = zopflipng
 OPTIPNG = optipng
 
 DOWNLOAD_DRIVE_PNGS = get_png_files_from_drive.py
-DRIVE_FOLDER_NAME = Emoji_folder
+DRIVE_FOLDER_NAME = Emoji_test_folder
+DOWNLOAD_FOLDER = temp_download_folder
+DOWNLOAD_REPORTING = --reporting
 
 EMOJI_BUILDER = third_party/color_emoji/emoji_builder.py
 # flag for emoji builder.  Default to legacy small metrics for the time being.
@@ -41,10 +43,10 @@ ADD_GLYPHS_FLAGS = -a emoji_aliases.txt
 PUA_ADDER = map_pua_emoji.py
 VS_ADDER = add_vs_cmap.py # from nototools
 
-ifeq (True, False)
-	EMOJI_SRC_DIR ?= png/128
-else
+ifdef DOWNLOAD_SOURCE
 	EMOJI_SRC_DIR ?= build/combined_png
+else
+	EMOJI_SRC_DIR ?= png/128
 endif
 
 FLAGS_SRC_DIR := third_party/region-flags/png
@@ -155,10 +157,13 @@ ifdef MISSING_ADDER
 	$(error "$(VS_ADDER) not in path, run setup.py in nototools")
 endif
 
+download_png_source:
+ifdef DOWNLOAD_SOURCE
+	$(PYTHON) $(DOWNLOAD_DRIVE_PNGS) $(DRIVE_FOLDER_NAME) $(DOWNLOAD_FOLDER) $(DOWNLOAD_REPORTING)
+endif
 
 $(EMOJI_DIR) $(FLAGS_DIR) $(RESIZED_FLAGS_DIR) $(RENAMED_FLAGS_DIR) $(QUANTIZED_DIR) $(COMPRESSED_DIR):
-	mkdir -p "$@"
-
+	mkdir -p "$@" 
 
 waveflag: waveflag.c
 	$(CC) $< -o $@ $(CFLAGS) $(LDFLAGS)
@@ -222,8 +227,8 @@ endif
 	@rm -f "$@"
 	ttx "$<"
 
-$(EMOJI).ttf: $(EMOJI).tmpl.ttf $(EMOJI_BUILDER) $(PUA_ADDER) \
-	$(ALL_COMPRESSED_FILES) | check_vs_adder | download
+$(EMOJI).ttf: download_png_source $(EMOJI).tmpl.ttf $(EMOJI_BUILDER) $(PUA_ADDER) \
+	$(ALL_COMPRESSED_FILES) | check_vs_adder
 	@$(PYTHON) $(EMOJI_BUILDER) $(SMALL_METRICS) -V $< "$@" "$(COMPRESSED_DIR)/emoji_u"
 	@$(PYTHON) $(PUA_ADDER) "$@" "$@-with-pua"
 	@$(VS_ADDER) -vs 2640 2642 2695 --dstdir '.' -o "$@-with-pua-varsel" "$@-with-pua"
@@ -235,11 +240,8 @@ clean:
 	rm -f waveflag
 	rm -rf $(BUILD_DIR)
 
-download:
-	$(PYTHON) $(DOWNLOAD_DRIVE_PNGS) $(DRIVE_FOLDER_NAME) $(EMOJI_SRC_DIR)
-
 .SECONDARY: $(EMOJI_FILES) $(FLAG_FILES) $(RESIZED_FLAG_FILES) $(RENAMED_FLAG_FILES) \
   $(ALL_QUANTIZED_FILES) $(ALL_COMPRESSED_FILES)
 
-.PHONY:	clean flags emoji renamed_flags quantized compressed check_compress_tool download
+.PHONY:	clean flags emoji renamed_flags quantized compressed check_compress_tool
 
