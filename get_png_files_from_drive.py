@@ -198,7 +198,7 @@ def merge_png_dirs(output_dir):
         full_file_name = path.join(output_dir, file_name)
         if path.isfile(full_file_name):
             shutil.copy(full_file_name, "./build/combined_png")
-    shutil.rmtree(output_dir)
+    shutil.rmtree("./downloaded_pngs/")
 
 
 if __name__ == "__main__":
