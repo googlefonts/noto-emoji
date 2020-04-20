@@ -20,7 +20,7 @@ font will be at the top level.
 
 It is possible to download your emoji artwork automatically from Google Drive. Make sure you got the credentials.json file included in the root of this project. You can get it [here](https://developers.google.com/drive/api/v3/quickstart/python). Click the `Enable Drive API` and make sure you select `Desktop app`. To start the download and the build process run:
 
-	`make DOWNLOAD=“Name_Of_The_Drive_Folder”`
+	make DOWNLOAD="Name_Of_The_Drive_Folder"
 
 ## Using NotoColorEmoji
 
