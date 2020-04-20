@@ -33,6 +33,10 @@ SCOPES = ["https://www.googleapis.com/auth/drive"]
 
 def main(folder_name="", reporting=False):
 
+    # Remove combined_png dir if it exists
+    if path.exists("./build/combined_png"):
+        shutil.rmtree("./build/combined_png")
+
     # Create a token.pickle file to store the users session
     service = get_service()
 
