@@ -146,28 +146,33 @@ def download_files(service, file_list, output_dir):
         file_id = file['id']
         filename = file['name']
 
-        request = service.files().get_media(fileId=file_id)
-        fh = io.BytesIO()
-        downloader = MediaIoBaseDownload(fh, request)
-        done = False
-        while done is False:
-            status, done = downloader.next_chunk()
+        if "emoji_u" in filename and ".png" in filename:
 
-        filelocation = f"./{output_dir}/{filename}"
-        with open(filelocation, "wb") as f:
-            f.write(fh.getbuffer())
+            request = service.files().get_media(fileId=file_id)
+            fh = io.BytesIO()
+            downloader = MediaIoBaseDownload(fh, request)
+            done = False
+            while done is False:
+                status, done = downloader.next_chunk()
 
-        print(f"Downloading: {filename} ({file_id})")
-        request = service.files().get_media(fileId=file_id)
-        fh = io.BytesIO()
-        downloader = MediaIoBaseDownload(fh, request)
-        done = False
-        while done is False:
-            status, done = downloader.next_chunk()
+            filelocation = f"./{output_dir}/{filename}"
+            with open(filelocation, "wb") as f:
+                f.write(fh.getbuffer())
 
-        filelocation = f"{output_dir}/{filename}"
-        with open(filelocation, "wb") as f:
-            f.write(fh.getbuffer())
+            print(f"Downloading: {filename} ({file_id})")
+            request = service.files().get_media(fileId=file_id)
+            fh = io.BytesIO()
+            downloader = MediaIoBaseDownload(fh, request)
+            done = False
+            while done is False:
+                status, done = downloader.next_chunk()
+
+            filelocation = f"{output_dir}/{filename}"
+            with open(filelocation, "wb") as f:
+                f.write(fh.getbuffer())
+
+        else:
+            print(f"{filename} does not have a valid emoji name")
 
 
 def report_on_download(output_dir):
