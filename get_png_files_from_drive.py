@@ -31,18 +31,19 @@ from googleapiclient.http import MediaIoBaseDownload
 SCOPES = ["https://www.googleapis.com/auth/drive"]
 
 
-def main(folder_name, output_dir, reporting=False):
+def main(folder_name="", reporting=False):
 
     # Create a token.pickle file to store the users session
     service = get_service()
 
-    folder_name = input("Please enter the name of your drive folder: ")
+    if folder_name == "":
+        folder_name = input("Please enter the name of your drive folder: ")
 
     # Get the folder instance
     folder_id = get_folder_id(service, folder_name)
 
     # Create output_dir
-    output_dir = create_dir(output_dir)
+    output_dir = create_dir("temp_download_folder")
 
     # Get the file IDs
     file_list = get_file_list(service, folder_id)

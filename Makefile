@@ -31,8 +31,6 @@ ZOPFLIPNG = zopflipng
 OPTIPNG = optipng
 
 DOWNLOAD_DRIVE_PNGS = get_png_files_from_drive.py
-DRIVE_FOLDER_NAME = Emoji_test_folder
-DOWNLOAD_FOLDER = temp_download_folder
 DOWNLOAD_REPORTING = --reporting
 
 EMOJI_BUILDER = third_party/color_emoji/emoji_builder.py
@@ -158,8 +156,8 @@ ifdef MISSING_ADDER
 endif
 
 download_png_source:
-ifdef DOWNLOAD_SOURCE
-	$(PYTHON) $(DOWNLOAD_DRIVE_PNGS) $(DRIVE_FOLDER_NAME) $(DOWNLOAD_FOLDER) $(DOWNLOAD_REPORTING)
+ifdef DOWNLOAD
+	$(PYTHON) $(DOWNLOAD_DRIVE_PNGS) $(DOWNLOAD) $(DOWNLOAD_REPORTING)
 endif
 
 $(EMOJI_DIR) $(FLAGS_DIR) $(RESIZED_FLAGS_DIR) $(RENAMED_FLAGS_DIR) $(QUANTIZED_DIR) $(COMPRESSED_DIR):
