@@ -1,8 +1,10 @@
-from os import path, walk
+from os import path, walk, makedirs
 import collections
 import sys
 import copy
 from fontTools import ttLib
+import urllib.request
+import shutil
 
 
 _script_to_font_map = collections.defaultdict(set)
@@ -129,10 +131,10 @@ def parse_ucd(ucd_path):
     global _emoji_sequences, _emoji_zwj_sequences
     _emoji_properties = parse_unicode_datafile(
         path.join(ucd_path, 'emoji-data.txt'), reverse=True)
-    emoji_properties_additions = parse_unicode_datafile(
-        path.join(ucd_path, 'additions', 'emoji-data.txt'), reverse=True)
-    for prop in emoji_properties_additions.keys():
-        _emoji_properties[prop].update(emoji_properties_additions[prop])
+    # emoji_properties_additions = parse_unicode_datafile(
+    #     path.join(ucd_path, 'additions', 'emoji-data.txt'), reverse=True)
+    # for prop in emoji_properties_additions.keys():
+    #     _emoji_properties[prop].update(emoji_properties_additions[prop])
     _chars_by_age = parse_unicode_datafile(
         path.join(ucd_path, 'DerivedAge.txt'), reverse=True)
     sequences = parse_emoji_variants(
@@ -140,16 +142,16 @@ def parse_ucd(ucd_path):
     _text_variation_sequences, _emoji_variation_sequences = sequences
     _emoji_sequences = parse_unicode_datafile(
         path.join(ucd_path, 'emoji-sequences.txt'))
-    _emoji_sequences.update(parse_unicode_datafile(
-        path.join(ucd_path, 'additions', 'emoji-sequences.txt')))
+    # _emoji_sequences.update(parse_unicode_datafile(
+    #     path.join(ucd_path, 'additions', 'emoji-sequences.txt')))
     _emoji_zwj_sequences = parse_unicode_datafile(
         path.join(ucd_path, 'emoji-zwj-sequences.txt'))
-    _emoji_zwj_sequences.update(parse_unicode_datafile(
-        path.join(ucd_path, 'additions', 'emoji-zwj-sequences.txt')))
-    exclusions = parse_unicode_datafile(path.join(ucd_path, 'additions', 'emoji-exclusions.txt'))
-    _emoji_sequences = remove_emoji_exclude(_emoji_sequences, exclusions)
-    _emoji_zwj_sequences = remove_emoji_exclude(_emoji_zwj_sequences, exclusions)
-    _emoji_variation_sequences = remove_emoji_variation_exclude(_emoji_variation_sequences, exclusions)
+    # _emoji_zwj_sequences.update(parse_unicode_datafile(
+    #     path.join(ucd_path, 'additions', 'emoji-zwj-sequences.txt')))
+    # exclusions = parse_unicode_datafile(path.join(ucd_path, 'additions', 'emoji-exclusions.txt'))
+    # _emoji_sequences = remove_emoji_exclude(_emoji_sequences, exclusions)
+    # _emoji_zwj_sequences = remove_emoji_exclude(_emoji_zwj_sequences, exclusions)
+    # _emoji_variation_sequences = remove_emoji_variation_exclude(_emoji_variation_sequences, exclusions)
     # Unicode 12.0 adds Basic_Emoji in emoji-sequences.txt. We ignore them here since we are already
     # checking the emoji presentations with emoji-variation-sequences.txt.
     # Please refer to http://unicode.org/reports/tr51/#def_basic_emoji_set .
@@ -451,17 +453,39 @@ def check_missing_files(filenames, png_dir):
     print(f"Total unexpected emoji: {count2}")
 
 
+def get_rc_files(output_dir, unicode_version):
+
+    # Remove folder and content if exists
+    if path.exists(output_dir):
+        shutil.rmtree(output_dir)
+
+    makedirs(output_dir)
+
+    filename_list = ["emoji-data.txt",
+                     "emoji-sequences.txt",
+                     "emoji-variation-sequences.txt",
+                     "emoji-zwj-sequences.txt"]
+
+    for filename in filename_list:
+        url = f"https://www.unicode.org/Public/emoji/{unicode_version}/{filename}"
+        urllib.request.urlretrieve(url, f'./{output_dir}/{filename}')
+
+    url = f"https://unicode.org/Public/{unicode_version}.0/ucd/DerivedAge.txt"
+    urllib.request.urlretrieve(url, f'./{output_dir}/DerivedAge.txt')
+
 def main():
+    get_rc_files("./ucd", "12.0")
+
     ucd_path = "./ucd"
     parse_ucd(ucd_path)
 
-    # Generate all expected emoji
-    all_emoji, default_emoji, equivalent_emoji = compute_expected_emoji()
+    # # Generate all expected emoji
+    # all_emoji, default_emoji, equivalent_emoji = compute_expected_emoji()
 
-    # Generate file names
-    expected_filenames = decimal_list_to_emoji_filename(all_emoji)
+    # # Generate file names
+    # expected_filenames = decimal_list_to_emoji_filename(all_emoji)
 
-    check_missing_files(expected_filenames, './png/128/')
+    # check_missing_files(expected_filenames, './png/128/')
     # check_emoji_coverage(all_emoji, equivalent_emoji)
     # check_emoji_defaults(default_emoji)
 
