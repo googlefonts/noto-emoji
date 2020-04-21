@@ -473,19 +473,20 @@ def get_rc_files(output_dir, unicode_version):
     url = f"https://unicode.org/Public/{unicode_version}.0/ucd/DerivedAge.txt"
     urllib.request.urlretrieve(url, f'./{output_dir}/DerivedAge.txt')
 
+
 def main():
-    get_rc_files("./ucd", "12.0")
+    # get_rc_files("./ucd", "12.0")
 
     ucd_path = "./ucd"
     parse_ucd(ucd_path)
 
-    # # Generate all expected emoji
-    # all_emoji, default_emoji, equivalent_emoji = compute_expected_emoji()
+    # Generate all expected emoji
+    all_emoji, default_emoji, equivalent_emoji = compute_expected_emoji()
 
-    # # Generate file names
-    # expected_filenames = decimal_list_to_emoji_filename(all_emoji)
+    # Generate file names
+    expected_filenames = decimal_list_to_emoji_filename(all_emoji)
 
-    # check_missing_files(expected_filenames, './png/128/')
+    check_missing_files(expected_filenames, './png/128/')
     # check_emoji_coverage(all_emoji, equivalent_emoji)
     # check_emoji_defaults(default_emoji)
 

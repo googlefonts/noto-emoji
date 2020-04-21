@@ -51,7 +51,7 @@ def seq_name(seq):
     def strip_vs_map(seq_map):
       return {
           unicode_data.strip_emoji_vs(k): v
-          for k, v in seq_map.iteritems()}
+          for k, v in seq_map.items()}
     _namedata = [
         strip_vs_map(unicode_data.get_emoji_combining_sequences()),
         strip_vs_map(unicode_data.get_emoji_flag_sequences()),
@@ -76,7 +76,7 @@ def seq_name(seq):
 
 def _check_no_vs(sorted_seq_to_filepath):
   """Our image data does not use emoji presentation variation selectors."""
-  for seq, fp in sorted_seq_to_filepath.iteritems():
+  for seq, fp in sorted_seq_to_filepath.items():
     if EMOJI_VS in seq:
       print('check no VS: FE0F in path: %s' % fp)
 
@@ -99,7 +99,7 @@ def _check_valid_emoji_cps(sorted_seq_to_filepath, unicode_version):
   valid_cps |= TAG_SET  # used in subregion tag sequences
 
   not_emoji = {}
-  for seq, fp in sorted_seq_to_filepath.iteritems():
+  for seq, fp in sorted_seq_to_filepath.items():
     for cp in seq:
       if cp not in valid_cps:
         if cp not in not_emoji:
@@ -121,7 +121,7 @@ def _check_zwj(sorted_seq_to_filepath):
   """Ensure zwj is only between two appropriate emoji.  This is a 'pre-check'
   that reports this specific problem."""
 
-  for seq, fp in sorted_seq_to_filepath.iteritems():
+  for seq, fp in sorted_seq_to_filepath.items():
     if ZWJ not in seq:
       continue
     if seq[0] == ZWJ:
@@ -149,7 +149,7 @@ def _check_zwj(sorted_seq_to_filepath):
 def _check_flags(sorted_seq_to_filepath):
   """Ensure regional indicators are only in sequences of one or two, and
   never mixed."""
-  for seq, fp in sorted_seq_to_filepath.iteritems():
+  for seq, fp in sorted_seq_to_filepath.items():
     have_reg = None
     for cp in seq:
       is_reg = unicode_data.is_regional_indicator(cp)
@@ -173,7 +173,7 @@ def _check_tags(sorted_seq_to_filepath):
 
   BLACK_FLAG = 0x1f3f4
   BLACK_FLAG_SET = set([BLACK_FLAG])
-  for seq, fp in sorted_seq_to_filepath.iteritems():
+  for seq, fp in sorted_seq_to_filepath.items():
     seq_set = set(cp for cp in seq)
     overlap_set = seq_set & TAG_SET
     if not overlap_set:
@@ -193,7 +193,7 @@ def _check_skintone(sorted_seq_to_filepath):
   to take them.  May appear standalone, though.  Also check that emoji that take
   skin tone modifiers have a complete set."""
   base_to_modifiers = collections.defaultdict(set)
-  for seq, fp in sorted_seq_to_filepath.iteritems():
+  for seq, fp in sorted_seq_to_filepath.items():
     for i, cp in enumerate(seq):
       if unicode_data.is_skintone_modifier(cp):
         if i == 0:
@@ -213,7 +213,7 @@ def _check_skintone(sorted_seq_to_filepath):
             base_to_modifiers[pcp] = set()
           base_to_modifiers[pcp].add(cp)
 
-  for cp, modifiers in sorted(base_to_modifiers.iteritems()):
+  for cp, modifiers in sorted(base_to_modifiers.items()):
     if len(modifiers) != 5:
       print(
           'check skintone: base %04x has %d modifiers defined (%s) in %s' % (
@@ -224,7 +224,7 @@ def _check_skintone(sorted_seq_to_filepath):
 
 def _check_zwj_sequences(sorted_seq_to_filepath, unicode_version):
   """Verify that zwj sequences are valid for the given unicode version."""
-  for seq, fp in sorted_seq_to_filepath.iteritems():
+  for seq, fp in sorted_seq_to_filepath.items():
     if ZWJ not in seq:
       continue
     age = unicode_data.get_emoji_sequence_age(seq)
@@ -236,7 +236,7 @@ def _check_no_alias_sources(sorted_seq_to_filepath):
   """Check that we don't have sequences that we expect to be aliased to
   some other sequence."""
   aliases = add_aliases.read_default_emoji_aliases()
-  for seq, fp in sorted_seq_to_filepath.iteritems():
+  for seq, fp in sorted_seq_to_filepath.items():
     if seq in aliases:
       print('check no alias sources: aliased sequence %s' % fp)
 
@@ -270,22 +270,22 @@ def _check_coverage(seq_to_filepath, unicode_version):
     seq_to_filepath[k] = 'alias:' + filename
 
   # check single emoji, this includes most of the special chars
-  emoji = sorted(unicode_data.get_emoji(age=age))
-  for cp in emoji:
-    if tuple([cp]) not in seq_to_filepath:
-      print(
-          'coverage: missing single %04x (%s)' % (
-              cp, unicode_data.name(cp, '<no name>')))
+  emoji = sorted(unicode_data.get_emoji())
+  # for cp in emoji:
+  #   if tuple([cp]) not in seq_to_filepath:
+  #     print(
+  #         'coverage: missing single %04x (%s)' % (
+  #             cp, unicode_data.name(cp, '<no name>')))
 
   # special characters
   # all but combining enclosing keycap are currently marked as emoji
-  for cp in [ord('*'), ord('#'), ord(u'\u20e3')] + range(0x30, 0x3a):
+  for cp in [ord('*'), ord('#'), ord(u'\u20e3')] + list(range(0x30, 0x3a)):
     if cp not in emoji and tuple([cp]) not in seq_to_filepath:
       print('coverage: missing special %04x (%s)' % (cp, unicode_data.name(cp)))
 
   # combining sequences
   comb_seq_to_name = sorted(
-      unicode_data.get_emoji_combining_sequences(age=age).iteritems())
+      unicode_data._emoji_sequence_data.items())
   for seq, name in comb_seq_to_name:
     if seq not in seq_to_filepath:
       # strip vs and try again
@@ -293,44 +293,6 @@ def _check_coverage(seq_to_filepath, unicode_version):
       if non_vs_seq not in seq_to_filepath:
         print('coverage: missing combining sequence %s (%s)' %
               (unicode_data.seq_to_string(seq), name))
-
-  # flag sequences
-  flag_seq_to_name = sorted(
-      unicode_data.get_emoji_flag_sequences(age=age).iteritems())
-  for seq, name in flag_seq_to_name:
-    if seq not in seq_to_filepath:
-      print('coverage: missing flag sequence %s (%s)' %
-            (unicode_data.seq_to_string(seq), name))
-
-  # skin tone modifier sequences
-  mod_seq_to_name = sorted(
-      unicode_data.get_emoji_modifier_sequences(age=age).iteritems())
-  for seq, name in mod_seq_to_name:
-    if seq not in seq_to_filepath:
-      print('coverage: missing modifier sequence %s (%s)' % (
-          unicode_data.seq_to_string(seq), name))
-
-  # zwj sequences
-  # some of ours include the emoji presentation variation selector and some
-  # don't, and the same is true for the canonical sequences.  normalize all
-  # of them to omit it to test coverage, but report the canonical sequence.
-  zwj_seq_without_vs = set()
-  for seq in seq_to_filepath:
-    if ZWJ not in seq:
-      continue
-    if EMOJI_VS in seq:
-      seq = tuple(cp for cp in seq if cp != EMOJI_VS)
-    zwj_seq_without_vs.add(seq)
-
-  for seq, name in sorted(
-      unicode_data.get_emoji_zwj_sequences(age=age).iteritems()):
-    if EMOJI_VS in seq:
-      test_seq = tuple(s for s in seq if s != EMOJI_VS)
-    else:
-      test_seq = seq
-    if test_seq not in zwj_seq_without_vs:
-      print('coverage: missing (canonical) zwj sequence %s (%s)' % (
-          unicode_data.seq_to_string(seq), name))
 
   # check for 'unknown flag'
   # this is either emoji_ufe82b or 'unknown_flag', but we filter out things that
@@ -360,7 +322,7 @@ def create_sequence_to_filepath(name_to_dirpath, prefix, suffix):
   of a name to stderr."""
   segment_re = re.compile(r'^[0-9a-f]{4,6}$')
   result = {}
-  for name, dirname in name_to_dirpath.iteritems():
+  for name, dirname in name_to_dirpath.items():
     if not name.startswith(prefix):
       print('expected prefix "%s" for "%s"' % (prefix, name))
       continue
@@ -430,7 +392,7 @@ def run_check(dirs, prefix, suffix, exclude, unicode_version, coverage):
   seq_to_filepath = create_sequence_to_filepath(name_to_dirpath, prefix, suffix)
   print('checking %d sequences' % len(seq_to_filepath))
   check_sequence_to_filepath(seq_to_filepath, unicode_version, coverage)
-  print('done.')
+  print('done running checks')
 
 
 def main():
