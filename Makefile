@@ -226,7 +226,7 @@ $(EMOJI).ttf: check_coverage $(EMOJI).tmpl.ttf $(EMOJI_BUILDER) $(PUA_ADDER) \
 check_coverage:
 ifdef CHECK_COVERAGE
 	$(PYTHON) $(CHECK_COVERAGE_PY) -d $(EMOJI_SRC_DIR) -c
-	@echo -n "Proceed with building font? [y/N]" && read ans && [ $${ans:-N} = y ]
+	@echo -n "Proceed building font? [y/N]" && read ans && [ $${ans:-N} = y ]
 endif
 
 clean:
