@@ -41,6 +41,8 @@ VS_ADDER = add_vs_cmap.py # from nototools
 EMOJI_SRC_DIR ?= png/128
 FLAGS_SRC_DIR := third_party/region-flags/png
 
+CHECK_COVERAGE_PY = check_emoji_sequences.py
+
 BUILD_DIR := build
 EMOJI_DIR := $(BUILD_DIR)/emoji
 FLAGS_DIR := $(BUILD_DIR)/flags
@@ -217,13 +219,19 @@ endif
 	@rm -f "$@"
 	ttx "$<"
 
-$(EMOJI).ttf: $(EMOJI).tmpl.ttf $(EMOJI_BUILDER) $(PUA_ADDER) \
+$(EMOJI).ttf: check_coverage $(EMOJI).tmpl.ttf $(EMOJI_BUILDER) $(PUA_ADDER) \
 	$(ALL_COMPRESSED_FILES) | check_vs_adder
 	@$(PYTHON) $(EMOJI_BUILDER) $(SMALL_METRICS) -V $< "$@" "$(COMPRESSED_DIR)/emoji_u"
 	@$(PYTHON) $(PUA_ADDER) "$@" "$@-with-pua"
 	@$(VS_ADDER) -vs 2640 2642 2695 --dstdir '.' -o "$@-with-pua-varsel" "$@-with-pua"
 	@mv "$@-with-pua-varsel" "$@"
 	@rm "$@-with-pua"
+
+check_coverage:
+ifdef CHECK_COVERAGE
+	$(PYTHON) $(CHECK_COVERAGE_PY) -d $(EMOJI_SRC_DIR) -c
+	@echo -n "Proceed with building font? [y/N]" && read ans && [ $${ans:-N} = y ]
+endif
 
 clean:
 	rm -f $(EMOJI).ttf $(EMOJI).tmpl.ttf $(EMOJI).tmpl.ttx
