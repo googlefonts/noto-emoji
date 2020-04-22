@@ -18,7 +18,7 @@ font will be at the top level.
 
 ## Check artwork coverage
 
-By running `make CHECK_COVERAGE="True"` the build process is proceeded by a coverage check. The source directory is compared against the unicode standard used in [Nototools](https://github.com/googlefonts/nototools). The check flags any unexpected and missing filenames.
+By running `make CHECK_COVERAGE="True"` the build process is preceeded by a coverage check. The source directory is compared against the Unicode standard used in [Nototools](https://github.com/googlefonts/nototools). The check flags any unexpected and missing filenames.
 
 ## Using NotoColorEmoji
 
