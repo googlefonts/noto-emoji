@@ -271,11 +271,11 @@ def _check_coverage(seq_to_filepath, unicode_version):
 
   # check single emoji, this includes most of the special chars
   emoji = sorted(unicode_data.get_emoji())
-  # for cp in emoji:
-  #   if tuple([cp]) not in seq_to_filepath:
-  #     print(
-  #         'coverage: missing single %04x (%s)' % (
-  #             cp, unicode_data.name(cp, '<no name>')))
+  for cp in emoji:
+    if tuple([cp]) not in seq_to_filepath:
+      print(
+          'coverage: missing single %04x (%s)' % (
+              cp, unicode_data.name(cp, '<no name>')))
 
   # special characters
   # all but combining enclosing keycap are currently marked as emoji
