@@ -47,9 +47,9 @@ def main(folder_name="", reporting=False):
     folder_id = get_folder_id(service, folder_name)
 
     # Create output_dir
-    output_dir = create_dir("temp_download_folder")
+    output_dir = ensure_directory_exists("temp_download_folder")
 
-    # Get the file IDs
+    # Get the file IDs to download
     file_list = get_file_list(service, folder_id)
 
     # Download the files from the drive and put them in the output_dir
@@ -64,14 +64,13 @@ def main(folder_name="", reporting=False):
 
 
 def get_service():
-    """Autenticate yourself and create a token.pickle to use the google apiclient"""
-
-    # The file token.pickle stores the user's access and refresh tokens, and is
-    # created automatically when the authorization flow completes for the first
-    # time.
+    """Autenticate yourself and create a token.pickle to use the google apiclient.
+    The file token.pickle stores the user's access and refresh tokens, and is
+    created automatically when the authorization flow completes for the first
+    time."""
 
     creds = None
-    if path.exists("token.pickle"):
+    if path.isfile("token.pickle"):
         with open("token.pickle", "rb") as token:
             creds = pickle.load(token)
     # If there are no (valid) credentials available, let the user log in.
@@ -79,12 +78,11 @@ def get_service():
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
-            if not path.exists("credentials.json"):
-                print("You are missing 'credentials.json'. "
-                      "Please get this file here: "
-                      "https://developers.google.com/drive/api/v3/quickstart/python "
-                      "and include it in the root of your project.")
-                sys.exit(1)
+            if not path.isfile("credentials.json"):
+                sys.exit("You are missing 'credentials.json'. "
+                         "Please get this file here: "
+                         "https://developers.google.com/drive/api/v3/quickstart/python "
+                         "and include it in the root of your project.")
             flow = InstalledAppFlow.from_client_secrets_file("credentials.json", SCOPES)
             creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
@@ -97,7 +95,8 @@ def get_service():
 
 
 def get_folder_id(service, folder_name):
-    """Get the folder id instead of the folder name."""
+    """Get the folder id instead of the folder name. The api needs an
+    ID instead of a Name"""
     folder = service.files().list(
             q=f"name='{folder_name}' and mimeType='application/vnd.google-apps.folder'",
             fields='files(id, name, parents)').execute()
@@ -105,17 +104,14 @@ def get_folder_id(service, folder_name):
     total = len(folder['files'])
 
     if total != 1:
-        print(f'{total} folders found, needs exactly one')
-        sys.exit(1)
+        sys.exit(f'{total} folders found, needs exactly one')
 
-    else:
-        folder_id = folder['files'][0]['id']
+    folder_id = folder['files'][0]['id']
 
     return folder_id
 
 
-def create_dir(dir_name):
-    """Create dir if it does not yet exist."""
+def ensure_directory_exists(dir_name):
     if not path.exists(dir_name):
         makedirs(dir_name)
 
@@ -123,7 +119,8 @@ def create_dir(dir_name):
 
 
 def get_file_list(service, folder_id):
-    """Get all files in the Google drive folder."""
+    """Get all files in the Google drive folder.
+    So they can be downloaded"""
     result = []
     page_token = None
     while True:
@@ -143,8 +140,8 @@ def get_file_list(service, folder_id):
 
 
 def download_files(service, file_list, output_dir):
-    """Download all the files in the file_list."""
-
+    """Download all the files in the file_list and
+    place them in the output_dir"""
     print("Downloading files")
     for file in file_list:
         file_id = file['id']
@@ -152,23 +149,12 @@ def download_files(service, file_list, output_dir):
 
         if "emoji_u" in filename and ".png" in filename:
 
-            request = service.files().get_media(fileId=file_id)
             fh = io.BytesIO()
-            downloader = MediaIoBaseDownload(fh, request)
-            done = False
-            while done is False:
-                status, done = downloader.next_chunk()
-
-            filelocation = f"./{output_dir}/{filename}"
-            with open(filelocation, "wb") as f:
-                f.write(fh.getbuffer())
-
             print(f"Downloading: {filename} ({file_id})")
             request = service.files().get_media(fileId=file_id)
-            fh = io.BytesIO()
             downloader = MediaIoBaseDownload(fh, request)
             done = False
-            while done is False:
+            while not done:
                 status, done = downloader.next_chunk()
 
             filelocation = f"{output_dir}/{filename}"
@@ -201,7 +187,6 @@ def report_on_download(output_dir):
 
 def merge_png_dirs(output_dir):
     """Combine local and downloaded PNGs."""
-
     copy_tree("./png/128", "./build/combined_png")
     src_files = listdir(output_dir)
     for file_name in src_files:
