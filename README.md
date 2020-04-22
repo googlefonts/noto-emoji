@@ -16,6 +16,10 @@ especially if you are using zopflipng for compression.  Intermediate products
 (compressed image files, for example) will be put into a build subdirectory; the
 font will be at the top level.
 
+## Check artwork coverage
+
+By running `make CHECK_COVERAGE="True"` the build process is proceeded by a coverage check. The source directory is compared against the unicode standard used in [Nototools](https://github.com/googlefonts/nototools). The check flags any unexpected and missing filenames.
+
 ## Using NotoColorEmoji
 
 NotoColorEmoji uses the CBDT/CBLC color font format, which is supported by Android
