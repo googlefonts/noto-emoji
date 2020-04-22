@@ -199,10 +199,6 @@ else
 	@$(ZOPFLIPNG) -y "$<" "$@" 1> /dev/null 2>&1
 endif
 
-
-# Don't build the font if this linter fails.
-# ...
-
 # Make 3.81 can endless loop here if the target is missing but no
 # prerequisite is updated and make has been invoked with -j, e.g.:
 # File `font' does not exist.
