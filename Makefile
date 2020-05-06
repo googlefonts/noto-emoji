@@ -41,7 +41,7 @@ VS_ADDER = add_vs_cmap.py # from nototools
 EMOJI_SRC_DIR ?= png/128
 FLAGS_SRC_DIR := third_party/region-flags/png
 
-CHECK_COVERAGE_PY = check_emoji_sequences.py
+SEQUENCE_CHECK_PY = check_emoji_sequences.py
 
 BUILD_DIR := build
 EMOJI_DIR := $(BUILD_DIR)/emoji
@@ -225,7 +225,7 @@ $(EMOJI).ttf: check_coverage $(EMOJI).tmpl.ttf $(EMOJI_BUILDER) $(PUA_ADDER) \
 
 check_coverage:
 ifdef CHECK_COVERAGE
-	$(PYTHON) $(CHECK_COVERAGE_PY) -d $(EMOJI_SRC_DIR) -c
+	$(PYTHON) $(SEQUENCE_CHECK_PY) -d $(EMOJI_SRC_DIR) -c
 	@echo -n "Proceed building font? [y/N]" && read ans && [ $${ans:-N} = y ]
 endif
 
