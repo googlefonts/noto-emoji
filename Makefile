@@ -224,7 +224,9 @@ $(EMOJI).ttf: check_sequence $(EMOJI).tmpl.ttf $(EMOJI_BUILDER) $(PUA_ADDER) \
 	@rm "$@-with-pua"
 
 check_sequence:
-ifdef CHECK_SEQUENCE
+ifdef BYPASS_SEQUENCE_CHECK
+	@echo Bypassing the emoji sequence checks
+else
 	$(PYTHON) $(SEQUENCE_CHECK_PY) -d $(EMOJI_SRC_DIR) -c
 endif
 

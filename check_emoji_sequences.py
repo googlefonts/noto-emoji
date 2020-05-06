@@ -303,7 +303,7 @@ def _check_coverage(seq_to_filepath, unicode_version):
     coverage_pass = False
 
   if not coverage_pass:
-    exit("Please fix the problems metioned above or run make without 'CHECK_SEQUENCE'")
+    exit("Please fix the problems metioned above or run: make BYPASS_SEQUENCE_CHECK='True'")
 
 
 def check_sequence_to_filepath(seq_to_filepath, unicode_version, coverage):
