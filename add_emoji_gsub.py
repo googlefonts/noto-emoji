@@ -20,20 +20,10 @@ __author__ = "roozbeh@google.com (Roozbeh Pournader)"
 
 import sys
 
-try:
-    from fontTools import agl
-except ImportError as er:
-    sys.exit("""Failed to import fontTools.
-             Please make sure 'pip install -r requirements.txt' runs succesfull""")
-
+from fontTools import agl
 from fontTools.ttLib.tables import otTables
 from fontTools import ttLib
-
-try:
-    from nototools import font_data
-except ImportError as er:
-    sys.exit("""Failed to import nototools.
-             Please make sure 'pip install -r requirements.txt' runs succesfull""")
+from nototools import font_data
 
 
 def create_script_list(script_tag='DFLT'):
