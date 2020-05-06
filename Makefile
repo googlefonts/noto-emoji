@@ -215,7 +215,7 @@ endif
 	@rm -f "$@"
 	ttx "$<"
 
-$(EMOJI).ttf: check_coverage $(EMOJI).tmpl.ttf $(EMOJI_BUILDER) $(PUA_ADDER) \
+$(EMOJI).ttf: check_sequence $(EMOJI).tmpl.ttf $(EMOJI_BUILDER) $(PUA_ADDER) \
 	$(ALL_COMPRESSED_FILES) | check_vs_adder
 	@$(PYTHON) $(EMOJI_BUILDER) $(SMALL_METRICS) -V $< "$@" "$(COMPRESSED_DIR)/emoji_u"
 	@$(PYTHON) $(PUA_ADDER) "$@" "$@-with-pua"
@@ -223,10 +223,9 @@ $(EMOJI).ttf: check_coverage $(EMOJI).tmpl.ttf $(EMOJI_BUILDER) $(PUA_ADDER) \
 	@mv "$@-with-pua-varsel" "$@"
 	@rm "$@-with-pua"
 
-check_coverage:
-ifdef CHECK_COVERAGE
+check_sequence:
+ifdef CHECK_SEQUENCE
 	$(PYTHON) $(SEQUENCE_CHECK_PY) -d $(EMOJI_SRC_DIR) -c
-	@echo -n "Proceed building font? [y/N]" && read ans && [ $${ans:-N} = y ]
 endif
 
 clean:
