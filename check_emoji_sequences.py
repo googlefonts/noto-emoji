@@ -14,7 +14,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Compare emoji image file namings against unicode property data."""
+"""Compare emoji image file namings against unicode property data.
+The intent of this script is to check if the resulting font will pass
+the Android linter:
+https://android.googlesource.com/platform/frameworks/base/+/master/tools/fonts/fontchain_linter.py
+"""
 from __future__ import print_function
 
 import argparse
