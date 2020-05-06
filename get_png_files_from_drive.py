@@ -16,7 +16,7 @@
 
 from __future__ import print_function
 import pickle
-from os import path, makedirs, walk, listdir
+from os import path, makedirs, walk, listdir, makedirs
 import io
 import fire
 import sys
@@ -34,8 +34,8 @@ SCOPES = ["https://www.googleapis.com/auth/drive"]
 def main(folder_name="", reporting=False):
 
     # Remove combined_png dir if it exists
-    if path.exists("./build/combined_png"):
-        shutil.rmtree("./build/combined_png")
+    if path.exists("./combined_png"):
+        shutil.rmtree("./combined_png")
 
     # Create a token.pickle file to store the users session
     service = get_service()
@@ -47,7 +47,8 @@ def main(folder_name="", reporting=False):
     folder_id = get_folder_id(service, folder_name)
 
     # Create output_dir
-    output_dir = ensure_directory_exists("temp_download_folder")
+    makedirs("./temp_download_folder", exist_ok=True)
+    output_dir = "./temp_download_folder"
 
     # Get the file IDs to download
     file_list = get_file_list(service, folder_id)
@@ -109,13 +110,6 @@ def get_folder_id(service, folder_name):
     folder_id = folder['files'][0]['id']
 
     return folder_id
-
-
-def ensure_directory_exists(dir_name):
-    if not path.exists(dir_name):
-        makedirs(dir_name)
-
-    return dir_name
 
 
 def get_file_list(service, folder_id):
@@ -187,12 +181,12 @@ def report_on_download(output_dir):
 
 def merge_png_dirs(output_dir):
     """Combine local and downloaded PNGs."""
-    copy_tree("./png/128", "./build/combined_png")
+    copy_tree("./png/128", "./combined_png")
     src_files = listdir(output_dir)
     for file_name in src_files:
         full_file_name = path.join(output_dir, file_name)
         if path.isfile(full_file_name):
-            shutil.copy(full_file_name, "./build/combined_png")
+            shutil.copy(full_file_name, "./combined_png")
     shutil.rmtree(output_dir)
 
 
