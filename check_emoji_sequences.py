@@ -15,7 +15,6 @@
 # limitations under the License.
 
 """Compare emoji image file namings against unicode property data."""
-from __future__ import print_function
 
 import argparse
 import collections
