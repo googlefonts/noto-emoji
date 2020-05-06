@@ -40,9 +40,6 @@ def main(folder_name="", reporting=False):
     # Create a token.pickle file to store the users session
     service = get_service()
 
-    if folder_name == "":
-        folder_name = input("Please enter the name of your drive folder: ")
-
     # Get the folder instance
     folder_id = get_folder_id(service, folder_name)
 
