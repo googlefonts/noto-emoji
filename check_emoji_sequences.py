@@ -243,6 +243,7 @@ def _check_coverage(seq_to_filepath, unicode_version):
   """Ensure we have all and only the cps and sequences that we need for the
   font as of this version."""
 
+  coverage_pass = True
   age = unicode_version
 
   non_vs_to_canonical = {}
@@ -257,11 +258,13 @@ def _check_coverage(seq_to_filepath, unicode_version):
       alias_str = unicode_data.seq_to_string(k)
       target_str = unicode_data.seq_to_string(v)
       print(f'coverage: alias {alias_str} missing target {target_str}')
+      coverage_pass = False
       continue
     if k in seq_to_filepath or k in non_vs_to_canonical:
       alias_str = unicode_data.seq_to_string(k)
       target_str = unicode_data.seq_to_string(v)
       print(f'coverage: alias {alias_str} already exists as {target_str} ({seq_name(v)})')
+      coverage_pass = False
       continue
     filename = seq_to_filepath.get(v) or seq_to_filepath[non_vs_to_canonical[v]]
     seq_to_filepath[k] = 'alias:' + filename
@@ -272,12 +275,14 @@ def _check_coverage(seq_to_filepath, unicode_version):
     if tuple([cp]) not in seq_to_filepath:
       print(
           f'coverage: missing single {cp} ({unicode_data.name(cp)})')
+      coverage_pass = False
 
   # special characters
   # all but combining enclosing keycap are currently marked as emoji
   for cp in [ord('*'), ord('#'), ord(u'\u20e3')] + list(range(0x30, 0x3a)):
     if cp not in emoji and tuple([cp]) not in seq_to_filepath:
       print(f'coverage: missing special {cp} ({unicode_data.name(cp)})')
+      coverage_pass = False
 
   # combining sequences
   comb_seq_to_name = sorted(
@@ -288,12 +293,17 @@ def _check_coverage(seq_to_filepath, unicode_version):
       non_vs_seq = unicode_data.strip_emoji_vs(seq)
       if non_vs_seq not in seq_to_filepath:
         print(f'coverage: missing combining sequence {unicode_data.seq_to_string(seq)} ({name})')
+        coverage_pass = False
 
   # check for 'unknown flag'
   # this is either emoji_ufe82b or 'unknown_flag', but we filter out things that
   # don't start with our prefix so 'unknown_flag' would be excluded by default.
   if tuple([0xfe82b]) not in seq_to_filepath:
     print('coverage: missing unknown flag PUA fe82b')
+    coverage_pass = False
+
+  if not coverage_pass:
+    exit("Please fix the problems metioned above or run make without 'CHECK_SEQUENCE'")
 
 
 def check_sequence_to_filepath(seq_to_filepath, unicode_version, coverage):
