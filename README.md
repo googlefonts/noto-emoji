@@ -33,7 +33,7 @@ font will be at the top level.
 
 NotoColorEmoji uses the CBDT/CBLC color font format, which is supported by Android
 and Chrome/Chromium OS.  Windows supports it starting with Windows 10 Anniversary
-Update in Chome and Edge.  On macOS, only Chrome supports it, while on Linux it will
+Update in Chrome and Edge.  On macOS, only Chrome supports it, while on Linux it will
 support it with some fontconfig tweaking, see [issue #36](https://github.com/googlei18n/noto-emoji/issues/36). Currently we do not build other color font formats.
 
 ## Color emoji assets
