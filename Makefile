@@ -134,7 +134,7 @@ compressed: $(ALL_COMPRESSED_FILES)
 check_compress_tool:
 ifdef MISSING_ZOPFLI
   ifdef MISSING_OPTIPNG
-	$(error "neither $(ZOPFLIPNG) nor $(OPTIPNG) is available")
+	$(error "neither $(ZOPFLIPNG) nor $(OPTIPNG) is available. For installation instructions, see README.md")
   else
 	@echo "using $(OPTIPNG)"
   endif
@@ -197,6 +197,11 @@ else
 	@$(ZOPFLIPNG) -y "$<" "$@" 1> /dev/null 2>&1
 endif
 
+check-virtual-env:
+ifeq (${VIRTUAL_ENV},)
+	@echo Please start your virtual environment, and run: "'pip install -r requirements.txt'".
+	@false
+endif
 
 # Make 3.81 can endless loop here if the target is missing but no
 # prerequisite is updated and make has been invoked with -j, e.g.:
@@ -214,7 +219,7 @@ endif
 	@rm -f "$@"
 	ttx "$<"
 
-$(EMOJI).ttf: $(EMOJI).tmpl.ttf $(EMOJI_BUILDER) $(PUA_ADDER) \
+$(EMOJI).ttf: check-virtual-env $(EMOJI).tmpl.ttf $(EMOJI_BUILDER) $(PUA_ADDER) \
 	$(ALL_COMPRESSED_FILES) | check_vs_adder
 	@$(PYTHON) $(EMOJI_BUILDER) $(SMALL_METRICS) -V $< "$@" "$(COMPRESSED_DIR)/emoji_u"
 	@$(PYTHON) $(PUA_ADDER) "$@" "$@-with-pua"
