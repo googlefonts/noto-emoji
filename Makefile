@@ -108,12 +108,6 @@ ifeq (,$(shell which $(ZOPFLIPNG)))
   endif
 endif
 
-ifeq (,$(shell which $(OPTIPNG)))
-  ifeq (,$(wildcard $(OPTIPNG)))
-    MISSING_OPTIPNG = fail
-  endif
-endif
-
 ifeq (, $(shell which $(VS_ADDER)))
   MISSING_ADDER = fail
 endif
@@ -133,11 +127,7 @@ compressed: $(ALL_COMPRESSED_FILES)
 
 check_compress_tool:
 ifdef MISSING_ZOPFLI
-  ifdef MISSING_OPTIPNG
-	$(error "neither $(ZOPFLIPNG) nor $(OPTIPNG) is available. For installation instructions, see README.md")
-  else
-	@echo "using $(OPTIPNG)"
-  endif
+	$(error "Missing $(ZOPFLIPNG). Try 'brew install zopfli' (Mac) or 'sudo apt-get zopfli' (linux)")
 else
 	@echo "using $(ZOPFLIPNG)"
 endif
