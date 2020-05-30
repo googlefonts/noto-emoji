@@ -128,8 +128,6 @@ compressed: $(ALL_COMPRESSED_FILES)
 check_compress_tool:
 ifdef MISSING_ZOPFLI
 	$(error "Missing $(ZOPFLIPNG). Try 'brew install zopfli' (Mac) or 'sudo apt-get zopfli' (linux)")
-else
-	@echo "using $(ZOPFLIPNG)"
 endif
 
 check_vs_adder:
