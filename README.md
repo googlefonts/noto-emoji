@@ -7,27 +7,25 @@ Building Noto Color Emoji requires:
 - Python 3
 - [pkg-config](https://www.freedesktop.org/wiki/Software/pkg-config/)
 - [pngquant](https://pngquant.org/)
-- Either [zopflipng](https://github.com/google/zopfli) or [optipng](http://optipng.sourceforge.net/). Zopflipng is better (about 5-10%) but much slower.
+- [zopflipng](https://github.com/google/zopfli)
 
 ## Building NotoColorEmoji
-This project uses a virtual environment to manage dependencies. Use the following steps to get up and running.
+This project uses a virtual environment to manage dependencies. Use the following steps to get up and running:
 
-Create a virtual environment called `noto-emoji-env`:
+```shell
+# make sure you have the Prerequisites
 
-	python3 -m venv noto-emoji-env
+# create & activate a virtual environment
+python3 -m venv venv
+source venv/bin/activate
 
-Activate the virtual environment:
+# install python requirements
+pip install -r requirements.txt
 
-	source noto-emoji-env/bin/activate
+time make -j
+```
 
-Install the Python requirements with:
-	
-	pip install -r requirements.txt
-
-Then run `make`.  NotoColorEmoji is the default target.  It's suggested to use -j,
-especially if you are using zopflipng for compression.  Intermediate products
-(compressed image files, for example) will be put into a build subdirectory; the
-font will be at the top level.
+Intermediate products (compressed image files, for example) will be put into a build subdirectory; the font will be at the top level.
 
 ## Using NotoColorEmoji
 
