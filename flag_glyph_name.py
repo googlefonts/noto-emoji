@@ -22,7 +22,11 @@ __author__ = 'roozbeh@google.com (Roozbeh Pournader)'
 import re
 import sys
 
-import add_emoji_gsub
+try:
+  import add_emoji_gsub
+except ImportError as e:
+    print(e, file=sys.stderr)
+    sys.exit('Python environment is not setup right')
 
 def two_letter_code_to_glyph_name(region_code):
     return 'u%04x_%04x' % (
