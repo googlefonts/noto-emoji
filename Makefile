@@ -24,11 +24,8 @@ PNGQUANTFLAGS = --speed 1 --skip-if-larger --quality 85-95 --force
 BODY_DIMENSIONS = 136x128
 IMOPS := -size $(BODY_DIMENSIONS) canvas:none -compose copy -gravity center
 
-# zopflipng is better (about 5-10%) but much slower.  it will be used if
-# present.  pass ZOPFLIPNG= as an arg to make to use optipng instead.
-
 ZOPFLIPNG = zopflipng
-OPTIPNG = optipng
+TTX = ttx
 
 EMOJI_BUILDER = third_party/color_emoji/emoji_builder.py
 # flag for emoji builder.  Default to legacy small metrics for the time being.
@@ -81,6 +78,23 @@ SELECTED_FLAGS = AC AD AE AF AG AI AL AM AO AQ AR AS AT AU AW AX AZ \
 	ZA ZM ZW \
         GB-ENG GB-SCT GB-WLS
 
+ifeq (,$(shell which $(ZOPFLIPNG)))
+  ifeq (,$(wildcard $(ZOPFLIPNG)))
+    MISSING_ZOPFLI = fail
+  endif
+endif
+
+ifndef VIRTUAL_ENV
+  MISSING_VENV = fail
+endif
+
+ifeq (, $(shell which $(VS_ADDER)))
+  MISSING_PY_TOOLS = fail
+endif
+ifeq (, $(shell which $(TTX)))
+  MISSING_PY_TOOLS = fail
+endif
+
 ALL_FLAGS = $(basename $(notdir $(wildcard $(FLAGS_SRC_DIR)/*.png)))
 
 FLAGS = $(SELECTED_FLAGS)
@@ -89,7 +103,11 @@ FLAG_NAMES = $(FLAGS:%=%.png)
 FLAG_FILES = $(addprefix $(FLAGS_DIR)/, $(FLAG_NAMES))
 RESIZED_FLAG_FILES = $(addprefix $(RESIZED_FLAGS_DIR)/, $(FLAG_NAMES))
 
+ifndef MISSING_PY_TOOLS
 FLAG_GLYPH_NAMES = $(shell $(PYTHON) flag_glyph_name.py $(FLAGS))
+else
+FLAG_GLYPH_NAMES = 
+endif
 RENAMED_FLAG_NAMES = $(FLAG_GLYPH_NAMES:%=emoji_%.png)
 RENAMED_FLAG_FILES = $(addprefix $(RENAMED_FLAGS_DIR)/, $(RENAMED_FLAG_NAMES))
 
@@ -100,17 +118,6 @@ ALL_NAMES = $(EMOJI_NAMES) $(RENAMED_FLAG_NAMES)
 
 ALL_QUANTIZED_FILES = $(addprefix $(QUANTIZED_DIR)/, $(ALL_NAMES))
 ALL_COMPRESSED_FILES = $(addprefix $(COMPRESSED_DIR)/, $(ALL_NAMES))
-
-# tool checks
-ifeq (,$(shell which $(ZOPFLIPNG)))
-  ifeq (,$(wildcard $(ZOPFLIPNG)))
-    MISSING_ZOPFLI = fail
-  endif
-endif
-
-ifeq (, $(shell which $(VS_ADDER)))
-  MISSING_ADDER = fail
-endif
 
 
 emoji: $(EMOJI_FILES)
@@ -125,16 +132,16 @@ quantized: $(ALL_QUANTIZED_FILES)
 
 compressed: $(ALL_COMPRESSED_FILES)
 
-check_compress_tool:
+check_tools:
 ifdef MISSING_ZOPFLI
 	$(error "Missing $(ZOPFLIPNG). Try 'brew install zopfli' (Mac) or 'sudo apt-get install zopfli' (linux)")
 endif
-
-check_vs_adder:
-ifdef MISSING_ADDER
-	$(error "$(VS_ADDER) not in path, run setup.py in nototools")
+ifdef MISSING_VENV
+		$(error "Please start your virtual environment, and run: "'pip install -r requirements.txt'")
 endif
-
+ifdef MISSING_PY_TOOLS
+		$(error "Missing tools; run: "'pip install -r requirements.txt' in your virtual environment")
+endif
 
 $(EMOJI_DIR) $(FLAGS_DIR) $(RESIZED_FLAGS_DIR) $(RENAMED_FLAGS_DIR) $(QUANTIZED_DIR) $(COMPRESSED_DIR):
 	mkdir -p "$@"
@@ -178,18 +185,8 @@ $(QUANTIZED_DIR)/%.png: $(RENAMED_FLAGS_DIR)/%.png | $(QUANTIZED_DIR)
 $(QUANTIZED_DIR)/%.png: $(EMOJI_DIR)/%.png | $(QUANTIZED_DIR)
 	@($(PNGQUANT) $(PNGQUANTFLAGS) -o "$@" "$<"; case "$$?" in "98"|"99") echo "reuse $<";cp $< $@;; *) exit "$$?";; esac)
 
-$(COMPRESSED_DIR)/%.png: $(QUANTIZED_DIR)/%.png | check_compress_tool $(COMPRESSED_DIR)
-ifdef MISSING_ZOPFLI
-	@$(OPTIPNG) -quiet -o7 -clobber -force -out "$@" "$<"
-else
+$(COMPRESSED_DIR)/%.png: $(QUANTIZED_DIR)/%.png | check_tools $(COMPRESSED_DIR)
 	@$(ZOPFLIPNG) -y "$<" "$@" 1> /dev/null 2>&1
-endif
-
-check-virtual-env:
-ifeq (${VIRTUAL_ENV},)
-	@echo Please start your virtual environment, and run: "'pip install -r requirements.txt'".
-	@false
-endif
 
 # Make 3.81 can endless loop here if the target is missing but no
 # prerequisite is updated and make has been invoked with -j, e.g.:
@@ -207,8 +204,8 @@ endif
 	@rm -f "$@"
 	ttx "$<"
 
-$(EMOJI).ttf: check-virtual-env $(EMOJI).tmpl.ttf $(EMOJI_BUILDER) $(PUA_ADDER) \
-	$(ALL_COMPRESSED_FILES) | check_vs_adder
+$(EMOJI).ttf: $(EMOJI).tmpl.ttf $(EMOJI_BUILDER) $(PUA_ADDER) \
+	$(ALL_COMPRESSED_FILES) | check_tools
 	@$(PYTHON) $(EMOJI_BUILDER) $(SMALL_METRICS) -V $< "$@" "$(COMPRESSED_DIR)/emoji_u"
 	@$(PYTHON) $(PUA_ADDER) "$@" "$@-with-pua"
 	@$(VS_ADDER) -vs 2640 2642 2695 --dstdir '.' -o "$@-with-pua-varsel" "$@-with-pua"
@@ -223,5 +220,5 @@ clean:
 .SECONDARY: $(EMOJI_FILES) $(FLAG_FILES) $(RESIZED_FLAG_FILES) $(RENAMED_FLAG_FILES) \
   $(ALL_QUANTIZED_FILES) $(ALL_COMPRESSED_FILES)
 
-.PHONY:	clean flags emoji renamed_flags quantized compressed check_compress_tool
+.PHONY:	clean flags emoji renamed_flags quantized compressed check_tools
 
