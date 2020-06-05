@@ -82,7 +82,7 @@ def _check_no_vs(sorted_seq_to_filepath):
   """Our image data does not use emoji presentation variation selectors."""
   for seq, fp in sorted_seq_to_filepath.items():
     if EMOJI_VS in seq:
-      print(f'check no VS: FE0F in path: {fp}')
+      print(f'check no VS: {EMOJI_VS} in path: {fp}')
 
 
 def _check_valid_emoji_cps(sorted_seq_to_filepath, unicode_version):
