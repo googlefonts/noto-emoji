@@ -38,6 +38,8 @@ VS_ADDER = add_vs_cmap.py # from nototools
 EMOJI_SRC_DIR ?= png/128
 FLAGS_SRC_DIR := third_party/region-flags/png
 
+SEQUENCE_CHECK_PY = check_emoji_sequences.py
+
 BUILD_DIR := build
 EMOJI_DIR := $(BUILD_DIR)/emoji
 FLAGS_DIR := $(BUILD_DIR)/flags
@@ -204,13 +206,21 @@ $(COMPRESSED_DIR)/%.png: $(QUANTIZED_DIR)/%.png | check_tools $(COMPRESSED_DIR)
 	@rm -f "$@"
 	ttx "$<"
 
-$(EMOJI).ttf: $(EMOJI).tmpl.ttf $(EMOJI_BUILDER) $(PUA_ADDER) \
+$(EMOJI).ttf: check_sequence $(EMOJI).tmpl.ttf $(EMOJI_BUILDER) $(PUA_ADDER) \
 	$(ALL_COMPRESSED_FILES) | check_tools
+
 	@$(PYTHON) $(EMOJI_BUILDER) $(SMALL_METRICS) -V $< "$@" "$(COMPRESSED_DIR)/emoji_u"
 	@$(PYTHON) $(PUA_ADDER) "$@" "$@-with-pua"
 	@$(VS_ADDER) -vs 2640 2642 2695 --dstdir '.' -o "$@-with-pua-varsel" "$@-with-pua"
 	@mv "$@-with-pua-varsel" "$@"
 	@rm "$@-with-pua"
+
+check_sequence:
+ifdef BYPASS_SEQUENCE_CHECK
+	@echo Bypassing the emoji sequence checks
+else
+	$(PYTHON) $(SEQUENCE_CHECK_PY) -d $(EMOJI_SRC_DIR) -c
+endif
 
 clean:
 	rm -f $(EMOJI).ttf $(EMOJI).tmpl.ttf $(EMOJI).tmpl.ttx
