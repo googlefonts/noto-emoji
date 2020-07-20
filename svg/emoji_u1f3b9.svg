@@ -1,1 +1,30 @@
-<svg enable-background="new 0 0 128 128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg"><radialGradient id="b" cx="63.333" cy="3.3333" r="120.14" gradientUnits="userSpaceOnUse"><stop stop-color="#eee" offset="0"/><stop stop-color="#EBEBEB" offset=".3167"/><stop stop-color="#E1E1E1" offset=".5781"/><stop stop-color="#CFCFCF" offset=".819"/><stop stop-color="#BDBDBD" offset="1"/></radialGradient><rect x="4" y="4" width="120" height="120" fill="url(#b)"/><g opacity=".2"><path d="M121,7v114H7V7H121 M124,4H4v120h120V4L124,4z" fill="#424242"/></g><radialGradient id="a" cx="63.667" cy="5.6667" r="109.36" gradientUnits="userSpaceOnUse"><stop stop-color="#616161" offset="0"/><stop stop-color="#5E5E5E" offset=".2204"/><stop stop-color="#535353" offset=".4074"/><stop stop-color="#424242" offset=".5821"/><stop stop-color="#292929" offset=".7485"/><stop stop-color="#212121" offset=".7941"/><stop stop-color="#212121" offset="1"/></radialGradient><path d="M4,4v24h16v60c0,2.21,1.79,4,4,4h12c2.21,0,4-1.79,4-4V28h14v60c0,2.21,1.79,4,4,4h12 c2.21,0,4-1.79,4-4V28h14v60c0,2.21,1.79,4,4,4h12c2.21,0,4-1.79,4-4V28h16V4H4z" fill="url(#a)"/><g opacity=".2"><path d="M121,7v18h-13c-1.66,0-3,1.34-3,3v60c0,0.55-0.45,1-1,1H92c-0.55,0-1-0.45-1-1V28c0-1.66-1.34-3-3-3 H74c-1.66,0-3,1.34-3,3v60c0,0.55-0.45,1-1,1H58c-0.55,0-1-0.45-1-1V28c0-1.66-1.34-3-3-3H40c-1.66,0-3,1.34-3,3v60 c0,0.55-0.45,1-1,1H24c-0.55,0-1-0.45-1-1V28c0-1.66-1.34-3-3-3H7V7H121 M124,4H4v24h16v60c0,2.21,1.79,4,4,4h12c2.21,0,4-1.79,4-4 V28h14v60c0,2.21,1.79,4,4,4h12c2.21,0,4-1.79,4-4V28h14v60c0,2.21,1.79,4,4,4h12c2.21,0,4-1.79,4-4V28h16V4L124,4z" fill="#eee"/></g><rect x="40" y="28" width="14" height="56" fill="none"/><rect x="74" y="28" width="14" height="56" fill="none"/><rect x="7" y="20" width="114" height="8" fill="#424242"/><rect x="28" y="92" width="4" height="32" fill="#424242"/><rect x="62.06" y="92" width="4" height="32" fill="#424242"/><rect x="96" y="92" width="4" height="32" fill="#424242"/></svg>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 24.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 128 128" style="enable-background:new 0 0 128 128;" xml:space="preserve">
+<radialGradient id="SVGID_1_" cx="63.333" cy="124.5565" r="120.14" gradientTransform="matrix(1 0 0 -1 0 127.8898)" gradientUnits="userSpaceOnUse">
+	<stop  offset="0" style="stop-color:#EEEEEE"/>
+	<stop  offset="0.3167" style="stop-color:#EBEBEB"/>
+	<stop  offset="0.5781" style="stop-color:#E1E1E1"/>
+	<stop  offset="0.819" style="stop-color:#CFCFCF"/>
+	<stop  offset="1" style="stop-color:#BDBDBD"/>
+</radialGradient>
+<rect x="4" y="4" style="fill:url(#SVGID_1_);" width="120" height="120"/>
+<radialGradient id="SVGID_2_" cx="63.5722" cy="130.0381" r="105.7601" gradientTransform="matrix(1 0 0 -1 0 127.8898)" gradientUnits="userSpaceOnUse">
+	<stop  offset="0" style="stop-color:#616161"/>
+	<stop  offset="0.2204" style="stop-color:#5E5E5E"/>
+	<stop  offset="0.4074" style="stop-color:#535353"/>
+	<stop  offset="0.5821" style="stop-color:#424242"/>
+	<stop  offset="0.7485" style="stop-color:#292929"/>
+	<stop  offset="0.7941" style="stop-color:#212121"/>
+	<stop  offset="1" style="stop-color:#212121"/>
+</radialGradient>
+<path style="fill:url(#SVGID_2_);" d="M4,4v24h16v60c0,2.21,1.79,4,4,4h12c2.21,0,4-1.79,4-4V28h14v60c0,2.21,1.79,4,4,4h12
+	c2.21,0,4-1.79,4-4V28h14v60c0,2.21,1.79,4,4,4h12c2.21,0,4-1.79,4-4V28h16V4H4z"/>
+<rect x="40" y="28" style="fill:none;" width="14" height="56"/>
+<rect x="74" y="28" style="fill:none;" width="14" height="56"/>
+<rect x="4" y="20" style="fill:#424242;" width="120" height="8"/>
+<rect x="28" y="92" style="fill:#504F4F;" width="4" height="32"/>
+<rect x="62.06" y="92" style="fill:#504F4F;" width="4" height="32"/>
+<rect x="96" y="92" style="fill:#504F4F;" width="4" height="32"/>
+</svg>
