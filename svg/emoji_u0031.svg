@@ -1,1 +1,12 @@
-<svg enable-background="new 0 0 128 128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg"><linearGradient id="a" x1="59.333" x2="59.333" y1="27.667" y2="102.05" gradientUnits="userSpaceOnUse"><stop stop-color="#616161" offset="0"/><stop stop-color="#5B5B5B" offset=".2231"/><stop stop-color="#484848" offset=".5356"/><stop stop-color="#2B2B2B" offset=".8994"/><stop stop-color="#212121" offset="1"/></linearGradient><path d="m73.57 102.07h-9.87c-0.76 0-1.37-0.61-1.37-1.37v-57.67c0-0.94-0.92-1.6-1.81-1.3l-14.98 5.11c-0.89 0.3-1.81-0.36-1.81-1.3v-7.76c0-0.57 0.36-1.09 0.9-1.29l28.47-10.47c0.15-0.06 0.31-0.08 0.47-0.08 0.76 0 1.37 0.61 1.37 1.37v73.39c0 0.75-0.61 1.37-1.37 1.37z" fill="url(#a)"/><g opacity=".2"><path d="m71.94 29.64v69.43h-6.61v-56.04c0-2.41-1.96-4.37-4.37-4.37-0.48 0-0.96 0.08-1.41 0.23l-12.82 4.37v-4.35l25.21-9.27m1.63-3.71c-0.16 0-0.32 0.03-0.47 0.08l-28.48 10.48c-0.54 0.2-0.9 0.71-0.9 1.29v7.76c0 0.78 0.64 1.37 1.37 1.37 0.15 0 0.3-0.02 0.44-0.07l14.98-5.11c0.15-0.05 0.3-0.07 0.44-0.07 0.73 0 1.37 0.59 1.37 1.37v57.66c0 0.76 0.61 1.37 1.37 1.37h9.87c0.76 0 1.37-0.61 1.37-1.37v-73.38c0.01-0.76-0.6-1.38-1.36-1.38z" fill="#eee"/></g></svg>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 24.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 128 128" style="enable-background:new 0 0 128 128;" xml:space="preserve">
+<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="59.335" y1="100.333" x2="59.335" y2="25.95" gradientTransform="matrix(1 0 0 -1 0 128)">
+	<stop  offset="0" style="stop-color:#757575"/>
+	<stop  offset="0.5148" style="stop-color:#504F4F"/>
+</linearGradient>
+<path style="fill:url(#SVGID_1_);" d="M73.57,102.07H63.7c-0.76,0-1.37-0.61-1.37-1.37V43.03c0-0.94-0.92-1.6-1.81-1.3l-14.98,5.11
+	c-0.89,0.3-1.81-0.36-1.81-1.3v-7.76c0-0.57,0.36-1.09,0.9-1.29L73.1,26.02c0.15-0.06,0.31-0.08,0.47-0.08
+	c0.76,0,1.37,0.61,1.37,1.37v73.39C74.94,101.45,74.33,102.07,73.57,102.07z"/>
+</svg>

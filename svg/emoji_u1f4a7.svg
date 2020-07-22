@@ -1,1 +1,21 @@
-<svg enable-background="new 0 0 128 128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg"><rect x="-1228" y="-57.67" width="0" height=".67" fill="#F2F2F2"/><radialGradient id="a" cx="52.25" cy="43.75" r="54.993" gradientUnits="userSpaceOnUse"><stop stop-color="#BBDEFB" offset=".3559"/><stop stop-color="#64B5F6" offset=".9361"/></radialGradient><path d="m103.22 85.01c0 21.66-17.62 39.19-39.28 39.15s-39.15-17.62-39.15-39.28c0-32.38 38.7-80.23 38.7-80.23s39.73 48.1 39.73 80.36z" fill="url(#a)"/><g opacity=".2"><path d="m63.52 11.15c9.22 11.98 35.7 48.5 35.7 73.78 0 19.38-15.8 35.07-35.22 35.07h-0.06c-19.39 0-35.16-15.78-35.16-35.2 0-25.35 25.72-61.67 34.74-73.65m-0.03-6.5s-38.7 47.76-38.7 80.15c0 21.66 17.49 39.2 39.15 39.2h0.07c21.63 0 39.22-17.43 39.22-39.07-0.01-32.26-39.74-80.28-39.74-80.28z" fill="#424242"/></g></svg>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 24.1.2, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 128 128" style="enable-background:new 0 0 128 128;" xml:space="preserve">
+<g id="Layer_1">
+</g>
+<g id="图层_3">
+</g>
+<g id="Layer_2_x5F_复制">
+	
+		<radialGradient id="SVGID_1_" cx="67.1404" cy="466.355" r="79.3414" gradientTransform="matrix(1 0 0 1.54 0 -698.93)" gradientUnits="userSpaceOnUse">
+		<stop  offset="0.46" style="stop-color:#29B6F6"/>
+		<stop  offset="1" style="stop-color:#1E88E5"/>
+	</radialGradient>
+	<path style="fill:url(#SVGID_1_);" d="M64.6,124c-20.1,0-35.56-19.48-35.56-36.18c0-11.75,5.26-25.36,12.68-44.22
+		c0.93-2.78,2.16-5.57,3.4-8.66c3.54-8.84,6.66-18.42,11.41-26.71c3.24-5.66,11.46-5.65,14.58,0.08
+		c4.43,8.14,7.45,16.96,12.05,27.25c12.99,29.07,16.7,40.82,16.7,52.57C100.16,104.52,84.39,124,64.6,124z"/>
+	<path style="fill:#81D4FA;" d="M86.34,101.71c-4.55,7.02-14.84,5.69-14.84-5.97c0-7.45,1.52-45.74,7.92-40.39
+		C89.83,64.07,92.8,91.78,86.34,101.71z"/>
+</g>
+</svg>

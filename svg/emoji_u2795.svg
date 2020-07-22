@@ -1,1 +1,12 @@
-<svg enable-background="new 0 0 128 128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg"><linearGradient id="a" x1="64" x2="64" y1="4126" y2="4246" gradientTransform="translate(0 -4122)" gradientUnits="userSpaceOnUse"><stop stop-color="#757575" offset="0"/><stop stop-color="#6C6C6C" offset=".21"/><stop stop-color="#525252" offset=".5583"/><stop stop-color="#424242" offset=".7436"/><stop stop-color="#424242" offset="1"/></linearGradient><path d="m120 52h-42c-1.1 0-2-0.9-2-2v-42c0-2.2-1.8-4-4-4h-16c-2.2 0-4 1.8-4 4v42c0 1.1-0.9 2-2 2h-42c-2.2 0-4 1.8-4 4v16c0 2.2 1.8 4 4 4h42c1.1 0 2 0.9 2 2v42c0 2.2 1.8 4 4 4h16c2.2 0 4-1.8 4-4v-42c0-1.1 0.9-2 2-2h42c2.2 0 4-1.8 4-4v-16c0-2.2-1.8-4-4-4z" fill="url(#a)"/><g opacity=".2"><path d="M72,7c0.6,0,1,0.4,1,1v42c0,2.8,2.2,5,5,5h42c0.6,0,1,0.5,1,1v16c0,0.6-0.4,1-1,1H78 c-2.8,0-5,2.2-5,5v42c0,0.6-0.4,1-1,1H56c-0.5,0-1-0.4-1-1V78c0-2.8-2.2-5-5-5H8c-0.6,0-1-0.4-1-1V56c0-0.5,0.4-1,1-1h42 c2.8,0,5-2.2,5-5V8c0-0.6,0.5-1,1-1H72 M72,4H56c-2.2,0-4,1.8-4,4v42c0,1.1-0.9,2-2,2H8c-2.2,0-4,1.8-4,4v16c0,2.2,1.8,4,4,4h42 c1.1,0,2,0.9,2,2v42c0,2.2,1.8,4,4,4h16c2.2,0,4-1.8,4-4V78c0-1.1,0.9-2,2-2h42c2.2,0,4-1.8,4-4V56c0-2.2-1.8-4-4-4H78 c-1.1,0-2-0.9-2-2V8C76,5.8,74.2,4,72,4L72,4z" fill="#eee"/></g></svg>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 24.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 128 128" style="enable-background:new 0 0 128 128;" xml:space="preserve">
+<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="64" y1="6.0383" x2="64" y2="121.8778">
+	<stop  offset="0" style="stop-color:#757575"/>
+	<stop  offset="0.3928" style="stop-color:#504F4F"/>
+</linearGradient>
+<path style="fill:url(#SVGID_1_);" d="M124,56v16c0,2.2-1.8,4-4,4H78c-1.1,0-2,0.9-2,2v42c0,2.2-1.8,4-4,4H56c-2.2,0-4-1.8-4-4V78
+	c0-1.1-0.9-2-2-2H8c-2.2,0-4-1.8-4-4V56c0-2.2,1.8-4,4-4h42c1.1,0,2-0.9,2-2V8c0-2.2,1.8-4,4-4h16c2.2,0,4,1.8,4,4v42
+	c0,1.1,0.9,2,2,2h42C122.2,52,124,53.8,124,56z"/>
+</svg>
