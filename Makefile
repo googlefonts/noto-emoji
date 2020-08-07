@@ -219,7 +219,7 @@ check_sequence:
 ifdef BYPASS_SEQUENCE_CHECK
 	@echo Bypassing the emoji sequence checks
 else
-	$(PYTHON) $(SEQUENCE_CHECK_PY) -d $(EMOJI_SRC_DIR) -c
+	@$(PYTHON) $(SEQUENCE_CHECK_PY) -n $(ALL_NAMES) -c
 endif
 
 clean:

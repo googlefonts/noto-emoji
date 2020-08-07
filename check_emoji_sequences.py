@@ -389,25 +389,36 @@ def collect_name_to_dirpath_with_override(dirs, prefix, suffix, exclude=None):
   return result
 
 
-def run_check(dirs, prefix, suffix, exclude, unicode_version, coverage):
+def run_check(dirs, names, prefix, suffix, exclude, unicode_version, coverage):
   msg = ''
   if unicode_version:
     msg = ' (%3.1f)' % unicode_version
-  print(f'Checking files with prefix "{prefix}" and suffix "{suffix}"{msg} in: {dirs}')
-  name_to_dirpath = collect_name_to_dirpath_with_override(
-      dirs, prefix=prefix, suffix=suffix, exclude=exclude)
+  
+  if (names and dirs):
+    sys.exit("Please only provide a directory or a list of names")
+  elif names:
+    name_to_dirpath = {}
+    for name in names:
+      name_to_dirpath[name] = ""
+  elif dirs:
+      print(f'Checking files with prefix "{prefix}" and suffix "{suffix}"{msg} in: {dirs}')
+      name_to_dirpath = collect_name_to_dirpath_with_override(dirs, prefix=prefix, suffix=suffix, exclude=exclude)
+
   print(f'checking {len(name_to_dirpath)} names')
   seq_to_filepath = create_sequence_to_filepath(name_to_dirpath, prefix, suffix)
   print(f'checking {len(seq_to_filepath)} sequences')
   check_sequence_to_filepath(seq_to_filepath, unicode_version, coverage)
-  print('done running checks')
+  print('Done running checks')
 
 
 def main():
   parser = argparse.ArgumentParser()
   parser.add_argument(
       '-d', '--dirs', help='directory roots containing emoji images',
-      metavar='dir', nargs='+', required=True)
+      metavar='dir', nargs='+')
+  parser.add_argument(
+      '-n', '--names', help='list with expected emoji',
+      metavar='names', nargs='+')
   parser.add_argument(
       '-e', '--exclude', help='names of source subdirs to exclude',
       metavar='dir', nargs='+')
@@ -425,7 +436,7 @@ def main():
       metavar='version', type=float)
   args = parser.parse_args()
   run_check(
-      args.dirs, args.prefix, args.suffix, args.exclude, args.unicode_version,
+      args.dirs, args.names, args.prefix, args.suffix, args.exclude, args.unicode_version,
       args.coverage)
 
 
