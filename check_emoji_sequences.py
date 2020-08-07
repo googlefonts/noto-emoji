@@ -365,7 +365,7 @@ def collect_name_to_dirpath(directory, prefix, suffix, exclude=None):
       dirs[:] = [d for d in dirs if d not in exclude]
 
     if directory != '.':
-      dirname = path.join(directory, dirname)
+      dirname = directory
     for f in files:
       if not f.endswith(suffix):
         continue
