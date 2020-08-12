@@ -90,6 +90,8 @@ def _check_valid_emoji_cps(sorted_seq_to_filepath, unicode_version):
   used in forming emoji sequences.  This is a 'pre-check' that reports
   this specific problem."""
 
+  coverage_pass = True
+
   valid_cps = set(unicode_data.get_emoji())
   if unicode_version is None or unicode_version >= unicode_data.PROPOSED_EMOJI_AGE:
     valid_cps |= unicode_data.proposed_emoji_cps()
@@ -116,7 +118,11 @@ def _check_valid_emoji_cps(sorted_seq_to_filepath, unicode_version):
     for cp in sorted(not_emoji):
       fps = not_emoji[cp]
       print(
-          f'check valid emoji cps: {cp} (in {len(fps)} sequences)', file=sys.stderr)
+          f'check the following cp: {cp} - {not_emoji.get(cp)[0]} (in {len(fps)} sequences)', file=sys.stderr)
+    coverage_pass = False
+
+  if not coverage_pass:
+    exit("Please fix the problems metioned above or run: make BYPASS_SEQUENCE_CHECK='True'")
 
 
 def _check_zwj(sorted_seq_to_filepath):
