@@ -73,7 +73,7 @@ def _generate_row_cells(
     return 'missing'
 
   def _text_cell(text_dir):
-    text = ''.join(unichr(cp) for cp in key)
+    text = ''.join(chr(cp) for cp in key)
     return '<span class="efont" dir="%s">%s</span>' % (text_dir, text)
 
   if font:
