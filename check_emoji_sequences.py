@@ -90,6 +90,8 @@ def _check_valid_emoji_cps(sorted_seq_to_filepath, unicode_version):
   used in forming emoji sequences.  This is a 'pre-check' that reports
   this specific problem."""
 
+  coverage_pass = True
+
   valid_cps = set(unicode_data.get_emoji())
   if unicode_version is None or unicode_version >= unicode_data.PROPOSED_EMOJI_AGE:
     valid_cps |= unicode_data.proposed_emoji_cps()
@@ -116,7 +118,11 @@ def _check_valid_emoji_cps(sorted_seq_to_filepath, unicode_version):
     for cp in sorted(not_emoji):
       fps = not_emoji[cp]
       print(
-          f'check valid emoji cps: {cp} (in {len(fps)} sequences)', file=sys.stderr)
+          f'check the following cp: {cp} - {not_emoji.get(cp)[0]} (in {len(fps)} sequences)', file=sys.stderr)
+    coverage_pass = False
+
+  if not coverage_pass:
+    exit("Please fix the problems metioned above or run: make BYPASS_SEQUENCE_CHECK='True'")
 
 
 def _check_zwj(sorted_seq_to_filepath):
@@ -365,7 +371,7 @@ def collect_name_to_dirpath(directory, prefix, suffix, exclude=None):
       dirs[:] = [d for d in dirs if d not in exclude]
 
     if directory != '.':
-      dirname = path.join(directory, dirname)
+      dirname = directory
     for f in files:
       if not f.endswith(suffix):
         continue
@@ -389,25 +395,36 @@ def collect_name_to_dirpath_with_override(dirs, prefix, suffix, exclude=None):
   return result
 
 
-def run_check(dirs, prefix, suffix, exclude, unicode_version, coverage):
+def run_check(dirs, names, prefix, suffix, exclude, unicode_version, coverage):
   msg = ''
   if unicode_version:
     msg = ' (%3.1f)' % unicode_version
-  print(f'Checking files with prefix "{prefix}" and suffix "{suffix}"{msg} in: {dirs}')
-  name_to_dirpath = collect_name_to_dirpath_with_override(
-      dirs, prefix=prefix, suffix=suffix, exclude=exclude)
+
+  if (names and dirs):
+    sys.exit("Please only provide a directory or a list of names")
+  elif names:
+    name_to_dirpath = {}
+    for name in names:
+      name_to_dirpath[name] = ""
+  elif dirs:
+    print(f'Checking files with prefix "{prefix}" and suffix "{suffix}"{msg} in: {dirs}')
+    name_to_dirpath = collect_name_to_dirpath_with_override(dirs, prefix=prefix, suffix=suffix, exclude=exclude)
+
   print(f'checking {len(name_to_dirpath)} names')
   seq_to_filepath = create_sequence_to_filepath(name_to_dirpath, prefix, suffix)
   print(f'checking {len(seq_to_filepath)} sequences')
   check_sequence_to_filepath(seq_to_filepath, unicode_version, coverage)
-  print('done running checks')
+  print('Done running checks')
 
 
 def main():
   parser = argparse.ArgumentParser()
   parser.add_argument(
       '-d', '--dirs', help='directory roots containing emoji images',
-      metavar='dir', nargs='+', required=True)
+      metavar='dir', nargs='+')
+  parser.add_argument(
+      '-n', '--names', help='list with expected emoji',
+      metavar='names', nargs='+')
   parser.add_argument(
       '-e', '--exclude', help='names of source subdirs to exclude',
       metavar='dir', nargs='+')
@@ -425,7 +442,7 @@ def main():
       metavar='version', type=float)
   args = parser.parse_args()
   run_check(
-      args.dirs, args.prefix, args.suffix, args.exclude, args.unicode_version,
+      args.dirs, args.names, args.prefix, args.suffix, args.exclude, args.unicode_version,
       args.coverage)
 
 
