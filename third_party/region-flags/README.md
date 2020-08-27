@@ -56,7 +56,7 @@ region.
 - The script `download-wp.py` downloads missing flags from Wikipedia and generating
 optimized SVG and PNG versions.
 
-You can use the [waveflag script from the Noto fonts project](https://code.google.com/p/noto/source/browse/color_emoji/waveflag.c)
+You can use the [waveflag script from the Noto fonts project](../../waveflag.c)
 to _wave_ PNG flags.
 
 # Requirements
