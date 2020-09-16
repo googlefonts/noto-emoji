@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Generator: Adobe Illustrator 24.1.2, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="kiss" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 128 128" style="enable-background:new 0 0 128 128;" xml:space="preserve">
 <g>
 	<g id="hair_599_">
@@ -61,7 +61,7 @@
 		<path id="hair_608_" style="fill:#543930;" d="M67.5,124c-0.48-13.19,0.05-47.32,0.19-55.55c0-0.63-1.68-40.31,37.99-40.57
 			c7.24-0.05,13.27,1.08,18.32,3V124H67.5z"/>
 		
-			<radialGradient id="hairHighlights_3_" cx="48.4162" cy="94.5182" r="34.5101" gradientTransform="matrix(-1 0 0 0.9979 145.1893 0.194)" gradientUnits="userSpaceOnUse">
+			<radialGradient id="hairHighlights_3_" cx="1230.4161" cy="94.5182" r="34.5101" gradientTransform="matrix(-1 0 0 0.9979 1327.1893 0.194)" gradientUnits="userSpaceOnUse">
 			<stop  offset="0.7945" style="stop-color:#6D4C41;stop-opacity:0"/>
 			<stop  offset="1" style="stop-color:#6D4C41"/>
 		</radialGradient>
@@ -102,7 +102,7 @@
 			c-4.45-5.54-10.85-19.78-10.85-19.78c-12.89,9.6-36.62,10.48-41.41,21.01c0,0-0.63,7.35,0.97,19.48c0,0-5.26-0.08-5.26-0.14
 			C67.16,86.06,67.69,76.53,67.69,68.45z"/>
 		
-			<radialGradient id="hairHighlights_4_" cx="41.4459" cy="86.4971" r="43.7467" gradientTransform="matrix(-1 0 0 1.1286 145.1893 -11.122)" gradientUnits="userSpaceOnUse">
+			<radialGradient id="hairHighlights_4_" cx="1223.4459" cy="86.4971" r="43.7467" gradientTransform="matrix(-1 0 0 1.1286 1327.1893 -11.122)" gradientUnits="userSpaceOnUse">
 			<stop  offset="0.7945" style="stop-color:#6D4C41;stop-opacity:0"/>
 			<stop  offset="1" style="stop-color:#6D4C41"/>
 		</radialGradient>
@@ -111,11 +111,26 @@
 			c0,0-0.63,7.35,0.97,19.48c0,0-5.26-0.08-5.26-0.14C67.16,86.06,67.69,76.53,67.69,68.45z"/>
 	</g>
 </g>
-<radialGradient id="heart_1_" cx="61.5892" cy="6.895" r="36.7983" gradientTransform="matrix(0.9985 0 0 0.9337 2.266 -6.362)" gradientUnits="userSpaceOnUse">
-	<stop  offset="0.4812" style="stop-color:#FF80AB"/>
-	<stop  offset="0.9978" style="stop-color:#FF4081"/>
-</radialGradient>
-<path id="heart_2_" style="fill:url(#heart_1_);" d="M78.39,3.74c-10.51,0-14.37,12.57-14.37,12.57S60.21,3.74,49.62,3.74
-	c-7.96,0-17.03,6.31-13.68,20.64c3.35,14.33,27.97,32.11,27.97,32.11s0.13-0.05,0.13-0.13c0,0.08,0.08,0.12,0.08,0.12
-	s24.58-17.77,27.93-32.1C95.41,10.04,86.35,3.74,78.39,3.74z"/>
+<g>
+	<path style="fill:#EF5592;" d="M78.41,3.74C67.87,3.74,64,14.5,64,14.5S60.18,3.74,49.57,3.74c-7.97,0-17.07,6.32-13.71,20.68
+		c3.36,14.36,28.16,32.26,28.16,32.26s24.72-17.9,28.08-32.26C95.46,10.06,87.02,3.74,78.41,3.74z"/>
+	<g>
+		<path style="fill:#DA2E75;" d="M47.94,4.81c8.27,0,12.38,8.89,13.71,12.5c0.19,0.51,0.91,0.53,1.12,0.03l1.21-2.83
+			c-1.71-5.45-6.4-10.77-14.41-10.77c-3.32,0-6.82,1.1-9.55,3.41C42.42,5.56,45.25,4.81,47.94,4.81z"/>
+		<path style="fill:#DA2E75;" d="M78.41,3.74c-2.55,0-4.7,0.74-6.51,1.85c1.27-0.49,2.68-0.78,4.23-0.78
+			c7.8,0,14.77,5.91,11.62,19.58c-2.7,11.73-18.5,25.96-23.32,31.39c-0.31,0.35-0.41,0.91-0.41,0.91s24.72-17.9,28.08-32.26
+			C95.46,10.06,86.38,3.74,78.41,3.74z"/>
+	</g>
+	<g>
+		<g>
+			<g>
+				<path style="fill:#F386AB;" d="M41.4,11.36c1.8-2.25,5.03-4.11,7.76-1.97c1.48,1.16,0.83,3.54-0.49,4.54
+					c-1.93,1.46-3.6,2.34-4.77,4.63c-0.7,1.38-1.13,2.88-1.34,4.42c-0.08,0.61-0.88,0.75-1.18,0.22
+					C39.34,19.6,38.77,14.65,41.4,11.36z"/>
+			</g>
+		</g>
+	</g>
+	<path style="fill:#F386AB;" d="M70.31,16.09c-0.85,0-1.44-0.82-1.13-1.61c0.57-1.45,1.31-2.86,2.2-4.11
+		c1.32-1.85,3.82-2.92,5.41-1.81c1.63,1.15,1.42,3.43,0.27,4.54C74.61,15.49,71.53,16.09,70.31,16.09z"/>
+</g>
 </svg>
