@@ -1,18 +1,18 @@
-FROM python:3.7-slim
+FROM python:slim
 
 RUN apt-get update \
     && apt-get install --no-install-recommends -y \
-    git \
-    zopfli \
-    libcairo2-dev \
     make \
+    gcc \
+    zopfli \
+    libc-dev \
+    libpng-dev \
+    libcairo2-dev \
     imagemagick \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-RUN git clone https://github.com/googlefonts/nototools.git /nototools
-WORKDIR /nototools
-RUN pip install --no-cache -r requirements.txt && pip install --no-cache -e .
+RUN pip install --no-cache notofonttools
 
 ADD . /blobmoji
 WORKDIR /blobmoji
