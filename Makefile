@@ -36,13 +36,12 @@ PUA_ADDER = map_pua_emoji.py
 VS_ADDER = add_vs_cmap.py # from nototools
 
 EMOJI_SRC_DIR ?= png/128
-FLAGS_SRC_DIR := third_party/region-flags/png
+FLAGS_SRC_DIR := third_party/waved-flags/png
 
 SEQUENCE_CHECK_PY = check_emoji_sequences.py
 
 BUILD_DIR := build
 EMOJI_DIR := $(BUILD_DIR)/emoji
-FLAGS_DIR := $(BUILD_DIR)/flags
 RESIZED_FLAGS_DIR := $(BUILD_DIR)/resized_flags
 RENAMED_FLAGS_DIR := $(BUILD_DIR)/renamed_flags
 QUANTIZED_DIR := $(BUILD_DIR)/quantized_pngs
@@ -124,8 +123,6 @@ ALL_COMPRESSED_FILES = $(addprefix $(COMPRESSED_DIR)/, $(ALL_NAMES))
 
 emoji: $(EMOJI_FILES)
 
-flags: $(FLAG_FILES)
-
 resized_flags: $(RESIZED_FLAG_FILES)
 
 renamed_flags: $(RENAMED_FLAG_FILES)
@@ -145,13 +142,8 @@ ifdef MISSING_PY_TOOLS
 		$(error "Missing tools; run: "'pip install -r requirements.txt' in your virtual environment")
 endif
 
-$(EMOJI_DIR) $(FLAGS_DIR) $(RESIZED_FLAGS_DIR) $(RENAMED_FLAGS_DIR) $(QUANTIZED_DIR) $(COMPRESSED_DIR):
+$(EMOJI_DIR) $(RESIZED_FLAGS_DIR) $(RENAMED_FLAGS_DIR) $(QUANTIZED_DIR) $(COMPRESSED_DIR):
 	mkdir -p "$@"
-
-
-waveflag: waveflag.c
-	$(CC) $< -o $@ $(CFLAGS) $(LDFLAGS)
-
 
 # imagemagick's -extent operator munges the grayscale images in such a fashion
 # that while it can display them correctly using libpng12, chrome and gimp using
@@ -165,10 +157,7 @@ waveflag: waveflag.c
 $(EMOJI_DIR)/%.png: $(EMOJI_SRC_DIR)/%.png | $(EMOJI_DIR)
 	@convert $(IMOPS) "$<" -composite "PNG32:$@"
 
-$(FLAGS_DIR)/%.png: $(FLAGS_SRC_DIR)/%.png ./waveflag | $(FLAGS_DIR)
-	@./waveflag $(FLAGS_DIR)/ "$<"
-
-$(RESIZED_FLAGS_DIR)/%.png: $(FLAGS_DIR)/%.png | $(RESIZED_FLAGS_DIR)
+$(RESIZED_FLAGS_DIR)/%.png: $(FLAGS_SRC_DIR)/%.png | $(RESIZED_FLAGS_DIR)
 	@convert $(IMOPS) "$<" -composite "PNG32:$@"
 
 flag-symlinks: $(RESIZED_FLAG_FILES) | $(RENAMED_FLAGS_DIR)
@@ -224,11 +213,9 @@ endif
 
 clean:
 	rm -f $(EMOJI).ttf $(EMOJI).tmpl.ttf $(EMOJI).tmpl.ttx
-	rm -f waveflag
 	rm -rf $(BUILD_DIR)
 
 .SECONDARY: $(EMOJI_FILES) $(FLAG_FILES) $(RESIZED_FLAG_FILES) $(RENAMED_FLAG_FILES) \
   $(ALL_QUANTIZED_FILES) $(ALL_COMPRESSED_FILES)
 
 .PHONY:	clean flags emoji renamed_flags quantized compressed check_tools
-
