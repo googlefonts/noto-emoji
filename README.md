@@ -9,6 +9,7 @@ Building Noto Color Emoji requires:
 - [pngquant](https://pngquant.org/)
 - [zopflipng](https://github.com/google/zopfli)
 - [cairo](https://www.cairographics.org/)
+- [imagemagick](https://imagemagick.org/)
 
 ## Building NotoColorEmoji
 This project uses a virtual environment to manage dependencies. Use the following steps to get up and running:
