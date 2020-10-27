@@ -8,6 +8,7 @@ Building Noto Color Emoji requires:
 - [pkg-config](https://www.freedesktop.org/wiki/Software/pkg-config/)
 - [pngquant](https://pngquant.org/)
 - [zopflipng](https://github.com/google/zopfli)
+- [cairo](https://www.cairographics.org/)
 
 ## Building NotoColorEmoji
 This project uses a virtual environment to manage dependencies. Use the following steps to get up and running:
