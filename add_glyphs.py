@@ -172,6 +172,8 @@ def add_glyph_data(font, seqs, seq_to_advance, vadvance):
     pen = TTGlyphPen(None)
     empty_glyph = pen.glyph()
     glyf = font['glyf']
+  else:
+    glyf = None
 
   # We don't expect sequences to be in the glyphOrder, since we removed all the
   # single-cp sequences from it and don't expect it to already contain names
@@ -196,7 +198,7 @@ def add_glyph_data(font, seqs, seq_to_advance, vadvance):
     if name not in reverseGlyphMap:
       font.glyphOrder.append(name)
       updatedGlyphOrder=True
-    if 'glyf' in font:
+    if glyf is not None:
       glyf[name] = empty_glyph
 
   if updatedGlyphOrder:
@@ -349,12 +351,9 @@ def add_cmap_format_4(font):
   newtable.platformID = 3
   newtable.platEncID = 1
   newtable.language = 0
-  newtable.cmap = {}
 
   # Format 4 only has unicode values 0x0000 to 0xFFFF
-  for cp, name in cmap.items():
-    if cp < 65535:
-      newtable.cmap[cp] = name
+  newtable.cmap = newtable.cmap = {cp: name for cp, name in cmap.items() if cp <= 0xFFFF}
 
   font['cmap'].tables.append(newtable)
 
