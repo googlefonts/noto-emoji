@@ -174,7 +174,7 @@ def add_glyph_data(font, seqs, seq_to_advance, vadvance, add_glyf):
     font['loca'] = newTable("loca")
     font['glyf'] = glyf_table = newTable("glyf")
     glyf_table.glyphOrder = font.getGlyphOrder()
-    glyf_table.glyphs = {g:empty_glyph for g in glyf_table.glyphOrder}
+    glyf_table.glyphs = {g: empty_glyph for g in glyf_table.glyphOrder}
 
   # We don't expect sequences to be in the glyphOrder, since we removed all the
   # single-cp sequences from it and don't expect it to already contain names
@@ -363,7 +363,7 @@ def update_font_data(font, seq_to_advance, vadvance, aliases, add_cmap4, add_gly
   add_glyph_data(font, seqs, seq_to_advance, vadvance, add_glyf)
   add_aliases_to_cmap(font, aliases)
   add_ligature_sequences(font, seqs, aliases)
-  if(add_cmap4):
+  if add_cmap4:
     add_cmap_format_4(font)
 
 def apply_aliases(seq_dict, aliases):
