@@ -20,8 +20,7 @@ from fontTools import ttx
 from fontTools.ttLib.tables import otTables
 from fontTools.pens.ttGlyphPen import TTGlyphPen
 from fontTools.ttLib.tables._c_m_a_p import CmapSubtable
-from fontTools.ttLib.tables import _g_l_y_f
-from fontTools.ttLib.tables import _l_o_c_a
+from fontTools.ttLib import newTable
 
 import add_emoji_gsub
 import add_aliases
@@ -172,8 +171,8 @@ def add_glyph_data(font, seqs, seq_to_advance, vadvance, add_glyf):
   if add_glyf:
     pen = TTGlyphPen(None)
     empty_glyph = pen.glyph()
-    font['loca'] = _l_o_c_a.table__l_o_c_a()
-    font['glyf'] = glyf_table = _g_l_y_f.table__g_l_y_f()
+    font['loca'] = newTable("loca")
+    font['glyf'] = glyf_table = newTable("glyf")
     glyf_table.glyphOrder = font.getGlyphOrder()
     glyf_table.glyphs = {g:empty_glyph for g in glyf_table.glyphOrder}
 
