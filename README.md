@@ -30,7 +30,7 @@ time make -j
 Intermediate products (compressed image files, for example) will be put into a build subdirectory. Two fonts will be saved at the top level:
 
 * `NotoColorEmoji.ttf`, for general use.
-* `NotoColorEmoji_WindowsCompatible.ttf`, specifically meant to be _installed_ on Windows.
+* `NotoColorEmoji_WindowsCompatible.ttf`, which is the same font but with an additional empty `glyf` table and `cmap` format 4 subtable. This is required by Windows 10 if you want to _install_ the font.
 
 ## Using NotoColorEmoji
 
