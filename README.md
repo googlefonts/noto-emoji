@@ -27,7 +27,10 @@ pip install -r requirements.txt
 time make -j
 ```
 
-Intermediate products (compressed image files, for example) will be put into a build subdirectory; the font will be at the top level.
+Intermediate products (compressed image files, for example) will be put into a build subdirectory. Two fonts will be saved at the top level:
+
+* `NotoColorEmoji.ttf`, for general use.
+* `NotoColorEmoji_WindowsCompatible.ttf`, specifically meant to be _installed_ on Windows.
 
 ## Using NotoColorEmoji
 
