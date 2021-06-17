@@ -8,7 +8,7 @@ class Emoji:
     # This is the case for gender symbols which should be represented as emojis and not as characters
     fe0f_chars = {'♀', '♂'}
 
-    color_regex = re.compile("#([a-f0-9]{6,7})|rgb\(([0-9]{1,3},[0-9]{1,3},[0-9]{1,3})\)", re.IGNORECASE)
+    color_regex = re.compile("#?([a-f0-9]{6,7})|rgb\(([0-9]{1,3},[0-9]{1,3},[0-9]{1,3})\)", re.IGNORECASE)
 
     def __init__(self, modifiers: dict, path: str, base: str, end: bool = False):
         """
