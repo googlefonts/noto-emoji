@@ -172,3 +172,26 @@ Columns: 10
  93  64  55	brown-700
  78  52  46	brown-800
  62  39  35	brown-900
+
+
+# Skin tones
+250 220 188 light-skin
+224 187 149 medium-light-skin
+191 143 104 medium-skin
+155 100  60 medium-dark-skin
+112  83  74 dark-skin
+
+# Skin tones (hair)
+ 49  45  45 light-hair
+191 160  85 medium-light-hair
+109  76  65 medium-hair
+ 71  53  45 medium-dark-hair
+ 35  32  32 dark-hair
+249 224 115 blond-hair
+
+# Skin tones (shadow/nose)
+219 166 137 light-shadow
+196 142 106 medium-light-shadow
+153 103  79 medium-shadow
+122  76  50 medium-dark-shadow
+ 86  62  55 dark-shadow
