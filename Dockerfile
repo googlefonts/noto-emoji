@@ -1,20 +1,22 @@
-FROM python:buster
-RUN apt update && apt install -y \
-    git \
+FROM python:slim
+
+RUN apt-get update \
+    && apt-get install --no-install-recommends -y \
+    make \
+    gcc \
     zopfli \
-    libcairo2-dev
+    libc-dev \
+    libpng-dev \
+    libcairo2-dev \
+    imagemagick \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-# Install nototools
-RUN git clone https://github.com/googlefonts/nototools.git /nototools
-WORKDIR /nototools
-RUN pip install -r requirements.txt
-RUN pip install -e .
-
-# Create output dir
-RUN mkdir /output
+RUN pip install --no-cache notofonttools
 
 ADD . /blobmoji
 WORKDIR /blobmoji
 
-# Build blobmoji font
+RUN mkdir /output
+
 CMD make -j $(nproc) && cp NotoColorEmoji.ttf /output/
