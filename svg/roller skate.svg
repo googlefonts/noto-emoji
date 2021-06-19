@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 128 128" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-miterlimit:10;">
+    <g>
+        <path d="M110.78,70.71C104.53,63.72 88.9,61.4 75.62,53.23C71.96,50.98 64.12,44.58 63.07,40.27C62.29,37.06 67.64,21.38 65.48,20.21C61.84,18.23 57.13,22.64 57.13,22.64C57.13,22.64 55.41,14.47 47.26,12.93C39.96,11.55 32.88,16.13 11.08,17.15C7.02,17.34 5.15,20.27 5.65,24.08C6.06,27.16 9.03,27.85 9.03,27.85C9.03,27.85 5.9,29.79 6.17,33.23C6.44,36.67 9.77,37.42 9.77,37.42C9.77,37.42 6.69,39.2 6.86,42.85C7.04,46.5 10.14,47.9 10.14,47.9C10.14,47.9 8.69,57.85 7.88,63.15C6.36,73.2 7.24,82.52 14.77,89.52L110.56,89.52C115.29,85.75 116.15,76.72 110.78,70.71Z" style="fill:rgb(66,173,231);fill-rule:nonzero;"/>
+        <g>
+            <circle cx="53.46" cy="40.22" r="3.34" style="fill:rgb(238,238,238);"/>
+            <circle cx="58.93" cy="50.29" r="3.34" style="fill:rgb(238,238,238);"/>
+            <circle cx="66.21" cy="57.25" r="3.34" style="fill:rgb(238,238,238);"/>
+            <circle cx="75.57" cy="62.7" r="3.34" style="fill:rgb(238,238,238);"/>
+            <circle cx="86.35" cy="67.09" r="3.34" style="fill:rgb(238,238,238);"/>
+            <path d="M53.46,40.22L62.67,38.15" style="fill:none;fill-rule:nonzero;stroke:rgb(252,194,27);stroke-width:3px;"/>
+            <path d="M59.28,50.06L66.21,45.31" style="fill:none;fill-rule:nonzero;stroke:rgb(252,194,27);stroke-width:3px;"/>
+            <path d="M66.21,57.25L72.02,51.1" style="fill:none;fill-rule:nonzero;stroke:rgb(252,194,27);stroke-width:3px;"/>
+            <path d="M75.27,62.7L79.66,55.52" style="fill:none;fill-rule:nonzero;stroke:rgb(252,194,27);stroke-width:3px;"/>
+            <path d="M86.35,67.09L89.03,59.75" style="fill:none;fill-rule:nonzero;stroke:rgb(252,194,27);stroke-width:3px;"/>
+        </g>
+        <path d="M62.88,36.71C36.08,37.5 47.78,15.08 62.88,36.71C65.71,40.77 69.29,42.24 71.1,42.76C80.15,45.4 84.53,27.25 60.02,37.97" style="fill:none;fill-rule:nonzero;stroke:rgb(252,194,27);stroke-width:3px;"/>
+        <path d="M108.61,104.5L114.26,100.05L110.78,92.74L112.49,87.39C112.49,87.39 24.94,86.35 20.39,85.96C17.49,85.71 14.32,85.09 14.32,85.09C12.06,84.62 10.47,84.15 10.47,84.15L20.09,104.2L25.52,102.22L21.32,92.74L34.03,92.74L31.67,100.06C31.13,101.73 32.05,103.52 33.72,104.06L40.32,106.19C41.99,106.73 43.78,105.81 44.32,104.14L48,92.74L65.6,92.74L69.28,104.15C69.82,105.82 71.61,106.74 73.28,106.2L79.88,104.07C81.55,103.53 82.47,101.74 81.93,100.07L79.57,92.75L93.42,92.75L88.09,102.23L94.29,104.21L100.35,92.75L108.61,104.5Z" style="fill:rgb(66,66,66);fill-rule:nonzero;"/>
+        <g>
+            <g>
+                <circle cx="28.16" cy="109.55" r="14.44" style="fill:rgb(252,194,27);"/>
+            </g>
+            <circle cx="28.16" cy="109.55" r="3.62" style="fill:rgb(66,66,66);"/>
+        </g>
+        <path d="M103.55,95.9L108.9,92.03C110.28,91.03 112.18,91.14 113.43,92.3L121.47,99.73C122.86,101.02 122.73,103.26 121.19,104.37L111.43,111.43C109.89,112.54 107.72,111.97 106.94,110.24L102.4,100.28C101.68,98.74 102.17,96.9 103.55,95.9Z" style="fill:rgb(158,158,158);fill-rule:nonzero;"/>
+        <g>
+            <g>
+                <circle cx="85.45" cy="109.55" r="14.44" style="fill:rgb(252,194,27);"/>
+            </g>
+            <circle cx="85.45" cy="109.55" r="3.62" style="fill:rgb(66,66,66);"/>
+        </g>
+    </g>
+</svg>
