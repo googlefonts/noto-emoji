@@ -26,12 +26,6 @@
 1f3cb_1f3fd;1f3cb_1f3fd_200d_2642 # medium skin tone
 1f3cb_1f3fe;1f3cb_1f3fe_200d_2642 # medium-dark skin tone
 1f3cb_1f3ff;1f3cb_1f3ff_200d_2642 # dark skin tone
-1f3cc;1f3cc_200d_2642 # GOLFER -> man golfing
-1f3cc_1f3fb;1f3cc_1f3fb_200d_2642 # light skin tone
-1f3cc_1f3fc;1f3cc_1f3fc_200d_2642 # medium-light skin tone
-1f3cc_1f3fd;1f3cc_1f3fd_200d_2642 # medium skin tone
-1f3cc_1f3fe;1f3cc_1f3fe_200d_2642 # medium-dark skin tone
-1f3cc_1f3ff;1f3cc_1f3ff_200d_2642 # dark skin tone
 1f46a;1f468_200d_1f469_200d_1f466 # FAMILY -> family: man, woman, boy
 1f46e;1f46e_200d_2642 # POLICE OFFICER -> man police officer
 1f46e_1f3fb;1f46e_1f3fb_200d_2642 # light skin tone
@@ -258,3 +252,11 @@ fe82b;unknown_flag # no name -> no name
 # Blobmoji sequences
 1f52b_200d_1f4a6_fe0f; 1f52b_200d_2063_fe0f # Water pistol
 1f52b_200d_1f4a7_fe0f; 1f52b_200d_2063_fe0f # Water pistol
+
+# Bald person -> female bald person (or male, it doesn't make any difference)
+1f9d1_200d_1f9b2; 1f468_200d_1f9b2 # bald
+1f9d1_1f3fb_200d_1f9b2; 1f468_1f3fb_200d_1f9b2 # bald
+1f9d1_1f3fc_200d_1f9b2; 1f468_1f3fc_200d_1f9b2 # bald
+1f9d1_1f3fd_200d_1f9b2; 1f468_1f3fd_200d_1f9b2 # bald
+1f9d1_1f3fe_200d_1f9b2; 1f468_1f3fe_200d_1f9b2 # bald
+1f9d1_1f3ff_200d_1f9b2; 1f468_1f3ff_200d_1f9b2 # bald
