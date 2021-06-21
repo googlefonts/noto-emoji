@@ -108,3 +108,6 @@ _Note: On this fork you can simply send pull requests or issues. I'll try to res
 * 2017-09-13: Emoji redesign released.
 * 2015-12-09: Unicode 7 and 8 emoji image data (.png format) added.
 * 2015-09-29: All Noto fonts now licensed under the SIL Open Font License.
+
+
+_Microsoft, Windows are trademarks of the Microsoft group of companies._
