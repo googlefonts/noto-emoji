@@ -1,1 +1,20 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="128" height="128"><defs><linearGradient xlink:href="#a" id="c" x1="64" y1="9.57" x2="64" y2="116.584" gradientUnits="userSpaceOnUse" gradientTransform="translate(33.28)"/><linearGradient id="a"><stop offset="0" stop-color="#3c48ff"/><stop offset="1" stop-color="#8bb6bb"/></linearGradient><radialGradient xlink:href="#b" id="d" cx="42.143" cy="6.368" fx="42.143" fy="6.368" r="1.639" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1.89289 0 0 1.75554 -4.43 -4.7)"/><linearGradient id="b"><stop offset="0" stop-color="#282846"/><stop offset="1" stop-color="#1a4223" stop-opacity=".177"/></linearGradient></defs><rect width="60.56" height="121.55" x="67" y="3.22" rx="6.2" ry="2.1" fill="#181818" paint-order="stroke fill markers"/><path fill="url(#c)" paint-order="stroke fill markers" d="M68.589 9.57h57.383v107.014H68.589z"/><path d="M87.401 120.309h19.758M87.401 6.48h19.758" fill="none" fill-rule="evenodd" stroke="#282828" stroke-width="1.48" stroke-linecap="round" stroke-linejoin="round"/><text style="line-height:25px" x="76.911" y="35.97" font-weight="400" font-size="40" font-family="Sans" letter-spacing="0" word-spacing="0" opacity=".8" fill="#fff"><tspan x="76.911" y="35.97" style="-inkscape-font-specification:'Comic Neue'" font-size="17.333" font-family="Comic Neue">04:20</tspan></text><path fill-opacity=".402" stroke-width="1.48" paint-order="stroke fill markers" d="M68.589 109.738h57.383v6.846H68.589z"/><g transform="translate(33.28)" fill="none" fill-opacity=".402" stroke="#fff"><ellipse ry="1.278" rx="1.299" cy="113.161" cx="63.845" stroke-width=".38" paint-order="stroke fill markers"/><path transform="matrix(.59184 0 0 .6018 9.49 44.197)" d="M66.06 116.53l-3.348-1.934 3.349-1.933z" stroke-width=".637" stroke-linejoin="round" paint-order="stroke fill markers"/><path stroke-width=".38" stroke-linejoin="round" paint-order="stroke fill markers" d="M78.794 111.883h2.597v2.555h-2.597z"/></g><text style="line-height:25px" x="76.911" y="49.603" font-weight="400" font-size="40" font-family="Sans" letter-spacing="0" word-spacing="0" opacity=".8" fill="#fff"><tspan x="76.911" y="49.603" style="-inkscape-font-specification:'Comic Neue'" font-size="12" font-family="Comic Neue">17.07.</tspan></text><circle cx="75.342" cy="6.48" r="1.434" fill="url(#d)" paint-order="stroke fill markers"/><path d="M61.01 64L29.68 86.97V72.64H.44V55.5h29.24V41.03z" fill="#ed6c30"/></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 128 128" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;">
+    <path d="M61.01,64L29.68,86.97L29.68,72.64L0.44,72.64L0.44,55.5L29.68,55.5L29.68,41.03L61.01,64Z" style="fill:rgb(237,108,48);fill-rule:nonzero;"/>
+    <g transform="matrix(1,0,0,1,30.28,0)">
+        <path d="M94.28,9.42C94.28,5.998 91.502,3.22 88.08,3.22L39.92,3.22C36.498,3.22 33.72,5.998 33.72,9.42L33.72,118.57C33.72,121.992 36.498,124.77 39.92,124.77L88.08,124.77C91.502,124.77 94.28,121.992 94.28,118.57L94.28,9.42Z" style="fill:rgb(24,24,24);"/>
+    </g>
+    <g transform="matrix(1,0,0,1,30.28,0)">
+        <rect x="35.309" y="9.57" width="57.383" height="107.014" style="fill:rgb(12,94,159);fill-rule:nonzero;"/>
+    </g>
+    <g transform="matrix(1,0,0,1,30.28,0)">
+        <path d="M54.121,120.309L73.879,120.309M54.121,6.48L73.879,6.48" style="fill:none;stroke:rgb(40,40,40);stroke-width:1.48px;"/>
+    </g>
+    <g transform="matrix(0.931817,0,0,0.931817,75.3195,36.036)">
+        <text x="0px" y="0px" style="font-family:'ComicNeue-Bold', 'Comic Neue';font-weight:700;font-size:17.333px;fill:white;">04:20</text>
+    </g>
+    <g transform="matrix(0.931817,0,0,0.931817,75.3195,48.7395)">
+        <text x="0px" y="0px" style="font-family:'ComicNeue-Bold', 'Comic Neue';font-weight:700;font-size:12px;fill:white;">17.07.</text>
+    </g>
+</svg>
