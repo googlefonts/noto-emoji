@@ -1,4 +1,3 @@
-
 #### DISCLAIMER:
 I am **neither** affiliated nor in _any_ relationship to the original creators or to Emojipedia or anything or anyone else.
 
