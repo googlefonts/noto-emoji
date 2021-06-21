@@ -42,13 +42,14 @@ font will be at the top level.~~
 
 _Building is now done using [emoji_builder](https://github.com/C1710/emoji_builder/) (name WIP). Once you have it running, you can build it using the following command (you'll need to replace `emoji_builder` by the executable you use, e.g. `emoji_builder.exe` and maybe including the path. I recommend copying it into the `blobmoji`-directory):_
 ```
-emoji_builder --flags .\third_party\region-flags\svg blobmoji -w -a .\emoji_aliases.txt --ttx-tmpl .\NotoColorEmoji.tmpl.ttx.tmpl --palette .\Blobmoji.gpl
+emoji_builder --flags ./third_party/region-flags/svg blobmoji -w -a ./emoji_aliases.txt --ttx-tmpl ./NotoColorEmoji.tmpl.ttx.tmpl --palette ./Blobmoji.gpl --default_font "Comic Neue"
 ```
 - `--flags`: Use the directory conaining the flags
 - `-w` add a wave-effect to the flags
 - `-a` use an alias file
 - `--ttx-tmpl` Use the template for the font metadata
 - `--palette` normalize the colors to a specific color palette in the GIMP format (which is a derivation of the color palette present in the [2014 _Material Design_](https://material.io/archive/guidelines/style/color.html#color-color-palette))
+- `--default_font` Because the graphics program I currently use (Affinity Designer) outputs font specifications in a format that `resvg`/`emoji_builder` has issues with, the font is explicitly specified here (note that if the font is correctly recognized, this one is not used. So as of now it is _not_ used to use a font for _all_ emojis)
 
 ## ~~Docker build~~
 
