@@ -1,1 +1,54 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><path d="M20.966 6.492c-.948 0-1.712.892-1.712 2v98.576l12.955 13.278h74.825c.948 0 1.712-.892 1.712-2V8.492c0-1.108-.764-2-1.712-2z" fill="#ffc40e" stroke-width=".925" stroke-linecap="round" stroke-linejoin="round" paint-order="stroke fill markers"/><text style="line-height:25px;-inkscape-font-specification:'Comic Neue'" x="11.38" y="25.176" font-size="13.333" font-family="Comic Neue" letter-spacing="0" word-spacing="0" fill="none" stroke="#000" font-weight="400"/><text style="line-height:25px;-inkscape-font-specification:'Comic Neue'" x="40.682" y="27.621" font-size="13.333" font-family="Comic Neue" letter-spacing="0" word-spacing="0" fill="none" stroke="#000"/><text style="line-height:5.64931011px;-inkscape-font-specification:'Comic Neue, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start" x="23.99" y="17.976" transform="scale(.99926 1.00074)" font-weight="400" font-size="5.423" font-family="Comic Neue" letter-spacing="0" word-spacing="0" stroke-width=".89"><tspan x="23.99" y="17.976" style="-inkscape-font-specification:'Comic Neue Bold'" font-weight="700">@SwiftOnSecurity:</tspan><tspan x="23.99" y="23.625" style="-inkscape-font-specification:'Comic Neue Oblique'" font-style="oblique"> Fun fact: Linux doesn&apos;t actually</tspan><tspan x="23.99" y="29.275" style="-inkscape-font-specification:'Comic Neue Oblique'" font-style="oblique"> support graphics - it just zooms</tspan><tspan x="23.99" y="34.924" style="-inkscape-font-specification:'Comic Neue Oblique'" font-style="oblique"> out the terminal so all the letters</tspan><tspan x="23.99" y="40.573" style="-inkscape-font-specification:'Comic Neue Oblique'" font-style="oblique"> look like dots.</tspan></text><g transform="rotate(-4.45 112.762 60.893)" fill="#1db7ff" stroke-width="3.08"><rect ry="2" rx="2" y="18.951" x="103.694" height="8.264" width="21.074" fill-opacity=".679" paint-order="stroke fill markers"/><path d="M119.11 18.951v8.264h3.658c1.108 0 2-.892 2-2V20.95c0-1.108-.892-2-2-2z" paint-order="stroke fill markers"/></g><g transform="rotate(3.513 112.762 8.185)" fill="#ff1d1d" fill-opacity=".84" stroke-width="3.08"><rect width="21.074" height="8.264" x="103.694" y="51.956" rx="2" ry="2" paint-order="stroke fill markers"/><path d="M119.11 51.955v8.264h3.658c1.108 0 2-.892 2-2v-4.264c0-1.108-.892-2-2-2z" paint-order="stroke fill markers"/></g><g transform="rotate(-2.275 112.762 154.716)" fill="#1fff1d" fill-opacity=".84" stroke-width="3.08"><rect ry="2" rx="2" y="76.581" x="103.694" height="8.264" width="21.074" paint-order="stroke fill markers"/><path d="M119.11 76.581v8.264h3.658c1.108 0 2-.892 2-2V78.58c0-1.108-.892-2-2-2z" paint-order="stroke fill markers"/></g><path d="M33.942 105.71a1.49 1.49 0 0 0-.346.009l-9.748 1.35 12.955 13.277-1.306-12.877c-.098-.963-.76-1.68-1.555-1.758z" fill="#d39f00" stroke-width=".925" stroke-linecap="round" stroke-linejoin="round" paint-order="stroke fill markers"/></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 128 128" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g transform="matrix(1,0,0,1,9.78113,0.581)">
+        <path d="M20.966,6.492C20.018,6.492 19.254,7.384 19.254,8.492L19.254,107.068L32.209,120.346L87.472,120.346C88.42,120.346 89.184,119.454 89.184,118.346L89.184,8.492C89.184,7.384 88.42,6.492 87.472,6.492L20.966,6.492Z" style="fill:rgb(255,213,79);fill-rule:nonzero;"/>
+    </g>
+    <g transform="matrix(0.99926,0,0,1.00074,4.24585,0.371219)">
+        <g transform="matrix(1,0,0,1,28.5484,17.976)">
+            <text x="0px" y="0px" style="font-family:'ComicNeue-Bold', 'Comic Neue';font-weight:700;font-size:6.995px;">@SwiftOnSecurity:</text>
+        </g>
+        <g transform="matrix(1,0,0,1,28.5484,26.3555)">
+            <text x="0px" y="0px" style="font-family:'ComicNeue-Bold', 'Comic Neue';font-weight:700;font-size:5.423px;">Fun f<tspan x="12.467px " y="0px ">a</tspan>ct: Linux doesn&apos;t</text>
+        </g>
+        <g transform="matrix(1,0,0,1,28.5484,32.0055)">
+            <text x="0px" y="0px" style="font-family:'ComicNeue-Bold', 'Comic Neue';font-weight:700;font-size:5.423px;">actually support gr<tspan x="44.078px " y="0px ">a</tspan>phics -</text>
+        </g>
+        <g transform="matrix(1,0,0,1,28.5484,37.6545)">
+            <text x="0px" y="0px" style="font-family:'ComicNeue-Bold', 'Comic Neue';font-weight:700;font-size:5.423px;">it just zooms out the</text>
+        </g>
+        <g transform="matrix(1,0,0,1,28.5484,43.3035)">
+            <text x="0px" y="0px" style="font-family:'ComicNeue-Bold', 'Comic Neue';font-weight:700;font-size:5.423px;">t<tspan x="1.649px " y="0px ">e</tspan>rminal so all the lett<tspan x="51.931px " y="0px ">e</tspan>rs</text>
+        </g>
+        <g transform="matrix(1,0,0,1,28.5484,48.1174)">
+            <text x="0px" y="0px" style="font-family:'ComicNeue-Bold', 'Comic Neue';font-weight:700;font-size:5.423px;">look like do<tspan x="26.822px " y="0px ">t</tspan>s.</text>
+        </g>
+    </g>
+    <g transform="matrix(0.996985,-0.0775891,0.0775891,0.996985,0.252278,8.93267)">
+        <g transform="matrix(1,0,0,1,-16.1028,-1.25318)">
+            <path d="M124.768,20.951C124.768,19.847 123.872,18.951 122.768,18.951L105.694,18.951C104.59,18.951 103.694,19.847 103.694,20.951L103.694,25.215C103.694,26.319 104.59,27.215 105.694,27.215L122.768,27.215C123.872,27.215 124.768,26.319 124.768,25.215L124.768,20.951Z" style="fill:rgb(66,173,231);fill-opacity:0.68;"/>
+        </g>
+        <g transform="matrix(1,0,0,1,-16.1028,-1.25318)">
+            <path d="M119.11,18.951L119.11,27.215L122.768,27.215C123.876,27.215 124.768,26.323 124.768,25.215L124.768,20.95C124.768,19.842 123.876,18.95 122.768,18.95L119.11,18.951Z" style="fill:rgb(66,173,231);fill-rule:nonzero;"/>
+        </g>
+    </g>
+    <g transform="matrix(0.998121,0.061275,-0.061275,0.998121,5.35041,-6.89411)">
+        <g transform="matrix(1,0,0,1,-16.1212,0.989684)">
+            <path d="M124.768,53.956C124.768,52.852 123.872,51.956 122.768,51.956L105.694,51.956C104.59,51.956 103.694,52.852 103.694,53.956L103.694,58.22C103.694,59.324 104.59,60.22 105.694,60.22L122.768,60.22C123.872,60.22 124.768,59.324 124.768,58.22L124.768,53.956Z" style="fill:rgb(219,68,55);fill-opacity:0.84;"/>
+        </g>
+        <g transform="matrix(1,0,0,1,-16.1212,0.989684)">
+            <path d="M119.11,51.955L119.11,60.219L122.768,60.219C123.876,60.219 124.768,59.327 124.768,58.219L124.768,53.955C124.768,52.847 123.876,51.955 122.768,51.955L119.11,51.955Z" style="fill:rgb(219,68,55);fill-opacity:0.84;fill-rule:nonzero;"/>
+        </g>
+    </g>
+    <g transform="matrix(0.999212,-0.0396958,0.0396958,0.999212,-1.41572,4.59812)">
+        <g transform="matrix(1,0,0,1,-16.1388,-0.641147)">
+            <path d="M124.768,78.581C124.768,77.477 123.872,76.581 122.768,76.581L105.694,76.581C104.59,76.581 103.694,77.477 103.694,78.581L103.694,82.845C103.694,83.949 104.59,84.845 105.694,84.845L122.768,84.845C123.872,84.845 124.768,83.949 124.768,82.845L124.768,78.581Z" style="fill:rgb(124,179,66);fill-opacity:0.84;"/>
+        </g>
+        <g transform="matrix(1,0,0,1,-16.1388,-0.641147)">
+            <path d="M119.11,76.581L119.11,84.845L122.768,84.845C123.876,84.845 124.768,83.953 124.768,82.845L124.768,78.58C124.768,77.472 123.876,76.58 122.768,76.58L119.11,76.581Z" style="fill:rgb(124,179,66);fill-opacity:0.84;fill-rule:nonzero;"/>
+        </g>
+    </g>
+    <g transform="matrix(1,0,0,1,5.18713,0.581)">
+        <path d="M33.942,105.71C33.827,105.7 33.711,105.703 33.596,105.719L23.848,107.069L36.803,120.346L35.497,107.469C35.399,106.506 34.737,105.789 33.942,105.711L33.942,105.71Z" style="fill:rgb(247,140,4);fill-rule:nonzero;"/>
+    </g>
+</svg>
