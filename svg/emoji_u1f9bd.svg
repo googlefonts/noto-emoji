@@ -42,20 +42,20 @@
 			S88.51,84.58,87.16,84.58L87.16,84.58z"/>
 	</g>
 	
-		<line style="fill:none;stroke:#82AEC0;stroke-linecap:round;stroke-miterlimit:10;" x1="87.16" y1="55.61" x2="87.16" y2="118.42"/>
+		<line style="fill:none;stroke:#82AEC0;stroke-width:2;stroke-linecap:round;stroke-miterlimit:10;" x1="87.16" y1="55.61" x2="87.16" y2="118.42"/>
 	
-		<line style="fill:none;stroke:#82AEC0;stroke-linecap:round;stroke-miterlimit:10;" x1="109.37" y1="64.81" x2="64.96" y2="109.22"/>
+		<line style="fill:none;stroke:#82AEC0;stroke-width:2;stroke-linecap:round;stroke-miterlimit:10;" x1="109.37" y1="64.81" x2="64.96" y2="109.22"/>
 	
-		<line style="fill:none;stroke:#82AEC0;stroke-linecap:round;stroke-miterlimit:10;" x1="109.37" y1="109.22" x2="64.96" y2="64.81"/>
+		<line style="fill:none;stroke:#82AEC0;stroke-width:2;stroke-linecap:round;stroke-miterlimit:10;" x1="109.37" y1="109.22" x2="64.96" y2="64.81"/>
 	
-		<line style="fill:none;stroke:#82AEC0;stroke-linecap:round;stroke-miterlimit:10;" x1="55.76" y1="87.01" x2="118.57" y2="87.01"/>
+		<line style="fill:none;stroke:#82AEC0;stroke-width:2;stroke-linecap:round;stroke-miterlimit:10;" x1="55.76" y1="87.01" x2="118.57" y2="87.01"/>
 	<path style="fill:#78909C;" d="M87.16,50.03c-20.43,0-36.99,16.56-36.99,36.99S66.73,124,87.16,124s36.99-16.56,36.99-36.99
 		S107.59,50.03,87.16,50.03z M87.16,116.95c-16.53,0-29.94-13.4-29.94-29.94c0-16.53,13.4-29.94,29.94-29.94
 		c16.53,0,29.94,13.4,29.94,29.94C117.1,103.55,103.7,116.95,87.16,116.95z"/>
 	<g>
-		<path style="fill:#546E7A;" d="M87.16,61.13c14.27,0,25.88,11.61,25.88,25.88s-11.61,25.88-25.88,25.88s-25.88-11.61-25.88-25.88
-			S72.89,61.13,87.16,61.13 M87.16,60.13c-14.85,0-26.88,12.04-26.88,26.88s12.04,26.88,26.88,26.88s26.88-12.04,26.88-26.88
-			S102.01,60.13,87.16,60.13L87.16,60.13z"/>
+		<path style="fill:#546E7A;" d="M87.16,62.13c13.72,0,24.88,11.16,24.88,24.88s-11.16,24.88-24.88,24.88s-24.88-11.16-24.88-24.88
+			S73.44,62.13,87.16,62.13 M87.16,60.13c-14.85,0-26.88,12.04-26.88,26.88c0,14.85,12.04,26.88,26.88,26.88
+			c14.85,0,26.88-12.04,26.88-26.88C114.04,72.17,102.01,60.13,87.16,60.13L87.16,60.13z"/>
 	</g>
 	<circle style="fill:#757575;" cx="87.16" cy="87.01" r="6.23"/>
 	<path style="opacity:0.8;fill:none;stroke:#94D1E0;stroke-width:2;stroke-linecap:round;stroke-miterlimit:10;" d="M57.72,70.79
