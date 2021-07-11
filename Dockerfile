@@ -1,20 +1,13 @@
-FROM python:buster
-RUN apt update && apt install -y \
-    git \
-    zopfli \
-    libcairo2-dev
+FROM ghcr.io/c1710/emoji_builder
 
-# Install nototools
-RUN git clone https://github.com/googlefonts/nototools.git /nototools
-WORKDIR /nototools
-RUN pip install -r requirements.txt
-RUN pip install -e .
+COPY svg ./svg
+COPY third_party/region-flags/svg ./flags
+COPY emoji_aliases.txt NotoColorEmoji.tmpl.ttx.tmpl Blobmoji.gpl ./
+COPY AUTHORS CONTRIBUTORS CHANGES.md LICENSE ./
 
-# Create output dir
-RUN mkdir /output
+VOLUME /build
+VOLUME /output
 
-ADD . /blobmoji
-WORKDIR /blobmoji
-
-# Build blobmoji font
-CMD make -j $(nproc) && cp NotoColorEmoji.ttf /output/
+CMD /github_workflow_setup.sh && \
+	/bin/emoji_builder -vv -b /build -o Blobmoji.ttf -O /output --flags ./flags blobmoji -w -a ./emoji_aliases.txt --ttx-tmpl ./NotoColorEmoji.tmpl.ttx.tmpl --palette ./Blobmoji.gpl && \
+	mv /output/Blobmoji_win.ttf /output/BlobmojiWindows.ttf
