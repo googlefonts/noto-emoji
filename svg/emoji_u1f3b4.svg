@@ -1,1 +1,11 @@
-<svg enable-background="new 0 0 128 128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><linearGradient id="d" x1="64" x2="64" y1="13.667" y2="104" gradientUnits="userSpaceOnUse"><stop stop-color="#EF5350" offset=".1353"/><stop stop-color="#E53935" offset=".8422"/></linearGradient><path d="m100 124h-72c-4.42 0-8-3.58-8-8v-104c0-4.42 3.58-8 8-8h72c4.42 0 8 3.58 8 8v104c0 4.42-3.58 8-8 8z" fill="url(#d)"/><circle cx="52.17" cy="39.83" r="22.5" fill="#F5F5F5"/><defs><path id="c" d="m100 124h-72c-4.42 0-8-3.58-8-8v-104c0-4.42 3.58-8 8-8h72c4.42 0 8 3.58 8 8v104c0 4.42-3.58 8-8 8z"/></defs><clipPath id="b"><use xlink:href="#c"/></clipPath><linearGradient id="a" x1="52.957" x2="62.457" y1="53.358" y2="101.36" gradientUnits="userSpaceOnUse"><stop stop-color="#757575" offset="0"/><stop stop-color="#424242" offset="1"/></linearGradient><path d="m108.67 134.67h-91.34l-6.67-35.33s49.76-38.28 89.33-18c26.68 13.66 8.8 53.28 8.68 53.33z" clip-path="url(#b)" fill="url(#a)"/><g opacity=".2"><path d="m100 8c2.21 0 4 1.79 4 4v104c0 2.21-1.79 4-4 4h-72c-2.21 0-4-1.79-4-4v-104c0-2.21 1.79-4 4-4h72m0-4h-72c-4.42 0-8 3.58-8 8v104c0 4.42 3.58 8 8 8h72c4.42 0 8-3.58 8-8v-104c0-4.42-3.58-8-8-8z" fill="#424242"/></g></svg>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 25.2.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 128 128" style="enable-background:new 0 0 128 128;" xml:space="preserve">
+<path style="fill:#5E6367;" d="M102.29,125.43l-76.02-0.37c-3.45,0-6.25-2.8-6.25-6.25L19.85,10.33c0-3.45,2.8-6.25,6.25-6.25
+	l76.33,0.44c3.45,0,6.48,2.53,6.48,5.98l-0.37,108.69C108.54,122.64,105.74,125.43,102.29,125.43z"/>
+<path style="fill:#EE534E;" d="M24.37,91.33c0,0,0.11-75.25,0.2-77.84c0.09-2.59,1.9-4.49,4.4-4.57S96.99,9,98.97,9
+	s4.92,0.6,5.09,4.14c0.17,3.54-0.6,70.17-0.6,70.17s-13.01-7.87-29.26-7.94C49.17,75.26,24.37,91.33,24.37,91.33z"/>
+<path style="fill:#F5F5F5;" d="M53.36,19.02c-13.83,0-22.42,9.43-22.2,23.04c0.21,13.2,9.28,21.58,21.74,21.58
+	c11.94,0,21.72-8.59,21.93-22.1C75.04,28.03,65.41,19.02,53.36,19.02z"/>
+</svg>

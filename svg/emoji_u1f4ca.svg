@@ -1,1 +1,23 @@
-<svg enable-background="new 0 0 128 128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg"><linearGradient id="e" x1="64" x2="64" y1="4.378" y2="123.54" gradientUnits="userSpaceOnUse"><stop stop-color="#fff" offset="0"/><stop stop-color="#C8C9CA" offset="1"/></linearGradient><rect x="4" y="4" width="120" height="120" fill="url(#e)"/><g fill="none" stroke="#BDBDBD" stroke-miterlimit="10"><rect x="4" y="4" width="120" height="120"/><line x1="4" x2="124" y1="104" y2="104"/><line x1="4" x2="124" y1="84" y2="84"/><line x1="4" x2="124" y1="64" y2="64"/><line x1="4" x2="124" y1="44" y2="44"/><line x1="4" x2="124" y1="24" y2="24"/><line x1="104" x2="104" y1="4" y2="124"/><line x1="84" x2="84" y1="4" y2="124"/><line x1="64" x2="64" y1="4" y2="124"/><line x1="44" x2="44" y1="4" y2="124"/><line x1="24" x2="24" y1="4" y2="124"/></g><linearGradient id="d" x1="24.579" x2="24.579" y1="55.294" y2="123.33" gradientUnits="userSpaceOnUse"><stop stop-color="#4480F7" offset=".0051509"/><stop stop-color="#3462BD" offset="1"/></linearGradient><rect x="15.29" y="54.72" width="18.58" height="69.28" fill="url(#d)"/><linearGradient id="c" x1="50.614" x2="50.614" y1="80.634" y2="124" gradientUnits="userSpaceOnUse"><stop stop-color="#EC4431" offset=".0051509"/><stop stop-color="#E74330" offset=".3002"/><stop stop-color="#DA3F2D" offset=".6329"/><stop stop-color="#C33828" offset=".9828"/><stop stop-color="#C23828" offset="1"/></linearGradient><rect x="41.32" y="80.63" width="18.58" height="43.37" fill="url(#c)"/><linearGradient id="b" x1="76.648" x2="76.648" y1="33.696" y2="124" gradientUnits="userSpaceOnUse"><stop stop-color="#FDD835" offset=".0051509"/><stop stop-color="#F9D534" offset=".2697"/><stop stop-color="#EDCB32" offset=".5326"/><stop stop-color="#D9BA2D" offset=".7941"/><stop stop-color="#C4A829" offset="1"/></linearGradient><rect x="67.36" y="33.7" width="18.58" height="90.3" fill="url(#b)"/><linearGradient id="a" x1="102.68" x2="102.68" y1="99.1" y2="124" gradientUnits="userSpaceOnUse"><stop stop-color="#2CA94F" offset=".0079082"/><stop stop-color="#207A39" offset=".9969"/></linearGradient><rect x="93.39" y="99.1" width="18.58" height="24.9" fill="url(#a)"/><g opacity=".2"><path d="M121,7v114H7V7H121 M124,4H4v120h120V4L124,4z" fill="#424242"/></g></svg>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 25.2.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_4" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 128 128" style="enable-background:new 0 0 128 128;" xml:space="preserve">
+<g>
+	<rect x="4" y="4" style="fill:#FFFFFF;" width="120" height="120"/>
+	<g>
+		<line style="fill:none;stroke:#B0BEC5;stroke-width:2;stroke-miterlimit:10;" x1="124" y1="24.35" x2="5.57" y2="24.35"/>
+		<line style="fill:none;stroke:#B0BEC5;stroke-width:2;stroke-miterlimit:10;" x1="124" y1="43.67" x2="5.47" y2="43.67"/>
+		<line style="fill:none;stroke:#B0BEC5;stroke-width:2;stroke-miterlimit:10;" x1="124" y1="62.99" x2="5.36" y2="62.99"/>
+		<line style="fill:none;stroke:#B0BEC5;stroke-width:2;stroke-miterlimit:10;" x1="124" y1="82.31" x2="5.26" y2="82.31"/>
+		<line style="fill:none;stroke:#B0BEC5;stroke-width:2;stroke-miterlimit:10;" x1="124" y1="101.64" x2="5.15" y2="101.64"/>
+	</g>
+	<path style="fill:#9CCC65;" d="M38.72,121.91H21.89V55.38c0-1.36,1.1-2.46,2.46-2.46h11.91c1.36,0,2.46,1.1,2.46,2.46V121.91z"/>
+	<path style="fill:#F44336;" d="M72.42,121.91H55.58V74.84c0-1.36,1.1-2.46,2.46-2.46h11.91c1.36,0,2.46,1.1,2.46,2.46V121.91z"/>
+	<path style="fill:#0091EA;" d="M103.64,121.91H91.73c-1.36,0-2.46-1.1-2.46-2.46V25.86c0-1.36,1.1-2.46,2.46-2.46h11.91
+		c1.36,0,2.46,1.1,2.46,2.46v93.59C106.1,120.81,105,121.91,103.64,121.91z"/>
+	<polygon style="fill:#B0BEC5;" points="124,120 8,120 8,4 4,4 4,124 124,124 	"/>
+	<g>
+		<path style="fill:#B0BEC5;" d="M122,6v116H6V6H122 M124,4H4v120h120V4L124,4z"/>
+	</g>
+</g>
+</svg>
