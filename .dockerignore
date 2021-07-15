@@ -1,5 +1,8 @@
+Dockerfile
+.dockerignore
 add_emoji_gsub.pyc
 build
 waveflag
 
 .git/
+fonts/

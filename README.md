@@ -102,6 +102,8 @@ _First of all, this licensing is used for this project too to avoid any confusio
 
 _Note: On this fork you can simply send pull requests or issues. I'll try to respond as soon as possible._
 
+_Please try to use the discussion feature for artistic topics, like the style of the emojis. Issues are better suited for real issues, like not being able to use the font or really **missing** characters, etc._
+
 ## News
 * _2018-02-03: Blobmoji Fork created_
 * 2017-09-13: Emoji redesign released.
