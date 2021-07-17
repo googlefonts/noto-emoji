@@ -1,22 +1,13 @@
-FROM python:slim
+FROM ghcr.io/c1710/emoji_builder
 
-RUN apt-get update \
-    && apt-get install --no-install-recommends -y \
-    make \
-    gcc \
-    zopfli \
-    libc-dev \
-    libpng-dev \
-    libcairo2-dev \
-    imagemagick \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+COPY svg ./svg
+COPY third_party/region-flags/svg ./flags
+COPY emoji_aliases.txt NotoColorEmoji.tmpl.ttx.tmpl Blobmoji.gpl ./
+COPY AUTHORS CONTRIBUTORS CHANGES.md LICENSE ./
 
-RUN pip install --no-cache notofonttools
+VOLUME /build
+VOLUME /output
 
-ADD . /blobmoji
-WORKDIR /blobmoji
-
-RUN mkdir /output
-
-CMD make -j $(nproc) && cp NotoColorEmoji.ttf /output/
+CMD /github_workflow_setup.sh && \
+	/bin/emoji_builder -vv -b /build -o Blobmoji.ttf -O /output --flags ./flags blobmoji -w -a ./emoji_aliases.txt --ttx-tmpl ./NotoColorEmoji.tmpl.ttx.tmpl --palette ./Blobmoji.gpl && \
+	mv /output/Blobmoji_win.ttf /output/BlobmojiWindows.ttf

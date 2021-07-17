@@ -1,1 +1,7 @@
-<svg width="128" height="128" xmlns="http://www.w3.org/2000/svg"><path fill="#fff" d="M7.86 7.85h112.28v112.29H7.86z"/><path d="M124.54.47H3.47C1.82.47.48 1.81.48 3.46v121.07c0 1.64 1.34 2.99 2.99 2.99h121.07c1.64 0 2.99-1.35 2.99-2.99V3.46c-.01-1.64-1.36-2.99-2.99-2.99zm-4.4 119.67H7.86V7.85h112.28v112.29z" fill="#2f2f2f"/><path fill-rule="evenodd" clip-rule="evenodd" fill="#ed6c30" d="M116.12 34.88l-9.32-9.33-57.68 58.24L21.2 56.04l-9.32 9.33 37.28 37.07 5.92-5.92-.02-.03z"/></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 128 128" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <rect x="7.86" y="7.85" width="112.28" height="112.29" style="fill:rgb(225,245,254);fill-rule:nonzero;"/>
+    <path d="M124.54,0.47L3.47,0.47C1.82,0.47 0.48,1.81 0.48,3.46L0.48,124.53C0.48,126.17 1.82,127.52 3.47,127.52L124.54,127.52C126.18,127.52 127.53,126.17 127.53,124.53L127.53,3.46C127.52,1.82 126.17,0.47 124.54,0.47ZM120.14,120.14L7.86,120.14L7.86,7.85L120.14,7.85L120.14,120.14Z" style="fill:rgb(25,108,162);fill-rule:nonzero;"/>
+    <path d="M116.12,34.88L106.8,25.55L49.12,83.79L21.2,56.04L11.88,65.37L49.16,102.44L55.08,96.52L55.06,96.49L116.12,34.88Z" style="fill:rgb(25,108,162);"/>
+</svg>

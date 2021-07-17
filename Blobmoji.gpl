@@ -1,0 +1,197 @@
+GIMP Palette
+Name: Blobmoji
+Columns: 10
+#
+255 235 238	red-50
+255 205 210	red-100
+239 154 154	red-200
+229 115 115	red-300
+227  95  92	red-400
+219  68  55	red-500
+211  48  44	red-600
+198  42  42	red-700
+178  36  36	red-800
+155  24  24	red-900
+252 228 236	pink-50
+249 195 213	pink-100
+244 164 191	pink-200
+241 147 179	pink-300
+235 122 164	pink-400
+215  89 139	pink-500
+209  71 122	pink-600
+202  47 109	pink-700
+179  35  98	pink-800
+149  24  91	pink-900
+243 229 245	purple-50
+225 190 231	purple-100
+202 152 211	purple-200
+181 111 193	purple-300
+165  79 180	purple-400
+149  49 166	purple-500
+136  46 160	purple-600
+119  41 152	purple-700
+104  37 144	purple-800
+ 75  29 131	purple-900
+237 231 246	indigo-50
+197 202 233	indigo-100
+160 168 217	indigo-200
+120 133 204	indigo-300
+ 92 106 192	indigo-400
+ 72  87 172	indigo-500
+ 66  79 162	indigo-600
+ 56  69 151	indigo-700
+ 48  59 139	indigo-800
+ 33  41 119	indigo-900
+232 240 246	blue-50
+173 206 230	blue-100
+145 188 219	blue-200
+ 82 156 210	blue-300
+ 46 130 189	blue-400
+ 25 108 162	blue-500
+ 28  97 146	blue-600
+ 24  89 135	blue-700
+ 19  81 124	blue-800
+ 12  66 104	blue-900
+225 245 254	light-blue-50
+186 227 245	light-blue-100
+148 212 241	light-blue-200
+129 205 238	light-blue-300
+ 98 192 234	light-blue-400
+ 66 173 231	light-blue-500
+ 30 157 219	light-blue-600
+ 29 140 200	light-blue-700
+ 25 124 183	light-blue-800
+ 12  94 159	light-blue-900
+225 250 254	sky-blue-50
+186 235 245	sky-blue-100
+148 224 241	sky-blue-200
+129 215 238	sky-blue-300
+ 98 205 234	sky-blue-400
+ 64 192 231	sky-blue-500
+ 30 175 219	sky-blue-600
+ 29 163 200	sky-blue-700
+ 25 149 183	sky-blue-800
+ 12 127 159	sky-blue-900
+220 246 245	teal-50
+177 238 232	teal-100
+ 93 221 209	teal-200
+ 29 206 189	teal-300
+ 27 187 172	teal-400
+ 19 171 150	teal-500
+ 11 138 125	teal-600
+  4 126 112	teal-700
+  4 107  94	teal-800
+  0  77  64	teal-900
+241 248 233	light-green-50
+216 235 194	light-green-100
+188 221 152	light-green-200
+164 208 113	light-green-300
+142 197  79	light-green-400
+124 179  66	light-green-500
+111 160  59	light-green-600
+ 91 140  49	light-green-700
+ 72 118  40	light-green-800
+ 40  83  24	light-green-900
+248 249 233	lime-50
+237 240 199	lime-100
+225 232 162	lime-200
+213 222 126	lime-300
+204 215  97	lime-400
+189 207  70	lime-500
+182 191  62	lime-600
+165 169  54	lime-700
+149 148  45	lime-800
+122 113  31	lime-900
+255 253 231	yellow-50
+255 250 209	yellow-100
+255 247 179	yellow-200
+255 244 143	yellow-300
+255 240 112	yellow-400
+255 238  88	yellow-500
+253 221  78	yellow-600
+251 199  70	yellow-700
+250 178  61	yellow-800
+246 142  50	yellow-900
+255 248 225	amber-50
+255 236 179	amber-100
+255 224 130	amber-200
+255 213  79	amber-300
+255 202  40	amber-400
+252 194  27	amber-500
+255 179   0	amber-600
+255 160   0	amber-700
+255 143   0	amber-800
+255 111   0	amber-900
+255 243 224	dark-amber-50
+255 224 178	dark-amber-100
+255 204 128	dark-amber-200
+255 183  77	dark-amber-300
+255 167  38	dark-amber-400
+247 147  41	dark-amber-500
+247 140   4	dark-amber-600
+241 124   4	dark-amber-700
+239 108   0	dark-amber-800
+230  81   0	dark-amber-900
+251 236 231	orange-50
+255 206 188	orange-100
+255 176 145	orange-200
+255 147 101	orange-300
+242 141  94	orange-400
+237 108  48	orange-500
+231 102  43	orange-600
+230  86  25	orange-700
+216  76  21	orange-800
+191  63  12	orange-900
+250 250 250	grey-50
+245 245 245	grey-100
+238 238 238	grey-200
+224 224 224	grey-300
+189 189 189	grey-400
+158 158 158	grey-500
+117 117 117	grey-600
+ 97  97  97	grey-700
+ 66  66  66	grey-800
+ 33  33  33	grey-900
+236 240 241	blue-grey-50
+203 219 224	blue-grey-100
+175 199 207	blue-grey-200
+147 177 187	blue-grey-300
+134 168 180	blue-grey-400
+101 147 162	blue-grey-500
+ 90 129 142	blue-grey-600
+ 75 107 117	blue-grey-700
+ 62  82  89	blue-grey-800
+ 43  59  64	blue-grey-900
+239 235 233	brown-50
+215 203 200	brown-100
+188 169 164	brown-200
+161 134 127	brown-300
+141 107  99	brown-400
+133  92  82	brown-500
+109  74  65	brown-600
+ 93  64  55	brown-700
+ 78  52  46	brown-800
+ 62  39  35	brown-900
+
+
+# Skin tones
+250 220 188 light-skin
+224 187 149 medium-light-skin
+191 143 104 medium-skin
+155 100  60 medium-dark-skin
+ 99  67  52 dark-skin
+
+# Skin tones (hair)
+ 49  45  45 light-hair
+191 160  85 medium-light-hair
+109  76  65 medium-hair
+ 71  53  45 medium-dark-hair
+ 35  32  32 dark-hair
+249 224 115 blond-hair
+
+# Skin tones (shadow/nose)
+219 166 137 light-shadow
+196 142 106 medium-light-shadow
+153 103  79 medium-shadow
+122  76  50 medium-dark-shadow
+ 86  62  55 dark-shadow

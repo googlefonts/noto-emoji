@@ -1,4 +1,3 @@
-
 #### DISCLAIMER:
 I am **neither** affiliated nor in _any_ relationship to the original creators or to Emojipedia or anything or anyone else.
 
@@ -24,24 +23,39 @@ But now to the original content of this Readme:
 
 Color and Black-and-White Noto emoji fonts, and tools for working with them.
 
-## Building NotoColorEmoji
+## ~~Building NotoColorEmoji~~
 
-Building NotoColorEmoji currently requires a Python 2.x wide build.  To build
+~~Building NotoColorEmoji currently requires a Python 2.x wide build.  To build
 the emoji font you will require a few files from nototools.  Clone a copy from
 https://github.com/googlei18n/nototools and either put it in your PYTHONPATH or
 use 'python setup.py develop' ('install' currently won't fully install all the
 data used by nototools).  You will also need fontTools, get it from
-https://github.com/behdad/fonttools.git.
+https://github.com/behdad/fonttools.git.~~
 
-Then run `make`.  NotoColorEmoji is the default target.  It's suggested to use `-j`,
+~~Then run `make`.  NotoColorEmoji is the default target.  It's suggested to use `-j`,
 especially if you are using zopflipng for compression.  Intermediate products
 (compressed image files, for example) will be put into a build subdirectory; the
-font will be at the top level.
+font will be at the top level.~~
 
-## Docker build
+## Building Blobmoji 13+
 
-Alternatively, you can also build the font within Docker through the provided Dockerfile.
-Just run `docker build . -t blobmoji && docker run --rm -it -v "$PWD/output:/output" blobmoji`. The resulting font will reside in the 'output' folder in your current working directory.
+_Building is now done using [emoji_builder](https://github.com/C1710/emoji_builder/) (name WIP). Once you have it running, you can build it using the following command (you'll need to replace `emoji_builder` by the executable you use, e.g. `emoji_builder.exe` and maybe including the path. I recommend copying it into the `blobmoji`-directory):_
+```
+emoji_builder --flags ./third_party/region-flags/svg blobmoji -w -a ./emoji_aliases.txt --ttx-tmpl ./NotoColorEmoji.tmpl.ttx.tmpl --palette ./Blobmoji.gpl --default_font "Comic Neue"
+```
+- `--flags`: Use the directory conaining the flags
+- `-w` add a wave-effect to the flags
+- `-a` use an alias file
+- `--ttx-tmpl` Use the template for the font metadata
+- `--palette` normalize the colors to a specific color palette in the GIMP format (which is a derivation of the color palette present in the [2014 _Material Design_](https://material.io/archive/guidelines/style/color.html#color-color-palette))
+- `--default_font` Because the graphics program I currently use (Affinity Designer) outputs font specifications in a format that `resvg`/`emoji_builder` has issues with, the font is explicitly specified here (note that if the font is correctly recognized, this one is not used. So as of now it is _not_ used to use a font for _all_ emojis)
+
+## ~~Docker build~~
+
+~~Alternatively, you can also build the font within Docker through the provided Dockerfile.
+Just run `docker build . -t blobmoji && docker run --rm -it -v "$PWD/output:/output" blobmoji`. The resulting font will reside in the 'output' folder in your current working directory.~~
+
+The Docker build method isn't available for `emoji_builder` yet
 
 ## Using NotoColorEmoji
 
@@ -95,3 +109,6 @@ _Please try to use the discussion feature for artistic topics, like the style of
 * 2017-09-13: Emoji redesign released.
 * 2015-12-09: Unicode 7 and 8 emoji image data (.png format) added.
 * 2015-09-29: All Noto fonts now licensed under the SIL Open Font License.
+
+
+_Microsoft, Windows are trademarks of the Microsoft group of companies._

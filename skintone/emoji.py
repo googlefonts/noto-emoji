@@ -8,7 +8,7 @@ class Emoji:
     # This is the case for gender symbols which should be represented as emojis and not as characters
     fe0f_chars = {'♀', '♂'}
 
-    color_regex = re.compile("#([a-f0-9]{6,7})|rgb\(([0-9]{1,3},[0-9]{1,3},[0-9]{1,3})\)", re.IGNORECASE)
+    color_regex = re.compile("#?([a-f0-9]{6,7})|rgb\(([0-9]{1,3},[0-9]{1,3},[0-9]{1,3})\)", re.IGNORECASE)
 
     def __init__(self, modifiers: dict, path: str, base: str, end: bool = False):
         """
@@ -108,11 +108,8 @@ class Emoji:
         # The file extension (.svg)
         fileextension = self.fextension
         base_seq = basename.split('_')
-        base_seq.insert(2, extension)
-        # Add FE0F?
-        if self.end:
-            base_seq.append('fe0f')
-        basename = '_'.join(base_seq)
+        base_seq.append(extension)
+        basename = ' '.join(base_seq)
         # Stitch it together and return the whole file path
         return os.path.join(directory, basename) + fileextension
         
