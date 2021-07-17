@@ -1987,6 +1987,7 @@ There may be some mistakes/missing emojis; Last changed: 2021-07-13
 | ![emoji_u1f6f6](https://raw.githubusercontent.com/C1710/blobmoji/main/svg/emoji_u1f6f6.svg) | [`svg/emoji_u1f6f6.svg`](svg/emoji_u1f6f6.svg) |
 | ![emoji_u1f6f7](https://raw.githubusercontent.com/C1710/blobmoji/main/svg/emoji_u1f6f7.svg) | [`svg/emoji_u1f6f7.svg`](svg/emoji_u1f6f7.svg) |
 | ![emoji_u1f6f8](https://raw.githubusercontent.com/C1710/blobmoji/main/svg/emoji_u1f6f8.svg) | [`svg/emoji_u1f6f8.svg`](svg/emoji_u1f6f8.svg) |
+| ![emoji_u1f6fa](https://raw.githubusercontent.com/C1710/blobmoji/main/svg/emoji_u1f6fa.svg) | [`svg/emoji_u1f6fa.svg`](svg/emoji_u1f6fa.svg) |
 | ![emoji_u1f7e0](https://raw.githubusercontent.com/C1710/blobmoji/main/svg/emoji_u1f7e0.svg) | [`svg/emoji_u1f7e0.svg`](svg/emoji_u1f7e0.svg) |
 | ![emoji_u1f7e1](https://raw.githubusercontent.com/C1710/blobmoji/main/svg/emoji_u1f7e1.svg) | [`svg/emoji_u1f7e1.svg`](svg/emoji_u1f7e1.svg) |
 | ![emoji_u1f7e2](https://raw.githubusercontent.com/C1710/blobmoji/main/svg/emoji_u1f7e2.svg) | [`svg/emoji_u1f7e2.svg`](svg/emoji_u1f7e2.svg) |
@@ -2357,9 +2358,12 @@ There may be some mistakes/missing emojis; Last changed: 2021-07-13
 | ![emoji_u1f9bb_1f3fe](https://raw.githubusercontent.com/C1710/blobmoji/main/svg/emoji_u1f9bb_1f3fe.svg) | [`svg/emoji_u1f9bb_1f3fe.svg`](svg/emoji_u1f9bb_1f3fe.svg) |
 | ![emoji_u1f9bb_1f3ff](https://raw.githubusercontent.com/C1710/blobmoji/main/svg/emoji_u1f9bb_1f3ff.svg) | [`svg/emoji_u1f9bb_1f3ff.svg`](svg/emoji_u1f9bb_1f3ff.svg) |
 | ![emoji_u1f9c0](https://raw.githubusercontent.com/C1710/blobmoji/main/svg/emoji_u1f9c0.svg) | [`svg/emoji_u1f9c0.svg`](svg/emoji_u1f9c0.svg) |
+| ![emoji_u1f9c2](https://raw.githubusercontent.com/C1710/blobmoji/main/svg/emoji_u1f9c2.svg) | [`svg/emoji_u1f9c2.svg`](svg/emoji_u1f9c2.svg) |
 | ![emoji_u1f9c3](https://raw.githubusercontent.com/C1710/blobmoji/main/svg/emoji_u1f9c3.svg) | [`svg/emoji_u1f9c3.svg`](svg/emoji_u1f9c3.svg) |
 | ![emoji_u1f9c4](https://raw.githubusercontent.com/C1710/blobmoji/main/svg/emoji_u1f9c4.svg) | [`svg/emoji_u1f9c4.svg`](svg/emoji_u1f9c4.svg) |
 | ![emoji_u1f9c5](https://raw.githubusercontent.com/C1710/blobmoji/main/svg/emoji_u1f9c5.svg) | [`svg/emoji_u1f9c5.svg`](svg/emoji_u1f9c5.svg) |
+| ![emoji_u1f9c8](https://raw.githubusercontent.com/C1710/blobmoji/main/svg/emoji_u1f9c8.svg) | [`svg/emoji_u1f9c8.svg`](svg/emoji_u1f9c8.svg) |
+| ![emoji_u1f9ca](https://raw.githubusercontent.com/C1710/blobmoji/main/svg/emoji_u1f9ca.svg) | [`svg/emoji_u1f9ca.svg`](svg/emoji_u1f9ca.svg) |
 | ![emoji_u1f9cd](https://raw.githubusercontent.com/C1710/blobmoji/main/svg/emoji_u1f9cd.svg) | [`svg/emoji_u1f9cd.svg`](svg/emoji_u1f9cd.svg) |
 | ![emoji_u1f9cd_1f3fb](https://raw.githubusercontent.com/C1710/blobmoji/main/svg/emoji_u1f9cd_1f3fb.svg) | [`svg/emoji_u1f9cd_1f3fb.svg`](svg/emoji_u1f9cd_1f3fb.svg) |
 | ![emoji_u1f9cd_1f3fb_200d_2640](https://raw.githubusercontent.com/C1710/blobmoji/main/svg/emoji_u1f9cd_1f3fb_200d_2640.svg) | [`svg/emoji_u1f9cd_1f3fb_200d_2640.svg`](svg/emoji_u1f9cd_1f3fb_200d_2640.svg) |
