@@ -1,1 +1,11 @@
-<svg enable-background="new 0 0 128 128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg"><linearGradient id="a" x1="64" x2="64" y1="4.3333" y2="124.54" gradientUnits="userSpaceOnUse"><stop stop-color="#42A5F5" offset="0"/><stop stop-color="#1976D2" offset="1"/></linearGradient><circle cx="64" cy="64" r="60" fill="url(#a)"/><g opacity=".2"><path d="M64,7c31.43,0,57,25.57,57,57s-25.57,57-57,57S7,95.43,7,64S32.57,7,64,7 M64,4 C30.86,4,4,30.86,4,64s26.86,60,60,60s60-26.86,60-60S97.14,4,64,4L64,4z" fill="#424242"/></g></svg>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 25.2.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 128 128" style="enable-background:new 0 0 128 128;" xml:space="preserve">
+<g>
+	<circle style="fill:#1976D2;" cx="63.93" cy="64" r="60"/>
+	<circle style="fill:#2196F3;" cx="60.03" cy="63.1" r="56.1"/>
+	<path style="fill:#90CAF9;" d="M23.93,29.7c4.5-7.1,14.1-13,24.1-14.8c2.5-0.4,5-0.6,7.1,0.2c1.6,0.6,2.9,2.1,2,3.8
+		c-0.7,1.4-2.6,2-4.1,2.5c-9.38,3.1-17.47,9.21-23,17.4c-2,3-5,11.3-8.7,9.2C17.43,45.7,18.23,38.5,23.93,29.7z"/>
+</g>
+</svg>
