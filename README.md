@@ -2,6 +2,8 @@
 # Noto Emoji
 Color and Black-and-White Noto emoji fonts, and tools for working with them.
 
+**[Download Emoji Font](https://github.com/googlefonts/noto-emoji/raw/main/fonts/NotoColorEmoji.ttf)**
+
 ## Prerequisites
 Building Noto Color Emoji requires:
 - Python 3
