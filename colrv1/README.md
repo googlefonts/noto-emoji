@@ -1,9 +1,7 @@
 # COLRv1 Build
 
-Assumptions:
-
-* bitmap font already exists.
-* a font that contains complete emojicompat metadata exists
+We assume the bitmap version with equivalent coverage exists and
+contains emojicompat metadata.
 
 ## Build Steps
 
@@ -15,3 +13,9 @@ Assumptions:
 
 1. Post-process COLRv1 font for Android
    * At time of writing only the noflags version is for Android
+
+   ```shell
+   # Assumed to be in a python3 environment with requirements.txt fulfilled
+   python postproc.py build/NotoColorEmoji-noflags.ttf \
+   	PATH_TO/NotoColorEmojiCompat.ttf
+   ```
