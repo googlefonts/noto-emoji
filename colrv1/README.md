@@ -16,6 +16,6 @@ contains emojicompat metadata.
 
    ```shell
    # Assumed to be in a python3 environment with requirements.txt fulfilled
-   python postproc.py build/NotoColorEmoji-noflags.ttf \
+   python colrv1_postproc.py colrv1/build/NotoColorEmoji-noflags.ttf \
    	PATH_TO/NotoColorEmojiCompat.ttf
    ```

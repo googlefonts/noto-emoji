@@ -5,6 +5,9 @@ For now substantially based on copying from a correct bitmap build.
 """
 from absl import app
 from fontTools import ttLib
+import map_pua_emoji
+from nototools import add_vs_cmap
+from nototools import unicode_data
 
 
 def _is_colrv1(font):
@@ -46,6 +49,13 @@ def _copy_names(colr_font, cbdt_font):
   # Amendments
   _set_name(name_table, 10, "Color emoji font using COLRv1.")
   _set_name(name_table, 11, "https://github.com/googlefonts/noto-emoji")
+  _set_name(name_table, 12, "https://github.com/googlefonts/noto-emoji")
+
+
+# CBDT build step: @$(VS_ADDER) -vs 2640 2642 2695 --dstdir '.' -o "$@-with-pua-varsel" "$@-with-pua"
+def _add_vs_cmap(colr_font):
+  emoji_variants = unicode_data.get_unicode_emoji_variants() | {0x2640, 0x2642, 0x2695}
+  add_vs_cmap.modify_font("COLRv1 Emoji", colr_font, "emoji", emoji_variants)
 
 
 def main(argv):
@@ -63,7 +73,12 @@ def main(argv):
     _copy_emojicompat_data(colr_font, cbdt_font)
     _copy_names(colr_font, cbdt_font)
 
-    colr_font.save('../fonts/Noto-COLRv1-noflags.ttf')
+    # CBDT build step: @$(PYTHON) $(PUA_ADDER) "$@" "$@-with-pua"
+    map_pua_emoji.add_pua_cmap_to_font(colr_font)
+
+    _add_vs_cmap(colr_font)
+
+    colr_font.save('fonts/Noto-COLRv1-noflags.ttf')
 
 
 if __name__ == "__main__":
