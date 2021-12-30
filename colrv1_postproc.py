@@ -58,6 +58,44 @@ def _add_vs_cmap(colr_font):
   add_vs_cmap.modify_font("COLRv1 Emoji", colr_font, "emoji", emoji_variants)
 
 
+def _is_variation_selector_cmap_table(table):
+  assert table.format in {4, 12, 14}
+  return table.format == 14
+
+
+def _lookup_in_cmap(colr_font, codepoint):
+  result = set()
+  for table in colr_font["cmap"].tables:
+    if _is_variation_selector_cmap_table(table):
+      continue
+    assert codepoint in table.cmap
+    result.add(table.cmap[codepoint])
+  assert len(result) == 1, f"Ambiguous mapping for {codepoint}: {result}"
+  return next(iter(result))
+
+
+def _map_flag_tag_chars_to_space(colr_font):
+  gn_space = _lookup_in_cmap(colr_font, ord(" "))
+
+  # Add all tag characters used in flags
+  tag_cps = set(range(0xE0030, 0xE0039 + 1)) | set(range(0xE0061, 0xE007A + 1))
+
+  # CBDT maps these things to space based on hb-shape testing
+  # Android fontchain_lint is unhappy if no such mapping exists
+  for table in colr_font["cmap"].tables:
+    if _is_variation_selector_cmap_table(table):
+      continue
+    for cp in tag_cps:
+      if not _is_bmp(cp) and table.format == 4:
+        continue
+      table.cmap[cp] = gn_space
+      print(f"Map 0x{cp:04x} to space, format {table.format}")
+
+
+def _is_bmp(cp):
+  return cp in range(0x0000, 0xFFFF + 1)
+
+
 def main(argv):
     if len(argv) != 3:
       raise ValueError("Must have two args, a COLRv1 font and a CBDT emojicompat font")
@@ -77,6 +115,8 @@ def main(argv):
     map_pua_emoji.add_pua_cmap_to_font(colr_font)
 
     _add_vs_cmap(colr_font)
+
+    _map_flag_tag_chars_to_space(colr_font)
 
     colr_font.save('fonts/Noto-COLRv1-noflags.ttf')
 
