@@ -78,7 +78,13 @@ def _map_flag_tag_chars_to_space(colr_font):
   gn_space = _lookup_in_cmap(colr_font, ord(" "))
 
   # Add all tag characters used in flags
-  tag_cps = set(range(0xE0030, 0xE0039 + 1)) | set(range(0xE0061, 0xE007A + 1))
+  tag_cps = (
+    set(range(0xE0030, 0xE0039 + 1))
+    | set(range(0xE0061, 0xE007A + 1))
+  )
+
+  # Cancel tag maps to space in bitmap font
+  tag_cps |= {0xE007F}
 
   # CBDT maps these things to space based on hb-shape testing
   # Android fontchain_lint is unhappy if no such mapping exists
