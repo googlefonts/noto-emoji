@@ -4,7 +4,9 @@ Post-nanoemoji processing of the Noto COLRv1 Emoji file.
 For now substantially based on copying from a correct bitmap build.
 """
 from absl import app
+import functools
 from fontTools import ttLib
+from fontTools.ttLib.tables import otTables as ot
 import map_pua_emoji
 from nototools import add_vs_cmap
 from nototools import unicode_data
@@ -74,6 +76,16 @@ def _lookup_in_cmap(colr_font, codepoint):
   return next(iter(result))
 
 
+def _add_cmap_entries(colr_font, codepoint, glyph_name):
+  for table in colr_font["cmap"].tables:
+    if _is_variation_selector_cmap_table(table):
+      continue
+    if not _is_bmp(codepoint) and table.format == 4:
+      continue
+    table.cmap[codepoint] = gn_space
+    print(f"Map 0x{codepoint:04x} to {glyph_name}, format {table.format}")
+
+
 def _map_flag_tag_chars_to_space(colr_font):
   gn_space = _lookup_in_cmap(colr_font, ord(" "))
 
@@ -88,18 +100,54 @@ def _map_flag_tag_chars_to_space(colr_font):
 
   # CBDT maps these things to space based on hb-shape testing
   # Android fontchain_lint is unhappy if no such mapping exists
-  for table in colr_font["cmap"].tables:
-    if _is_variation_selector_cmap_table(table):
-      continue
-    for cp in tag_cps:
-      if not _is_bmp(cp) and table.format == 4:
-        continue
-      table.cmap[cp] = gn_space
-      print(f"Map 0x{cp:04x} to space, format {table.format}")
+  for cp in tag_cps:
+    _add_cmap_entries(colr_font, cp, gn_space)
 
 
 def _is_bmp(cp):
   return cp in range(0x0000, 0xFFFF + 1)
+
+
+def _ligaset_for_glyph(lookup_list, glyph_name):
+  for lookup in lookup_list.Lookup:
+    if lookup.LookupType != 4:
+      continue
+    for liga_set in lookup.SubTable:
+      if glyph_name in liga_set.ligatures:
+        return liga_set.ligatures[glyph_name]
+  return None
+
+
+def _Cmap(ttfont):
+
+  def _Reducer(acc, u):
+    acc.update(u)
+    return acc
+
+  unicode_cmaps = (t.cmap for t in ttfont['cmap'].tables if t.isUnicode())
+  return functools.reduce(_Reducer, unicode_cmaps, {})
+
+
+def _map_empty_flag_tag_to_black_flag(colr_font):
+  # fontchain_lint wants direct support for empty flag tags
+  # so map them to the default flag to match cbdt behavior
+
+  # if the emoji font starts using extensions this code will require revision
+
+  cmap = _Cmap(colr_font)
+  black_flag_glyph = cmap[0x1f3f4]
+  cancel_tag_glyph = cmap[0xe007f]
+  lookup_list = colr_font["GSUB"].table.LookupList
+  liga_set = _ligaset_for_glyph(lookup_list, black_flag_glyph)
+  assert liga_set is not None, "There should be existing ligatures using black flag"
+
+  # Map black flag + cancel tag to just black flag
+  # Since this is the ligature set for black flag, component is just cancel tag
+  # Since we only have one component its safe to put our rule at the front
+  liga = ot.Ligature()
+  liga.Component = [cancel_tag_glyph]
+  liga.LigGlyph = black_flag_glyph
+  liga_set.insert(0, liga)
 
 
 def main(argv):
@@ -123,6 +171,8 @@ def main(argv):
     _add_vs_cmap(colr_font)
 
     _map_flag_tag_chars_to_space(colr_font)
+
+    _map_empty_flag_tag_to_black_flag(colr_font)
 
     colr_font.save('fonts/Noto-COLRv1-noflags.ttf')
 
