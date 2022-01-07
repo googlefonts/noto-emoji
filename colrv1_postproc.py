@@ -6,10 +6,12 @@ For now substantially based on copying from a correct bitmap build.
 from absl import app
 import functools
 from fontTools import ttLib
+from fontTools.ttLib.tables import _g_l_y_f as glyf
 from fontTools.ttLib.tables import otTables as ot
 import map_pua_emoji
 from nototools import add_vs_cmap
 from nototools import unicode_data
+from pathlib import Path
 
 
 def _is_colrv1(font):
@@ -82,26 +84,36 @@ def _add_cmap_entries(colr_font, codepoint, glyph_name):
       continue
     if not _is_bmp(codepoint) and table.format == 4:
       continue
-    table.cmap[codepoint] = gn_space
+    table.cmap[codepoint] = glyph_name
     print(f"Map 0x{codepoint:04x} to {glyph_name}, format {table.format}")
 
 
-def _map_flag_tag_chars_to_space(colr_font):
-  gn_space = _lookup_in_cmap(colr_font, ord(" "))
-
+def _map_missing_flag_tag_chars_to_empty_glyphs(colr_font):
   # Add all tag characters used in flags
   tag_cps = (
     set(range(0xE0030, 0xE0039 + 1))
     | set(range(0xE0061, 0xE007A + 1))
   )
 
-  # Cancel tag maps to space in bitmap font
+  # Cancel tag
   tag_cps |= {0xE007F}
 
-  # CBDT maps these things to space based on hb-shape testing
-  # Android fontchain_lint is unhappy if no such mapping exists
+  # Anything already cmap'd is fine
+  tag_cps -= set(_Cmap(colr_font).keys())
+
+  # CBDT maps these to blank glyphs
+  glyf_table = colr_font["glyf"]
+  hmtx_table = colr_font["hmtx"]
+  glyph_order_size = len(glyf_table.glyphOrder)
   for cp in tag_cps:
-    _add_cmap_entries(colr_font, cp, gn_space)
+    print(f"Map 0x{cp:04x} to a blank glyf")
+    glyph_name = f"u{cp:04X}"
+    assert glyph_name not in glyf_table, f"{glyph_name} already in glyf"
+    assert glyph_name not in hmtx_table.metrics, f"{glyph_name} already in hmtx"
+    glyf_table[glyph_name] = glyf.Glyph()
+    hmtx_table[glyph_name] = (0, 0)
+
+    _add_cmap_entries(colr_font, cp, glyph_name)
 
 
 def _is_bmp(cp):
@@ -154,13 +166,20 @@ def main(argv):
     if len(argv) != 3:
       raise ValueError("Must have two args, a COLRv1 font and a CBDT emojicompat font")
 
-    colr_font = ttLib.TTFont(argv[1])
+    colr_file = Path(argv[1])
+    assert colr_file.is_file()
+    colr_font = ttLib.TTFont(colr_file)
     if not _is_colrv1(colr_font):
       raise ValueError("First arg must be a COLRv1 font")
 
-    cbdt_font = ttLib.TTFont(argv[2])
+    cbdt_file = Path(argv[2])
+    assert cbdt_file.is_file()
+    cbdt_font = ttLib.TTFont(cbdt_file)
     if not _is_cbdt(cbdt_font) or not _is_compat_font(cbdt_font):
       raise ValueError("Second arg must be a CBDT emojicompat font")
+
+    print(f"COLR {colr_file.absolute()}")
+    print(f"CBDT {cbdt_file.absolute()}")
 
     _copy_emojicompat_data(colr_font, cbdt_font)
     _copy_names(colr_font, cbdt_font)
@@ -170,11 +189,13 @@ def main(argv):
 
     _add_vs_cmap(colr_font)
 
-    _map_flag_tag_chars_to_space(colr_font)
+    _map_missing_flag_tag_chars_to_empty_glyphs(colr_font)
 
     _map_empty_flag_tag_to_black_flag(colr_font)
 
-    colr_font.save('fonts/Noto-COLRv1-noflags.ttf')
+    out_file = Path('fonts/Noto-COLRv1-noflags.ttf').absolute()
+    print("Writing", out_file)
+    colr_font.save(out_file)
 
 
 if __name__ == "__main__":
