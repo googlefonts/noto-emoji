@@ -3691,6 +3691,8 @@ srcs = [
     "../third_party/region-flags/waved-svg/emoji_u1f3f4_e0067_e0062_e0065_e006e_e0067_e007f.svg",
     "../third_party/region-flags/waved-svg/emoji_u1f3f4_e0067_e0062_e0073_e0063_e0074_e007f.svg",
     "../third_party/region-flags/waved-svg/emoji_u1f3f4_e0067_e0062_e0077_e006c_e0073_e007f.svg",
+    "flags-border/emoji_u100000.svg",
+    "flags-border/emoji_u100001.svg",
 ]
 
 [master.regular.position]
