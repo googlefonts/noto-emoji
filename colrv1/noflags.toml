@@ -3438,9 +3438,9 @@ srcs = [
   "../svg/emoji_u3297.svg", 
   "../svg/emoji_u3299.svg", 
   "../svg/emoji_ufe82b.svg",
-  "subdivision-flags/emoji_u1f3f4_e0067_e0062_e0065_e006e_e0067_e007f.svg",
-  "subdivision-flags/emoji_u1f3f4_e0067_e0062_e0073_e0063_e0074_e007f.svg",
-  "subdivision-flags/emoji_u1f3f4_e0067_e0062_e0077_e006c_e0073_e007f.svg"]
+  "../third_party/region-flags/waved-svg/emoji_u1f3f4_e0067_e0062_e0065_e006e_e0067_e007f.svg",
+  "../third_party/region-flags/waved-svg/emoji_u1f3f4_e0067_e0062_e0073_e0063_e0074_e007f.svg",
+  "../third_party/region-flags/waved-svg/emoji_u1f3f4_e0067_e0062_e0077_e006c_e0073_e007f.svg"]
 
 [master.regular.position]
 wght = 400
