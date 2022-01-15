@@ -10,12 +10,12 @@ default = 400
 [master.regular]
 style_name = "Regular"
 srcs = [
-  "red_pen/emoji_u270d.svg", 
-  "red_pen/emoji_u270d_1f3fb.svg", 
-  "red_pen/emoji_u270d_1f3fc.svg", 
-  "red_pen/emoji_u270d_1f3fd.svg", 
-  "red_pen/emoji_u270d_1f3fe.svg", 
-  "red_pen/emoji_u270d_1f3ff.svg"
+  "bw/emoji_u270d.svg", 
+  "bw/emoji_u270d_1f3fb.svg", 
+  "bw/emoji_u270d_1f3fc.svg", 
+  "bw/emoji_u270d_1f3fd.svg", 
+  "bw/emoji_u270d_1f3fe.svg", 
+  "bw/emoji_u270d_1f3ff.svg"
 ]
 
 [master.regular.position]

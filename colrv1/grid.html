@@ -1,0 +1,186 @@
+<!-- Copyright 2021 Google LLC.
+SPDX-License-Identifier: Apache-2.0 -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Emoji Grid COLRv1 Example</title>
+    <meta name="description" content="Demonstrates a picker-like list of COLRv1 emoji." />
+    <link
+      id="favicon"
+      rel="icon"
+      href="https://web.dev/images/favicon.ico"
+      type="image/x-icon"
+    />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="/styles.css" />
+    <script src="/chromacheck-min.js"></script>
+    <script src="/emoji-grid-draw.js"></script>
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Noto+Color+Emoji");
+      /* Copyright 2021 Google LLC.
+      SPDX-License-Identifier: Apache-2.0 */
+
+      body {
+        font-family: sans-serif;
+      }
+
+      #reqs {
+        background-color: #fde030;
+        border-radius: 4px;
+        padding: 4px;
+        margin: 8px;
+      }
+
+      .chromacheck-colrv1 #reqs {
+        display: none;
+      }
+
+      .grid {
+        margin: 2rem auto;
+        max-width: 375px;
+      }
+
+      div[role="listbox"] {
+        display: grid;
+        grid-template-columns: repeat(9, 1fr);
+        gap: 0;
+      }
+
+      button {
+        background: transparent;
+        border: 0;
+        cursor: pointer;
+        font: 30px "Noto Color Emoji";
+        min-width: 0;
+        width: 30px;
+        margin-inline-end: 16px;
+        position: relative;
+      }
+
+      .variants {
+        background: #fff;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.18);
+        border-radius: 8px;
+        display: none;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 4px;
+        left: 50%;
+        padding: 8px;
+        position: absolute;
+        top: 100%;
+        transform: translate(-50%, 16px);
+        max-width: 250px;
+        z-index: 9;
+      }
+
+      .has-variants:hover:after {
+        border-bottom: 16px solid #fff;
+        border-left: 16px solid transparent;
+        border-right: 16px solid transparent;
+        content: "";
+        display: block;
+        filter: drop-shadow(0 -1px 1px rgba(0, 0, 0, 0.09));
+        height: 0;
+        left: 50%;
+        position: absolute;
+        top: 100%;
+        transform: translateX(-50%);
+        width: 0;
+        z-index: 10;
+      }
+
+      .has-variants:hover .variants {
+        display: grid;
+      }
+
+    </style>
+  </head>
+  <body>
+    <pre>
+      Uses a combined COLRv1 and SVG font. Should work on Firefox, Chrome 98+, Safari.
+      Chrome <98 will fail, would need CBDT to enable.
+    </pre>
+    <div class="grid"></div>
+  </body>
+  <script>
+(async () => {
+  const metadata = await (
+    await fetch(
+      "https://raw.githubusercontent.com/googlefonts/emoji-metadata/main/emoji_14_0_ordering.json"
+    )
+  ).json();
+
+  const grid = document.querySelector(".grid");
+
+  for (const group of metadata) {
+    // Wrapper for each group
+    const parent = document.createElement("div");
+
+    // Titles
+    const h1 = document.createElement("h1");
+    h1.textContent = group.group;
+    parent.append(h1);
+
+    // Emoji section
+    const container = document.createElement("div");
+    container.setAttribute("role", "listbox");
+
+    for (const emoji of group.emoji) {
+      const button = document.createElement("button");
+      button.setAttribute("role", "option");
+      button.textContent = htmlCodepoints(emoji.base);
+      button.className = "emoji";
+
+      // Variants
+      const variants = document.createElement("div");
+      variants.className = "variants";
+      for (const alternate of emoji.alternates) {        
+        // Skip repeating the "yellow version"
+        if (alternate.join("") === emoji.base.join("")) {
+          continue;
+        }
+        const variantButton = document.createElement("button");
+        variantButton.setAttribute("role", "option");
+        variantButton.textContent = htmlCodepoints(alternate);
+        variantButton.className = "emoji";        
+        variants.append(variantButton);
+      }
+
+      if (emoji.alternates.length) {
+        button.classList.add("has-variants");
+      }
+
+      button.append(variants);
+      container.append(button);
+    }
+
+    parent.append(container);
+
+    grid.append(parent);
+  }
+  
+  grid.addEventListener('click', async (e) => {
+    if (e.target.nodeName.toLowerCase() !== 'button') {
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(e.target.textContent);
+      setTimeout(() => {
+        e.target.style.filter = '';
+      }, 1000);
+      e.target.style.filter = 'opacity(0.5)';
+    } catch (err) {
+      console.error(err.name, err.message);
+    }
+  })
+})();
+
+function htmlCodepoints(arr) {
+  return arr.map((codepoint) => String.fromCodePoint(codepoint)).join("");
+}
+
+  </script>
+</html>
