@@ -241,6 +241,11 @@ clean:
 	rm -f waveflag
 	rm -rf $(BUILD_DIR)
 
+# This prints the value of a Makefile variable: e.g. `make print-SELECTED_FLAGS`
+# will print the content of SELECTED_FLAGS.
+# Source: https://apprize.best/linux/gnu/3.html
+print-%: ; @echo $* = $($*)
+
 .SECONDARY: $(EMOJI_FILES) $(FLAG_FILES) $(RESIZED_FLAG_FILES) $(RENAMED_FLAG_FILES) \
   $(ALL_QUANTIZED_FILES) $(ALL_COMPRESSED_FILES)
 

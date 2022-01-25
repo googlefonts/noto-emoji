@@ -13,6 +13,8 @@ from nototools import add_vs_cmap
 from nototools import unicode_data
 from pathlib import Path
 
+from colrv1_add_soft_light_to_flags import add_soft_light_to_flags
+
 
 def _is_colrv1(font):
   return (
@@ -192,6 +194,8 @@ def main(argv):
     _map_missing_flag_tag_chars_to_empty_glyphs(colr_font)
 
     _map_empty_flag_tag_to_black_flag(colr_font)
+
+    add_soft_light_to_flags(colr_font)
 
     out_file = Path('fonts/Noto-COLRv1-noflags.ttf').absolute()
     print("Writing", out_file)
