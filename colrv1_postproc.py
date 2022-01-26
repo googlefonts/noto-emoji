@@ -159,6 +159,42 @@ def _map_empty_flag_tag_to_black_flag(colr_font):
     liga_set.insert(0, liga)
 
 
+def _add_vertical_layout_tables(cbdt_font, colr_font):
+    upem_scale = colr_font["head"].unitsPerEm / cbdt_font["head"].unitsPerEm
+
+    vhea = colr_font["vhea"] = ttLib.newTable("vhea")
+    vhea.tableVersion = 0x00010000
+    vhea.ascent = round(cbdt_font["vhea"].ascent * upem_scale)
+    vhea.descent = round(cbdt_font["vhea"].descent * upem_scale)
+    vhea.lineGap = 0
+    # most of the stuff below is recalculated by the compiler, but still needs to be
+    # initialized... ¯\_(ツ)_/¯
+    vhea.advanceHeightMax = 0
+    vhea.minTopSideBearing = 0
+    vhea.minBottomSideBearing = 0
+    vhea.yMaxExtent = 0
+    vhea.caretSlopeRise = 0
+    vhea.caretSlopeRun = 0
+    vhea.caretOffset = 0
+    vhea.reserved0 = 0
+    vhea.reserved1 = 0
+    vhea.reserved2 = 0
+    vhea.reserved3 = 0
+    vhea.reserved4 = 0
+    vhea.metricDataFormat = 0
+    vhea.numberOfVMetrics = 0
+
+    # emoji font is monospaced -- except for an odd uni0000 (NULL) glyph which happens
+    # to have height=0; but colrv1 font doesn't have that anyway, so I just skip it
+    cbdt_heights = set(h for h, _ in cbdt_font["vmtx"].metrics.values() if h != 0)
+    assert len(cbdt_heights) == 1, "NotoColorEmoji CBDT font should be monospaced!"
+    height = round(cbdt_heights.pop() * upem_scale)
+    vmtx = colr_font["vmtx"] = ttLib.newTable("vmtx")
+    vmtx.metrics = {}
+    for gn in colr_font.getGlyphOrder():
+        vmtx.metrics[gn] = height, 0
+
+
 def main(argv):
     if len(argv) != 3:
         raise ValueError(
@@ -193,6 +229,8 @@ def main(argv):
     _map_empty_flag_tag_to_black_flag(colr_font)
 
     add_soft_light_to_flags(colr_font)
+
+    _add_vertical_layout_tables(cbdt_font, colr_font)
 
     out_file = Path("fonts/Noto-COLRv1-noflags.ttf").absolute()
     print("Writing", out_file)
