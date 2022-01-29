@@ -16,6 +16,12 @@ from pathlib import Path
 from colrv1_add_soft_light_to_flags import add_soft_light_to_flags
 
 
+_OUTPUT_FILE = {
+    "NotoColorEmoji-noflags.ttf": "fonts/Noto-COLRv1-noflags.ttf",
+    "NotoColorEmoji.ttf": "fonts/Noto-COLRv1.ttf",
+}
+
+
 def _is_colrv1(font):
     return "COLR" in font and font["COLR"].version == 1
 
@@ -203,6 +209,7 @@ def main(argv):
 
     colr_file = Path(argv[1])
     assert colr_file.is_file()
+    assert colr_file.name in _OUTPUT_FILE
     colr_font = ttLib.TTFont(colr_file)
     if not _is_colrv1(colr_font):
         raise ValueError("First arg must be a COLRv1 font")
@@ -232,7 +239,7 @@ def main(argv):
 
     _add_vertical_layout_tables(cbdt_font, colr_font)
 
-    out_file = Path("fonts/Noto-COLRv1-noflags.ttf").absolute()
+    out_file = Path(_OUTPUT_FILE[colr_file.name]).absolute()
     print("Writing", out_file)
     colr_font.save(out_file)
 
