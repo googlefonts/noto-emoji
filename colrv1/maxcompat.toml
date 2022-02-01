@@ -1,0 +1,18 @@
+
+family = "Noto Color Emoji"
+output_file = "NotoColorEmoji-COLRv1-SVG-CBDT.ttf"
+color_format = "glyf_colr_1_and_picosvg_and_cbdt"
+clipbox_quantization = 32
+
+[axis.wght]
+name = "Weight"
+default = 400
+
+[master.regular]
+style_name = "Regular"
+srcs = [
+    "red_pen/emoji_u270d.svg",
+]
+
+[master.regular.position]
+wght = 400
