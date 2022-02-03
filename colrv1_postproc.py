@@ -147,31 +147,6 @@ def _Cmap(ttfont):
     return functools.reduce(_Reducer, unicode_cmaps, {})
 
 
-BLACK_FLAG = 0x1F3F4
-
-
-def _map_empty_flag_tag_to_black_flag(colr_font):
-    # fontchain_lint wants direct support for empty flag tags
-    # so map them to the default flag to match cbdt behavior
-
-    # if the emoji font starts using extensions this code will require revision
-
-    cmap = _Cmap(colr_font)
-    black_flag_glyph = cmap[BLACK_FLAG]
-    cancel_tag_glyph = cmap[CANCEL_TAG]
-    lookup_list = colr_font["GSUB"].table.LookupList
-    liga_set = _ligaset_for_glyph(lookup_list, black_flag_glyph)
-    assert liga_set is not None, "There should be existing ligatures using black flag"
-
-    # Map black flag + cancel tag to just black flag
-    # Since this is the ligature set for black flag, component is just cancel tag
-    # Since we only have one component its safe to put our rule at the front
-    liga = ot.Ligature()
-    liga.Component = [cancel_tag_glyph]
-    liga.LigGlyph = black_flag_glyph
-    liga_set.insert(0, liga)
-
-
 def _add_vertical_layout_tables(cbdt_font, colr_font):
     upem_scale = colr_font["head"].unitsPerEm / cbdt_font["head"].unitsPerEm
 
@@ -209,6 +184,7 @@ def _add_vertical_layout_tables(cbdt_font, colr_font):
 
 
 UNKNOWN_FLAG_PUA = 0xFE82B
+BLACK_FLAG = 0x1F3F4
 REGIONAL_INDICATORS = set(range(0x1F1E6, 0x1F1FF + 1))
 
 
@@ -341,8 +317,6 @@ def main(argv):
     _add_vs_cmap(colr_font)
 
     _map_missing_flag_tag_chars_to_empty_glyphs(colr_font)
-
-    _map_empty_flag_tag_to_black_flag(colr_font)
 
     add_soft_light_to_flags(colr_font)
 
