@@ -5,7 +5,6 @@ For now substantially based on copying from a correct bitmap build.
 """
 from absl import app
 import functools
-from textwrap import dedent
 from fontTools.feaLib.builder import addOpenTypeFeaturesFromString
 from fontTools import ttLib
 from fontTools.ttLib.tables import _g_l_y_f as glyf
@@ -199,55 +198,58 @@ def _add_fallback_subs_for_unknown_flags(colr_font):
     black_flag = cmap[BLACK_FLAG]
     cancel_tag = cmap[CANCEL_TAG]
     flag_tags = sorted(cmap[cp] for cp in FLAG_TAGS)
-    regional_indicators = sorted(cmap[cp] for cp in REGIONAL_INDICATORS)
+    # in the *-noflags.ttf font there are no region flags thus this list is empty
+    regional_indicators = sorted(cmap[cp] for cp in REGIONAL_INDICATORS if cp in cmap)
 
-    classes = dedent(
-        f"""\
-        @FLAG_TAGS = [{" ".join(flag_tags)}];
-        @REGIONAL_INDICATORS = [{" ".join(regional_indicators)}];
-        @UNKNOWN_FLAG = [{" ".join([unknown_flag] * len(regional_indicators))}];
+    classes = f'@FLAG_TAGS = [{" ".join(flag_tags)}];\n'
+    if regional_indicators:
+        classes += f"""
+            @REGIONAL_INDICATORS = [{" ".join(regional_indicators)}];
+            @UNKNOWN_FLAG = [{" ".join([unknown_flag] * len(regional_indicators))}];
         """
-    )
     lookups = (
         # the first lookup is a dummy that stands for the emoji sequences ligatures
         # from the destination font; we only use it to ensure the lookup indices match.
         # We can't leave it empty otherwise feaLib optimizes it away.
-        dedent(
-            f"""\
-            lookup placeholder {{
-                sub {unknown_flag} {unknown_flag} by {unknown_flag};
-            }} placeholder;
-            """
-        )
+        f"""
+        lookup placeholder {{
+            sub {unknown_flag} {unknown_flag} by {unknown_flag};
+        }} placeholder;
+        """
         + "\n".join(
             ["lookup delete_glyph {"]
             + [f"    sub {g} by NULL;" for g in sorted(regional_indicators + flag_tags)]
             + ["} delete_glyph;"]
         )
-        + "\n"
-        + dedent(
-            """\
+        + (
+            """
             lookup replace_with_unknown_flag {
                 sub @REGIONAL_INDICATORS by @UNKNOWN_FLAG;
             } replace_with_unknown_flag;
             """
+            if regional_indicators
+            else "\n"
         )
     )
     features = (
         "languagesystem DFLT dflt;\n"
         + classes
         + lookups
-        + dedent(
-            f"""\
-            feature ccmp {{
-              lookup placeholder;
-              sub {black_flag} @FLAG_TAGS' lookup delete_glyph;
-              sub {black_flag} {cancel_tag} by {unknown_flag};
-              sub @REGIONAL_INDICATORS' lookup replace_with_unknown_flag
-                  @REGIONAL_INDICATORS' lookup delete_glyph;
-            }} ccmp;
+        + "feature ccmp {"
+        + f"""
+            lookup placeholder;
+            sub {black_flag} @FLAG_TAGS' lookup delete_glyph;
+            sub {black_flag} {cancel_tag} by {unknown_flag};
+        """
+        + (
             """
+            sub @REGIONAL_INDICATORS' lookup replace_with_unknown_flag
+                @REGIONAL_INDICATORS' lookup delete_glyph;
+            """
+            if regional_indicators
+            else ""
         )
+        + "} ccmp;"
     )
     # feaLib always builds a new GSUB table (can't update one in place) so we have to
     # use an empty TTFont and then update our GSUB with the newly built lookups
