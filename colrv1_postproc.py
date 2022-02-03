@@ -5,11 +5,14 @@ For now substantially based on copying from a correct bitmap build.
 """
 from absl import app
 import functools
+from textwrap import dedent
+from fontTools.feaLib.builder import addOpenTypeFeaturesFromString
 from fontTools import ttLib
 from fontTools.ttLib.tables import _g_l_y_f as glyf
 from fontTools.ttLib.tables import otTables as ot
 import map_pua_emoji
 from nototools import add_vs_cmap
+from nototools import font_data
 from nototools import unicode_data
 from pathlib import Path
 
@@ -95,12 +98,13 @@ def _add_cmap_entries(colr_font, codepoint, glyph_name):
         print(f"Map 0x{codepoint:04x} to {glyph_name}, format {table.format}")
 
 
-def _map_missing_flag_tag_chars_to_empty_glyphs(colr_font):
-    # Add all tag characters used in flags
-    tag_cps = set(range(0xE0030, 0xE0039 + 1)) | set(range(0xE0061, 0xE007A + 1))
+FLAG_TAGS = set(range(0xE0030, 0xE0039 + 1)) | set(range(0xE0061, 0xE007A + 1))
+CANCEL_TAG = 0xE007F
 
-    # Cancel tag
-    tag_cps |= {0xE007F}
+
+def _map_missing_flag_tag_chars_to_empty_glyphs(colr_font):
+    # Add all tag characters used in flags + cancel tag
+    tag_cps = FLAG_TAGS | {CANCEL_TAG}
 
     # Anything already cmap'd is fine
     tag_cps -= set(_Cmap(colr_font).keys())
@@ -143,6 +147,9 @@ def _Cmap(ttfont):
     return functools.reduce(_Reducer, unicode_cmaps, {})
 
 
+BLACK_FLAG = 0x1F3F4
+
+
 def _map_empty_flag_tag_to_black_flag(colr_font):
     # fontchain_lint wants direct support for empty flag tags
     # so map them to the default flag to match cbdt behavior
@@ -150,8 +157,8 @@ def _map_empty_flag_tag_to_black_flag(colr_font):
     # if the emoji font starts using extensions this code will require revision
 
     cmap = _Cmap(colr_font)
-    black_flag_glyph = cmap[0x1F3F4]
-    cancel_tag_glyph = cmap[0xE007F]
+    black_flag_glyph = cmap[BLACK_FLAG]
+    cancel_tag_glyph = cmap[CANCEL_TAG]
     lookup_list = colr_font["GSUB"].table.LookupList
     liga_set = _ligaset_for_glyph(lookup_list, black_flag_glyph)
     assert liga_set is not None, "There should be existing ligatures using black flag"
@@ -201,6 +208,108 @@ def _add_vertical_layout_tables(cbdt_font, colr_font):
         vmtx.metrics[gn] = height, 0
 
 
+UNKNOWN_FLAG_PUA = 0xFE82B
+REGIONAL_INDICATORS = set(range(0x1F1E6, 0x1F1FF + 1))
+
+
+def _add_fallback_subs_for_unknown_flags(colr_font):
+    """Add GSUB lookups to replace unsupported flag sequences with the 'unknown flag'.
+
+    In order to locate the unknown flag, the glyph must be mapped to 0xFE82B PUA code;
+    the latter is removed from the cmap table after the GSUB has been updated.
+    """
+    cmap = _Cmap(colr_font)
+    unknown_flag = cmap[UNKNOWN_FLAG_PUA]
+    black_flag = cmap[BLACK_FLAG]
+    cancel_tag = cmap[CANCEL_TAG]
+    flag_tags = sorted(cmap[cp] for cp in FLAG_TAGS)
+    regional_indicators = sorted(cmap[cp] for cp in REGIONAL_INDICATORS)
+
+    classes = dedent(
+        f"""\
+        @FLAG_TAGS = [{" ".join(flag_tags)}];
+        @REGIONAL_INDICATORS = [{" ".join(regional_indicators)}];
+        @UNKNOWN_FLAG = [{" ".join([unknown_flag] * len(regional_indicators))}];
+        """
+    )
+    lookups = (
+        # the first lookup is a dummy that stands for the emoji sequences ligatures
+        # from the destination font; we only use it to ensure the lookup indices match.
+        # We can't leave it empty otherwise feaLib optimizes it away.
+        dedent(
+            f"""\
+            lookup placeholder {{
+                sub {unknown_flag} {unknown_flag} by {unknown_flag};
+            }} placeholder;
+            """
+        )
+        + "\n".join(
+            ["lookup delete_glyph {"]
+            + [f"    sub {g} by NULL;" for g in sorted(regional_indicators + flag_tags)]
+            + ["} delete_glyph;"]
+        )
+        + "\n"
+        + dedent(
+            """\
+            lookup replace_with_unknown_flag {
+                sub @REGIONAL_INDICATORS by @UNKNOWN_FLAG;
+            } replace_with_unknown_flag;
+            """
+        )
+    )
+    features = (
+        "languagesystem DFLT dflt;\n"
+        + classes
+        + lookups
+        + dedent(
+            f"""\
+            feature ccmp {{
+              lookup placeholder;
+              sub {black_flag} @FLAG_TAGS' lookup delete_glyph;
+              sub {black_flag} {cancel_tag} by {unknown_flag};
+              sub @REGIONAL_INDICATORS' lookup replace_with_unknown_flag
+                  @REGIONAL_INDICATORS' lookup delete_glyph;
+            }} ccmp;
+            """
+        )
+    )
+    # feaLib always builds a new GSUB table (can't update one in place) so we have to
+    # use an empty TTFont and then update our GSUB with the newly built lookups
+    temp_font = ttLib.TTFont()
+    temp_font.setGlyphOrder(colr_font.getGlyphOrder())
+
+    addOpenTypeFeaturesFromString(temp_font, features)
+
+    temp_gsub = temp_font["GSUB"].table
+    # sanity check
+    assert len(temp_gsub.FeatureList.FeatureRecord) == 1
+    assert temp_gsub.FeatureList.FeatureRecord[0].FeatureTag == "ccmp"
+    temp_ccmp = temp_gsub.FeatureList.FeatureRecord[0].Feature
+
+    colr_gsub = colr_font["GSUB"].table
+    ccmps = [
+        r.Feature for r in colr_gsub.FeatureList.FeatureRecord if r.FeatureTag == "ccmp"
+    ]
+    assert len(ccmps) == 1, f"expected only 1 'ccmp' feature record, found {len(ccmps)}"
+    colr_ccmp = ccmps[0]
+
+    colr_lookups = colr_gsub.LookupList.Lookup
+    assert (
+        len(colr_lookups) == 1
+    ), f"expected only 1 lookup in COLRv1's GSUB.LookupList, found {len(colr_lookups)}"
+    assert (
+        colr_lookups[0].LookupType == 4
+    ), f"expected Lookup[0] of type 4 in COLRv1, found {colr_lookups[0].LookupType}"
+
+    colr_lookups.extend(temp_gsub.LookupList.Lookup[1:])
+    colr_gsub.LookupList.LookupCount = len(colr_lookups)
+    colr_ccmp.LookupListIndex = temp_ccmp.LookupListIndex
+    colr_ccmp.LookupCount = len(colr_ccmp.LookupListIndex)
+
+    # get rid of the Unknown Flag private codepoint as no longer needed
+    font_data.delete_from_cmap(colr_font, [UNKNOWN_FLAG_PUA])
+
+
 def main(argv):
     if len(argv) != 3:
         raise ValueError(
@@ -238,6 +347,8 @@ def main(argv):
     add_soft_light_to_flags(colr_font)
 
     _add_vertical_layout_tables(cbdt_font, colr_font)
+
+    _add_fallback_subs_for_unknown_flags(colr_font)
 
     out_file = Path(_OUTPUT_FILE[colr_file.name]).absolute()
     print("Writing", out_file)
