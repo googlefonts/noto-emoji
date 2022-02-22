@@ -1,3 +1,3 @@
 fonttools>=4.7.0
 notofonttools>=0.2.16
-nanoemoji >= 0.11.1  # we need latest spec support
+nanoemoji >= 0.12.2  # we need latest spec support
