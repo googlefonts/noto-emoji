@@ -3,12 +3,12 @@
 <clipPath id="c">
 <path d="M0,0V150H700V300H600zM600,0H300V350H0V300z"/>
 </clipPath>
-<rect width="1200" height="600" fill="#00247d"/>
+<rect width="1200" height="600" fill="#012169"/>
 <path d="M0,0 600,300M600,0 0,300" stroke="#fff" stroke-width="60"/>
-<path d="M0,0 600,300M600,0 0,300" stroke="#cf142b" stroke-width="40" clip-path="url(#c)"/>
+<path d="M0,0 600,300M600,0 0,300" stroke="#c8102e" stroke-width="40" clip-path="url(#c)"/>
 <path d="M300,0V350M0,150H700" stroke="#fff" stroke-width="100"/>
-<path d="M300,0V350M0,150H700" stroke="#cf142b" stroke-width="60"/>
-<path d="M0,300H600V0H1200V600H0z" fill="#00247d"/>
+<path d="M300,0V350M0,150H700" stroke="#c8102e" stroke-width="60"/>
+<path d="M0,300H600V0H1200V600H0z" fill="#012169"/>
 <g>
 <path fill="#fff" d="m769.466,147.526,256.879,0-0.306,182.787c2.1373,73.4798-43.6616,119.076-127.931,139.634-59.834-14.86-128.837-45.596-128.939-137.549l0.30537-184.872z"/>
 <path fill="#00a2bd" stroke="#000" stroke-width="1.8125" d="m775.152,153.036,245.493,0-0.2914,175.155c2.0416,70.4101-41.7273,114.102-122.261,133.802-57.188-14.237-123.132-43.692-123.229-131.805l0.29189-177.152z"/>

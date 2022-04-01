@@ -1,15 +1,17 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1140" height="600" viewBox="0 0 209 110" xmlns:xlink="http://www.w3.org/1999/xlink">
-<rect fill="#bf0a30" width="209" height="110"/>
-<path d="M0,15H209 M0,35H209 M0,55H209 M0,75H209 M0,95H209" stroke="#fff" stroke-width="10"/>
-<rect fill="#002868" width="50" height="50"/>
+<path d="M0 0H209V110H0z" fill="#bf0a30"/>
+<path d="M0,15H209 m0,20H0" stroke="#fff" stroke-width="10"/>
+<path d="M0 0H50V55H0z" fill="#002868"/>
+<path d="M0,55H209 m0,20H0 M0,95H209" stroke="#fff" stroke-width="10"/>
 <g transform="translate(25,25) scale(15)">
 <g id="B">
 <polygon id="A" fill="#fff" points="0,0 0,1 .5,1" transform="translate(0,-1) rotate(18)"/>
 <use xlink:href="#A" transform="scale(-1,1)"/>
 </g>
+<g id="C">
 <use xlink:href="#B" transform="rotate(72)"/>
-<use xlink:href="#B" transform="rotate(-72)"/>
-<use xlink:href="#B" transform="rotate(144)"/>
-<use xlink:href="#B" transform="rotate(-144)"/>
+<use xlink:href="#B" transform="rotate(216)"/>
+</g>
+<use xlink:href="#C" transform="rotate(72)"/>
 </g>
 </svg>

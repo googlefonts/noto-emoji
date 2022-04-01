@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="900" height="600" viewBox="0 0 81 54">
-<rect fill="#4189DD" width="81" height="54"/>
-<g transform="translate(40.5 27) scale(13)">
-<g id="t">
-<polygon id="w" fill="#FFF" points="0,0 0,1 .5,1" transform="translate(0 -1) rotate(18)"/>
-<use xlink:href="#w" transform="scale(-1 1)"/>
-</g>
-<use xlink:href="#t" transform="rotate(72)"/>
-<use xlink:href="#t" transform="rotate(-72)"/>
-<use xlink:href="#t" transform="rotate(144)"/>
-<use xlink:href="#t" transform="rotate(-144)"/>
-</g>
+<svg width="900" height="600" viewBox="-81 -54 162 108" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+  <clipPath id="c">
+   <path transform="rotate(-36,0,-26)" d="m0-26v26h-26"/>
+  </clipPath>
+ </defs>
+ <path d="m-81-54h162v108h-162z" fill="#4189dd"/>
+ <path id="a" transform="rotate(18,0,-26)" d="m0-26v26h26" clip-path="url(#c)" fill="#fff"/>
+ <g id="b">
+  <use transform="rotate(72)" xlink:href="#a"/>
+  <use transform="rotate(144)" xlink:href="#a"/>
+ </g>
+ <use transform="rotate(144)" xlink:href="#b"/>
 </svg>

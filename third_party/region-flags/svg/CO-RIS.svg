@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   version="1.1"
+   width="750"
+   height="500"
+   id="svg2">
+  <defs
+     id="defs4">
+    <g
+       transform="scale(15,15)"
+       id="stl"
+       style="fill:#ffffff">
+      <g
+         id="q">
+        <polygon
+           points="0,0 0,1 0.4,1 "
+           transform="matrix(0.95105652,0.30901699,-0.30901699,0.95105652,0,-1)"
+           id="t" />
+        <use
+           transform="scale(-1,1)"
+           id="use9"
+           x="0"
+           y="0"
+           width="324"
+           height="216"
+           xlink:href="#t" />
+      </g>
+      <use
+         transform="matrix(0.30901699,0.95105652,-0.95105652,0.30901699,0,0)"
+         id="use11"
+         x="0"
+         y="0"
+         width="324"
+         height="216"
+         xlink:href="#q" />
+      <use
+         transform="matrix(0.30901699,-0.95105652,0.95105652,0.30901699,0,0)"
+         id="use13"
+         x="0"
+         y="0"
+         width="324"
+         height="216"
+         xlink:href="#q" />
+      <use
+         transform="matrix(-0.80901699,0.58778525,-0.58778525,-0.80901699,0,0)"
+         id="use15"
+         x="0"
+         y="0"
+         width="324"
+         height="216"
+         xlink:href="#q" />
+      <use
+         transform="matrix(-0.80901699,-0.58778525,0.58778525,-0.80901699,0,0)"
+         id="use17"
+         x="0"
+         y="0"
+         width="324"
+         height="216"
+         xlink:href="#q" />
+    </g>
+  </defs>
+  <rect
+     width="750"
+     height="500"
+     x="0"
+     y="0"
+     id="rect19"
+     style="fill:#078930;fill-opacity:1" />
+  <use
+     transform="matrix(2.3148148,0,0,2.3148148,57.87037,414.3519)"
+     id="use21"
+     x="0"
+     y="0"
+     width="324"
+     height="216"
+     xlink:href="#stl" />
+  <use
+     transform="matrix(2.3148148,0,0,2.3148148,692.12963,414.3519)"
+     id="use23"
+     x="0"
+     y="0"
+     width="324"
+     height="216"
+     xlink:href="#stl" />
+  <use
+     transform="matrix(2.3148148,0,0,2.3148148,85.648148,344.9074)"
+     id="use25"
+     x="0"
+     y="0"
+     width="324"
+     height="216"
+     xlink:href="#stl" />
+  <use
+     transform="matrix(2.3148148,0,0,2.3148148,664.35185,344.9074)"
+     id="use27"
+     x="0"
+     y="0"
+     width="324"
+     height="216"
+     xlink:href="#stl" />
+  <use
+     transform="matrix(2.3148148,0,0,2.3148148,120.37037,277.7778)"
+     id="use29"
+     x="0"
+     y="0"
+     width="324"
+     height="216"
+     xlink:href="#stl" />
+  <use
+     transform="matrix(2.3148148,0,0,2.3148148,629.62963,277.7778)"
+     id="use31"
+     x="0"
+     y="0"
+     width="324"
+     height="216"
+     xlink:href="#stl" />
+  <use
+     transform="matrix(2.3148148,0,0,2.3148148,159.72222,212.963)"
+     id="use33"
+     x="0"
+     y="0"
+     width="324"
+     height="216"
+     xlink:href="#stl" />
+  <use
+     transform="matrix(2.3148148,0,0,2.3148148,590.27778,212.963)"
+     id="use35"
+     x="0"
+     y="0"
+     width="324"
+     height="216"
+     xlink:href="#stl" />
+  <use
+     transform="matrix(2.3148148,0,0,2.3148148,208.33333,155.0926)"
+     id="use37"
+     x="0"
+     y="0"
+     width="324"
+     height="216"
+     xlink:href="#stl" />
+  <use
+     transform="matrix(2.3148148,0,0,2.3148148,541.66667,155.0926)"
+     id="use39"
+     x="0"
+     y="0"
+     width="324"
+     height="216"
+     xlink:href="#stl" />
+  <use
+     transform="matrix(2.3148148,0,0,2.3148148,266.2037,108.7963)"
+     id="use41"
+     x="0"
+     y="0"
+     width="324"
+     height="216"
+     xlink:href="#stl" />
+  <use
+     transform="matrix(2.3148148,0,0,2.3148148,483.7963,108.7963)"
+     id="use43"
+     x="0"
+     y="0"
+     width="324"
+     height="216"
+     xlink:href="#stl" />
+  <use
+     transform="matrix(2.3148148,0,0,2.3148148,335.64815,81.0185)"
+     id="use45"
+     x="0"
+     y="0"
+     width="324"
+     height="216"
+     xlink:href="#stl" />
+  <use
+     transform="matrix(2.3148148,0,0,2.3148148,414.35185,81.0185)"
+     id="use47"
+     x="0"
+     y="0"
+     width="324"
+     height="216"
+     xlink:href="#stl" />
+</svg>

@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="800" height="400" fill="#fff">
-<path fill="#002a8f" d="M0,0h800v400H0"/>
-<path d="M0,80h800v80H0v80h800v80H0"/>
-<path fill="#cf142b" d="M346.4,200L0,0v400"/>
-<path d="m115.5,140 35.35,108.5-92.5-67h114.2l-92.5,67"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="600" viewBox="0 0 30 15" fill="#fff">
+	<title>Flag of Cuba</title>
+	<path fill="#002a8f"  d="m0 0h30v15H0z"/>
+	<path d="m3 3h27v3H9v3h21v3H3z"/>
+	<path fill="#cb1515" d="m12.99 7.5L0 15V0z"/>
+	<path d="m4.33 5-1.469 4.523 3.847-2.796H1.952L5.8 9.523z"/>
 </svg>

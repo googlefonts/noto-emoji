@@ -7,10 +7,35 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    version="1.0"
    width="750"
    height="500"
-   id="svg2">
+   id="svg2"
+   sodipodi:docname="Flag_of_Florida (1).svg"
+   inkscape:version="0.92.4 (5da689c313, 2019-01-14)">
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1440"
+     inkscape:window-height="837"
+     id="namedview1691"
+     showgrid="false"
+     inkscape:snap-intersection-paths="true"
+     inkscape:zoom="1"
+     inkscape:cx="375"
+     inkscape:cy="250"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg2" />
   <metadata
      id="metadata1688">
     <rdf:RDF>
@@ -19,51 +44,26 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <defs
-     id="defs4">
-    <marker
-       markerUnits="strokeWidth"
-       refX="0"
-       refY="5"
-       markerWidth="4"
-       markerHeight="3"
-       orient="auto"
-       viewBox="0 0 10 10"
-       id="ArrowEnd">
-      <path
-         d="M 0,0 L 10,5 L 0,10 L 0,0 z"
-         id="path7" />
-    </marker>
-    <marker
-       markerUnits="strokeWidth"
-       refX="10"
-       refY="5"
-       markerWidth="4"
-       markerHeight="3"
-       orient="auto"
-       viewBox="0 0 10 10"
-       id="ArrowStart">
-      <path
-         d="M 10,0 L 0,5 L 10,10 L 10,0 z"
-         id="path10" />
-    </marker>
-  </defs>
+     id="defs4" />
   <path
-     d="M 0,500 L 750,500 L 750,0 L 0,0 L 0,500 z"
+     d="M 0,500 H 750 V 0 H 0 Z"
      id="path2858"
-     style="fill:#ffffff;fill-opacity:1;stroke:none" />
+     style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1"
+     inkscape:connector-curvature="0" />
+  <path
+     style="fill:#a80534;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     d="m 0,438 v 62 L 93,499.99989 374.99998,311.99994 657,500 h 93 L 749.99983,438 467.99991,250.00001 750,62 V 0 L 657,1.0969e-4 375.00002,188.00005 93,0 H 0 L 1.65e-4,62 282.00008,249.99999 Z"
+     id="path2529"
+     inkscape:connector-curvature="0" />
   <path
      d="M -2495.661,2359.637 L -2495.661,2359.637 L -2495.661,2359.637 z"
      id="path14"
      style="fill:#000000;stroke:none" />
-  <path
-     d="M 92.010874,1.0969e-4 L 0,0.51335109 L 0.23987938,62.820858 L 281.99534,250.53035 L 0,438.44513 L 0.06853697,499.76037 L 93.552956,499.99989 L 374.99999,312.49569 L 656.44704,499.99989 L 749.93147,499.76037 L 750,438.44513 L 468.00466,250.53035 L 749.76011,62.820858 L 750,0.51335109 L 657.98913,1.0969e-4 L 374.99999,188.565 L 92.010874,1.0969e-4 z"
-     id="path154"
-     style="fill:#a80534;fill-opacity:1;stroke:none" />
   <g
      transform="matrix(1,0,0,0.9999734,2.9999967e-8,0.00665281)"
      id="g8987">
