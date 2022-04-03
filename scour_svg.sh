@@ -27,7 +27,7 @@ if [ -z "$SRC_DIR" ]; then
 fi
 
 if [ ! -d "$SRC_DIR" ]; then
-  echo "source dirctory '$SRC_DIR' does not exist"
+  echo "source directory '$SRC_DIR' does not exist"
   exit 1;
 fi
 
