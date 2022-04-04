@@ -55,12 +55,6 @@ particular the flag images in the font are PNG images to which transforms have
 been applied to standardize the size and generate the wave and border shadow.  We
 do not have SVG versions that reflect these transforms.
 
-## B/W emoji font
-
-The black-and-white emoji font is not under active development.  Its repertoire of
-emoji is now several years old, and the design does not reflect the current color
-emoji design.  Currently we have no plans to update this font.
-
 ## License
 
 Emoji fonts (under the fonts subdirectory) are under the
