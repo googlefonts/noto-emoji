@@ -122,7 +122,7 @@ def _check_valid_emoji_cps(sorted_seq_to_filepath, unicode_version):
     coverage_pass = False
 
   if not coverage_pass:
-    exit("Please fix the problems metioned above or run: make BYPASS_SEQUENCE_CHECK='True'")
+    exit("Please fix the problems mentioned above or run: make BYPASS_SEQUENCE_CHECK='True'")
 
 
 def _check_zwj(sorted_seq_to_filepath):
@@ -144,7 +144,7 @@ def _check_zwj(sorted_seq_to_filepath):
           pcp = seq[i-1]
           if pcp != EMOJI_VS and not unicode_data.is_emoji(pcp):
             print(
-                f'check zwj: non-emoji {pcp} preceeds ZWJ in {fp}',
+                f'check zwj: non-emoji {pcp} precedes ZWJ in {fp}',
                 file=sys.stderr)
         if i < len(seq) - 1:
           fcp = seq[i+1]
@@ -313,7 +313,7 @@ def _check_coverage(seq_to_filepath, unicode_version):
     coverage_pass = False
 
   if not coverage_pass:
-    exit("Please fix the problems metioned above or run: make BYPASS_SEQUENCE_CHECK='True'")
+    exit("Please fix the problems mentioned above or run: make BYPASS_SEQUENCE_CHECK='True'")
 
 
 def check_sequence_to_filepath(seq_to_filepath, unicode_version, coverage):

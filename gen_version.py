@@ -29,15 +29,15 @@ at commit a8a215d2e889 and date 20170220 (since dates are a bit easier
 to locate in time than commit hashes).
 
 For building with external data we don't include the commit id as we
-might be using different resoruces.  Instead the version string is:
+might be using different resources.  Instead the version string is:
   Version 1.39;GOOG;noto-emoji:20170518;BETA <msg>
 
 Here the date is the current date, and the message after 'BETA ' is
 provided using the '-b' flag.  There's no commit hash.  This also
 bypasses some checks about the state of the repo.
 
-The relase number should have 2 or 3 minor digits.  Right now we've been
-using 2 but at the next major relase we probably want to use 3.  This
+The release number should have 2 or 3 minor digits.  Right now we've been
+using 2 but at the next major release we probably want to use 3.  This
 supports both.  It will bump the version number if none is provided,
 maintaining the minor digit length.
 """
@@ -153,7 +153,7 @@ def _replace_existing_version(lines, version, version_str):
 def update_version(srcfile, dstfile, version, beta):
   """Update version in srcfile and write to dstfile.  If version is None,
   bumps the current version, else version must be greater than the
-  current verison."""
+  current version."""
 
   with open(srcfile, 'r') as f:
     lines = f.readlines()
