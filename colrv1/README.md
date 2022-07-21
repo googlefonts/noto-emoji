@@ -5,6 +5,16 @@ contains emojicompat metadata.
 
 ## Build Steps
 
+1. Check the list of sources in the config files is in sync with the current sources
+
+   ```shell
+   # running from the noto-emoji repository root directory
+   python colrv1_generate_configs.py
+   git diff colrv1/*.toml
+   ```
+
+   If configs are in sync, the `colrv1/*.toml` files should contain no diffs.
+
 1. Compile the COLRv1 fonts
 
    ```shell
