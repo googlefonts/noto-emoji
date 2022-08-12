@@ -19,6 +19,8 @@ contains emojicompat metadata.
 
    ```shell
    time nanoemoji *.toml
+   cp build/NotoColorEmoji.ttf ../fonts/Noto-COLRv1.ttf
+   cp build/NotoColorEmoji-noflags.ttf ../fonts/Noto-COLRv1-noflags.ttf
    ```
 
 1. Post-process COLRv1 font for Android
