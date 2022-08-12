@@ -50,9 +50,7 @@ def get_glyph_name_from_gsub(char_seq, font):
     return None
 
 
-def add_pua_cmap(source_file, target_file):
-    """Add PUA characters to the cmap of the first font and save as second."""
-    font = ttLib.TTFont(source_file)
+def add_pua_cmap_to_font(font):
     cmap = font_data.get_cmap(font)
     for pua, (ch1, ch2) in itertools.chain(
         add_emoji_gsub.EMOJI_KEYCAPS.items(), add_emoji_gsub.EMOJI_FLAGS.items()
@@ -61,6 +59,12 @@ def add_pua_cmap(source_file, target_file):
             glyph_name = get_glyph_name_from_gsub([ch1, ch2], font)
             if glyph_name is not None:
                 cmap[pua] = glyph_name
+
+
+def add_pua_cmap(source_file, target_file):
+    """Add PUA characters to the cmap of the first font and save as second."""
+    font = ttLib.TTFont(source_file)
+    add_pua_cmap_to_font(font)
     font.save(target_file)
 
 

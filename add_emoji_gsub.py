@@ -140,7 +140,7 @@ def create_simple_gsub(lookups, script='DFLT', feature='ccmp'):
 
 
 def reg_indicator(letter):
-    """Return a regional indicator charater from corresponing capital letter.
+    """Return a regional indicator character from corresponding capital letter.
     """
     return 0x1F1E6 + ord(letter) - ord('A')
 

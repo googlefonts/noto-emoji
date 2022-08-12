@@ -1,38 +1,18 @@
-![Noto](images/noto.png)
+![Noto](https://substackcdn.com/image/fetch/w_1456,c_limit,f_webp,q_auto:good,fl_progressive:steep/https%3A%2F%2Fbucketeer-e05bbc84-baa3-437e-9518-adb32be77984.s3.amazonaws.com%2Fpublic%2Fimages%2Fab4b4276-9bb0-42a6-a675-510fcb6055df_1940x1088.png)
 # Noto Emoji
-Color and Black-and-White Noto emoji fonts, and tools for working with them.
+Noto Emoji (Stands for No Tofu) is an open source (Open Font License 1.1) emoji library that provides standard Unicode emoji support and tools for working with them including:
 
-**[Download Emoji Font](https://github.com/googlefonts/noto-emoji/raw/main/fonts/NotoColorEmoji.ttf)**
+- A Unicode compliant color emoji [font](https://github.com/googlefonts/noto-emoji/raw/main/fonts/NotoColorEmoji.ttf).
+- A full library of Noto color emoji font files including 3,633 vector svgs and pngs
+- [Metadata](https://github.com/googlefonts/emoji-metadata) for Emoji Input (including shortcodes, emoji ordering, ascii equivalents)
 
-## Prerequisites
-Building Noto Color Emoji requires:
-- Python 3
-- [pkg-config](https://www.freedesktop.org/wiki/Software/pkg-config/)
-- [pngquant](https://pngquant.org/)
-- [zopflipng](https://github.com/google/zopfli)
-- [cairo](https://www.cairographics.org/)
-- [imagemagick](https://imagemagick.org/)
+## Color Font
 
-## Building NotoColorEmoji
-This project uses a virtual environment to manage dependencies. Use the following steps to get up and running:
+The latest font file is found [here](https://github.com/googlefonts/noto-emoji/raw/main/fonts/NotoColorEmoji.ttf). If you want to download a specific version, please look at the gh-pages branch, where you will find the built assets for both our latest and older versions. 
 
-```shell
-# make sure you have the Prerequisites
+## Monochrome Font
 
-# create & activate a virtual environment
-python3 -m venv venv
-source venv/bin/activate
-
-# install python requirements
-pip install -r requirements.txt
-
-time make -j
-```
-
-Intermediate products (compressed image files, for example) will be put into a build subdirectory. Two fonts will be saved at the top level:
-
-* `NotoColorEmoji.ttf`, for general use.
-* `NotoColorEmoji_WindowsCompatible.ttf`, which is the same font but with an additional empty `glyf` table and `cmap` format 4 subtable. This is required by Windows 10 if you want to _install_ the font.
+The black-and-white emoji font is back under active development and is available as a [variable font](https://fonts.google.com/noto/specimen/Noto+Emoji)
 
 ## Using NotoColorEmoji
 
@@ -41,25 +21,9 @@ and Chrome/Chromium OS.  Windows supports it starting with Windows 10 Anniversar
 Update in Chrome and Edge.  On macOS, only Chrome supports it, while on Linux it will
 support it with some fontconfig tweaking, see [issue #36](https://github.com/googlei18n/noto-emoji/issues/36). Currently we do not build other color font formats.
 
-## Color emoji assets
+## A note about PNGs
 
-The assets provided in the repo are all those used to build the NotoColorEmoji
-font.  Note however that NotoColorEmoji often uses the same assets to represent
-different character sequences-- notably, most gender-neutral characters or
-sequences are represented using assets named after one of the gendered
-sequences.  This means that some sequences appear to be missing.  Definitions of
-the aliasing used appear in the emoji_aliases.txt file.
-
-Also note that the images in the font might differ from the original assets.  In
-particular the flag images in the font are PNG images to which transforms have
-been applied to standardize the size and generate the wave and border shadow.  We
-do not have SVG versions that reflect these transforms.
-
-## B/W emoji font
-
-The black-and-white emoji font is not under active development.  Its repertoire of
-emoji is now several years old, and the design does not reflect the current color
-emoji design.  Currently we have no plans to update this font.
+The assets provided in the repo are all those used to build the NotoColorEmoji font. With one exception: the flag images in the font are PNG images to which transforms have been applied to standardize the size and generate the wave and border shadow. We do not have SVG versions that reflect these transforms.
 
 ## License
 
@@ -72,9 +36,3 @@ otherwise exempt from copyright ([more info](third_party/region-flags/LICENSE)).
 ## Contributing
 
 Please read [CONTRIBUTING](CONTRIBUTING.md) if you are thinking of contributing to this project.
-
-## News
-
-* 2017-09-13: Emoji redesign released.
-* 2015-12-09: Unicode 7 and 8 emoji image data (.png format) added.
-* 2015-09-29: All Noto fonts now licensed under the SIL Open Font License.
