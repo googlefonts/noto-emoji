@@ -23,11 +23,14 @@ contains emojicompat metadata.
    cp build/NotoColorEmoji-noflags.ttf ../fonts/Noto-COLRv1-noflags.ttf
    ```
 
-1. Post-process COLRv1 font for Android
+1. Post-process COLRv1 fonts
+   * Adds some additional sequences, fixes up `name`, etc
    * At time of writing only the noflags version is for Android
 
    ```shell
    # Assumed to be in a python3 environment with requirements.txt fulfilled
-   python colrv1_postproc.py colrv1/build/NotoColorEmoji-noflags.ttf \
-   	PATH_TO/NotoColorEmojiCompat.ttf
+   python colrv1_postproc.py
    ```
+
+1. Add emojicompat metadata to the Android font and pass to the Android team
+   * TODO write detailed instructions
