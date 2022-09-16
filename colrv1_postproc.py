@@ -1,5 +1,7 @@
 """
-Post-nanoemoji processing of the Noto COLRv1 Emoji file.
+Post-nanoemoji processing of the Noto COLRv1 Emoji files.
+
+Adds additional sequences to properly support Safari, corrects 'name', etc.
 
 For now substantially based on copying from a correct bitmap build.
 """
@@ -18,9 +20,10 @@ from pathlib import Path
 from colrv1_add_soft_light_to_flags import add_soft_light_to_flags
 
 
-_OUTPUT_FILE = {
-    "NotoColorEmoji-noflags.ttf": "fonts/Noto-COLRv1-noflags.ttf",
-    "NotoColorEmoji.ttf": "fonts/Noto-COLRv1.ttf",
+_CBDT_FILE = Path("fonts/NotoColorEmoji.ttf")
+_COLR_FILES = {
+    Path("fonts/Noto-COLRv1-noflags.ttf"),
+    Path("fonts/Noto-COLRv1.ttf"),
 }
 
 
@@ -30,14 +33,6 @@ def _is_colrv1(font):
 
 def _is_cbdt(font):
     return "CBDT" in font
-
-
-def _is_compat_font(font):
-    return "meta" in font and "Emji" in font["meta"].data
-
-
-def _copy_emojicompat_data(colr_font, cbdt_font):
-    colr_font["meta"] = cbdt_font["meta"]
 
 
 def _set_name(name_table, nameID):
@@ -94,7 +89,7 @@ def _add_cmap_entries(colr_font, codepoint, glyph_name):
         if not _is_bmp(codepoint) and table.format == 4:
             continue
         table.cmap[codepoint] = glyph_name
-        print(f"Map 0x{codepoint:04x} to {glyph_name}, format {table.format}")
+        #print(f"Map 0x{codepoint:04x} to {glyph_name}, format {table.format}")
 
 
 FLAG_TAGS = set(range(0xE0030, 0xE0039 + 1)) | set(range(0xE0061, 0xE007A + 1))
@@ -113,7 +108,7 @@ def _map_missing_flag_tag_chars_to_empty_glyphs(colr_font):
     hmtx_table = colr_font["hmtx"]
     glyph_order_size = len(glyf_table.glyphOrder)
     for cp in tag_cps:
-        print(f"Map 0x{cp:04x} to a blank glyf")
+        #print(f"Map 0x{cp:04x} to a blank glyf")
         glyph_name = f"u{cp:04X}"
         assert glyph_name not in glyf_table, f"{glyph_name} already in glyf"
         assert glyph_name not in hmtx_table.metrics, f"{glyph_name} already in hmtx"
@@ -288,47 +283,39 @@ def _add_fallback_subs_for_unknown_flags(colr_font):
     font_data.delete_from_cmap(colr_font, [UNKNOWN_FLAG_PUA])
 
 
-def main(argv):
-    if len(argv) != 3:
-        raise ValueError(
-            "Must have two args, a COLRv1 font and a CBDT emojicompat font"
-        )
+def _font(path, check_fn, check_fail_str):
+    assert path.is_file(), path
+    font = ttLib.TTFont(path)
+    if not check_fn(font):
+        raise ValueError(path + check_fail_str)
+    return font
 
-    colr_file = Path(argv[1])
-    assert colr_file.is_file()
-    assert colr_file.name in _OUTPUT_FILE
-    colr_font = ttLib.TTFont(colr_file)
-    if not _is_colrv1(colr_font):
-        raise ValueError("First arg must be a COLRv1 font")
 
-    cbdt_file = Path(argv[2])
-    assert cbdt_file.is_file()
-    cbdt_font = ttLib.TTFont(cbdt_file)
-    if not _is_cbdt(cbdt_font) or not _is_compat_font(cbdt_font):
-        raise ValueError("Second arg must be a CBDT emojicompat font")
+def main(_):
+    cbdt_font = _font(_CBDT_FILE, _is_cbdt, " must be a CBDT font")
 
-    print(f"COLR {colr_file.absolute()}")
-    print(f"CBDT {cbdt_file.absolute()}")
+    for colr_file in _COLR_FILES:
+        colr_font = _font(colr_file, _is_colrv1, " must be a COLRv1 font")
 
-    _copy_emojicompat_data(colr_font, cbdt_font)
-    _copy_names(colr_font, cbdt_font)
+        print(f"Updating {colr_file} from {_CBDT_FILE}")
 
-    # CBDT build step: @$(PYTHON) $(PUA_ADDER) "$@" "$@-with-pua"
-    map_pua_emoji.add_pua_cmap_to_font(colr_font)
+        _copy_names(colr_font, cbdt_font)
 
-    _add_vs_cmap(colr_font)
+        # CBDT build step: @$(PYTHON) $(PUA_ADDER) "$@" "$@-with-pua"
+        map_pua_emoji.add_pua_cmap_to_font(colr_font)
 
-    _map_missing_flag_tag_chars_to_empty_glyphs(colr_font)
+        _add_vs_cmap(colr_font)
 
-    add_soft_light_to_flags(colr_font)
+        _map_missing_flag_tag_chars_to_empty_glyphs(colr_font)
 
-    _add_vertical_layout_tables(cbdt_font, colr_font)
+        add_soft_light_to_flags(colr_font)
 
-    _add_fallback_subs_for_unknown_flags(colr_font)
+        _add_vertical_layout_tables(cbdt_font, colr_font)
 
-    out_file = Path(_OUTPUT_FILE[colr_file.name]).absolute()
-    print("Writing", out_file)
-    colr_font.save(out_file)
+        _add_fallback_subs_for_unknown_flags(colr_font)
+
+        print("Writing", colr_file)
+        colr_font.save(colr_file)
 
 
 if __name__ == "__main__":
