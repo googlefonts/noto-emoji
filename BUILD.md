@@ -9,6 +9,7 @@ rm -rf venv  # in case you have an old borked venv!
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
+python size_check.py
 rm -rf build/ && time make -j 48
 # Should take 2-3 minutes to create noto-emoji/NotoColorEmoji.ttf
 
