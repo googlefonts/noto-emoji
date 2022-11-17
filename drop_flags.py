@@ -23,23 +23,17 @@ def main(argv):
         assert font_file.is_file(), font_file
         noflags_file = font_file.with_stem(font_file.stem + "-noflags")
 
-        font = ttLib.TTFont(font_file)
         if noflags_file.is_file():
-            print(font_file, f"({font_type}) already has", noflags_file, "; nop")
+            print(font_file, "already has", noflags_file, "; nop")
             continue
+
+        font = ttLib.TTFont(font_file)
 
         cps = codepoints(font)
         cps_without_flags = {cp for cp in cps if not is_regional_indicator(cp)}
 
-        font_type = []
-        if "CBDT" in font:
-            font_type.append("CBDT")
-        if "COLR" in font:
-            font_type.append("COLR")
-        font_type = "_".join(font_type)
-
         if cps == cps_without_flags:
-            print(font_file, f"({font_type}) has no regional indicators")
+            print(font_file, "has no regional indicators")
             continue
 
         subsetter = subset.Subsetter()
@@ -47,7 +41,7 @@ def main(argv):
         subsetter.subset(font)
 
         font.save(noflags_file)
-        print(font_file, f"({font_type}) =>" , noflags_file)
+        print(font_file, "=>" , noflags_file)
 
 
 if __name__ == '__main__':
