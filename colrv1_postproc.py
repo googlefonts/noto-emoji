@@ -283,6 +283,14 @@ def _add_fallback_subs_for_unknown_flags(colr_font):
     font_data.delete_from_cmap(colr_font, [UNKNOWN_FLAG_PUA])
 
 
+def _set_no_font_embedding_restrictions(colr_font):
+    # The CBDT/CBLC NotoColorEmoji has OS/2.fsType = 0 (i.e. no embedding restrictions)
+    # so the COLRv1 variant must also have no such restrictions.
+    # https://github.com/notofonts/noto-fonts/issues/2408
+    # https://github.com/google/fonts/issues/5729
+    colr_font["OS/2"].fsType = 0
+
+
 def _font(path, check_fn, check_fail_str):
     assert path.is_file(), path
     font = ttLib.TTFont(path)
@@ -313,6 +321,8 @@ def main(_):
         _add_vertical_layout_tables(cbdt_font, colr_font)
 
         _add_fallback_subs_for_unknown_flags(colr_font)
+
+        _set_no_font_embedding_restrictions(colr_font)
 
         print("Writing", colr_file)
         colr_font.save(colr_file)
