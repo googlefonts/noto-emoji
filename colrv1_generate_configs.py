@@ -66,9 +66,14 @@ wght = 400
 
 def _write_all_noto_configs():
     # includes all of noto-emoji svgs plus all the waved region flags
-    svgs = tuple(_NOTO_SVG_DIR.glob("*.svg")) + tuple(
-        _NOTO_WAVED_FLAG_SVG_DIR.glob("*.svg")
-    )
+    regular = tuple(_NOTO_SVG_DIR.glob("*.svg"))
+    flags = tuple(_NOTO_WAVED_FLAG_SVG_DIR.glob("*.svg"))
+
+    dups = {p.name for p in regular} & {p.name for p in flags}
+    if dups:
+        raise ValueError(f"Flags *and* regular have {dups}")
+
+    svgs = regular + flags
     _write_config("all", "NotoColorEmoji.ttf", svgs)
 
 
