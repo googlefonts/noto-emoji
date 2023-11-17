@@ -28,3 +28,19 @@ def test_consistent_version():
             debug_versions.append(f"{font_file.name} name {match.group(1)}")
     debug_versions = "\n".join(debug_versions)
     assert len(versions) == 1, f"Should have a consistent version, found\n{debug_versions}"
+
+def test_consistent_fstype():
+    fonts_dir = Path("fonts")
+    assert fonts_dir.is_dir()
+
+    name5_re = re.compile(r'^Version (\d+.\d+);GOOG;noto-emoji:\d+:[a-z0-9]+$')
+
+    debug_fstypes = []
+    fstypes = set()
+    for font_file in fonts_dir.rglob("*.ttf"):
+        font = ttLib.TTFont(font_file)
+        fstype = font['OS/2'].fsType
+        fstypes.add(fstype)
+        debug_fstypes.append(f"{font_file.name} fsType {fstype}")
+    debug_fstypes = "\n".join(debug_fstypes)
+    assert fstypes == {0}, f"All fsType's should be 0, found\n{debug_fstypes}"
