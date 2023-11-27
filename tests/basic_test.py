@@ -44,3 +44,15 @@ def test_consistent_fstype():
         debug_fstypes.append(f"{font_file.name} fsType {fstype}")
     debug_fstypes = "\n".join(debug_fstypes)
     assert fstypes == {0}, f"All fsType's should be 0, found\n{debug_fstypes}"
+
+def test_has_emojicompat():
+    fonts_dir = Path("fonts")
+    assert fonts_dir.is_dir()
+
+    ec_fonts = set(fonts_dir.rglob("*-emojicompat.ttf"))
+    assert {f.name for f in ec_fonts} == {"Noto-COLRv1-emojicompat.ttf", "NotoColorEmoji-emojicompat.ttf"}
+
+    for font_file in ec_fonts:
+        font = ttLib.TTFont(font_file)
+        assert "meta" in font, f"{font_file.name} should have a meta table"
+        assert "Emji" in font["meta"].data, f"{font_file.name} should have emojicompat data"
