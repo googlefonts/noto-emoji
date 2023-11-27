@@ -16,6 +16,7 @@ from nototools import add_vs_cmap
 from nototools import font_data
 from nototools import unicode_data
 from pathlib import Path
+import re
 
 from colrv1_add_soft_light_to_flags import add_soft_light_to_flags
 
@@ -291,6 +292,16 @@ def _set_no_font_embedding_restrictions(colr_font):
     colr_font["OS/2"].fsType = 0
 
 
+def _set_head_version_to_name_version(colr_font):
+    # head.fontRevision and the version on name 5 should match
+    name_version = colr_font['name'].getName(5, 3, 1, 0x409)
+    assert name_version is not None, "No version found in 'name'"
+    name_version = name_version.toUnicode()
+    match = re.match(r'^Version (\d+[.]\d+);GOOG;', name_version)
+    assert match is not None, f"Unable to parse version from '{name_version}'"
+    colr_font["head"].fontRevision = float(match.group(1))
+
+
 def _font(path, check_fn, check_fail_str):
     assert path.is_file(), path
     font = ttLib.TTFont(path)
@@ -323,6 +334,8 @@ def main(_):
         _add_fallback_subs_for_unknown_flags(colr_font)
 
         _set_no_font_embedding_restrictions(colr_font)
+
+        _set_head_version_to_name_version(colr_font)
 
         print("Writing", colr_file)
         colr_font.save(colr_file)
