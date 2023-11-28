@@ -33,6 +33,7 @@ The sub-regions currently covered are:
 - Canadian provinces and territories
 - Countries of England, Scotland, and Wales in Great Britain
 - The province Northern Ireland in Great Britain
+- Australia's states and its two self-governing internal territories
 
 The flags are downloaded from Wikipedia. When Wikipedia flags were copyrighted,
 we worked we Wikipedia editors to either relicense them, or drew / sourced and
@@ -51,10 +52,10 @@ flags were resolved for the initial import:
 - The script `regions.py` lists all regions and some selected sub-regions with their metadata.
 - The script `regions-wp.py` shows the Wikipedia URL for the flag page.
 - The script `missing.sh` shows all such regions that we don't have flags for.
-- The script `make-aliases.sh` makes symlinks for regions that use flag of another
-region.
-- The script `download-wp.py` downloads missing flags from Wikipedia and generating
-optimized SVG and PNG versions.
+- The script `make-aliases.sh` makes symlinks for regions that use flag of another region.
+- The script `download-wp.sh` downloads missing flags from Wikipedia and optionally you can generate optimized SVG and PNG versions (e.g., download-wp.sh true).
+- The script `update.sh` automatically regenerates all files and outputs optimized png.
+- The script `convert.sh` converts SVG to PNG with ability to specify Width or Height.
 
 You can use the [waveflag script from the Noto fonts project](../../waveflag.c)
 to _wave_ PNG flags.
@@ -77,10 +78,11 @@ editors to relicense it to public domain.  If the flag is not explicitly marked
 `public_domain` but otherwise exempt from Copyright (typically, because of
 national laws), make a note of it in file `COPYING`.
 
-To download missing flags, run `download-wp.py`.
+To download missing flags, run `download-wp.sh`.
 
 To update to latest flags from Wikipedia, delete the `html`, `svg`, and `png`
-directories, then run `make-aliases.sh` followed by `download-wp.py`.
+directories, then run `make-aliases.sh` followed by `download-wp.sh` or you can use `update.sh`.
+
 
 
 # License

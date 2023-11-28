@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="324" height="216">
+<defs>
+<polygon id="stl" transform="scale(10)" fill="white" points="0,1 0.58778525,-0.80901699 -0.95105652,0.30901699 0.95105652,0.30901699 -0.58778525,-0.80901699"/>
+</defs>
+<rect width="324" height="216" fill="#d12"/>
+<g fill="#14a">
+<rect width="324" height="36"/>
+<rect width="324" height="36" y="72"/>
+<rect width="324" height="36" y="144"/>
+</g>
+<g transform="translate(162,116)scale(-1)">
+<g id="brc">
+<use xlink:href="#stl" transform="translate(0,-38.1246)"/>
+<use xlink:href="#stl" transform="translate(0,-18)"/>
+<use xlink:href="#stl" transform="translate(0,47.1246)"/>
+<use xlink:href="#stl" transform="translate(10.5801,67.2492)" id="una"/>
+<use xlink:href="#una" transform="scale(-1,1)"/>
+<use xlink:href="#stl" transform="translate(0,99.8115)"/>
+</g>
+<use xlink:href="#brc" transform="rotate(72)"/>
+<use xlink:href="#brc" transform="rotate(144)"/>
+<use xlink:href="#brc" transform="rotate(-72)"/>
+<use xlink:href="#brc" transform="rotate(-144)"/>
+</g>
+</svg>

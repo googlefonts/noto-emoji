@@ -1,17 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="690" height="460" viewBox="0 0 138 92">
-<rect width="138" height="92" fill="#fff"/>
-<rect width="138" height="46" fill="#000"/>
-<g transform="translate(69,36)">
-<g id="c3">
-<!-- y3 = -y2 = 30*sin(11.25deg)/sqrt(5-4*cos(11.25deg)-sin^2(11.25deg)) -->
-<path id="c" d="M-30,0 0,-5.7423716V5.7423716z" fill="#fcd116"/>
-<use xlink:href="#c" transform="rotate(22.5)"/>
-<use xlink:href="#c" transform="rotate(45)"/>
-</g>
-<use xlink:href="#c3" transform="rotate(67.5)"/>
-<use xlink:href="#c3" transform="rotate(135)"/>
-</g>
-<rect y="36" width="138" height="20" fill="#0072c6"/>
-<path d="M0,0V92H138V0L69,92z" fill="#ce1126"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="600" viewBox="0 0 138 92">
+	<title>Flag of Antigua and Barbuda</title>
+	<path fill="#fff" d="m0 0h138v92H0z"/>
+	<path d="m0 0h138l-9 46H9z"/>
+	<path fill="#fcd116" d="m69 46-30-10 15.288-2.926-13.004-8.555 15.244 3.147-8.741-12.879 12.879 8.741-3.147-15.244 8.555 13.004L69 6l2.926 15.288L80.481 8.284 77.334 23.528l12.879-8.741-8.741 12.879 15.244-3.147-13.004 8.555L99 36z"/>
+	<path fill="#0072c6" d="m9 36h120v20H9z"/>
+	<path fill="#ce1126" d="m0 0 69 92 69-92v92H0z"/>
 </svg>

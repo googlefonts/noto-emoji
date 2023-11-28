@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="756" height="504">
+<rect width="756" height="504" fill="#078930"/>
+<g fill="#fff">
+<rect width="756" height="72" y="72"/>
+<rect width="756" height="72" y="216"/>
+<rect width="756" height="72" y="360"/>
+<rect width="288" height="288"/>
+</g>
+<g transform="translate(144,144)">
+<g id="stl" fill="#fcdd09">
+<g id="q">
+<path id="t" d="M0,-21V0H9" transform="rotate(18,0,-21)"/>
+<use xlink:href="#t" transform="scale(-1,1)"/>
+</g>
+<use xlink:href="#q" transform="rotate(72)"/>
+<use xlink:href="#q" transform="rotate(-72)"/>
+<use xlink:href="#q" transform="rotate(144)"/>
+<use xlink:href="#q" transform="rotate(-144)"/>
+</g>
+<g id="g0">
+<use xlink:href="#stl" transform="translate(0,-99)" id="rtl"/>
+<use xlink:href="#rtl" transform="rotate(24)"/>
+<use xlink:href="#rtl" transform="rotate(48)"/>
+<use xlink:href="#rtl" transform="rotate(72)"/>
+<use xlink:href="#rtl" transform="rotate(96)"/>
+</g>
+<use xlink:href="#g0" transform="rotate(120)"/>
+<use xlink:href="#g0" transform="rotate(240)"/>
+</g>
+</svg>

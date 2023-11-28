@@ -1,11 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="450" height="300" viewBox="0 0 72 48">
-<rect width="72" height="48" fill="#009e60"/>
-<rect width="54" height="48" fill="#fcd116"/>
-<rect width="18" height="48" fill="#0072c6"/>
-<g fill="#009e60">
-<path d="m32,34 4,8 4,-8 -4,-8z"/>
-<path d="m27,24 4,8 4,-8 -4,-8z"/>
-<path d="m37,24 4,8 4,-8 -4,-8z"/>
-</g>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="600" viewBox="0 0 240 160">
+	<title>Flag of Saint Vincent and the Grenadines</title>
+	<path fill="#fcd022" d="m0 0h240v160H0z"/>
+	<path fill="#002674" d="m0 0h60v160H0z"/>
+	<path fill="#007c2e" d="m180 0h60v160h-60zm-78 51.962 15 25.98-15 25.981-15-25.981zm36 0 15 25.98-15 25.981-15-25.981zm-18 31.176 15 25.981-15 25.981-15-25.981z"/>
 </svg>

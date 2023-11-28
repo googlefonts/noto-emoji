@@ -1,7 +1,14 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="900" height="600" viewBox="0 0 72 48">
-<path d="M0,48V0H72z" fill="#1eb53a"/>
-<path d="M0,48H72V0z" fill="#00a3dd"/>
-<path d="M0,48 72,0" stroke="#fcd116" stroke-width="19"/>
-<path d="M0,48 72,0" stroke="#000" stroke-width="13"/>
+	<title>Flag of Tanzania</title>
+	<defs>
+		<clipPath id="c">
+			<path d="m0 0h72v48H0z"/>
+		</clipPath>
+	</defs>
+	<path fill="#1eb53a" d="m0 48V0h72z"/>
+	<path fill="#00a3dd" d="m72 0v48H0z"/>
+	<g clip-path="url(#c)">
+		<path fill="none" stroke="#fcd116" stroke-width="19" d="m0 48L72 0"/>
+		<path fill="none" stroke="#000" stroke-width="13" d="m0 48L72 0"/>
+	</g>
 </svg>

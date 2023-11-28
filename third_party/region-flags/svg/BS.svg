@@ -1,4 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" width="600" height="300">
-<rect width="600" height="300" fill="#00778B"/>
-<rect width="600" height="100" y="100" fill="#FFC72C"/>
-<path d="M0,0V300L259.8076,150z"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="600" viewBox="0 0 6 3">
+	<title>Flag of the Bahamas</title>
+	<path fill="#00778b" d="m0 0h6v3H0z"/>
+	<path fill="#ffc72c" d="m1 1h5v1H1z"/>
+	<path d="m2.5981 1.5L0 3V0z"/>
+</svg>

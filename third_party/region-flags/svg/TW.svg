@@ -1,11 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE svg>
-<svg width="900" height="600" viewBox="-60 -40 240 160" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-   <rect x="-60" y="-40" width="100%" height="100%" fill="#fe0000"/>
-   <rect x="-60" y="-40" width="50%" height="50%" fill="#000095"/>
-   <path id="four_rays" d="M 8,0 L 0,30 L -8,0 L 0,-30 M 0,8 L 30,0 L 0,-8 L -30,0" fill="#fff"/>
-   <use xlink:href="#four_rays" transform="rotate(30)"/>
-   <use xlink:href="#four_rays" transform="rotate(60)"/>
-   <circle r="17" fill="#000095"/>
-   <circle r="15" fill="#fff"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="600"><g fill-rule="evenodd"><path d="M0 0h900v600H0z" fill="#fe0000"/><path d="M0 0h450v300H0z" fill="#000095"/></g><path d="M225 37.5l-56.25 209.928L322.428 93.75 112.5 150l209.928 56.25L168.75 52.572 225 262.5l56.25-209.928L127.572 206.25 337.5 150 127.572 93.75 281.25 247.428 225 37.5" fill="#fff" paint-order="markers fill stroke"/><circle cy="150" cx="225" r="60" fill="#fff" stroke="#000095" stroke-width="7.5"/></svg>

@@ -1,12 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="4320" height="2880">
-<rect fill="#ed2939" width="4320" height="1440"/>
-<rect fill="#fff" y="1440" width="4320" height="1440"/>  
-<path fill="#fff" d="M 1481.678,720 A 541.5,541.5 0 1 1 398.67798,720 A 541.5,541.5 0 1 1 1481.678,720 z"/>
-<path fill="#ed2939" d="M 1651.835,720 A 511.73499,511.73499 0 1 1 628.36499,720 A 511.73499,511.73499 0 1 1 1651.835,720 z"/>
-<path fill="#fff" id="star" d="M 1007.1951,733.06439 L 933.63466,676.63425 L 860.09279,733.09117 L 888.40587,642.09687 L 814.61147,586.0053 L 905.6704,586.1981 L 933.6049,495.07467 L 961.56934,586.18798 L 1052.6282,585.96246 L 978.8522,642.0808 L 1007.1951,733.06439 z"/>
-<use xlink:href="#star" transform="translate(577.18853,0)"/>
-<use xlink:href="#star" transform="translate(288.88853,-214.21117)"/>
-<use xlink:href="#star" transform="translate(107.99953,342.74883)"/>
-<use xlink:href="#star" transform="translate(469.18853,342.74883)"/>
+<svg width="900" height="600" viewBox="0 0 54 36" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff">
+<path d="M0 0h54v36H0z"/>
+<path d="M0 0h54v18H0z" fill="#ed2939"/>
+<circle cx="11.405" cy="9" r="6.625"/>
+<circle cx="14.405" cy="9" r="6.625" fill="#ed2939"/>
+<path id="s" d="m15.03 3.475-1.01393 3.120554 2.654502-1.928609h-3.281145l2.654502 1.928609z"/>
+<g id="t">
+<use xlink:href="#s" transform="rotate(72 15.03 9)"/>
+<use xlink:href="#s" transform="rotate(216 15.03 9)"/>
+</g>
+<use xlink:href="#t" transform="rotate(72 15.03 9)"/>
 </svg>
