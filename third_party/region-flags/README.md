@@ -1,3 +1,8 @@
+# 2023 Update
+
+We no longer source flags from Wikipedia, preferring instead to acquire them directly
+from the relevant government.
+
 # Introduction
 
 This package is a collection of flags for geographic region and sub-region codes.
