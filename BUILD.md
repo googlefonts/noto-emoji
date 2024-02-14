@@ -62,4 +62,5 @@ $ emojicompat --op check --font Noto-COLRv1-emojicompat.ttf
 $ hb-subset --unicodes-file=flags-only-unicodes.txt \
 	--output-file=fonts/NotoColorEmoji-flagsonly.ttf \
 	fonts/NotoColorEmoji.ttf
+$ python update_flag_name.py
 ```
