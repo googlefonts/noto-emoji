@@ -123,7 +123,7 @@ class CBDT:
 			y_bearing = 127
 		advance = width
 
-		vert_x_bearing = - width / 2
+		vert_x_bearing = int (- width / 2)
 		vert_y_bearing = 0
 		vert_advance = height
 
