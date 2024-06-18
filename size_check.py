@@ -2,6 +2,7 @@
 from PIL import Image
 from pathlib import Path
 from lxml import etree
+import sys
 
 
 def _check_image(base_dir, image_dir):
@@ -51,6 +52,7 @@ def main():
 		print(f"{num_bad}/{num_bad+num_good} issues with {size_dir}")
 	num_bad, num_good = _check_svg(base_dir, svg_dir)
 	print(f"{num_bad}/{num_bad+num_good} issues with {svg_dir}")
+	sys.exit(num_bad)
 
 if __name__ == "__main__":
    main()
