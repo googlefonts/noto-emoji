@@ -13,9 +13,55 @@
    inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg"><defs
-   id="defs14" /><sodipodi:namedview
+   id="defs14"><linearGradient
+     id="linearGradient1"
+     inkscape:collect="always"><stop
+       style="stop-color:#ff4081;stop-opacity:1;"
+       offset="0.2"
+       id="stop9" /><stop
+       style="stop-color:#cc1775;stop-opacity:1;"
+       offset="1"
+       id="stop8" /></linearGradient><radialGradient
+     id="SVGID_1_-8"
+     cx="94.520203"
+     cy="89.652"
+     r="23.9109"
+     fx="85.857002"
+     fy="82.640198"
+     gradientTransform="rotate(180,63.702226,65.050795)"
+     gradientUnits="userSpaceOnUse">
+				<stop
+   offset="0.2"
+   style="stop-color:#FF4081"
+   id="stop4-0" />
+				<stop
+   offset="0.88"
+   style="stop-color:#CC1775"
+   id="stop5-6" />
+			</radialGradient><radialGradient
+     inkscape:collect="always"
+     xlink:href="#linearGradient1"
+     id="radialGradient9"
+     cx="33.761207"
+     cy="50.941556"
+     fx="33.761207"
+     fy="50.941556"
+     r="24.512288"
+     gradientTransform="matrix(1,0,0,0.93456981,0,3.3331155)"
+     gradientUnits="userSpaceOnUse" /><radialGradient
+     inkscape:collect="always"
+     xlink:href="#linearGradient1"
+     id="radialGradient11"
+     cx="92.421043"
+     cy="50.886261"
+     fx="92.421043"
+     fy="50.886261"
+     r="24.645737"
+     gradientTransform="matrix(1,0,0,0.93134723,0,3.4934827)"
+     gradientUnits="userSpaceOnUse" /></defs><sodipodi:namedview
    id="namedview14"
    pagecolor="#ffffff"
    bordercolor="#000000"
@@ -25,8 +71,8 @@
    inkscape:pagecheckerboard="0"
    inkscape:deskcolor="#d1d1d1"
    inkscape:zoom="4.2592135"
-   inkscape:cx="51.183159"
-   inkscape:cy="70.083362"
+   inkscape:cx="69.496399"
+   inkscape:cy="69.848577"
    inkscape:window-width="1920"
    inkscape:window-height="991"
    inkscape:window-x="-9"
@@ -120,14 +166,14 @@
 		</g>
 	</g>
 	<path
-   style="fill:#cc1775;fill-opacity:1"
+   style="fill:url(#radialGradient11);fill-opacity:1"
    d="M107.59,34.37c-8.21-2.31-14.24,4.4-14.24,4.4s-0.7-7.61-7.72-10c-8.42-2.89-17.31,1.71-17.84,13.64   C67.19,56,85.17,73.84,85.17,73.84s22.32-6,29.63-18.72C120.75,44.77,113.8,36.11,107.59,34.37z"
    id="path7" />
 	
 	
 	
 	<path
-   style="fill:#cc1775;fill-opacity:1"
+   style="fill:url(#radialGradient9);fill-opacity:1"
    d="M40.72,28.57c-8.11,2.63-9.41,11.56-9.41,11.56s-4.8-6-12-4.06C10.72,38.33,5.87,47.09,12,57.3   C19.1,69,43.94,73.85,43.94,73.85s15.25-17.36,14.29-32C57.44,29.93,46.85,26.58,40.72,28.57z"
    id="path11" />
 	
