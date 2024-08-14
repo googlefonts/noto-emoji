@@ -1,4 +1,4 @@
-![Noto](https://substackcdn.com/image/fetch/w_1456,c_limit,f_webp,q_auto:good,fl_progressive:steep/https%3A%2F%2Fbucketeer-e05bbc84-baa3-437e-9518-adb32be77984.s3.amazonaws.com%2Fpublic%2Fimages%2Fab4b4276-9bb0-42a6-a675-510fcb6055df_1940x1088.png)
+![Noto](https://github.com/nataliakeniganti/noto-emoji-kitchen-unicode-upgrade/blob/main/images/noto.png?raw=true)
 # Noto Emoji
 Noto Emoji (Stands for No Tofu) is an open source (Open Font License 1.1) emoji library that provides standard Unicode emoji support and tools for working with them including:
 
