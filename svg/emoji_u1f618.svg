@@ -13,9 +13,45 @@
    inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg"><defs
-   id="defs12" /><sodipodi:namedview
+   id="defs12"><linearGradient
+     id="linearGradient1"
+     inkscape:collect="always"><stop
+       style="stop-color:#ff4081;stop-opacity:1;"
+       offset="0.2"
+       id="stop5" /><stop
+       style="stop-color:#cc1775;stop-opacity:1;"
+       offset="0.88"
+       id="stop4" /></linearGradient><radialGradient
+     inkscape:collect="always"
+     xlink:href="#linearGradient1"
+     id="radialGradient5"
+     cx="101.9593"
+     cy="81.6441"
+     fx="101.9593"
+     fy="81.6441"
+     r="18.629298"
+     gradientTransform="matrix(1,0,0,0.94332756,0,4.6269701)"
+     gradientUnits="userSpaceOnUse" /><radialGradient
+     id="SVGID_1_-8"
+     cx="94.520203"
+     cy="89.652"
+     r="23.9109"
+     fx="85.857002"
+     fy="82.640198"
+     gradientTransform="rotate(180,63.702226,65.050795)"
+     gradientUnits="userSpaceOnUse">
+				<stop
+   offset="0.2"
+   style="stop-color:#FF4081"
+   id="stop4-0" />
+				<stop
+   offset="0.88"
+   style="stop-color:#CC1775"
+   id="stop5-6" />
+			</radialGradient></defs><sodipodi:namedview
    id="namedview12"
    pagecolor="#ffffff"
    bordercolor="#000000"
@@ -25,8 +61,8 @@
    inkscape:pagecheckerboard="0"
    inkscape:deskcolor="#d1d1d1"
    inkscape:zoom="6.0234375"
-   inkscape:cx="63.916991"
-   inkscape:cy="64"
+   inkscape:cx="61.426719"
+   inkscape:cy="63.833982"
    inkscape:window-width="1920"
    inkscape:window-height="991"
    inkscape:window-x="-9"
@@ -62,7 +98,7 @@
    d="M63.6,118.8c-27.9,0-58-17.5-58-55.9S35.7,7,63.6,7c15.5,0,29.8,5.1,40.4,14.4   c11.5,10.2,17.6,24.6,17.6,41.5s-6.1,31.2-17.6,41.4C93.4,113.6,79,118.8,63.6,118.8z" />
 	
 	<path
-   style="fill:#cc1775;fill-opacity:1"
+   style="fill:url(#radialGradient5);fill-opacity:1"
    d="M120.39,82.08c-1.11-5.52-6.49-9.1-12.02-7.98c-0.82,0.17-1.62,0.43-2.37,0.79   c0.35-5.61-3.91-10.45-9.52-10.8c-3.57-0.22-6.99,1.44-9.02,4.38c-3.65,5.46-2.68,13.24-1,19.36c1,3.61-0.23,7.48-3.13,9.85l0,0   c20.28,3.89,30.23,0.1,35.55-8C120.38,87.45,120.92,84.71,120.39,82.08z"
    id="path4" />
 	
