@@ -54,3 +54,13 @@ $ emojicompat --op check --font Noto-COLRv1-emojicompat.ttf
 0 PUA point at wrong glyph
 3835 PUA correct
 0 Emji entries did NOT match a glyph
+```
+
+## Flags only
+
+```bash
+$ hb-subset --unicodes-file=flags-only-unicodes.txt \
+	--output-file=fonts/NotoColorEmoji-flagsonly.ttf \
+	fonts/NotoColorEmoji.ttf
+$ python update_flag_name.py
+```
