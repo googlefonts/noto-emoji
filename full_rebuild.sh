@@ -52,6 +52,7 @@ emojicompat --op setup --font NotoColorEmoji-emojicompat.ttf
 emojicompat --op setup --font Noto-COLRv1-emojicompat.ttf
 emojicompat --op check --font NotoColorEmoji-emojicompat.ttf
 emojicompat --op check --font Noto-COLRv1-emojicompat.ttf
+popd
 
 hb-subset --unicodes-file=flags-only-unicodes.txt \
    --output-file=fonts/NotoColorEmoji-flagsonly.ttf \
