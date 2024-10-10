@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   version="1.0"
+   width="900"
+   height="600"
+   id="svg1">
+  <defs
+     id="defs1" />
+  <rect
+     width="900"
+     height="200"
+     x="0"
+     y="0"
+     style="fill:#00ab39;fill-opacity:1"
+     id="green_stripe" />
+  <rect
+     width="900"
+     height="200"
+     x="0"
+     y="200"
+     style="fill:#ffffff;fill-opacity:1"
+     id="white_stripe" />
+  <rect
+     width="900"
+     height="200"
+     x="0"
+     y="400"
+     style="fill:#000000;fill-opacity:1"
+     id="black_stripe" />
+</svg>
