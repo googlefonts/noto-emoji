@@ -1,18 +1,24 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="900" height="600" viewBox="0 0 180 120">
-<rect width="180" height="120" fill="#000"/>
-<rect width="180" height="80" fill="#fff"/>
-<rect width="180" height="40" fill="#007a3d"/> <!-- Changed from ce1126 to 007a3d -->
-<g id="s" fill="#ce1126"> <!-- Changed from 007a3d to ce1126 -->
-<g id="f">
-<g id="t">
-<path d="M54,47v13h8" transform="rotate(18,54,47)" id="o"/>
-<use xlink:href="#o" x="-108" transform="scale(-1,1)"/>
-</g>
-<use xlink:href="#t" transform="rotate(72,54,60)"/>
-</g>
-<use xlink:href="#t" transform="rotate(-72,54,60)"/>
-<use xlink:href="#f" transform="rotate(144,54,60)"/>
-</g>
-<use xlink:href="#s" x="36"/> <!-- Changed from 72 to 36 to place middle star -->
-<use xlink:href="#s" x="108"/> <!-- Added third star -->
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="600" viewBox="0 0 900 600">
+  <!-- Flag background - horizontal stripes -->
+  <rect width="900" height="200" fill="#007A3D"/> <!-- Green stripe -->
+  <rect width="900" height="200" y="200" fill="#FFFFFF"/> <!-- White stripe -->
+  <rect width="900" height="200" y="400" fill="#000000"/> <!-- Black stripe -->
+
+  <!-- Define clip path for white stripe -->
+  <defs>
+    <clipPath id="whiteStripe">
+      <rect width="900" height="200" y="200"/>
+    </clipPath>
+  </defs>
+
+  <!-- Three five-pointed stars with increased size -->
+  <g fill="#CE1126" clip-path="url(#whiteStripe)">
+    <!-- Helper function to create a five-pointed star -->
+    <path id="star" d="M 0,-65 L 19.0945,-20.1517 61.8037,-20.1517 27.7149,7.4483 44.7795,52.3483 0,25.4549 -44.7795,52.3483 -27.7149,7.4483 -61.8037,-20.1517 -19.0945,-20.1517 Z"/>
+    
+    <!-- Use the star path with wider spacing -->
+    <use href="#star" transform="translate(200,300)"/>
+    <use href="#star" transform="translate(450,300)"/>
+    <use href="#star" transform="translate(700,300)"/>
+  </g>
 </svg>
