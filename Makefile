@@ -164,13 +164,13 @@ waveflag: waveflag.c
 # imagemagick packaged with ubuntu trusty (6.7.7-10) by using -composite.
 
 $(EMOJI_DIR)/%.png: $(EMOJI_SRC_DIR)/%.png | $(EMOJI_DIR)
-	@convert $(IMOPS) "$<" -composite "PNG32:$@"
+	@magick convert $(IMOPS) "$<" -composite "PNG32:$@"
 
 $(FLAGS_DIR)/%.png: $(FLAGS_SRC_DIR)/%.png ./waveflag | $(FLAGS_DIR)
 	@./waveflag $(FLAGS_DIR)/ "$<"
 
 $(RESIZED_FLAGS_DIR)/%.png: $(FLAGS_DIR)/%.png | $(RESIZED_FLAGS_DIR)
-	@convert $(IMOPS) "$<" -composite "PNG32:$@"
+	@magick convert $(IMOPS) "$<" -composite "PNG32:$@"
 
 flag-symlinks: $(RESIZED_FLAG_FILES) | $(RENAMED_FLAGS_DIR)
 	@$(subst ^, ,                                  \
