@@ -5,7 +5,7 @@
   <path fill="#007A3D" d="M8,195.25 C178.83,110.03 349.03,140.83 521.26,167.28 C676.47,191.12 833.42,211.85 992,132.75 L992,356.75 C821.17,441.97 650.97,411.17 478.74,384.72 C323.53,360.88 166.58,340.15 8,419.25 L8,195.25"/>
   
   <!-- First star (left) - adjusted to be centered vertically in white stripe -->
-  <g transform="translate(250, 405) scale(1) rotate(-5)">
+  <g transform="translate(250, 390) scale(1.3) rotate(-5)">
     <path id="o" fill="#CE1126" d="M0,0 L-21.96,68.4 C-8.24,73.33 5.49,78.57 19.63,84.26 L0,0"/>
     <path fill="#CE1126" d="M0,0 L21.96,70.58 C8.24,74.16 -5.49,78.01 -19.63,82.31 L0,0"/>
     <path fill="#CE1126" d="M67.59,55.84 C44.14,53.27 20.69,51.27 -3.48,50.13 L-3.48,94.93 C19.98,81.24 43.43,68.43 67.59,55.84"/>
@@ -19,7 +19,7 @@
   </g>
   
   <!-- Second star (middle) - adjusted to be centered vertically in white stripe -->
-  <g transform="translate(515, 430) scale(1) rotate(5)">
+  <g transform="translate(515, 420) scale(1.3) rotate(5)">
     <path fill="#CE1126" d="M0,0 L-21.96,68.4 C-8.24,73.33 5.49,78.57 19.63,84.26 L0,0"/>
     <path fill="#CE1126" d="M0,0 L21.96,70.58 C8.24,74.16 -5.49,78.01 -19.63,82.31 L0,0"/>
     <path fill="#CE1126" d="M67.59,55.84 C44.14,53.27 20.69,51.27 -3.48,50.13 L-3.48,94.93 C19.98,81.24 43.43,68.43 67.59,55.84"/>
@@ -33,7 +33,7 @@
   </g>
   
   <!-- Third star (right) - adjusted to be centered vertically in white stripe -->
-  <g transform="translate(750, 455) scale(1) rotate(-6)">
+  <g transform="translate(750, 440) scale(1.3) rotate(-6)">
     <path fill="#CE1126" d="M0,0 L-21.96,68.4 C-8.24,73.33 5.49,78.57 19.63,84.26 L0,0"/>
     <path fill="#CE1126" d="M0,0 L21.96,70.58 C8.24,74.16 -5.49,78.01 -19.63,82.31 L0,0"/>
     <path fill="#CE1126" d="M67.59,55.84 C44.14,53.27 20.69,51.27 -3.48,50.13 L-3.48,94.93 C19.98,81.24 43.43,68.43 67.59,55.84"/>
