@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="900" height="600" viewBox="0 0 180 120">
-<rect width="180" height="120" fill="#000"/>
-<rect width="180" height="80" fill="#fff"/>
-<rect width="180" height="40" fill="#ce1126"/>
-<g id="s" fill="#007a3d">
+<rect width="180" height="120" fill="#007A3D"/>
+<rect width="180" height="80" y="40" fill="#fff"/>
+<rect width="180" height="40" y="80" fill="#000"/>
+<g id="s" fill="#CE1126" transform="translate(-9,0)">
 <g id="f">
 <g id="t">
 <path d="M54,47v13h8" transform="rotate(18,54,47)" id="o"/>
@@ -13,5 +13,7 @@
 <use xlink:href="#t" transform="rotate(-72,54,60)"/>
 <use xlink:href="#f" transform="rotate(144,54,60)"/>
 </g>
-<use xlink:href="#s" x="72"/>
+<use xlink:href="#s" x="45"/>
+<use xlink:href="#s" x="90"/>
+
 </svg>
