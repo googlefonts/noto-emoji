@@ -11,7 +11,9 @@ jobs:
   health_check:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
+      with:
+        lfs: true
     - name: Set up Python 3
       uses: actions/setup-python@v2
     - name: Install FontTools
