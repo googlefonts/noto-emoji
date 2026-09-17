@@ -10,10 +10,14 @@ on:
 jobs:
   health_check:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      with:
+        lfs: true
     - name: Set up Python 3
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@39cd14951b08e74b54015e9e001cdefcf80e669f # v5.1.1
     - name: Install FontTools
       run: pip install fonttools pytest
     - name: pytest

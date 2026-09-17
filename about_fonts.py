@@ -13,8 +13,12 @@ def name(font, name_id):
 
 
 def main():
-    font_files = sorted(p for p in (Path(__file__).parent / "fonts").iterdir() if p.suffix == ".ttf")
-    max_name_len = max(len(p.name) for p in font_files)
+    font_files = []
+    for sub_dir in [Path(__file__).parent / "2D" / "fonts", Path(__file__).parent / "3D" / "fonts"]:
+        if sub_dir.is_dir():
+            font_files.extend(sub_dir.rglob("*.ttf"))
+    font_files.sort(key=lambda p: p.name)
+    max_name_len = max(len(p.name) for p in font_files) if font_files else 0
 
     for font_file in font_files:
         font = ttLib.TTFont(font_file)
