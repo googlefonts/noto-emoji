@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Geo" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 128 128">
+  <defs>
+    <radialGradient id="radial-gradient" cx="64" cy="64" fx="64" fy="64" r="75.48" gradientUnits="userSpaceOnUse">
+      <stop offset=".56" stop-color="#ffb604"/>
+      <stop offset=".69" stop-color="#fec51a"/>
+      <stop offset=".82" stop-color="#fdd835"/>
+    </radialGradient>
+    <radialGradient id="radial-gradient-2" cx="66.15" cy="100.92" fx="66.15" fy="100.92" r="66.57" gradientTransform="translate(0 -8.84) scale(1 1.09)" gradientUnits="userSpaceOnUse">
+      <stop offset=".69" stop-color="#ffb604"/>
+      <stop offset=".85" stop-color="#fec51a"/>
+      <stop offset="1" stop-color="#fdd835"/>
+    </radialGradient>
+    <radialGradient id="radial-gradient-3" cx="-224.66" cy="-1165.29" fx="-224.66" fy="-1165.29" r="15.02" gradientTransform="translate(586.48 -729.97) rotate(9.06) scale(1.03 -.74) skewX(6.7)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffe263" stop-opacity=".8"/>
+      <stop offset=".14" stop-color="rgba(255, 226, 99, .72)" stop-opacity=".72"/>
+      <stop offset=".4" stop-color="rgba(255, 226, 99, .52)" stop-opacity=".52"/>
+      <stop offset=".78" stop-color="rgba(255, 226, 99, .2)" stop-opacity=".2"/>
+      <stop offset="1" stop-color="#ffe263" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="radial-gradient-4" cx="-611.05" cy="-1087.16" fx="-611.05" fy="-1087.16" r="15.02" gradientTransform="translate(-833.08 -611.74) rotate(170.94) scale(1.03 .74) skewX(6.7)" xlink:href="#radial-gradient-3"/>
+  </defs>
+  <circle cx="63.57" cy="64" r="42.46" style="fill: #ffb300; stroke-width: 0;"/>
+  <path d="M126.99,80.89l-18.89-16.77c.02-.1.04-.2.06-.3l18.84-16.69-24.83-5.09-.07-.12,8-24.05-24.03,8.02-.12-.08-5.09-24.82-16.86,19.03h-.02S47.11,1.01,47.11,1.01l-5.08,24.88s-.04.02-.06.03l-24.07-8.04,8,24.05s-.07.09-.11.13L1.01,47.11l19,16.87v.06S1,80.86,1,80.86l24.89,5.11.02.04-8.02,24.11,24.05-8.03.1.08,5.09,24.83,16.84-19.01h.05s16.87,19,16.87,19l5.07-24.86.07-.04,24.09,8.02-8.02-24.03.07-.12,24.81-5.06Z" style="fill: url(#radial-gradient); stroke-width: 0;"/>
+  <circle cx="64" cy="64" r="42.46" style="fill: url(#radial-gradient-2); stroke-width: 0;"/>
+  <g>
+    <g>
+      <path d="M57.84,70.52c-1.39-1.42-.11-2.17,1.42-1.74,1.93.54,5.01.28,5.81-1.3,1.52-3.04-.38-4.76-2.74-10.02-2.46-5.5.63-11.49,4.2-11.8,2.86-.24,1.91,1.12,1.01,1.7-1.75,1.14-3.6,4.93-.77,9.17,4.82,7.21,4.82,10.62,2.33,14.06-1.62,2.23-7.36,3.95-11.27-.06Z" style="fill: #de7321; stroke-width: 0;"/>
+      <g>
+        <g>
+          <ellipse cx="46.77" cy="54.79" rx="5.25" ry="5.67" style="fill: #5d4037; stroke-width: 0;"/>
+          <path d="M46.77,48.52c-5.88,0-8.37,5.08-8.37,6.8,0,.91,1.11.95,1.63.07.52-.89,2.54-3.33,6.74-3.33s6.22,2.44,6.74,3.33c.52.89,1.63.84,1.63-.07,0-1.71-2.5-6.8-8.37-6.8Z" style="fill: #5d4037; stroke-width: 0;"/>
+        </g>
+        <g>
+          <ellipse cx="81.23" cy="54.79" rx="5.25" ry="5.67" style="fill: #5d4037; stroke-width: 0;"/>
+          <path d="M81.23,48.52c-5.88,0-8.37,5.08-8.37,6.8,0,.91,1.11.95,1.63.07.52-.89,2.54-3.33,6.74-3.33s6.22,2.44,6.74,3.33c.52.89,1.63.84,1.63-.07,0-1.71-2.5-6.8-8.37-6.8Z" style="fill: #5d4037; stroke-width: 0;"/>
+        </g>
+      </g>
+    </g>
+    <g>
+      <path d="M72.15,69.92c.69,3.69,6.23,5.96,12.38,5.07,6.15-.88,10.58-4.6,9.89-8.28-.69-3.69-6.23-5.96-12.38-5.07-6.15.88-10.58,4.59-9.89,8.28Z" style="fill: url(#radial-gradient-3); isolation: isolate; stroke-width: 0;"/>
+      <path d="M55.85,69.92c-.69,3.69-6.23,5.96-12.38,5.07-6.15-.88-10.58-4.6-9.89-8.28.69-3.69,6.23-5.96,12.38-5.07,6.15.88,10.58,4.59,9.89,8.28Z" style="fill: url(#radial-gradient-4); isolation: isolate; stroke-width: 0;"/>
+    </g>
+    <path d="M78.72,75.7l-.11-.06c-.55-.33-1.28-.27-1.76.15-1.44,1.23-7.41,3.5-12.85,3.61-5.44-.11-11.41-2.38-12.85-3.61-.49-.41-1.2-.49-1.76-.15l-.11.06c-.7.42-.83,1.28-.34,1.91,1.89,2.37,6.9,5.93,15.05,6.04,8.15-.11,13.15-3.68,15.05-6.04.51-.62.38-1.49-.32-1.91Z" style="fill: #5d4037; stroke-width: 0;"/>
+    <path d="M62.6,86.91c-1.63.64-1.37,2.45.35,2.81,2.16.45,3.81.05,5.42-.92,1.6-.97,3.35-2.75,2.58-4.04-.44-.94-2.01.43-3.99,1.11-1.98.68-3.03.51-4.36,1.03Z" style="fill: #de7321; opacity: .68; stroke-width: 0;"/>
+  </g>
+</svg>

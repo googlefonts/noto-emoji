@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Geo" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 128 128">
+  <defs>
+    <radialGradient id="radial-gradient" cx="64.53" cy="64" fx="64.53" fy="64" r="56.96" gradientUnits="userSpaceOnUse">
+      <stop offset=".5" stop-color="#fde030"/>
+      <stop offset=".92" stop-color="#f7c02b"/>
+      <stop offset="1" stop-color="#f4a223"/>
+    </radialGradient>
+    <linearGradient id="linear-gradient" x1="64.53" y1="-1511.9" x2="64.53" y2="-1400.1" gradientTransform="translate(0 -1392) scale(1 -1)" gradientUnits="userSpaceOnUse">
+      <stop offset=".56" stop-color="#40c0e7" stop-opacity="0"/>
+      <stop offset=".6" stop-color="rgba(68, 182, 234, .14)" stop-opacity=".14"/>
+      <stop offset=".68" stop-color="rgba(76, 164, 240, .4)" stop-opacity=".4"/>
+      <stop offset=".76" stop-color="rgba(82, 149, 245, .61)" stop-opacity=".61"/>
+      <stop offset=".84" stop-color="rgba(88, 137, 249, .78)" stop-opacity=".78"/>
+      <stop offset=".9" stop-color="rgba(91, 128, 252, .9)" stop-opacity=".9"/>
+      <stop offset=".96" stop-color="rgba(94, 123, 254, .97)" stop-opacity=".97"/>
+      <stop offset="1" stop-color="#5f7aff"/>
+    </linearGradient>
+    <radialGradient id="radial-gradient-2" cx="21.52" cy="606.94" fx="21.52" fy="606.94" r="33.4" gradientTransform="translate(0 -870.65) scale(1 1.54)" gradientUnits="userSpaceOnUse">
+      <stop offset=".46" stop-color="#29b6f6"/>
+      <stop offset="1" stop-color="#1e88e5"/>
+    </radialGradient>
+  </defs>
+  <g>
+    <g>
+      <path id="face" d="M64.53,119.9c-27.9,0-58-17.5-58-55.9S36.63,8.1,64.53,8.1c15.5,0,29.8,5.1,40.4,14.4,11.5,10.2,17.6,24.6,17.6,41.5s-6.1,31.2-17.6,41.4c-10.6,9.3-25,14.5-40.4,14.5Z" style="fill: url(#radial-gradient); stroke-width: 0;"/>
+      <path d="M112.42,30.77c5.33,8.6,8.11,18.84,8.11,30.23,0,16.9-6.1,31.2-17.6,41.4-10.6,9.3-25,14.5-40.4,14.5-18.06,0-37.04-7.35-48.18-22.94,10.76,17.66,30.99,25.94,50.18,25.94,15.4,0,29.8-5.2,40.4-14.5,11.5-10.2,17.6-24.5,17.6-41.4,0-12.74-3.47-24.06-10.11-33.23Z" style="fill: #eb8f00; stroke-width: 0;"/>
+      <path id="effect" d="M64.53,119.9c-27.9,0-58-17.5-58-55.9S36.63,8.1,64.53,8.1c15.5,0,29.8,5.1,40.4,14.4,11.5,10.2,17.6,24.6,17.6,41.5s-6.1,31.2-17.6,41.4c-10.6,9.3-25,14.5-40.4,14.5Z" style="fill: url(#linear-gradient); stroke-width: 0;"/>
+    </g>
+    <path d="M20.45,108.14c-8.46,0-14.97-8.2-14.97-15.23,0-4.95,2.21-10.68,5.34-18.62.39-1.17.91-2.34,1.43-3.65,1.49-3.72,2.81-7.75,4.81-11.24,1.36-2.38,4.83-2.38,6.14.03,1.86,3.43,3.14,7.14,5.07,11.47,5.47,12.24,7.03,17.18,7.03,22.13.13,6.9-6.51,15.1-14.84,15.1Z" style="fill: url(#radial-gradient-2); stroke-width: 0;"/>
+    <path d="M10.2,94.88c1.84,4.62,6.37,3.39,7.29-.93.69-3.24-1-12.52-1.67-14.32-.67-1.8-2.47-1.39-3.35.93-.74,1.94-4.09,9.74-2.26,14.32Z" style="fill: #a1ebff; stroke-width: 0;"/>
+  </g>
+  <g id="anxious-with-sweat-face">
+    <path id="mouth" d="M64.03,102.48c3.85,0,7.73.74,11.37,1.74,7.99,3.37,14.37-4.69,9.9-10.02-4.66-5.54-12.25-7.68-21.53-7.68s-16.11,1.62-20.77,7.17c-5.19,5.29,1.81,13.34,9.81,10.52,3.62-.99,7.36-1.74,11.21-1.74Z" style="fill: #422b0d; stroke-width: 0;"/>
+  </g>
+  <g>
+    <path d="M27.12,46.24c-2.2.39-2.31,3.59.09,3.7,4.9.12,10.21-1.66,14.32-5.45,1.5-1.29,2.81-2.89,3.72-4.49,1.21-2.2-1.59-3.71-2.99-2.11l-.1.1c-4.02,4.49-9.53,7.37-15.03,8.24Z" style="fill: #422b0d; stroke-width: 0;"/>
+    <path d="M85.85,37.99l-.1-.1c-1.41-1.59-4.2-.08-2.99,2.11.91,1.6,2.21,3.19,3.72,4.49,4.11,3.78,9.42,5.57,14.32,5.45,2.4-.11,2.29-3.31.09-3.7-5.5-.88-11.01-3.76-15.03-8.24Z" style="fill: #422b0d; stroke-width: 0;"/>
+  </g>
+  <g>
+    <path d="M44.82,56.41h0c-4.19,0-8,3.54-8,9.42s3.81,9.42,8,9.42h0c4.19,0,8-3.54,8-9.42s-3.81-9.42-8-9.42Z" style="fill: #422b0d; stroke-width: 0;"/>
+    <g id="peepers">
+      <path d="M44.43,60.34h0c-1.03-.72-2.58-.49-3.58.95s-.67,2.97.36,3.69h0c1.03.72,2.58.49,3.58-.95s.67-2.97-.36-3.69Z" style="fill: #896024; stroke-width: 0;"/>
+    </g>
+    <path d="M83.18,56.41h0c-4.19,0-8,3.54-8,9.42s3.81,9.42,8,9.42h0c4.19,0,8-3.54,8-9.42s-3.81-9.42-8-9.42Z" style="fill: #422b0d; stroke-width: 0;"/>
+    <g id="peepers-2" data-name="peepers">
+      <path d="M82.79,60.34h0c-1.03-.72-2.58-.49-3.58.95-1,1.45-.67,2.97.36,3.69h0c1.03.72,2.58.49,3.58-.95,1-1.45.67-2.97-.36-3.69Z" style="fill: #896024; stroke-width: 0;"/>
+    </g>
+  </g>
+</svg>
