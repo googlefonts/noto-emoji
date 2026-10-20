@@ -1,4 +1,5 @@
-![Noto](https://substackcdn.com/image/fetch/w_1456,c_limit,f_webp,q_auto:good,fl_progressive:steep/https%3A%2F%2Fbucketeer-e05bbc84-baa3-437e-9518-adb32be77984.s3.amazonaws.com%2Fpublic%2Fimages%2Fab4b4276-9bb0-42a6-a675-510fcb6055df_1940x1088.png)
+<img width="4096" height="2304" alt="Noto_Color_Emoji_banner" src="https://github.com/user-attachments/assets/cb6e521b-e0e0-4de2-89fc-5ec94642553b" />
+
 # Noto Emoji
 Noto Emoji (Stands for No Tofu) is an open source (Open Font License 1.1) emoji library that provides standard Unicode emoji support and tools for working with them including:
 
@@ -13,6 +14,10 @@ The latest font file is found [here](https://github.com/googlefonts/noto-emoji/r
 ## Monochrome Font
 
 The black-and-white emoji font is back under active development and is available as a [variable font](https://fonts.google.com/noto/specimen/Noto+Emoji)
+
+## 3D Font
+
+The Noto 3D emoji library is available in the [Noto Emoji Files](https://googlefonts.github.io/noto-emoji-files) website and also available as [fonts](https://github.com/googlefonts/noto-emoji/tree/main/3D/fonts).
 
 ## Using NotoColorEmoji
 
