@@ -14,6 +14,9 @@ The latest font file is found [here](https://github.com/googlefonts/noto-emoji/r
 
 The black-and-white emoji font is back under active development and is available as a [variable font](https://fonts.google.com/noto/specimen/Noto+Emoji)
 
+## 3D Font
+The Noto 3D emoji library are available in the [Noto Emoji Files](https://googlefonts.github.io/noto-emoji-files) and also available as [fonts](https://github.com/googlefonts/noto-emoji/tree/main/3D/fonts).
+
 ## Using NotoColorEmoji
 
 NotoColorEmoji uses the CBDT/CBLC color font format, which is supported by Android
